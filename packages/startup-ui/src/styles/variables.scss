@@ -1,0 +1,70 @@
+:root {
+    // Черный, белый и серый
+    --s-white: #fff;
+    --s-black: #000;
+    --s-gray: #f2f2f2;
+
+    // Цвет шапки
+    --s-bg-header: #081935;
+
+    // Дополнительные цвета фона
+    --s-bg: #f2f3f4;
+    --s-bg-subheader: #1A3158;
+    --s-bg-gradient-dark: #0f2344;
+    --s-bg-gradient-light: #0d2e66;
+
+    // Цвета бордюров
+    --s-border: #d1d1d1;
+    --s-border-light: #666;
+
+    // Цвета текста
+    --s-text: #000;
+    --s-text-light: #999;
+    --s-text-lightest: #ccc;
+
+    // Главный акцент
+    --s-primary: #143B74;
+    --s-primary-dark: #0c3165;
+    --s-primary-darkest: #081935;
+    --s-primary-light: #26559e;
+    --s-primary-lightest: #d7ddf3;
+    --s-primary-tables: #9fabff;
+
+    // Red color for error messages, alerts, danger actions
+    --s-red: #ea524a;
+    --s-red-dark: #d33229;
+    --s-red-light: #ffbfbf;
+    --s-red-lightest: #ffece8;
+
+    // Yellow color for error messages, alerts, danger actions
+    --s-yellow: #e6a23c;
+    --s-yellow-dark: #b88230;
+    --s-yellow-light: #eebe77;
+    --s-yellow-lightest: #faecd8;
+
+    // Green color for complete messages, prefer actions
+    --s-green: #53b753;
+    --s-green-dark: #3f983f;
+    --s-green-light: #65bf65;
+    --s-green-lightest: #b8e5b8;
+
+    // Shadows
+    --s-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+
+    // UI sizes
+    --s-field-height: 32px;
+
+    // Типографика
+    --s-h1-font-size: 2.2rem;
+    --s-h2-font-size: 1.7rem;
+    --s-h3-font-size: 1.4rem;
+    --s-h4-font-size: 1.2rem;
+
+    // Разметка
+    --s-base-width: 1200px;
+    --s-base-margin: 20px;
+    --s-base-padding: 20px;
+
+    // Основной стиль скруглений
+    --s-border-radius: 6px;
+}

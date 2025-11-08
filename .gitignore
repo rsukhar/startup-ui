@@ -1,0 +1,14 @@
+# общие каталоги
+**/node_modules
+**/.phpunit.cache
+**/.fleet
+**/.idea
+**/.vscode
+dist/
+
+# системные файлы
+.DS_Store
+
+# логи
+npm-debug.log
+yarn-error.log

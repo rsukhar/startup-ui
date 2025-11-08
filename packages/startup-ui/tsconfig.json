@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "composite": false,
+        "declaration": true,
+        "declarationMap": true,
+        "emitDeclarationOnly": false,
+        "jsx": "preserve",
+        "lib": ["ES2021", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "noEmit": false,
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "ES2020",
+        "types": ["node", "vue"]
+    },
+    "include": ["src"]
+}
