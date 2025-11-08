@@ -23,6 +23,25 @@ defineOptions({
         }
     }
 
+    @include mobile() {
+        padding: 20px;
+    }
+}
+
+.s-footer {
+    overflow: hidden;
+    padding: 2rem 0;
+    background-color: var(--s-bg-header);
+    font-size: 0.8rem;
+
+    a {
+        font-weight: bold;
+        color: var(--s-primary-lightest);
+        &:hover {
+            color: var(--s-white);
+        }
+    }
+
     &-h {
         color: var(--s-white);
         display: flex;

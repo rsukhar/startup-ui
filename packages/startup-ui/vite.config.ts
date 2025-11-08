@@ -9,6 +9,7 @@ export default defineConfig({
         entryRoot: 'src',
         outDir: 'dist/types',
         insertTypesEntry: true,
+        tsconfigPath: './tsconfig.json'
     })],
     resolve: {
         alias: {
@@ -23,7 +24,7 @@ export default defineConfig({
                     @use "@/styles/mixins.scss" as *;
                 `
             }
-        }
+        },
     },
     build: {
         lib: {

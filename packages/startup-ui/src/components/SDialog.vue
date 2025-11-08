@@ -115,7 +115,6 @@ function handleHide() {
             padding-top: 0;
             max-height: 80vh;
             overflow-y: auto;
-
             img {
                 max-width: 100%;
                 height: auto;
