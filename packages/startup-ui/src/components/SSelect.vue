@@ -180,7 +180,7 @@ function selectOption(optionValue) {
  * @param rect Объект с координатами прямоугольника
  */
 function determineListDirection(rect) {
-    const dropdownHeight = dropdownRef.value.offsetHeight + Math.min(20, internalOptions.value.length * itemHeight.value);
+    const dropdownHeight = dropdownRef.value.offsetHeight + Math.max(20, internalOptions.value.length * itemHeight.value);
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
 
