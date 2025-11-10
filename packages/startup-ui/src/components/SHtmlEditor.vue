@@ -333,6 +333,7 @@ function onEditorChange() {
 </script>
 <style lang="scss">
 .s-htmleditor {
+    font-family: var(--s-font-family);
     .tox-fullscreen {
         top: 60px !important;
     }

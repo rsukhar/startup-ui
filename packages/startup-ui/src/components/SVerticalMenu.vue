@@ -70,6 +70,7 @@ const toggleItem = function(id) {
         position: relative;
         padding: 4px 0;
         padding-left: 20px;
+        font-family: var(--s-font-family);
         & > .s-verticalmenu-label {
             font-size: 16px;
         }

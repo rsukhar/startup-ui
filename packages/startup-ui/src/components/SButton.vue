@@ -51,6 +51,7 @@ const classes = computed(() => [
     white-space: nowrap;
     text-align: center;
     cursor: pointer;
+    font-family: var(--s-font-family);
     font-size: 1rem;
     font-weight: normal;
     line-height: var(--s-field-height);

@@ -27,7 +27,8 @@ const internalOptions = computed(() => props.options ?? {});
     align-items: center;
     gap: var(--s-base-margin);
     user-select: none;
-
+    font-family: var(--s-font-family);
+    
     &.vertical {
         flex-direction: column;
         align-items: flex-start;

@@ -43,7 +43,8 @@ function handleSwitch() {
     gap: 10px;
     height: 100%;
     cursor: pointer;
-
+    font-family: var(--s-font-family);
+    
     &.active {
         color: var(--s-primary);
     }

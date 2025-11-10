@@ -251,7 +251,8 @@ onBeforeUnmount(() => {
     border-radius: var(--s-border-radius);
     background-color: var(--s-white);
     cursor: pointer;
-
+    font-family: var(--s-font-family);
+    
     &.disabled {
         cursor: not-allowed;
         pointer-events: none;

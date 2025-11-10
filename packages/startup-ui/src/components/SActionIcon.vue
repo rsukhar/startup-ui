@@ -52,6 +52,7 @@ function handleClick() {
     text-align: center;
     vertical-align: middle;
     color: var(--s-primary);
+    font-family: var(--s-font-family);
     
     svg {
         margin-left: 0;

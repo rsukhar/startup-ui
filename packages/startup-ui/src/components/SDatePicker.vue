@@ -288,6 +288,7 @@ const buttonOptions = computed(() => {
     flex-wrap: wrap;
     gap: 20px;
     width: fit-content;
+    font-family: var(--s-font-family);
 
     &-input {
         padding: 6px 10px;

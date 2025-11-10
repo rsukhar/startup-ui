@@ -85,7 +85,8 @@ defineExpose({ focus });
 .s-formrow {
     display: flex;
     flex-direction: column;
-
+    font-family: var(--s-font-family);
+    
     &-title {
         line-height: var(--s-field-height);
         text-align: left;

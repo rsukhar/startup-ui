@@ -26,7 +26,8 @@ const props = defineProps({
     gap: 20px;
     margin-bottom: 1.5rem;
     align-items: center;
-
+    font-family: var(--s-font-family);
+    
     &-title {
         width: var(--s-stat-title-width, 170px);
         display: flex;

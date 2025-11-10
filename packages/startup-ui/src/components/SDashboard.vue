@@ -16,7 +16,8 @@ defineOptions({
     column-gap: 30px;
     margin-top: 0.5rem;
     margin-bottom: 30px;
-
+    font-family: var(--s-font-family);
+    
     // Может иметь от 1 до 5 колонок в зависимости от ширины экрана
     $minColumnWidth: 380px;
     $gap: 30px;

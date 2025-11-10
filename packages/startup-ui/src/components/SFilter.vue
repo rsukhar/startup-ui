@@ -57,6 +57,7 @@ const nestedNodes = computed(() => {
 .s-filter {
     display: flex;
     flex-wrap: wrap;
+    font-family: var(--s-font-family);
     & > div {
         flex-grow: 1;
     }

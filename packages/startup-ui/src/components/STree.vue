@@ -213,6 +213,7 @@ function getDescendants(node) {
 .s-tree {
     overflow: auto;
     user-select: none;
+    font-family: var(--s-font-family);
     &-cell {
         box-sizing: border-box;
         display: flex;

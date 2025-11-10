@@ -29,6 +29,7 @@ const props = defineProps({
     gap: 1rem;
     background-color: var(--s-primary-lightest);
     color: var(--s-black);
+    font-family: var(--s-font-family);
     &-title {
         font-size: var(--s-h4-font-size);
         margin-bottom: var(--s-base-margin);

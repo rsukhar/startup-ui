@@ -77,6 +77,7 @@ provide('titlesWidth', props.titlesWidth)
     display: flex;
     flex-direction: column;
     gap: var(--s-base-margin);
+    font-family: var(--s-font-family);
     &:not(.titles_left) {
         margin: auto;
         width: 100%;

@@ -27,6 +27,7 @@ const percentPosition = computed(() => ((props.percentage < 5) ? 'right' : 'left
     background-color: var(--s-primary-lightest);
     margin-bottom: var(--s-base-margin);
     align-items: center;
+    font-family: var(--s-font-family);
     &-title {
         position: relative;
         top: 1px;

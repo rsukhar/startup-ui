@@ -79,7 +79,8 @@ const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perP
     justify-content: space-between;
     margin-bottom: var(--s-base-margin) !important;
     font-weight: 400;
-
+    font-family: var(--s-font-family);
+    
     &-right {
         justify-content: end;
     }

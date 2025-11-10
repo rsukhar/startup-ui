@@ -39,6 +39,7 @@ const contentStyle = computed(() => {
     padding: 1.5rem;
     box-sizing: border-box;
     break-inside: avoid;
+    font-family: var(--s-font-family);
 
     &-header {
         display: flex;

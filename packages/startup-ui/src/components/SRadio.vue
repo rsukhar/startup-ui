@@ -40,7 +40,8 @@ const model = computed({
     width: fit-content;
     gap: 0.5rem;
     cursor: pointer;
-
+    font-family: var(--s-font-family);
+    
     &-text {
         white-space: nowrap;
     }

@@ -44,6 +44,8 @@ const innerText = computed(() => {
 .s-copytext {
     display: flex;
     justify-content: space-between;
+    font-family: var(--s-font-family);
+    
     &-text {
         & + svg {
             color: var(--s-primary);

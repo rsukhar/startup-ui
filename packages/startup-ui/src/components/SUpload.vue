@@ -108,7 +108,8 @@ defineExpose({ clear, remove });
     display: flex;
     flex-direction: column;
     gap: 10px;
-
+    font-family: var(--s-font-family);
+    
     &-header {
         display: flex;
         gap: 10px;

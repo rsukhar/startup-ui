@@ -60,6 +60,7 @@ const showNoDataMessage = computed(() => {
     max-width: 100vw;
     overflow-x: auto;
     margin-bottom: var(--s-base-margin);
+    font-family: var(--s-font-family);
     & > table {
         border-collapse: collapse;
         width: 100%;

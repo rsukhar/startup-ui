@@ -54,7 +54,8 @@ const isSidebarMenuOpened = ref(false);
     flex-grow: 1;
     flex-direction: column;
     width: 100%;
-
+    font-family: var(--s-font-family);
+    
     &-header {
         display: flex;
         flex-wrap: wrap;

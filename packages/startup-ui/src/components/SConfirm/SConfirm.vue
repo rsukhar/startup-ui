@@ -76,6 +76,7 @@ defineExpose({ open });
     width: 100%;
     inset: 0;
     z-index: 9900;
+    font-family: var(--s-font-family);
 
     &-background {
         position: absolute;

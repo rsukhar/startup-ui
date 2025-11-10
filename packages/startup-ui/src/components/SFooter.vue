@@ -14,7 +14,8 @@ defineOptions({
     padding: 2rem 0;
     background-color: var(--s-bg-header);
     font-size: 0.8rem;
-
+    font-family: var(--s-font-family);
+    
     a {
         font-weight: bold;
         color: var(--s-primary-lightest);

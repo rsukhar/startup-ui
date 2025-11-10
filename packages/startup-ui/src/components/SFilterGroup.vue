@@ -50,6 +50,7 @@ onBeforeUnmount(() => window.removeEventListener('popstate', handleUrlChange));
     gap: var(--s-base-margin);
     align-items: stretch;
     margin-bottom: var(--s-base-margin);
+    font-family: var(--s-font-family);
     & > .s-button {
         display: flex;
         align-items: center;

@@ -21,6 +21,7 @@ provide('isMultiple', isMultiple)
     flex-direction: column;
     border-radius: var(--s-border-radius);
     overflow: hidden;
+    font-family: var(--s-font-family);
     .s-toggle + .s-toggle {
         margin-top: 1px;
     }

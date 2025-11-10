@@ -55,7 +55,8 @@ watch(model, newValue => {
 <style lang="scss">
 .s-radiogroup {
     display: flex;
-
+    font-family: var(--s-font-family);
+    
     &.fullwidth {
         width: 100%;
     }

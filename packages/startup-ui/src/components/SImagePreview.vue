@@ -75,6 +75,7 @@ watch(modalHeight, handleNewModelState);
     position: relative;
     max-width: 100%;
     cursor: pointer;
+    font-family: var(--s-font-family);
     
     &-fullimg {
         position: fixed;

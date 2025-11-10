@@ -24,6 +24,7 @@ defineOptions({
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    font-family: var(--s-font-family);
 
     @include mobile_tablet() {
         justify-content: center;

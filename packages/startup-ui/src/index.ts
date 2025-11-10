@@ -15,6 +15,7 @@ export { default as SFormRow } from './components/SFormRow.vue';
 export { default as SInput } from './components/SInput.vue';
 export { default as SSelect } from './components/SSelect.vue';
 export { default as SCheckbox } from './components/SCheckbox.vue';
+export { default as SRadioGroup } from './components/SRadioGroup.vue';
 export { default as SRadio } from './components/SRadio.vue';
 export { default as SSwitch } from './components/SSwitch.vue';
 export { default as SDatePicker } from './components/SDatePicker.vue';
@@ -25,6 +26,7 @@ export { default as SUpload } from './components/SUpload.vue';
  * Data
  */
 export { default as SFilter } from './components/SFilter.vue';
+export { default as SFilterGroup } from './components/SFilterGroup.vue';
 export { default as STable } from './components/STable.vue';
 export { default as SPagination } from './components/SPagination.vue';
 export { default as STree } from './components/STree.vue';

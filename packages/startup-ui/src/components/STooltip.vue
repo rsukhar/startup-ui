@@ -118,6 +118,7 @@ function calculatePosition() {
 .s-tooltip {
     display: inline-block;
     position: relative;
+    font-family: var(--s-font-family);
     &:not(:first-child) {
         margin-left: 10px;
     }

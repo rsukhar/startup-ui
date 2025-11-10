@@ -27,6 +27,7 @@ const props = defineProps({
     display: flex;
     align-items: center;
     justify-content: start;
+    font-family: var(--s-font-family);
     &-label {
         display: block;
     }

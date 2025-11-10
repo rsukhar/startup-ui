@@ -57,6 +57,7 @@ const hasSuffix = computed(() => props.suffix || $slots.suffix);
     border-radius: var(--s-border-radius);
     background-color: var(--s-white);
     align-items: center;
+    font-family: var(--s-font-family);
     &:focus-within {
         border-color: var(--s-primary);
         box-shadow: none;

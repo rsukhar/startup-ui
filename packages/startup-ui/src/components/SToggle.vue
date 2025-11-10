@@ -63,7 +63,8 @@ if (openedItem) {
 <style lang="scss">
 .s-toggle {
     border-radius: var(--s-border-radius);
-
+    font-family: var(--s-font-family);
+    
     &-title {
         padding: 1rem 1.5rem;
         display: flex;

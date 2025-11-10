@@ -12,9 +12,10 @@ const props = defineProps<{
 <style lang="scss">
 .s-tag {
     display: inline-block;
-    font-size: 8px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    font-family: var(--s-font-family);
+    font-size: 8px;
     font-weight: bold;
     background-color: var(--s-bg);
     color: var(--s-black);

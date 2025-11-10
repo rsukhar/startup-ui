@@ -43,6 +43,7 @@ defineExpose({ success, info, error, open });
     border-radius: var(--s-border-radius);
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     cursor: pointer;
+    font-family: var(--s-font-family);
 
     &.type_success {
         color: var(--s-green-dark);

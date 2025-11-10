@@ -55,6 +55,7 @@ function handleCheck() {
     align-items: center ;
     gap: 10px;
     user-select: none;
+    font-family: var(--s-font-family);
     
     &-box {
         display: inline-flex;

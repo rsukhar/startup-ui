@@ -70,7 +70,8 @@ const placeList = async () => {
     flex-shrink: 0;
     position: relative;
     border-radius: var(--s-border-radius);
-
+    font-family: var(--s-font-family);
+    
     a {
         display: flex;
         flex-wrap: nowrap;

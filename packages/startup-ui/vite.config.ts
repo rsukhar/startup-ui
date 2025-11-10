@@ -39,14 +39,16 @@ export default defineConfig({
                 'vue',
                 '@vueuse/core',
                 '@tinymce/tinymce-vue',
-                /^tinymce(\/.*)?$/
+                /^tinymce(\/.*)?$/,
+                '@inertiajs/vue3'
             ],
             output: {
                 globals: {
                     vue: 'Vue',
                     '@vueuse/core': 'VueUse',
                     tinymce: 'tinymce',
-                    '@tinymce/tinymce-vue': 'TinyMCEVue'
+                    '@tinymce/tinymce-vue': 'TinyMCEVue',
+                    '@inertiajs/vue3': 'InertiaVue3'
                 },
                 exports: 'named'
             }

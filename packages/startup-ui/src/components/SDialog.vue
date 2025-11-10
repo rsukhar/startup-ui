@@ -76,7 +76,8 @@ function handleHide() {
     height: fit-content;
     inset: 0;
     z-index: 10;
-
+    font-family: var(--s-font-family);
+    
     &-window {
         display: flex;
         flex-direction: column;

@@ -32,6 +32,7 @@ function keyOf(item, index){
 .s-timeline {
     display: flex;
     flex-direction: column;
+    font-family: var(--s-font-family);
     &-row {
         display: flex;
         align-items: stretch;
