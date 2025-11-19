@@ -1,22 +1,22 @@
 <template>
-        <div class="s-pagination" :class="{ 's-pagination-right' : links.length <= 3 }">
-            <div class="s-pagination-links" v-if="links.length > 3">
-                <template v-for="(link, index) in links" :key="index">
-                    <Link v-if="link.url && !link.active" :class="{ active: link.active }" v-html="link.label"
-                          :href="link.url ? link.url.replace(/[\?\&]page\=1$/, '') : ''"
-                          :preserve-scroll="preserveScroll"
-                          :preserve-state="preserveState" />
-                    <span v-else :class="{ active: link.active }" v-html="link.label" />
-                </template>
+    <div class="s-pagination" :class="{ 's-pagination-right' : links.length <= 3 }">
+        <div class="s-pagination-links" v-if="links.length > 3">
+            <template v-for="(link, index) in links" :key="index">
+                <Link v-if="link.url && !link.active" :class="{ active: link.active }" v-html="link.label"
+                        :href="link.url ? link.url.replace(/[\?\&]page\=1$/, '') : ''"
+                        :preserve-scroll="preserveScroll"
+                        :preserve-state="preserveState" />
+                <span v-else :class="{ active: link.active }" v-html="link.label" />
+            </template>
+        </div>
+        <div class="s-pagination-options">
+            <div class="s-options-pagination-perPage" v-if="perPageOptions">
+                <SSelect v-model="currentPerPage" :options="perPageOptionsFormatted" @change="handleSelectedChange"/>
             </div>
-            <div class="s-pagination-options">
-                <div class="s-options-pagination-perPage" v-if="perPageOptions">
-                    <SSelect v-model="currentPerPage" :options="perPageOptionsFormatted" @change="handleSelectedChange"/>
-                </div>
-                <div class="s-options-pagination-shown-counter" v-if="from && to && total">
-                    Показаны: <span class="s-pagination-options-shown-counter-range">{{ from }} - {{ to }}</span> из {{ total }}
-                </div>
+            <div class="s-options-pagination-shown-counter" v-if="from && to && total">
+                Показаны: <span class="s-pagination-options-shown-counter-range">{{ from }} - {{ to }}</span> из {{ total }}
             </div>
+        </div>
     </div>
 </template>
 

@@ -94,15 +94,20 @@ watch(modalHeight, handleNewModelState);
         top: 50%;
         left: 50%;
         translate: -50% -50%;
-        font-size: 7em;
-        color: var(--s-primary);
+        font-size: 24px;
+        color: var(--s-primary-light);
         opacity: 0;
         transition: opacity 0.2s ease-in;
         z-index: 1000;
     }
 
+    &:hover {
+        opacity: .5;
+        transition: opacity 0.2s ease-in;
+    }
+
     &:hover &-icon {
-        opacity: .3;
+        opacity: 1;
         transition: opacity 0.2s ease-in;
     }
 
@@ -125,9 +130,8 @@ watch(modalHeight, handleNewModelState);
         font-size: 20px;
         top: 20px;
         right: 20px;
-        z-index: 20;
+        z-index: 1000;
         background-color: var(--s-white);
-        color: var(--s-grey);
         border-radius: 40px;
         cursor: pointer;
     }

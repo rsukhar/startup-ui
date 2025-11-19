@@ -1,5 +1,5 @@
 <template>
-    <div class="s-table" :class="{hoverable, striped, 'scrollon_top': props.scroll === 'top'}">
+    <div class="s-table" :class="{hoverable, striped, bordered, 'scrollon_top': props.scroll === 'top'}">
         <table>
             <thead ref="theadRef" v-if="$slots.header || $slots.headers">
                 <tr v-if="$slots.header">
@@ -36,6 +36,7 @@ const props = defineProps({
     data: [Array, Object],
     hoverable: Boolean,
     striped: Boolean,
+    bordered: Boolean,
     nodata: {
         type: String,
         default: 'Ничего не найдено',
@@ -139,7 +140,7 @@ const showNoDataMessage = computed(() => {
         }
     }
     &.striped {
-        tbody tr:nth-of-type(odd) {
+        tbody tr:nth-of-type(even) {
             background-color: var(--s-primary-lightest);
         }
     }

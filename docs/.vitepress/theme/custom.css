@@ -1,0 +1,16 @@
+:root {
+    /* Настраиваем ширины */
+    --vp-sidebar-width: 360px;      /* Левый сайдбар */
+    --vp-aside-width: 200px;        /* Правый сайдбар (On this page) */
+    --vp-layout-max-width: 100%;    /* Убираем ограничение на общую ширину */   
+}
+
+.content-container {
+    max-width: 100% !important;
+}
+
+.docs-container {
+    padding: 20px;
+    border: 1px solid #4c4d4f;
+    border-radius: 6px;
+}

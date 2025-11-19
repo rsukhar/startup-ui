@@ -94,6 +94,8 @@ function remove(title) {
     } else {
         model.value = null;
     }
+
+    fileInput.value.value = '';
 }
 
 function clear() {

@@ -7,6 +7,13 @@
 import { provide, watch, ref, onMounted, onBeforeUnmount } from 'vue';
 import { router } from '@inertiajs/vue3';
 
+const props = defineProps({
+    bindToGet: Boolean
+});
+
+const providedParams = ref({});
+const model = defineModel();
+
 /**
  * Получить объект GET-параметров
  */
@@ -14,8 +21,18 @@ function syncWithUrl() {
     const paramsObj = new URLSearchParams(window.location.search);
     return Object.fromEntries(paramsObj.entries());
 }
-const urlParams = ref({...syncWithUrl()});
-provide('params', urlParams);
+
+
+// Если включен bindToGet, получаем фильтр из адресной строки
+provide('params', providedParams);
+
+onMounted(() => {
+    if (props.bindToGet) {
+        providedParams.value = { ...syncWithUrl() };
+    } else {
+        providedParams.value = model.value;
+    }
+});
 
 // Обновление URL
 const applyParamsToUrl = (params) => {
@@ -31,16 +48,21 @@ const applyParamsToUrl = (params) => {
 };
 
 // Если нужно реагировать на изменения params
-watch(urlParams, (newParams) => {
-    applyParamsToUrl(newParams);
+watch(providedParams, (newParams) => {
+    if (props.bindToGet) {
+        applyParamsToUrl(newParams);
+    }
 }, { deep: true });
 
 // Следим за изменением query и синхронизируемся
 const handleUrlChange = () => {
-    urlParams.value = { ...syncWithUrl() };
+    providedParams.value = { ...syncWithUrl() };
 };
-onMounted(() => window.addEventListener('popstate', handleUrlChange));
-onBeforeUnmount(() => window.removeEventListener('popstate', handleUrlChange));
+
+if (props.bindToGet) {
+    onMounted(() => window.addEventListener('popstate', handleUrlChange));
+    onBeforeUnmount(() => window.removeEventListener('popstate', handleUrlChange));
+}
 </script>
 <style lang="scss">
 .s-filtergroup {

@@ -147,7 +147,8 @@ function calculatePosition() {
         border-radius: var(--s-border-radius);
         background-color: var(--s-tooltip-background);
         text-align: start;
-
+        font-family: var(--s-font-family);
+        
         a {
             color: var(--s-primary-lightest);
         }

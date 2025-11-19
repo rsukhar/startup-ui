@@ -56,15 +56,16 @@ const hasSuffix = computed(() => props.suffix || $slots.suffix);
     border: 1px solid var(--s-border);
     border-radius: var(--s-border-radius);
     background-color: var(--s-white);
-    align-items: center;
+    align-items:center;
     font-family: var(--s-font-family);
+    gap: 5px;
     &:focus-within {
         border-color: var(--s-primary);
         box-shadow: none;
     }
     &-field {
+        width: 100%;
         outline: none;
-        line-height: 1.3;
         padding: 0.5rem 0.75rem;
         border: 0;
         background-color: transparent;
@@ -74,24 +75,25 @@ const hasSuffix = computed(() => props.suffix || $slots.suffix);
         &[disabled] {
             color: var(--s-text-light);
         }
-        &[type="search"]::-webkit-search-cancel-button {
-            cursor: pointer;
-        }
     }
     textarea {
         resize: vertical;
     }
     &.has-prefix .s-input-field {
-        text-align: center;
         padding: 0.5rem 0.5rem 0.5rem 0.1rem;
     }
     &.has-suffix .s-input-field {
-        text-align: center;
         padding: 0.5rem 0.1rem 0.5rem 0.5rem;
     }
     .s-input-prefix {
+        display: flex;
+        align-items: center;
+        gap: 5px;
         padding-left: 0.5rem;
         color: var(--s-text-light);
+        flex-shrink: 0;
+        text-align: center;
+        line-height: 1;
     }
     .s-input-suffix {
         padding-right: 0.5rem;

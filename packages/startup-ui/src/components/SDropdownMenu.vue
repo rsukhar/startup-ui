@@ -1,6 +1,6 @@
 <template>
     <div class="s-dropdownmenu" @pointerenter="placeList" ref="$container">
-        <component :is="labelComponent" class="s-dropdownmenu-label" :href="labelLink">
+        <component :is="labelComponent" class="s-dropdownmenu-label" :href="labelLink ?? ''">
             <slot v-if="$slots.label" name="label" />
             <span v-else>{{ labelText }}</span>
             <FontAwesomeIcon icon="caret-down" />
@@ -32,7 +32,7 @@ const props = defineProps({
     },
     // Если задан, выводится всегда, не зависимо от выбранного элемента
     label: String,
-    // Если задана, используется всегда, не зависимос от выбранного элемента
+    // Если задана, используется всегда, независимо от выбранного элемента
     labelLink: String,
 });
 
