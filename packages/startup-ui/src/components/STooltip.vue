@@ -113,7 +113,7 @@ function calculatePosition() {
 </script>
 <style lang="scss">
 :root {
-    --s-tooltip-background: color-mix(in srgb, var(--s-bg-subheader), transparent 10%);
+    --s-tooltip-background: rgba(26, 49, 88, 0.9);
 }
 .s-tooltip {
     display: inline-block;
