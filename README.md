@@ -15,7 +15,7 @@ npm run docs:build
 
 ## Публикация изменений в npm
 
-### Делаем новый билд в папке packages/startup-ui: 
+### Делаем новый билд в папке packages/startup-ui
 npm run build
 
 ### Логинимся в npm
