@@ -5,9 +5,7 @@
 ## Базовый пример
 
 <div class="docs-container">
-    <div class="menu-container">
-        <SVerticalMenu :links="menuLinks" />
-    </div>
+    <SVerticalMenu :links="menuLinks" />
 </div>
 
 ::: details Показать код
@@ -29,8 +27,3 @@ import { SVerticalMenu } from 'startup-ui';
 import SVerticalMenu from '../../../packages/startup-ui/src/components/SVerticalMenu.vue';
 import { menuLinks } from '../../resources/data/pagesTree.js'; 
 </script>
-<style lang="scss" scoped>
-.menu-container {
-    display: flex;
-}
-</style>
