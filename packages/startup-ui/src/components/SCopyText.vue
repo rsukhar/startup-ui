@@ -64,7 +64,6 @@ const innerText = computed(() => {
         border-radius: var(--s-border-radius);
         .s-copytext-text {
             padding: 0.5em 1em 0.5em 1.5em;
-            color: var(--s-black);
             max-height: 100px;
             overflow-y: auto;
             font-weight: bold;

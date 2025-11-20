@@ -62,8 +62,4 @@ const readyPercentage = ref(50);
 .block .s-copytext {
     max-width: 450px;
 }
-
-.block .s-copytext-text {
-    color: var(--s-gray) !important;
-}
 </style>

@@ -2,6 +2,9 @@
 
 ## Запуск документации
 
+### Устанавливаем зависимости startup-ui
+npm --prefix ./packages/startup-ui install
+
 ### Устанавливаем зависимости vite-press
 cd docs
 
