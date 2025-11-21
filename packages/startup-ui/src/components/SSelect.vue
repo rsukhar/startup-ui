@@ -58,6 +58,8 @@
 <script setup>
 import { templateRef } from '@vueuse/core';
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } from 'vue';
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 const props = defineProps({
     options: {
         // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]

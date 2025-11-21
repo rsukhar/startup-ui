@@ -12,13 +12,17 @@ const alertText = ref(null);
 const isShown = ref(false);
 const alertClass = ref('type_info');
 
+let timeoutId;
+
 const open = (text, options = {}) => {
     alertText.value = text;
     isShown.value = true;
     if (options.type) {
         alertClass.value = 'type_' + options.type;
     }
-    setTimeout(() => {
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
         isShown.value = false;
     }, options.closeAfter ?? 3000);
 }

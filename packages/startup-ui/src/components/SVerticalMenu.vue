@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { useRemember } from "@inertiajs/vue3";
+import { useRemember, Link } from "@inertiajs/vue3";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
@@ -93,8 +93,6 @@ const toggleItem = function(id) {
     }
 
     &-label {
-        color: var(--s-text);
-
         .s-verticalmenu-item.type_section > &:hover {
             cursor: pointer;
             color: var(--s-primary-darkest);

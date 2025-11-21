@@ -21,27 +21,34 @@
         "**/*.scss"
     ],
     "peerDependencies": {
-        "vue": "^3.5.24",
-        "@vueuse/core": "^11.2.0",
         "@tinymce/tinymce-vue": "^5.1.1",
-        "tinymce": "^6.8.3"
+        "@vueuse/core": "^11.2.0",
+        "tinymce": "^6.8.3",
+        "vue": "^3.5.24"
     },
     "devDependencies": {
-        "vue": "^3.5.24",
-        "@vueuse/core": "^11.2.0",
         "@fortawesome/vue-fontawesome": "^3.0.8",
         "@types/node": "^22.0.0",
         "@vitejs/plugin-vue": "^5.0.4",
+        "@vueuse/core": "^11.2.0",
+        "dayjs": "^1.11.13",
+        "sass-embedded": "^1.89.2",
         "typescript": "^5.6.3",
         "vite": "^5.4.0",
         "vite-plugin-dts": "^4.3.0",
-        "vue-tsc": "^2.0.29",
-        "dayjs": "^1.11.13"
+        "vue": "^3.5.24",
+        "vue-tsc": "^2.0.29"
     },
     "scripts": {
         "build": "vite build && vue-tsc --emitDeclarationOnly --declaration --declarationMap --outDir dist/types",
         "typecheck": "vue-tsc --noEmit",
-        "dev": "vite"
+        "dev": "vite",
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build",
+        "docs:preview": "vitepress preview"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "vitepress-plugin-demoblock": "^1.0.10"
+    }
 }

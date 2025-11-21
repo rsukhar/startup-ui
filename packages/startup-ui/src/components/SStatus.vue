@@ -18,7 +18,7 @@ const props = defineProps<{
     align-items: center;
     position: relative;
     font-family: var(--s-font-family);
-    
+    vertical-align: middle;
     svg {
         width: 16px;
         margin-right: 2px;
