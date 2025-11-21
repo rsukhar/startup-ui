@@ -5,18 +5,14 @@
 ## Классический вариант
 
 <div class="docs-container">
-    <div class="input-container">
-        <SSelect v-model="value1" :options="options" />
-    </div>
+    <SSelect v-model="value1" :options="options" />
 </div>
 
 ::: details Показать код
 ```js
 <template>
     <div class="docs-container">
-        <div class="input-container">
-            <SSelect v-model="value" :options="options" />
-        </div>
+        <SSelect v-model="value" :options="options" />
     </div>
 </template>
 <script setup>
@@ -33,18 +29,14 @@ const value = ref('');
 ## Фильтрация при вводе
 
 <div class="docs-container">
-    <div class="input-container">
-        <SSelect v-model="value2" :options="options" filterable />
-    </div>
+    <SSelect v-model="value2" :options="options" filterable />
 </div>
 
 ::: details Показать код
 ```js
 <template>
     <div class="docs-container">
-        <div class="input-container">
-            <SSelect v-model="value" :options="options" filterable />
-        </div>
+        <SSelect v-model="value" :options="options" filterable />
     </div>
 </template>
 <script setup>
@@ -61,9 +53,7 @@ const value = ref('');
 Список значений можно получать и по API.
 
 <div class="docs-container">
-    <div class="input-container">
-        <SSelect v-model="value3" :options="options" filterable />
-    </div>
+    <SSelect v-model="value3" :options="options" filterable />
 </div>
 
 ::: details Показать код
@@ -97,18 +87,14 @@ function onFilter(query){
 У выбиралок иногда бывает «не выбранное значение», особенно в фильтрах при заданном наборе вариантов. Для этого удобно использовать синтаксис placeholder:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SSelect v-model="value4" :options="options" placeholder="Не выбран"/>
-    </div>
+    <SSelect v-model="value4" :options="options" placeholder="Не выбран"/>
 </div>
 
 ::: details Показать код
 ```js
 <template>
     <div class="docs-container">
-        <div class="input-container">
-            <SSelect v-model="value" :options="options" placeholder="Не выбран"/>
-        </div>
+        <SSelect v-model="value" :options="options" placeholder="Не выбран"/>
     </div>
 </template>
 <script setup>
@@ -125,18 +111,14 @@ const value = ref('');
 Иногда бывает нужно сделать возможность сбрасывать значение в невыбранное (null). Для этого используется clearable:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SSelect v-model="value6" :options="options" clearable/>
-    </div>
+    <SSelect v-model="value6" :options="options" clearable/>
 </div>
 
 ::: details Показать код
 ```js
 <template>
     <div class="docs-container">
-        <div class="input-container">
-            <SSelect v-model="user" placeholder="Не выбран" :options="users" clearable/>
-        </div>
+        <SSelect v-model="user" placeholder="Не выбран" :options="users" clearable/>
     </div>
 </template>
 <script setup>
@@ -153,17 +135,13 @@ const value = ref('');
 Когда доступно очень много вариантов выбора, можно применить виртуальный скролл для более быстрой загрузки:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SSelect v-model="region" :options="regions" virtual />
-    </div>
+    <SSelect v-model="region" :options="regions" virtual />
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SSelect v-model="region" :options="regions" virtual />
-    </div>
+    <SSelect v-model="region" :options="regions" virtual />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -206,12 +184,6 @@ const region = ref(null);
     padding: 20px;
     border: 1px solid #4c4d4f;
     border-radius: 6px;
-}
-
-.input-container {
-    display: flex;
-    gap: 20px;
-    width: 300px;
 }
 
 .s-select {

@@ -5,17 +5,13 @@
 ## Стандартные поля ввода
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value" />
-    </div>
+    <SInput v-model="value" />
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value" />
-    </div>
+    <SInput v-model="value" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -29,21 +25,17 @@ const value = ref('');
 Также поддерживаются стандартные HTML-типы полей:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value1" type="number" placeholder="Номер"/>
-        <SInput v-model="value2" type="email" placeholder="Email"/>
-        <SInput v-model="value3" type="password" placeholder="Пароль"/>
-    </div>
+    <SInput v-model="value1" type="number" placeholder="Номер"/>
+    <SInput v-model="value2" type="email" placeholder="Email"/>
+    <SInput v-model="value3" type="password" placeholder="Пароль"/>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value1" type="number" placeholder="Номер"/>
-        <SInput v-model="value2" type="email" placeholder="Email"/>
-        <SInput v-model="value3" type="password" placeholder="Пароль"/>
-    </div>
+    <SInput v-model="value1" type="number" placeholder="Номер"/>
+    <SInput v-model="value2" type="email" placeholder="Email"/>
+    <SInput v-model="value3" type="password" placeholder="Пароль"/>
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -79,17 +71,13 @@ const value = ref('');
 ## Плейсхолдер
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value5" placeholder="Введите имя" />
-    </div>
+    <SInput v-model="value5" placeholder="Введите имя" />
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value" placeholder="Введите имя" />
-    </div>
+    <SInput v-model="value" placeholder="Введите имя" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -103,17 +91,13 @@ const value = ref('');
 ## Префикс
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value6" prefix="$" type="number" />
-    </div>
+    <SInput v-model="value6" prefix="$" type="number" />
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value" prefix="$" type="number" />
-    </div>
+    <SInput v-model="value" prefix="$" type="number" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -127,25 +111,21 @@ const value = ref('');
 Если нужен кастомный префикс:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value7" type="number">
-            <template #prefix>
-                <SStatus icon="star" />
-            </template>
-        </SInput>
-    </div>
+    <SInput v-model="value7" type="number">
+        <template #prefix>
+            <SStatus icon="star" />
+        </template>
+    </SInput>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value" type="number">
-            <template #prefix>
-                <SStatus icon="star" />
-            </template>
-        </SInput>
-    </div>
+    <SInput v-model="value" type="number">
+        <template #prefix>
+            <SStatus icon="star" />
+        </template>
+    </SInput>
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -159,17 +139,13 @@ const value = ref('');
 ## Недоступное состояние
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value8" disabled />
-    </div>
+    <SInput v-model="value8" disabled />
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value" disabled />
-    </div>
+    <SInput v-model="value" disabled />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -185,17 +161,13 @@ const value = ref('');
 Просто используем стандартный HTML5-тип search:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput v-model="value9" type="search" />
-    </div>
+    <SInput v-model="value9" type="search" />
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="input-container">
-        <SInput v-model="value" type="search" />
-    </div>
+    <SInput v-model="value" type="search" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -211,27 +183,16 @@ const value = ref('');
 Изменение значения:
 
 <div class="docs-container">
-    <h3>Текущее значение</h3>
-    <p>
-        {{ currentInput || 'null' }}
-    </p>
-    <div class="input-container">
-        <SInput @change="(newValue) => currentInput = newValue" />
-    </div>
+    <p>Текущее значение: <strong>{{ currentInput || '(не задано)' }}</strong></p>
+    <SInput @change="(newValue) => currentInput = newValue" />
 </div>
 
 ```js
 <template>
-    <div class="input-container">
-        <SInput @change="(newValue) => console.log(newValue)" />
-    </div>
+    <SInput @change="(newValue) => console.log(newValue)" />
 </template>
 <script setup>
-import { ref } from 'vue';
 import { SInput } from 'startup-ui';
-
-const value = ref('');
-const currentInput = ref('');
 </script>
 ```
 
@@ -240,16 +201,12 @@ const currentInput = ref('');
 Если нужно задать кастомные стили именно для вложенного инпута, то задаем их через input-style:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SInput input-style="text-align: center" />
-    </div>
+    <SInput input-style="text-align: center" />
 </div>
 
 ```js
 <template>
-    <div class="input-container">
-        <SInput input-style="text-align: center" />
-    </div>
+    <SInput input-style="text-align: center" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -283,17 +240,5 @@ const currentInput = ref('');
     h3 {
         margin: 0;
     }
-}
-
-.input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 300px;
-
-}
-
-.s-input-field {
-    color: var(--s-text);
 }
 </style>

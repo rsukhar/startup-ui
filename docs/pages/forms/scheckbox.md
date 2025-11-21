@@ -61,18 +61,14 @@ const types = ref([]);
 Если нужно задать варианты значений из {value: title} объекта (что часто бывает нужно, когда задаем варианты выбора динамически), то более короткий синтаксис для этого будет выглядеть так:
 
 <div class="docs-container">
-    <div class="input-container">
-        <SCheckboxGroup v-model="users" :options="userOptions" />
-    </div>
+    <SCheckboxGroup v-model="users" :options="userOptions" />
 </div>
 
 ::: details Показать код
 ```js
 <template>
     <div class="docs-container">
-        <div class="input-container">
-            <SCheckboxGroup v-model="users" :options="userOptions" />
-        </div>
+        <SCheckboxGroup v-model="users" :options="userOptions" />
     </div>
 </template>
 <script setup>

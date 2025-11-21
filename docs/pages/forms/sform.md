@@ -7,47 +7,40 @@
 InertiaJS предлагает useForm-компонент, который мы используем по дефолту для всех форм.
 
 <div class="docs-container">
-    <div class="form-container">
-        <SForm v-model="formFirst" method="post" action="/users/login" @submit.prevent="formFirst.post('/users/login')">
-            <SFormRow title="Логин" name="login">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="formFirst" method="post" action="/users/login" @submit.prevent="formFirst.post('/users/login')">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="form-container">
-        <SForm v-model="form" method="post" action="/users/logins">
-            <SFormRow title="Логин" name="login">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="form" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </template>
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
 
 const form = useForm({
-  login: '',
-  password: '',
+    login: '',
+    password: '',
 });
 </script>
 <style lang="scss">
-.form-container {
-    max-width: 500px;
-}
 </style> 
 ```
 :::
@@ -61,33 +54,29 @@ const form = useForm({
 Если по какой-то причине нам нужно вместо атрибутов method/action задать собственный submit-метод, сделать это можно следующим образом:
 
 <div class="docs-container">
-    <div class="form-container">
-        <SForm v-model="formSecond" @submit="submit" :errors="errors" :loading="isLoading">
-            <SFormRow title="Логин" name="login">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="formSecond" @submit="submit" :errors="errors" :loading="isLoading">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="form-container">
-        <SForm v-model="form" @submit="submit" :errors="errors" :loading="isLoading">
-            <SFormRow title="Логин" name="login">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="form" @submit="submit" :errors="errors" :loading="isLoading">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </template>
 <script setup>
 import { useForm } from '@inertiajs/vue3';
@@ -105,9 +94,6 @@ function submit() {
 }
 </script>
 <style lang="scss">
-.form-container {
-    max-width: 500px;
-}
 </style> 
 ```
 :::
@@ -119,33 +105,29 @@ function submit() {
 Если под полем нужно выводить подсказку, это делается в `<SFormRow>`:
 
 <div class="docs-container">
-    <div class="form-container">
-        <SForm v-model="formThird" method="post" action="/users/login" @submit.prevent="formThird.post('/users/login')">
-            <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="formThird" method="post" action="/users/login" @submit.prevent="formThird.post('/users/login')">
+        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="form-container">
-        <SForm v-model="form" method="post" action="/users/login">
-            <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="form" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </template>
 <script setup>
 import { useForm } from '@inertiajs/vue3';
@@ -157,9 +139,6 @@ const form = useForm({
 });
 </script>
 <style lang="scss">
-.form-container {
-    max-width: 500px;
-}
 </style> 
 ```
 :::
@@ -170,33 +149,29 @@ const form = useForm({
 По умолчанию заголовки выводятся над полями формы, но иногда бывает нужно показать их слева от полей. Сделать это можно следующим образом:
 
 <div class="docs-container">
-    <div class="form-container">
-        <SForm v-model="formFourth" titles-at-left titles-width="170" method="post" action="/users/login" @submit.prevent="formFourth.post('/users/login')">
-            <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="formFourth" titles-at-left titles-width="170" method="post" action="/users/login" @submit.prevent="formFourth.post('/users/login')">
+        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="form-container">
-        <SForm v-model="form" titles-at-left titles-width="170" method="post" action="/users/login">
-            <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
-                <SInput />
-            </SFormRow>
-            <SFormRow title="Пароль" name="password">
-                <SInput type="password" />
-            </SFormRow>
-            <SButton>Войти</SButton>
-        </SForm>
-    </div>
+    <SForm v-model="form" titles-at-left titles-width="170" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
 </template>
 <script setup>
 import { useForm } from '@inertiajs/vue3';
@@ -208,9 +183,6 @@ const form = useForm({
 });
 </script>
 <style lang="scss">
-.form-container {
-    max-width: 500px;
-}
 </style> 
 ```
 :::
@@ -222,35 +194,31 @@ const form = useForm({
 По дефолту `<SFormRow />` привязывает модели вложенных компонентов к соответствующему полю из модели `<SForm />`. Но это делается исключительно для удобства и не является обязательным. Иногда, когда нужно задать модели вручную это возможно сделать напрямую:
 
 <div class="docs-container">
-    <div class="form-container">
-        <SForm v-model="formFifth">
-            <SFormRow>
-                <SSwitch v-model="formFifth.hasAgreement">Согласен с правилами</SSwitch>
-                <SSwitch v-model="formFifth.hasNotifications">Согласен получать оповещения</SSwitch>
-            </SFormRow>
-        </SForm>
-    </div>
+    <SForm v-model="formFifth">
+        <SFormRow>
+            <SSwitch v-model="formFifth.hasAgreement">Согласен с правилами</SSwitch>
+            <SSwitch v-model="formFifth.hasNotifications">Согласен получать оповещения</SSwitch>
+        </SFormRow>
+    </SForm>
 </div>
 
 ::: details Показать код
 ```js
 <template>
-    <div class="form-container">
-        <SForm v-model="form">
-            <SFormRow>
-                <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
-                <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
-            </SFormRow>
-        </SForm>
-    </div>
+    <SForm v-model="form">
+        <SFormRow>
+            <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
+            <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
+        </SFormRow>
+    </SForm>
 </template>
 <script setup>
 import { useForm } from '@inertiajs/vue3';
 import { SForm, SFormRow, SSwitch } from 'startup-ui';
 
 const form = useForm({
-  hasAgreement: false,
-  hasNotifications: false,
+    hasAgreement: false,
+    hasNotifications: false,
 });
 </script>
 ```
@@ -303,7 +271,7 @@ const submit = () => {
         formSecond.post('/users/logins');
         formSecond.reset();
     }, 2000);
-}
+};
 
 const formThird = useForm({
   login: '',
@@ -321,13 +289,4 @@ const formFifth = useForm({
 });
 </script>
 <style lang="scss">
-.form-container {
-    max-width: 500px;
-}
-
-.s-formrow-input {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 </style>

@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "suhar-docs"
+  name: "startup-ui"
   text: "Документация фронтенд-компонентов"
   actions:
     - theme: alt
