@@ -5,6 +5,7 @@
 ## С формой InertiaJS
 
 InertiaJS предлагает useForm-компонент, который мы используем по дефолту для всех форм.
+<CustomCodeBlock :code="code1" :fullCode="fullCode1" />
 
 <div class="docs-container">
     <SForm v-model="formFirst" method="post" action="/users/login" @submit.prevent="formFirst.post('/users/login')">
@@ -17,33 +18,6 @@ InertiaJS предлагает useForm-компонент, который мы �
         <SButton>Войти</SButton>
     </SForm>
 </div>
-
-::: details Показать код
-```js
-<template>
-    <SForm v-model="form" method="post" action="/users/login">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</template>
-<script setup>
-import { useForm } from '@inertiajs/vue3';
-import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
-
-const form = useForm({
-    login: '',
-    password: '',
-});
-</script>
-<style lang="scss">
-</style> 
-```
-:::
 
 Для компонентов внутри `<SFormRow />` не нужно отдельно прописывать модель — она автоматически берется из модели `<SForm />` по имени.
 
@@ -231,6 +205,7 @@ import SFormRow from '../../../packages/startup-ui/src/components/SFormRow.vue';
 import SInput from '../../../packages/startup-ui/src/components/SInput.vue';
 import SButton from '../../../packages/startup-ui/src/components/SButton.vue';
 import SSwitch from '../../../packages/startup-ui/src/components/SSwitch.vue';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
 
 const useForm = (initialValues) => {
     const original = JSON.parse(JSON.stringify(initialValues))
@@ -287,6 +262,41 @@ const formFifth = useForm({
     hasAgreement: '',
     hasNotifications: '',
 });
+
+
+const code1 = `
+<SForm v-model="form" method="post" action="/users/login">
+    <SFormRow title="Логин" name="login">
+        <SInput />
+    </SFormRow>
+    <SFormRow title="Пароль" name="password">
+        <SInput type="password" />
+    </SFormRow>
+    <SButton>Войти</SButton>
+</SForm>`;
+
+const fullCode1 = `
+<template>
+    <SForm v-model="form" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const form = useForm({
+    login: '',
+    password: '',
+});
+<\/script>`;
+
 </script>
 <style lang="scss">
 </style>

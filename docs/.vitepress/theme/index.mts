@@ -4,10 +4,12 @@ import './normalize.css'
 import './custom.css'
 import '../../resources/js/font-awesome.js'
 import { Link } from '@inertiajs/vue3'
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue'
 
 export default {
     ...DefaultTheme,
     enhanceApp({ app }) {
         app.component('Link', Link)
+        app.component('VPCodeBlock', CustomCodeBlock)
     }
 }

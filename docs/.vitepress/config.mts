@@ -5,8 +5,12 @@ import path from 'path'
 export default defineConfig({
     title: "startup-ui",
     description: "Docs for frontend components.",
+    lang: 'ru',
     themeConfig: {
-        nav: [{ text: 'Главная', link: './' }],
+        nav: [
+            { text: 'Знакомство', link: '/pages/welcome' },
+            { text: 'Компоненты', link: '/pages/components' }
+        ],
         sidebar: [
             {
                 text: 'Фронтенд компоненты',
@@ -65,6 +69,14 @@ export default defineConfig({
             }
         ],
         socialLinks: [{ icon: 'github', link: 'https://github.com/rsukhar/startup-ui' }],
+        outline: {
+            level: [2, 3],
+            label: 'На этой странице'
+        },
+        docFooter: {
+            prev: 'Предыдущая страница',
+            next: 'Следующая страница'
+        },
     },
     vite: {
         css: {
@@ -78,5 +90,5 @@ export default defineConfig({
                     }
             }
         }
-    }
+    },
 })

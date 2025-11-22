@@ -14,6 +14,7 @@
     "@fortawesome/vue-fontawesome": "^3.1.2",
     "@inertiajs/vue3": "^2.2.17",
     "@tinymce/tinymce-vue": "^5.1.1",
+    "shiki": "^3.15.0",
     "tinymce": "^6.8.3",
     "vitepress-theme-demoblock": "^2.0.2"
   }
