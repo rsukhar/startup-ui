@@ -12,7 +12,7 @@
     </div>
 </template>
 <script setup>
-import { provide, watch, computed, onMounted } from 'vue';
+import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
 const props = defineProps({
     options: Object,
@@ -39,13 +39,6 @@ const normalizedOptions = computed(() => {
         return { value: parsedValue, title };
     });
 });
-
-onMounted(() => {
-    if (model.value === null && Object.values(props.options ?? {}).length) {
-        model.value = Object.keys(props.options)[0];
-    }
-});
-
 provide('sRadioGroupModel', model);
 
 watch(model, newValue => {
