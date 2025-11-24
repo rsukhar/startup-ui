@@ -278,7 +278,8 @@ onBeforeUnmount(() => {
             outline: none;
             cursor: text;
             border-radius: var(--s-border-radius);
-
+            flex-grow: 1;
+            
             &::placeholder {
                 color: var(--s-text);
             }

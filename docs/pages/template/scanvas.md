@@ -4,7 +4,13 @@
 
 ## Базовый пример
 
-``` js
+<CustomCodeBlock :code="{text: code, lang: 'vue'}" />
+
+<script setup>
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
+
+const code = `
+<template>
 <SCanvas>
     <template #header>
         Шапка
@@ -22,7 +28,9 @@
 <SFooter>
     <div>&copy; suhar.ru, 2025. Все права защищены</div>
 </SFooter>
+</template>
 <script setup>
 import { SCanvas, SFooter } from 'startup-ui';
+<\/script>
+`;
 </script>
-```

@@ -10,16 +10,7 @@
     </div>
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
-</template>
-<script setup>
-import { SDropdownMenu } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
 
 Где links — это массив в формате `[{label, url, active}, ...]`
 
@@ -37,18 +28,7 @@ import { SDropdownMenu } from 'startup-ui';
     </div>
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="menu-container">
-        <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
-    </div>
-</template>
-<script setup>
-import { SDropdownMenu } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
 
 Когда нужно задать кастомный лейбл, используем одноименный слот `label`, при этом ссылку с лейбла также задаем через атрибут `labelLink`:
 
@@ -65,26 +45,7 @@ import { SDropdownMenu } from 'startup-ui';
     </div>
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="menu-container">
-        <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
-            <template #label>
-                <span class="userblock">
-                    <FontAwesomeIcon icon="circle-user" />
-                    <span>{{ authUser.username }}</span>
-                </span>
-            </template>
-        </SDropdownMenu>
-    </div>
-</template>
-<script setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { SDropdownMenu } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
 
 ## Задаем ссылки вручную
 
@@ -99,21 +60,7 @@ import { SDropdownMenu } from 'startup-ui';
     </div>
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="menu-container">
-        <SDropdownMenu label="Помощь">
-            <a href="/docs/">Документация</a>
-            <a href=".." target="_blank">Телеграм-группа</a>
-        </SDropdownMenu>
-    </div>
-</template>
-<script setup>
-import { SDropdownMenu } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
 
 Также можно использовать комбинированный вариант, когда часть ссылок задается атрибутом, а часть — через слот:
 
@@ -125,28 +72,12 @@ import { SDropdownMenu } from 'startup-ui';
     </div>
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="menu-container">
-        <SDropdownMenu label="Помощь" :links="helpLinks">
-            <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
-        </SDropdownMenu>
-    </div>
-</template>
-<script setup>
-import { SDropdownMenu } from 'startup-ui';
-
-const helpLinks = [
-    { label: 'Чат', url: '#', active: true }
-];
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}"/>
 
 <script setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SDropdownMenu from '../../../packages/startup-ui/src/components/SDropdownMenu.vue';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
 
 const adminLinks = [
     { label: 'Заказы', url: '#' }, 
@@ -157,6 +88,95 @@ const adminLinks = [
 const helpLinks = [
     { label: 'Чат', url: '#' }
 ];
+
+const code1 = `
+<SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
+`;
+const fullCode1 = `
+<template>
+    <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
+</template>
+<script setup>
+import { SDropdownMenu } from 'startup-ui';
+<\/script>
+`;
+
+const code2 = `
+<SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
+`;
+const fullCode2 = `
+<template>
+    <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
+</template>
+<script setup>
+import { SDropdownMenu } from 'startup-ui';
+<\/script>
+`;
+
+const code3 = `
+<SDropdownMenu :links="adminLinks" :label-link="\/users/\${authUser.username}/\`">
+    <template #label>
+        <span class="userblock">
+            <FontAwesomeIcon icon="circle-user" />
+            <span>\{{ authUser.username }}</span>
+        </span>
+    </template>
+</SDropdownMenu>
+`;
+const fullCode3 = `
+<template>
+    <SDropdownMenu :links="adminLinks" :label-link="\/users/\${authUser.username}/\`">
+        <template #label>
+            <span class="userblock">
+                <FontAwesomeIcon icon="circle-user" />
+                <span>\{{ authUser.username }}</span>
+            </span>
+        </template>
+    </SDropdownMenu>
+</template>
+<script setup>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { SDropdownMenu } from 'startup-ui';
+<\/script>
+`;
+
+const code4 = `
+<SDropdownMenu label="Помощь">
+    <a href="/docs/">Документация</a>
+    <a href=".." target="_blank">Телеграм-группа</a>
+</SDropdownMenu>
+`;
+const fullCode4 = `
+<template>
+    <SDropdownMenu label="Помощь">
+        <a href="/docs/">Документация</a>
+        <a href=".." target="_blank">Телеграм-группа</a>
+    </SDropdownMenu>
+</template>
+<script setup>
+import { SDropdownMenu } from 'startup-ui';
+<\/script>
+`;
+
+const code5 = `
+<SDropdownMenu label="Помощь" :links="helpLinks">
+    <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
+</SDropdownMenu>
+`;
+const fullCode5 = `
+<template>
+    <SDropdownMenu label="Помощь" :links="helpLinks">
+        <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
+    </SDropdownMenu>
+</template>
+<script setup>
+import { SDropdownMenu } from 'startup-ui';
+
+const helpLinks = [
+    { label: 'Чат', url: '#', active: true }
+];
+<\/script>
+`;
 </script>
 
 
@@ -165,6 +185,7 @@ const helpLinks = [
     display: flex;
     max-width: 200px;
     line-height: 60px;
+    background-color: transparent;
 }
 
 .userblock {

@@ -75,7 +75,7 @@ function handleHide() {
     width: fit-content;
     height: fit-content;
     inset: 0;
-    z-index: 10;
+    z-index: 1000;
     font-family: var(--s-font-family);
     
     &-window {
@@ -84,7 +84,7 @@ function handleHide() {
         gap: var(--s-base-padding);
         position: fixed;
         background-color: var(--s-white);
-        z-index: 11;
+        z-index: 1001;
         border: 1px solid var(--s-border);
         border-radius: var(--s-border-radius);
         max-width: 100%;
@@ -130,7 +130,7 @@ function handleHide() {
         width: 100vw;
         height: 100vh;
         inset: 0;
-        z-index: 10;
+        z-index: 999;
     }
 }
 </style>

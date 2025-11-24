@@ -1,11 +1,13 @@
 <template>
 <div class="code-wrapper">
     <div class="code-buttons">
-        <div class="code-buttons-item" @click="toggleFullCode">
-            <FontAwesomeIcon icon="eye" />
+        <div class="code-buttons-item" @click="toggleFullCode" v-if="fullCode">
+            <FontAwesomeIcon icon="code" />
+            <div class="code-buttons-tooltip">Показать полный код</div>
         </div>
         <div class="code-buttons-item" @click="copyCode">
             <FontAwesomeIcon icon="copy" />
+            <div class="code-buttons-tooltip">Скопировать</div>
         </div>
     </div>
     <div class="customcode" v-html="html"></div>
@@ -15,22 +17,21 @@
 import { ref, onMounted } from 'vue';
 import { codeToHtml } from 'shiki';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { SAlert } from '../../../packages/startup-ui/src/components/SAlert'; 
+import { SAlert } from '../../../packages/startup-ui/src/components/SAlert';
 
 const props = defineProps({
-    code: String,
-    fullCode: String
+    code: Object,
+    fullCode: Object
 });
 
 const html = ref('');
-const showButtons = ref(false);
 const isFullCodeShown = ref(false);
 
 async function toggleFullCode() {
     isFullCodeShown.value = !isFullCodeShown.value;
     const code = isFullCodeShown.value ? props.fullCode : props.code;
-    html.value = await codeToHtml(code, {
-        lang: 'javascript',
+    html.value = await codeToHtml(code.text, {
+        lang: code.lang,
         theme: 'github-dark-default'
     });
 }
@@ -38,7 +39,7 @@ async function toggleFullCode() {
 async function copyCode() {
     const type = "text/plain";
     const clipboardItemData = {
-        [type]: isFullCodeShown.value ? props.fullCode : props.code,
+        [type]: isFullCodeShown.value ? props.fullCode.text : props.code.text,
     };
 
     const clipboardItem = new ClipboardItem(clipboardItemData);
@@ -47,8 +48,8 @@ async function copyCode() {
 }
 
 onMounted(async () => {
-    html.value = await codeToHtml(props.code, {
-        lang: 'javascript',
+    html.value = await codeToHtml(props.code.text, {
+        lang: props.code.lang,
         theme: 'github-dark-default'
     });
 });
@@ -68,7 +69,11 @@ onMounted(async () => {
     padding: 2px;
     background-color: #1b1b1f;
     border-radius: var(--s-border-radius);
+    color: var(--s-white);
+    box-sizing: border-box;
+    
     &-item {
+        position: relative;
         padding: 5px;
         border-radius: var(--s-border-radius);
     }
@@ -76,21 +81,41 @@ onMounted(async () => {
     &-item:hover {
         background-color: #404047;
     }
+
+    &-tooltip {
+        position: absolute;
+        top: calc(100% + 5px);
+        right: 50%;
+        transform: translateX(50%);
+        font-size: 10px;
+        white-space: nowrap;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 3px;
+        border-radius: 6px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity .12s ease;
+        line-height: 1;
+        padding: 6px;
+    }
+
+    &-item:hover .code-buttons-tooltip {
+        opacity: 1;
+        visibility: visible;
+    }
 }
-
-
 
 .code-buttons {
     display: none;
 }
 
-
-
-
 .customcode {
+    box-sizing: border-box;
     padding: 0 20px 20px 20px;
     background-color: #0d1117;
     margin-bottom: 20px;
+    overflow-x: auto;
 }
 
 .hidden {
@@ -99,33 +124,5 @@ onMounted(async () => {
 
 .custom-code-wrapper {
     position: relative;
-}
-
-.code-actions {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    display: flex;
-    gap: 6px;
-
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.code-actions.visible {
-    opacity: 1;
-}
-
-.code-actions button {
-    font-size: 12px;
-    padding: 4px 8px;
-    background: #ffffffdd;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.code-actions button:hover {
-    background: white;
 }
 </style>

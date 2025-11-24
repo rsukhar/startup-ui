@@ -2,25 +2,14 @@
 
 Базовые поля ввода.
 
+
 ## Стандартные поля ввода
 
 <div class="docs-container">
     <SInput v-model="value" />
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'js'}" />
 
 Также поддерживаются стандартные HTML-типы полей:
 
@@ -30,23 +19,7 @@ const value = ref('');
     <SInput v-model="value3" type="password" placeholder="Пароль"/>
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value1" type="number" placeholder="Номер"/>
-    <SInput v-model="value2" type="email" placeholder="Email"/>
-    <SInput v-model="value3" type="password" placeholder="Пароль"/>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value1 = ref('');
-const value2 = ref('');
-const value3 = ref('');
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'js'}" />
 
 ## Многострочное поле ввода
 
@@ -54,19 +27,8 @@ const value3 = ref('');
     <SInput v-model="value4" type="textarea" />
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" type="textarea" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'js'}" />
 
-const value = ref('');
-</script>
-```
-:::
 
 ## Плейсхолдер
 
@@ -74,19 +36,9 @@ const value = ref('');
     <SInput v-model="value5" placeholder="Введите имя" />
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" placeholder="Введите имя" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'js'}" />
 
-const value = ref('');
-</script>
-```
-:::
+
 
 ## Префикс
 
@@ -94,19 +46,9 @@ const value = ref('');
     <SInput v-model="value6" prefix="$" type="number" />
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" prefix="$" type="number" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code5, lang: 'js'}" :fullCode="{text: fullCode5, lang: 'js'}" />
 
-const value = ref('');
-</script>
-```
-:::
+
 
 Если нужен кастомный префикс:
 
@@ -118,23 +60,9 @@ const value = ref('');
     </SInput>
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" type="number">
-        <template #prefix>
-            <SStatus icon="star" />
-        </template>
-    </SInput>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code6, lang: 'vue'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
 
-const value = ref('');
-</script>
-```
-:::
+
 
 ## Недоступное состояние
 
@@ -142,19 +70,9 @@ const value = ref('');
     <SInput v-model="value8" disabled />
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" disabled />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code7, lang: 'vue'}" :fullCode="{text: fullCode7, lang: 'vue'}" />
 
-const value = ref('');
-</script>
-```
-:::
+
 
 ## Поле ввода с кнопкой очистки
 
@@ -164,19 +82,9 @@ const value = ref('');
     <SInput v-model="value9" type="search" />
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SInput v-model="value" type="search" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code8, lang: 'vue'}" :fullCode="{text: fullCode8, lang: 'vue'}" />
 
-const value = ref('');
-</script>
-```
-:::
+
 
 ## События
 
@@ -187,14 +95,9 @@ const value = ref('');
     <SInput @change="(newValue) => currentInput = newValue" />
 </div>
 
-```js
-<template>
-    <SInput @change="(newValue) => console.log(newValue)" />
-</template>
-<script setup>
-import { SInput } from 'startup-ui';
-</script>
-```
+<CustomCodeBlock :code="{text: code9, lang: 'vue'}" :fullCode="{text: fullCode9, lang: 'vue'}" />
+
+
 
 ## Кастомные стили для инпута
 
@@ -204,23 +107,16 @@ import { SInput } from 'startup-ui';
     <SInput input-style="text-align: center" />
 </div>
 
-```js
-<template>
-    <SInput input-style="text-align: center" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
+<CustomCodeBlock :code="{text: code10, lang: 'vue'}" :fullCode="{text: fullCode10, lang: 'vue'}" />
 
-const value = ref('');
-</script>
-```
+
 
 <script setup>
 import { ref } from 'vue';
 import SInput from '../../../packages/startup-ui/src/components/SInput.vue';
 import SFormRow from '../../../packages/startup-ui/src/components/SFormRow.vue';
 import SStatus from '../../../packages/startup-ui/src/components/SStatus.vue';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
 
 const value = ref('');
 const value1 = ref('');
@@ -234,6 +130,174 @@ const value8 = ref('');
 const value9 = ref('');
 
 const currentInput = ref('');
+
+const code1 = `
+<SInput v-model="value" />
+`;
+const fullCode1 = `
+<template>
+    <SInput v-model="value" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code2 = `
+<SInput v-model="value1" type="number" placeholder="Номер"/>
+<SInput v-model="value2" type="email" placeholder="Email"/>
+<SInput v-model="value3" type="password" placeholder="Пароль"/>
+`;
+const fullCode2 = `
+<template>
+    <SInput v-model="value1" type="number" placeholder="Номер"/>
+    <SInput v-model="value2" type="email" placeholder="Email"/>
+    <SInput v-model="value3" type="password" placeholder="Пароль"/>
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value1 = ref('');
+const value2 = ref('');
+const value3 = ref('');
+<\/script>
+`;
+
+const code3 = `
+<SInput v-model="value" type="textarea" />
+`;
+
+const fullCode3 = `
+<template>
+    <SInput v-model="value" type="textarea" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code4 = `
+<SInput v-model="value" placeholder="Введите имя" />
+`;
+
+const fullCode4 = `
+<template>
+    <SInput v-model="value" placeholder="Введите имя" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code5 = `
+ <SInput v-model="value" prefix="$" type="number" />
+`;
+
+const fullCode5 = `
+<template>
+    <SInput v-model="value" prefix="$" type="number" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code6 = `
+<SInput v-model="value" type="number">
+    <template #prefix>
+        <SStatus icon="star" />
+    </template>
+</SInput>
+`;
+
+const fullCode6 = `
+<template>
+    <SInput v-model="value" type="number">
+        <template #prefix>
+            <SStatus icon="star" />
+        </template>
+    </SInput>
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code7 = `
+<SInput v-model="value" disabled />
+`;
+
+const fullCode7 = `
+<template>
+    <SInput v-model="value" disabled />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code8 = `
+<SInput v-model="value" type="search" />
+`;
+
+const fullCode8 = `
+<template>
+    <SInput v-model="value" type="search" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
+
+const code9 = `
+<SInput @change="(newValue) => console.log(newValue)" />
+`;
+const fullCode9 = `
+<template>
+    <SInput @change="(newValue) => console.log(newValue)" />
+</template>
+<script setup>
+import { SInput } from 'startup-ui';
+<\/script>
+`;
+
+const code10 = `
+<SInput input-style="text-align: center" />
+`;
+
+const fullCode10 = `
+<template>
+    <SInput input-style="text-align: center" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+<\/script>
+`;
 </script>
 <style lang="scss">
 :root {

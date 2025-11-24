@@ -8,22 +8,24 @@
     <SVerticalMenu :links="menuLinks" />
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="menu-container">
-        <SVerticalMenu :links="menuLinks" />
-    </div>
-</template>
-<script setup>
-import { SVerticalMenu } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code, lang: 'vue'}" :fullCode="{text: fullCode, lang: 'vue'}"/>
 
 Где menuLinks — это массив в формате `[{label, url, active, ?type, ?className, ?children}, ...]`
 
 <script setup>
 import SVerticalMenu from '../../../packages/startup-ui/src/components/SVerticalMenu.vue';
-import { menuLinks } from '../../resources/data/pagesTree.js'; 
+import { menuLinks } from '../../resources/data/pagesTree.js';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
+
+const code = `
+<SVerticalMenu :links="menuLinks" />
+`;
+const fullCode = `
+<template>
+    <SVerticalMenu :links="menuLinks" />
+</template>
+<script setup>
+import { SVerticalMenu } from 'startup-ui';
+<\/script>
+`;
 </script>

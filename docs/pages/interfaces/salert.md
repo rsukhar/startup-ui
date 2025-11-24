@@ -10,48 +10,21 @@
     <SButton @click="SAlert.info('Информация')">Информация</SButton>
 </div>
 
-:::details Открыть код 
-``` js
-<template>
-<SButton @click="SAlert.info('Информация')">Информация</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
 
 Оповещение об успешном действии:
 <div class="docs-container">
     <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
 </div>
 
-:::details Открыть код 
-``` js
-<template>
-<SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
 
 Оповещение об ошибке:
 <div class="docs-container">
     <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
 </div>
 
-:::details Открыть код 
-``` js
-<template>
-<SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
 
 ## Увеличенное время до закрытия
 
@@ -60,8 +33,61 @@ import { SButton, SAlert} from 'startup-ui';
     <SButton color="red" @click="closeWithDelay">Ошибка</SButton>
 </div>
 
-:::details Открыть код 
-``` js
+<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
+
+<script setup>
+import SButton from '../../../packages/startup-ui/src/components/SButton.vue';
+import { SAlert } from '../../../packages/startup-ui/src/components/SAlert';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
+
+function closeWithDelay() {
+    SAlert.info('Закроется через 5 секунд', {
+        closeAfter: 5000,
+    });
+}
+
+const code1 = `
+<SButton @click="SAlert.info('Информация')">Информация</SButton>
+`;
+const fullCode1 = `
+<template>
+<SButton @click="SAlert.info('Информация')">Информация</SButton>
+</template>
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+<\/script>
+`;
+
+const code2 = `
+<SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+`;
+const fullCode2 = `
+<template>
+<SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+</template>
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+<\/script>
+`;
+
+const code3 = `
+<SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
+`;
+const fullCode3 = `
+<template>
+<SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
+</template>
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+<\/script>
+`;
+
+const code4 = `
+SAlert.info('Закроется через 5 секунд', {
+    closeAfter: 5000,
+});
+`;
+const fullCode4 = `
 <template>
     <SButton color="red" @click="closeWithDelay">Ошибка</SButton>
 </template>
@@ -73,17 +99,6 @@ function closeWithDelay() {
         closeAfter: 5000,
     });
 }
-</script>
-```
-:::
-
-<script setup>
-import SButton from '../../../packages/startup-ui/src/components/SButton.vue';
-import { SAlert } from '../../../packages/startup-ui/src/components/SAlert';
-
-function closeWithDelay() {
-    SAlert.info('Закроется через 5 секунд', {
-        closeAfter: 5000,
-    });
-}
+<\/script>
+`;
 </script>

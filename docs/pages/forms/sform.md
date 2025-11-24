@@ -1,12 +1,11 @@
 # SForm + SFormRow
 
 Компоненты используются для того, чтобы задавать формы.
+<br/>
 
 ## С формой InertiaJS
 
 InertiaJS предлагает useForm-компонент, который мы используем по дефолту для всех форм.
-<CustomCodeBlock :code="code1" :fullCode="fullCode1" />
-
 <div class="docs-container">
     <SForm v-model="formFirst" method="post" action="/users/login" @submit.prevent="formFirst.post('/users/login')">
         <SFormRow title="Логин" name="login">
@@ -18,6 +17,8 @@ InertiaJS предлагает useForm-компонент, который мы �
         <SButton>Войти</SButton>
     </SForm>
 </div>
+
+<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'js'}" />
 
 Для компонентов внутри `<SFormRow />` не нужно отдельно прописывать модель — она автоматически берется из модели `<SForm />` по имени.
 
@@ -39,38 +40,7 @@ InertiaJS предлагает useForm-компонент, который мы �
     </SForm>
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SForm v-model="form" @submit="submit" :errors="errors" :loading="isLoading">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</template>
-<script setup>
-import { useForm } from '@inertiajs/vue3';
-import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
-
-const form = useForm({
-  login: '',
-  password: '',
-});
-
-function submit() {
-    form.submit('post', `/projects/1/keywords`, {
-        onSuccess: () => {form.reset('login', 'password')},
-    });
-}
-</script>
-<style lang="scss">
-</style> 
-```
-:::
+<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
 
 Так как мы используем собственный метод, то для показа состояния загрузки формы может понадобиться задавать свой набор ошибок (errors), а также loading-состояние, которое показывает, находится ли сейчас форма в процессе отправки (чтобы избежать повторной отправки по ошибке)
 
@@ -90,33 +60,7 @@ function submit() {
     </SForm>
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SForm v-model="form" method="post" action="/users/login">
-        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</template>
-<script setup>
-import { useForm } from '@inertiajs/vue3';
-import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
-
-const form = useForm({
-  login: '',
-  password: '',
-});
-</script>
-<style lang="scss">
-</style> 
-```
-:::
-
+<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
 
 ## Заголовки слева
 
@@ -134,34 +78,9 @@ const form = useForm({
     </SForm>
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SForm v-model="form" titles-at-left titles-width="170" method="post" action="/users/login">
-        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</template>
-<script setup>
-import { useForm } from '@inertiajs/vue3';
-import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
-
-const form = useForm({
-  login: '',
-  password: '',
-});
-</script>
-<style lang="scss">
-</style> 
-```
-:::
-
 Дополнительный параметр titles-width позволяет задать ширину заголовков.
+
+<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
 
 ## Установка моделей инпутов напрямую
 
@@ -176,27 +95,7 @@ const form = useForm({
     </SForm>
 </div>
 
-::: details Показать код
-```js
-<template>
-    <SForm v-model="form">
-        <SFormRow>
-            <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
-            <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
-        </SFormRow>
-    </SForm>
-</template>
-<script setup>
-import { useForm } from '@inertiajs/vue3';
-import { SForm, SFormRow, SSwitch } from 'startup-ui';
-
-const form = useForm({
-    hasAgreement: false,
-    hasNotifications: false,
-});
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code5, lang: 'js'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
 
 <script setup>
 import { reactive, ref } from 'vue';
@@ -296,6 +195,124 @@ const form = useForm({
     password: '',
 });
 <\/script>`;
+
+const code2 = `
+<SForm @submit="submit" \:errors="errors" \:loading="isLoading">
+  ...
+</SForm>`;
+
+const fullCode2 = `
+<template>
+    <SForm v-model="form" @submit="submit" :errors="errors" :loading="isLoading">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const form = useForm({
+  login: '',
+  password: '',
+});
+
+function submit() {
+    form.submit('post', \`/projects/1/keywords\`, {
+        onSuccess: () => {form.reset('login', 'password')},
+    });
+}
+<\/script>`
+
+const code3 = `
+<SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+    <SInput />
+</SFormRow>`;
+
+const fullCode3 = `
+<template>
+    <SForm v-model="form" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const form = useForm({
+  login: '',
+  password: '',
+});
+<\/script>
+`;
+
+const code4 = `
+<SForm titles-at-left titles-width="170">
+  ...
+</SForm>`;
+
+const fullCode4 = `
+<template>
+    <SForm v-model="form" titles-at-left titles-width="170" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const form = useForm({
+  login: '',
+  password: '',
+});
+<\/script>
+`;
+
+const code5 = `
+<SForm v-model="form">
+    <SFormRow>
+        <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
+        <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
+    </SFormRow>
+</SForm>
+`;
+
+const fullCode5 = `
+<template>
+    <SForm v-model="form">
+        <SFormRow>
+            <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
+            <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
+        </SFormRow>
+    </SForm>
+</template>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SSwitch } from 'startup-ui';
+
+const form = useForm({
+    hasAgreement: false,
+    hasNotifications: false,
+});
+<\/script>
+`;
 
 </script>
 <style lang="scss">

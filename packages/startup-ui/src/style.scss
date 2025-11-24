@@ -1,8 +1,2 @@
 @use './styles/variables.scss' as *;
 @use './styles/mixins.scss' as *;
-@import './styles/normalize.css';
-
-ul, li {
-    margin: 0 0 var(--s-base-margin);
-    font-weight: normal;
-}

@@ -4,7 +4,7 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Editor from '@tinymce/tinymce-vue';
 // Следующая строчка нужна для отключения запроса API-ключая, не удалять!
 import tinymce from 'tinymce/tinymce';
@@ -17,7 +17,6 @@ import 'tinymce/icons/default';
 import 'tinymce/themes/silver/theme';
 import 'tinymce/models/dom/model';
 
-// плагины (подставь те, что используешь)
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
@@ -41,6 +40,15 @@ const props = defineProps({
     placeholder: String,
 });
 const model = defineModel();
+
+const initialLabelStyles = `
+body#tinymce::before {
+    position: absolute;
+    content: 'Введите контент';
+    color: #8c8c8c;
+    pointer-events: none;
+}`
+
 const initOptions = ref({
     license_key: 'mit',
     selector: 'textarea',
@@ -63,7 +71,7 @@ const initOptions = ref({
         Успех=success;
         Ошибка=error;`,
     // TODO Вынести в отдельный файл
-    content_style: `
+    content_style: (props.placeholder ? initialLabelStyles : '') + `
         .g-html {
             line-height: 1.8;
         }
@@ -265,79 +273,93 @@ const initOptions = ref({
             });
         };
 
-  // Всё в init, чтобы doc/body уже были доступны
-  editor.on('init', () => {
-    const doc = editor.getDoc();
-    if (!doc) return;
+        // Всё в init, чтобы doc/body уже были доступны
+        editor.on('init', () => {
+            const doc = editor.getDoc();
+            if (!doc) return;
 
-    // 1) Monkey-patch insertContent: перехватываем html перед вставкой
-    const origInsertContent = editor.insertContent.bind(editor);
-    editor.insertContent = (content, args) => {
-      if (typeof content === 'string' && content.includes('<img')) {
-        const tmp = doc.createElement('div');
-        tmp.innerHTML = content;
-        wrapImagesInRoot(tmp);
-        content = tmp.innerHTML;
-      }
-      return origInsertContent(content, args);
+            // 1) Monkey-patch insertContent: перехватываем html перед вставкой
+            const origInsertContent = editor.insertContent.bind(editor);
+            editor.insertContent = (content, args) => {
+                if (typeof content === 'string' && content.includes('<img')) {
+                    const tmp = doc.createElement('div');
+                    tmp.innerHTML = content;
+                    wrapImagesInRoot(tmp);
+                    content = tmp.innerHTML;
+                }
+                return origInsertContent(content, args);
+            };
+
+            // 3) Модифицируем DOM-фрагмент перед вставкой для paste/drag&drop
+            editor.on('PastePostProcess', (e) => {
+                // e.node — это DocumentFragment / элемент уже в документе редактора
+                wrapImagesInRoot(e.node);
+            });
+
+            // 4) Ловим добавления узлов и изменения class
+            const observer = new MutationObserver((mutations) => {
+            // Оборачиваем в транзакцию, чтобы правки шеллились в undo как один шаг
+            editor.undoManager.transact(() => {
+                for (const m of mutations) {
+                    if (m.type === 'childList') {
+                        m.addedNodes.forEach(node => {
+                        if (node.nodeType !== 1) return;
+                        const tag = node.tagName && node.tagName.toLowerCase();
+                        if (tag === 'img') {
+                            wrapImageNode(node);
+                        } else {
+                            // если вставлен контейнер, ищем вложенные img
+                            wrapImagesInRoot(node);
+                        }
+                        });
+                    } else if (m.type === 'attributes' && m.attributeName === 'class') {
+                        const target = m.target;
+                        // если класс поменяли у img — переместим класс в wrapper
+                        if (target && target.tagName && target.tagName.toLowerCase() === 'img') {
+                            if (!isImgAlreadyWrapped(target) && (target.getAttribute('class') || '').trim()) {
+                                wrapImageNode(target);
+                            } else if ((target.getAttribute('class') || '').trim()) {
+                                // Если картинка уже обернута в div, добавляем класс к обертке
+                                const wrapper = target.parentNode;
+                                const classes = target.getAttribute ? (target.getAttribute('class') || '') : '';
+                                if (classes) {
+                                    wrapper.className = classes;
+                                    target.removeAttribute('class');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            try { editor.nodeChanged(); } catch (err) {}
+        });
+
+        observer.observe(editor.getBody(), {
+            childList: true,
+            subtree: true,
+            attributes: true,        // нужно чтобы ловить присвоение class плагином
+            attributeFilter: ['class']
+        });
+
+        // Отключаем observer при уничтожении редактора
+        editor.on('remove', () => observer.disconnect());
+    });
+
+    // обновляем видимость placeholder при вводе текста
+    const updatePlaceholder = () => {
+        const content = editor.getContent({ format: 'text' }).trim();
+        const css = content
+            ? 'body#tinymce::before { display: none !important; }'
+            : `body#tinymce::before { display: block !important; }`;
+
+        editor.dom.addStyle(css);
     };
 
-    // 3) Модифицируем DOM-фрагмент перед вставкой для paste/drag&drop
-    editor.on('PastePostProcess', (e) => {
-      // e.node — это DocumentFragment / элемент уже в документе редактора
-      wrapImagesInRoot(e.node);
-    });
-
-    // 4) Ловим добавления узлов и изменения class
-    const observer = new MutationObserver((mutations) => {
-      // Оборачиваем в транзакцию, чтобы правки шеллились в undo как один шаг
-      editor.undoManager.transact(() => {
-        for (const m of mutations) {
-          if (m.type === 'childList') {
-            m.addedNodes.forEach(node => {
-              if (node.nodeType !== 1) return;
-              const tag = node.tagName && node.tagName.toLowerCase();
-              if (tag === 'img') {
-                wrapImageNode(node);
-              } else {
-                // если вставлен контейнер, ищем вложенные img
-                wrapImagesInRoot(node);
-              }
-            });
-          } else if (m.type === 'attributes' && m.attributeName === 'class') {
-            const target = m.target;
-            // если класс поменяли у img — переместим класс в wrapper
-            if (target && target.tagName && target.tagName.toLowerCase() === 'img') {
-              if (!isImgAlreadyWrapped(target) && (target.getAttribute('class') || '').trim()) {
-                wrapImageNode(target);
-              } else if ((target.getAttribute('class') || '').trim()) {
-                // Если картинка уже обернута в div, добавляем класс к обертке
-                const wrapper = target.parentNode;
-                const classes = target.getAttribute ? (target.getAttribute('class') || '') : '';
-                if (classes) {
-                    wrapper.className = classes;
-                    target.removeAttribute('class');
-                }
-              }
-            }
-          }
-        }
-      });
-
-      try { editor.nodeChanged(); } catch (err) {}
-    });
-
-    observer.observe(editor.getBody(), {
-      childList: true,
-      subtree: true,
-      attributes: true,        // нужно чтобы ловить присвоение class плагином
-      attributeFilter: ['class']
-    });
-
-    // Отключаем observer при уничтожении редактора
-    editor.on('remove', () => observer.disconnect());
-  });
- }
+        editor.on('init', updatePlaceholder);
+        editor.on('input', updatePlaceholder);
+        editor.on('SetContent', updatePlaceholder);
+    }
 });
 
 // Загрузка картинки на сервер

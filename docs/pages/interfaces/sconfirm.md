@@ -8,8 +8,28 @@
 <SButton @click="deleteUser">Удалить пользователя</SButton>
 </div>
 
-::: details Показать код
-``` js
+<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+
+<script setup>
+import { SConfirm } from '../../../packages/startup-ui/src/components/SConfirm';
+import { SAlert } from '../../../packages/startup-ui/src/components/SAlert';
+import SButton from '../../../packages/startup-ui/src/components/SButton.vue';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
+
+function deleteUser(){
+  SConfirm.open('Вы действительно хотите удалить пользователя?', {
+    title: 'Подтверждение удаления',
+    onAccept: () => SAlert.success('Пользователь удален'),
+  });
+}
+
+const code1 = `
+SConfirm.open('Вы действительно хотите удалить пользователя?', {
+    title: 'Подтверждение удаления',
+    onAccept: () => SAlert.success('Пользователь удален')
+  });
+`;
+const fullCode1 = `
 <template>
 <SButton @click="deleteUser">Удалить пользователя</SButton>
 </template>
@@ -22,19 +42,11 @@ function deleteUser(){
     onAccept: () => SAlert.success('Пользователь удален')
   });
 }
+<\/script>
+`;
 </script>
-```
-:::
-
-<script setup>
-import { SConfirm } from '../../../packages/startup-ui/src/components/SConfirm';
-import { SAlert } from '../../../packages/startup-ui/src/components/SAlert';
-import SButton from '../../../packages/startup-ui/src/components/SButton.vue';
-
-function deleteUser(){
-  SConfirm.open('Вы действительно хотите удалить пользователя?', {
-    title: 'Подтверждение удаления',
-    onAccept: () => SAlert.success('Пользователь удален'),
-  });
+<style lang="scss">
+.s-confirm {
+    color: var(--s-text);
 }
-</script>
+</style>

@@ -10,45 +10,24 @@ Laravel-пагинатор на выходе формирует объект с 
     <SPagination v-bind="users" />
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="docs-container">
-        <SPagination v-bind="users" />
-    </div>
-</template>
-<script setup>
-import { SPagination } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
 
 ## Выбор кол-ва результатов на странице
 
 Если задано perpage-options, то выводится выпадающий список с кол-вом результатов на странице:
 
-<div>
+<div class="docs-container">
     <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <div class="docs-container">
-        <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
-    </div>
-</template>
-<script setup>
-import { SPagination } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
 
 Изменение кол-ва вариантов на странице меняет get-параметр perpage, сбрасывает get-параметр page и сохраняет все остальные get-параметры нетронутыми.
 
 <script setup>
 import { ref } from 'vue'; 
 import SPagination from '../../resources/components/SPagination.vue';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
 
 const users = { 
     "current_page": 1, 
@@ -72,6 +51,30 @@ const users = {
     "to": 15, 
     "total": 72
 };
+
+const code1 = `
+<SPagination v-bind="users" />
+`;
+const fullCode1 = `
+<template>
+    <SPagination v-bind="users" />
+</template>
+<script setup>
+import { SPagination } from 'startup-ui';
+<\/script>
+`;
+
+const code2 = `
+<SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
+`;
+const fullCode2 = `
+<template>
+    <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
+</template>
+<script setup>
+import { SPagination } from 'startup-ui';
+<\/script>
+`;
 </script>
 <style lang="scss">
 :root {
