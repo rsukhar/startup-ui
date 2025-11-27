@@ -80,9 +80,7 @@ const region = ref(null);
 const code1 = `<SSelect v-model="value" :options="options" />
 `;
 const fullCode1 = `<template>
-    <div class="docs-container">
-        <SSelect v-model="value" :options="options" />
-    </div>
+    <SSelect v-model="value" :options="options" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -93,9 +91,7 @@ const value = ref('');
 
 const code2 = `<SSelect v-model="value" :options="options" filterable />`;
 const fullCode2 = `<template>
-    <div class="docs-container">
-        <SSelect v-model="value" :options="options" filterable />
-    </div>
+    <SSelect v-model="value" :options="options" filterable />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -116,6 +112,7 @@ import axios from "axios";
 
 const isLoading = ref(false);
 const selectOptions = ref({});
+const value = ref('');
 
 function onFilter(query){
   isLoading.value = true;
@@ -144,7 +141,7 @@ const fullCode5 = `<template>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
 const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const value = ref('');
+const user = ref('');
 <\/script>`;
 
 const code6 = `<SSelect v-model="region" :options="regions" virtual />`;
@@ -154,8 +151,12 @@ const fullCode6 = `<template>
 <script setup>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const value = ref('');
+
+const props = defineProps({
+    regions: Object
+});
+
+const region = ref('');
 <\/script>
 `;
 </script>

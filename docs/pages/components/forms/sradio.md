@@ -140,7 +140,7 @@ const fullCode4 = `<template>
 </template>
 <script setup>
 import { ref } from 'vue';
-import { SCheckboxGroup } from 'startup-ui';
+import { SRadioGroup } from 'startup-ui';
 
 const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
 const type = ref(null);
@@ -175,9 +175,10 @@ const fullCode6 = `<template>
 </template>
 <script setup>
 import { ref } from 'vue';
-import { SCheckboxGroup } from 'startup-ui';
+import { SRadioGroup } from 'startup-ui';
 
 const types = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
+const type = ref(null);
 <\/script>
 `;
 </script>

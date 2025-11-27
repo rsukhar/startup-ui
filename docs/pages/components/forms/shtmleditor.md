@@ -5,7 +5,7 @@
 ## Базовый пример
 
 <div class="docs-container">
-    <SHtmlEditor v-model="content" upload-url="/image/upload" />
+    <SHtmlEditor v-model="content1" upload-url="/image/upload" />
 </div>
 
 <CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
@@ -13,7 +13,7 @@
 ## Плейсхолдер
 
 <div class="docs-container">
-    <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
+    <SHtmlEditor v-model="content2" upload-url="/image/upload" placeholder="Введите контент" />
 </div>
 
 <CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
@@ -23,7 +23,8 @@ import { ref } from 'vue';
 import SHtmlEditor from '../../../resources/components/SHtmlEditor.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
-const content = ref('');
+const content1 = ref('');
+const content2 = ref('');
 
 const code1 = `<SHtmlEditor v-model="content" upload-url="/image/upload" />
 `;

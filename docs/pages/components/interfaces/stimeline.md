@@ -12,7 +12,7 @@
     </STimeline>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+<CustomCodeBlock :code="{text: code1, lang: 'html'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
 
 <script setup>
 import STimeline from '../../../../packages/startup-ui/src/components/STimeline.vue';

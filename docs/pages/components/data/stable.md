@@ -779,7 +779,7 @@ const code9 = `<STable :data="users">
 `;
 
 const fullCode9 = `<template>
-<STable :data="users2">
+<STable :data="users">
     <template #nodata>
         <h3>Пользователи не найдены!</h3>
     </template>

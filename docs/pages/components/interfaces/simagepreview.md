@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+<CustomCodeBlock :code="{text: code3, lang: 'html'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
 
 ## Кастомная иконка увеличения
 
@@ -64,7 +64,7 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}"/>
+<CustomCodeBlock :code="{text: code5, lang: 'html'}" :fullCode="{text: fullCode5, lang: 'vue'}"/>
 
 <script setup>
 import SImagePreview from '../../../../packages/startup-ui/src/components/SImagePreview.vue';

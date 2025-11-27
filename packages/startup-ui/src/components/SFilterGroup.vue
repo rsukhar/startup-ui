@@ -36,11 +36,7 @@ onMounted(() => {
 
 // Обновление URL
 const applyParamsToUrl = (params) => {
-    // Убираем пустые значения и сбрасываем page
-    const newParams = Object.fromEntries(Object.entries(params).filter(([key, value]) =>
-        !['', null, undefined, false].includes(value) && key !== 'page'
-    ));
-    router.get(window.location.pathname, new URLSearchParams(newParams), {
+    router.get(window.location.pathname, new URLSearchParams(params), {
         preserveScroll: true,
         preserveState: true,
         replace: true,
@@ -49,9 +45,17 @@ const applyParamsToUrl = (params) => {
 
 // Если нужно реагировать на изменения params
 watch(providedParams, (newParams) => {
+    // Убираем пустые значения и сбрасываем page
+    const newFilteredParams = Object.fromEntries(Object.entries(newParams).filter(([key, value]) =>
+        !['', null, undefined, false].includes(value) && key !== 'page'
+    ));
+
     if (props.bindToGet) {
-        applyParamsToUrl(newParams);
+        applyParamsToUrl(newFilteredParams);
     }
+    
+    model.value = { ...newFilteredParams };
+
 }, { deep: true });
 
 // Следим за изменением query и синхронизируемся
