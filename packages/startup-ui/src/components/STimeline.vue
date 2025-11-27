@@ -66,5 +66,9 @@ function keyOf(item, index){
     &-item {
         padding-bottom: var(--s-base-margin);
     }
+
+    &-row:last-child &-item {
+        padding-bottom: initial;
+    }
 }
 </style>

@@ -10,9 +10,9 @@
 }
 
 .docs-container {
-    padding: 20px;
+    padding: var(--s-base-padding);
     border: 1px solid #4c4d4f;
-    border-radius: 6px;
+    border-radius: var(--s-border-radius);
     margin-bottom: var(--s-base-margin);
 }
 
@@ -27,15 +27,19 @@
     }
 }
 
-li {
+table, li {
+    margin: 0 !important;
     margin: 0 !important;
 }
 
-ul {
+ul, ol {
     margin: 0 !important;
     padding: 0 !important;
 }
 
+/*
+ * Исправление стилей vitepress
+ */
 .vp-doc h1,
 .vp-doc h2,
 .vp-doc p  {
@@ -58,6 +62,7 @@ ul {
 
 .vp-doc h2 {
     font-size: var(--s-h2-font-size);
+    margin-top: calc(2 * var(--s-base-margin)); 
 }
 
 .vp-doc h3 {
@@ -68,8 +73,18 @@ ul {
     top: 0;
 }
 
+.s-table table {
+    display: table !important;
+}
+
+.s-table thead,
+.s-table tbody,
+.s-table tfoot {
+    display: table-row-group !important;
+}
+
 .shiki.github-dark-default {
-    margin-top: 0;
+    margin: 0;
 }
 
 .s-input {
@@ -80,6 +95,14 @@ ul {
     color: var(--s-text) !important;
 }
 
+.s-tooltip-text {
+    line-height: 1.5 !important;
+}
+
 .dark .s-verticalmenu-item.type_section > .s-verticalmenu-label:hover {
     color: var(--s-gray);
+}
+
+span {
+    font-style: normal !important;
 }

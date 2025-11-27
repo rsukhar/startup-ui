@@ -82,12 +82,6 @@ const showNoDataMessage = computed(() => {
         a {
             vertical-align: middle;
         }
-        &:first-child {
-            padding-left: 0;
-        }
-        &:last-child {
-            padding-right: 0;
-        }
         p:last-child {
             margin: 0;
         }
@@ -138,6 +132,12 @@ const showNoDataMessage = computed(() => {
         th, td {
             border: 1px solid var(--s-border);
         }
+    }
+    &:not(.bordered) td:first-child { 
+        padding-left: 0; 
+    }
+    &:not(.bordered) td:last-child { 
+        padding-right: 0; 
     }
     &.striped {
         tbody tr:nth-of-type(even) {

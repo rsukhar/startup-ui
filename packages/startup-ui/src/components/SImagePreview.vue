@@ -80,7 +80,7 @@ watch(modalHeight, handleNewModelState);
     &-fullimg {
         position: fixed;
         width: 50vw;
-        z-index: 50;
+        z-index: 1002;
         border-radius: var(--s-border-radius);
         img {
             width: 100%;
@@ -98,7 +98,7 @@ watch(modalHeight, handleNewModelState);
         color: var(--s-primary-light);
         opacity: 0;
         transition: opacity 0.2s ease-in;
-        z-index: 1000;
+        z-index: 1001;
     }
 
     &:hover {
@@ -115,7 +115,7 @@ watch(modalHeight, handleNewModelState);
         position: fixed;
         background-color: rgba(0, 0, 0, 0.3);
         inset: 0;
-        z-index: 10;
+        z-index: 1000;
         width: 100vw;
         height: 100vh;
     }
@@ -130,7 +130,7 @@ watch(modalHeight, handleNewModelState);
         font-size: 20px;
         top: 20px;
         right: 20px;
-        z-index: 1000;
+        z-index: 999;
         background-color: var(--s-white);
         border-radius: 40px;
         cursor: pointer;

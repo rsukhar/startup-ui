@@ -41,25 +41,22 @@ const props = defineProps({
 });
 const model = defineModel();
 
-const initialLabelStyles = `
-body#tinymce::before {
+const initialLabelStyles = `body#tinymce::before {
     position: absolute;
     content: 'Введите контент';
     color: #8c8c8c;
     pointer-events: none;
 }`
-
 const initOptions = ref({
     license_key: 'mit',
     selector: 'textarea',
-    height: 500,
+    height: 250,
     placeholder: props.placeholder || '',
     menubar: false,
     body_class: 'g-html',
     skin: false,
     content_css: false,
-    block_formats: `
-        Обычный текст=p;
+    block_formats: `        Обычный текст=p;
         Заголовок 1=h1;
         Заголовок 2=h2;
         Заголовок 3=h3;
@@ -71,8 +68,7 @@ const initOptions = ref({
         Успех=success;
         Ошибка=error;`,
     // TODO Вынести в отдельный файл
-    content_style: (props.placeholder ? initialLabelStyles : '') + `
-        .g-html {
+    content_style: (props.placeholder ? initialLabelStyles : '') + `        .g-html {
             line-height: 1.8;
         }
         .g-html img,
