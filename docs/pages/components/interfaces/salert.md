@@ -30,7 +30,7 @@
 
 По умолчанию оповещения закрываются через 5 секунд. Другое время закрытия можно задать параметром closeAfter:
 <div class="docs-container">
-    <SButton color="info" @click="closeWithDelay">Информация</SButton>
+    <SButton @click="closeWithDelay">Информация</SButton>
 </div>
 
 <CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
@@ -81,7 +81,7 @@ const code4 = `SAlert.info('Закроется через 5 секунд', {
 });
 `;
 const fullCode4 = `<template>
-    <SButton color="info" @click="closeWithDelay">Информация</SButton>
+    <SButton @click="closeWithDelay">Информация</SButton>
 </template>
 <script setup>
 import { SButton, SAlert} from 'startup-ui';
