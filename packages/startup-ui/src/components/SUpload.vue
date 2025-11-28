@@ -9,9 +9,10 @@
                     <FontAwesomeIcon class="s-upload-button-icon" icon="plus" />Выберите файл
                 </SButton>
             </template>
-            <input ref="fileInput" class="s-upload-hiddeninput" type="file"
-                :multiple="multiple" :accept="accept" @change="select"/>
         </div>
+
+        <input ref="fileInput" class="s-upload-hiddeninput" type="file"
+                :multiple="multiple" :accept="accept" @change="select"/>
   
         <div v-if="fileTitles.length" class="s-upload-content">
             <slot v-if="$slots.preview" name="preview" :files="fileTitles" :remove="remove"/>
@@ -113,9 +114,14 @@ defineExpose({ clear, remove });
     font-family: var(--s-font-family);
     
     &-header {
+        position: relative;
         display: flex;
         gap: 10px;
         align-items: center;
+    }
+
+    &-header:empty {
+        display: none;
     }
 
     &-button {
@@ -153,10 +159,8 @@ defineExpose({ clear, remove });
 
     &-hiddeninput {
         position: absolute;
-        width: 0;
-        height: 0;
-        opacity: 0;
-        overflow: hidden;
+        display: none;
+        pointer-events: none;
     }
 }
 </style>

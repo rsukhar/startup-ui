@@ -25,8 +25,7 @@ const initOptions = ref({
     placeholder: props.placeholder || '',
     menubar: false,
     body_class: 'g-html',
-    block_formats: `
-        Обычный текст=p;
+    block_formats: `        Обычный текст=p;
         Заголовок 1=h1;
         Заголовок 2=h2;
         Заголовок 3=h3;
@@ -38,8 +37,7 @@ const initOptions = ref({
         Успех=success;
         Ошибка=error;`,
     // TODO Вынести в отдельный файл
-    content_style: `
-        .g-html {
+    content_style: `        .g-html {
             line-height: 1.8;
         }
         .g-html img,

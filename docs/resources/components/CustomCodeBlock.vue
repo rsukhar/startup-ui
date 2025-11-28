@@ -32,7 +32,10 @@ async function toggleFullCode() {
     const code = isFullCodeShown.value ? props.fullCode : props.code;
     html.value = await codeToHtml(code.text, {
         lang: code.lang,
-        theme: 'github-dark-default'
+        theme: 'github-dark-default',
+        colorReplacements: {
+            '#ffa198': '#7EE787'
+        }
     });
 }
 
@@ -50,18 +53,26 @@ async function copyCode() {
 onMounted(async () => {
     html.value = await codeToHtml(props.code.text, {
         lang: props.code.lang,
-        theme: 'github-dark-default'
+        theme: 'github-dark-default',
+        colorReplacements: {
+            '#ffa198': '#7EE787'
+        }
     });
 });
 </script>
 <style lang="scss" scoped>
 .code-wrapper {
     position: relative;
+    border-radius: var(--s-border-radius);
+    padding: 20px;
+    padding-bottom: 0;
+    background-color: #0d1117;
+    margin-bottom: 20px;
 }
 
 .code-wrapper:hover .code-buttons {
     position: absolute;
-    top: 20px;
+    top: 12px;
     right: 20px;
     cursor: pointer;
     display: flex;
@@ -89,15 +100,15 @@ onMounted(async () => {
         transform: translateX(50%);
         font-size: 10px;
         white-space: nowrap;
-        background-color: rgba(255, 255, 255, 0.2);
-        padding: 3px;
-        border-radius: 6px;
+        background-color: #404047;
+        border-radius: var(--s-border-radius);
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
         transition: opacity .12s ease;
         line-height: 1;
         padding: 6px;
+        z-index: 1000;
     }
 
     &-item:hover .code-buttons-tooltip {
@@ -112,17 +123,8 @@ onMounted(async () => {
 
 .customcode {
     box-sizing: border-box;
-    padding: 0 20px 20px 20px;
-    background-color: #0d1117;
-    margin-bottom: 20px;
     overflow-x: auto;
-}
-
-.hidden {
-    display: none;
-}
-
-.custom-code-wrapper {
-    position: relative;
+    padding-bottom: 20px;
+    scrollbar-color: #9f9f9f #2c2c2c;
 }
 </style>

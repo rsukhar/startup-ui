@@ -4,7 +4,9 @@
     <div class="s-note-title" v-if="title">
         {{ title }}
     </div>
-    <slot />
+    <div class="s-note-content">
+        <slot />
+    </div>
 </div>
 </template>
 
@@ -32,11 +34,13 @@ const props = defineProps({
     font-family: var(--s-font-family);
     &-title {
         font-size: var(--s-h4-font-size);
-        margin-bottom: var(--s-base-margin);
         @include mobile(){
             font-size: 1rem;
             font-weight: bold;
         }
+    }
+    &-title + .s-note-content {
+        margin-top: var(--s-base-margin);
     }
     & > p:last-child {
         margin-bottom: 0;
