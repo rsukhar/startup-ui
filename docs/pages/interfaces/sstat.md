@@ -8,16 +8,7 @@
 <SStat title="Сумма платежей">777 000 ₽</SStat>
 </div>
 
-::: details Показать код
-``` js
-<template>
-    <SStat title="Сумма платежей">777 000 ₽</SStat>
-</template>
-<script setup>
-import { SStat } from 'startup-ui';
-</script>
-```
-:::
+<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
 
 ## Кастомный заголовок
 
@@ -30,8 +21,34 @@ import { SStat } from 'startup-ui';
 </SStat>
 </div>
 
-::: details Показать код
-``` js
+<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+
+<script setup>
+import SStat from '../../../packages/startup-ui/src/components/SStat.vue';
+import STooltip from '../../../packages/startup-ui/src/components/STooltip.vue';
+import CustomCodeBlock from '../../resources/components/CustomCodeBlock.vue';
+
+const code1 = `
+<SStat title="Сумма платежей">777 000 ₽</SStat>
+`;
+const fullCode1 = `
+<template>
+    <SStat title="Сумма платежей">777 000 ₽</SStat>
+</template>
+<script setup>
+import { SStat } from 'startup-ui';
+<\/script>
+`;
+
+const code2 = `
+<SStat>
+    <template #title>
+        Сумма платежей <STooltip>За выбранный период</STooltip>
+    </template>
+    777 000 ₽
+</SStat>
+`;
+const fullCode2 = `
 <template>
     <SStat>
         <template #title>
@@ -42,13 +59,8 @@ import { SStat } from 'startup-ui';
 </template>
 <script setup>
 import { SStat, STooltip } from 'startup-ui';
-</script>
-```
-:::
-
-<script setup>
-import SStat from '../../../packages/startup-ui/src/components/SStat.vue';
-import STooltip from '../../../packages/startup-ui/src/components/STooltip.vue';
+<\/script>
+`;
 </script>
 <style lang="scss" scoped>
 .s-dashboard {

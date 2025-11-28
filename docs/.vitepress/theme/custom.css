@@ -1,8 +1,8 @@
 :root {
     /* Настраиваем ширины */
-    --vp-sidebar-width: 360px;      /* Левый сайдбар */
-    --vp-aside-width: 200px;        /* Правый сайдбар (On this page) */
-    --vp-layout-max-width: 100%;    /* Убираем ограничение на общую ширину */   
+    --vp-sidebar-width: 337px;      /* Левый сайдбар */
+    --vp-aside-width: 500px;        /* Правый сайдбар (On this page) */
+    --vp-layout-max-width: 100%;    /* Убираем ограничение на общую ширину */
 }
 
 .content-container {
@@ -13,4 +13,73 @@
     padding: 20px;
     border: 1px solid #4c4d4f;
     border-radius: 6px;
+    margin-bottom: var(--s-base-margin);
+}
+
+@media (max-width: 1440px) {
+    .VPDocAside, .aside {
+        display: none !important;
+    }
+
+    /* Чтобы контент не оставлял место под aside */
+    .VPContent.has-sidebar {
+        padding-right: 0 !important;
+    }
+}
+
+li {
+    margin: 0 !important;
+}
+
+ul {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc p  {
+    border-top: none;
+    margin-top: 0;
+    margin-bottom: var(--s-base-margin);
+    padding-top: 0;
+}
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.vp-doc h1 {
+    font-size: var(--s-h1-font-size);
+}
+
+.vp-doc h2 {
+    font-size: var(--s-h2-font-size);
+}
+
+.vp-doc h3 {
+    margin: 0 0 var(--s-base-margin) !important;
+}
+
+.vp-doc h2 .header-anchor {
+    top: 0;
+}
+
+.shiki.github-dark-default {
+    margin-top: 0;
+}
+
+.s-input {
+    color: var(--s-text);
+}
+
+.s-tree-cell:hover {
+    color: var(--s-text) !important;
+}
+
+.dark .s-verticalmenu-item.type_section > .s-verticalmenu-label:hover {
+    color: var(--s-gray);
 }
