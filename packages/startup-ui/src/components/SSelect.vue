@@ -2,7 +2,7 @@
     <div class="s-select" :class="[customClass, {disabled, inline}]" ref="selectRef">
         <div class="s-select-field" :class="{selecting: areOptionsShown}" @click="showOptions">
             <input v-model="textFilter" v-if="filterable" class="s-select-field-filter" :placeholder="selectLabel" />
-            <div v-else class="s-select-field-label" >
+            <div v-else class="s-select-field-label">
                 <slot v-if="$slots.value && modelValue" name="value" :value="modelValue" />
                 <template v-else>{{ selectLabel }}</template>
             </div>
@@ -14,30 +14,31 @@
             </div>
         </div>
         <Teleport :disabled="!useTeleport" to="body">
-            <div class="s-select-options" :style="optionsStyles" :class="[areOptionsShown ? 'open' : '', openDirection, {'teleported': useTeleport}]" 
-                ref="dropdownRef" @scroll="handleScroll">
+            <div class="s-select-options" :style="optionsStyles"
+                 :class="[areOptionsShown ? 'open' : '', openDirection, {'teleported': useTeleport}]"
+                 ref="dropdownRef" @scroll="handleScroll">
                 <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
-                    <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)" 
+                    <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
                         :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
                         <slot name="option" :option="{label, value}" />
                     </li>
                 </ul>
                 <template v-else-if="visibleOptions.length">
                     <div v-if="virtual" class="s-select-scroll-container"
-                        :style="{ maxHeight: itemHeight * virtualScrollSize - 20 + 'px', position: 'relative' }"
-                        @scroll="handleScroll" ref="scrollContainer">
+                         :style="{ maxHeight: itemHeight * virtualScrollSize - 20 + 'px', position: 'relative' }"
+                         @scroll="handleScroll" ref="scrollContainer">
                         <div :style="{ height: totalHeight }"></div>
                         <div v-for="([value, label], index) in visibleOptions" :key="value"
-                            :style="{
+                             :style="{
                                 position: 'absolute',
                                 top: (itemHeight * (startIndex + index)) + 'px',
                                 left: 0,
                                 right: 0,
                                 height: itemHeight + 'px'
                             }"
-                            class="s-select-options-item"
-                            :class="{ selected: value == model }"
-                            @click.stop="selectOption(value)"
+                             class="s-select-options-item"
+                             :class="{ selected: value == model }"
+                             @click.stop="selectOption(value)"
                         >
                             <slot v-if="$slots.option" name="option" :option="option" />
                             <template v-else>{{ label }}</template>
@@ -45,7 +46,7 @@
                     </div>
                     <ul v-else class="s-select-options-list">
                         <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
-                                :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
+                            :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
                             {{ label }}
                         </li>
                     </ul>
@@ -79,7 +80,7 @@ const props = defineProps({
         default: false
     },
     /**
-     * Количество элементов, которые рендерятся при виртуальном скролле  
+     * Количество элементов, которые рендерятся при виртуальном скролле
      */
     virtualScrollSize: {
         type: Number,
@@ -110,7 +111,7 @@ watch(() => props.options, (newOptions) => {
 
 const itemHeight = ref(35); // высота одной опции в px
 const startIndex = ref(0);
-const totalHeight = computed(() => `${internalOptions.value.length * itemHeight.value }px`);
+const totalHeight = computed(() => `${internalOptions.value.length * itemHeight.value}px`);
 
 const visibleOptions = computed(() => {
     if (internalOptions.value.length === 0) {
@@ -178,17 +179,26 @@ function selectOption(optionValue) {
 
 /**
  * Определить направление раскрытия выпадающего списка
- * 
+ *
  * @param rect Объект с координатами прямоугольника
  */
 function determineListDirection(rect) {
-    const dropdownHeight = dropdownRef.value.offsetHeight + Math.max(20, internalOptions.value.length * itemHeight.value);
+    const listHeight = dropdownRef.value.offsetHeight;
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
-
-    return spaceBelow < dropdownHeight && spaceAbove > dropdownHeight
-            ? 'drop-up'
-            : 'drop-down';
+    if (spaceBelow >= listHeight) {
+        // Снизу умещается
+        return 'drop-down';
+    } else {
+        // Снизу не умещается
+        if (spaceAbove > listHeight) {
+            // Сверху умещается
+            return 'drop-up';
+        } else {
+            // Сверху тоже не умещается, размещаем там, где больше места
+            return (spaceAbove > spaceBelow) ? 'drop-up' : 'drop-down';
+        }
+    }
 }
 
 const optionsStyles = ref({});
@@ -216,13 +226,13 @@ function updateOptionsPosition() {
 }
 
 watch(areOptionsShown, (shown) => {
-  if (shown) {
-    updateOptionsPosition();
-  }
+    if (shown) {
+        updateOptionsPosition();
+    }
 });
 
 function showOptions(event) {
-    areOptionsShown.value=!areOptionsShown.value;
+    areOptionsShown.value = !areOptionsShown.value;
 }
 
 function handleClear() {
@@ -254,7 +264,7 @@ onBeforeUnmount(() => {
     background-color: var(--s-white);
     cursor: pointer;
     font-family: var(--s-font-family);
-    
+
     &.disabled {
         cursor: not-allowed;
         pointer-events: none;
@@ -272,19 +282,19 @@ onBeforeUnmount(() => {
             }
         }
 
-        &-filter { 
+        &-filter {
             color: inherit;
             border: none;
             outline: none;
             cursor: text;
             border-radius: var(--s-border-radius);
             flex-grow: 1;
-            
+
             &::placeholder {
                 color: var(--s-text);
             }
         }
-        
+
         &-label {
             user-select: auto;
             width: 100%;
@@ -316,6 +326,7 @@ onBeforeUnmount(() => {
         font-weight: 300;
         width: 30px;
         text-align: center;
+
         &:hover {
             color: var(--s-primary);
         }
@@ -390,33 +401,40 @@ onBeforeUnmount(() => {
             width: 100%;
             text-overflow: ellipsis;
             overflow: hidden;
+
             &:hover {
                 background-color: var(--s-gray);
             }
+
             &.selected {
                 color: var(--s-primary);
                 background-color: var(--s-primary-lightest);
             }
         }
     }
-    @include mobile(){
+
+    @include mobile() {
         flex-grow: 1;
     }
 
     &.inline {
         border: 0;
+
         .s-select-field {
             padding: 0;
         }
+
         .s-select-options {
             left: auto;
             right: 0;
             width: fit-content;
         }
+
         .s-select-options-list {
             width: auto;
             margin-right: 0;
         }
+
         .s-select-options-item {
             overflow: visible;
         }
