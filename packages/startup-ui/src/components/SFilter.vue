@@ -12,9 +12,9 @@ const props = defineProps({
     name: String,
     debounce: Number,
 });
-const params = inject('params', {});
+const groupModel = inject('sFilterGroup-model', {});
 const slots = useSlots();
-
+const groupUpdateValue = inject('sFilterGroup-updateValue', (name, value) => ({}));
 const updateParam = ref(() => {});
 
 /**
@@ -24,7 +24,7 @@ watch(
     () => [props.debounce, props.name],
     ([debounceValue, name]) => {
         updateParam.value = debounce((val) => {
-            params.value[name] = val;
+            groupUpdateValue(name, val);
         }, debounceValue ?? 0);
     },
     { immediate: true }
@@ -37,7 +37,7 @@ const nestedNodes = computed(() => {
     const vnodes = slots.default?.() || [];
     return vnodes.map((vnode) => {
         if (typeof vnode.type !== 'object') return vnode;
-        nestedModel.value = params?.value[props.name] ?? null;
+        nestedModel.value = groupModel?.value[props.name] ?? null;
         // Если элемент SDatePicker с атрибутом range — превращаем в массив
         if (nestedModel.value && vnode.type.__name === 'SDatePicker' && vnode.props.range !== null) {
             nestedModel.value = nestedModel.value.split('-');

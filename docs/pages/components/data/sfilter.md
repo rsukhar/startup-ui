@@ -32,7 +32,7 @@
 <li>2. При изменениях модели автоматически обновлять GET-параметры, сбрасывая page, но оставляя любые другие параметры.</li>
 </ul>
 
-В этом случае можно использовать атрибут `bind-to-get` , который включит такое поведение:
+В этом случае можно использовать атрибут `bind-to-query` , который включит такое поведение:
 
 <CustomCodeBlock :code="{text: code2, lang: 'vue'}" />
 
@@ -158,7 +158,7 @@ import { SFilterGroup, SFilter, SRadioGroup, SRadio, SDatePicker } from 'startup
 <\/script>
 `;
 
-const code2 = `<SFilterGroup bind-to-get>
+const code2 = `<SFilterGroup bind-to-query>
   ...
 </SFilterGroup>
 `;

@@ -4,69 +4,70 @@
     </div>
 </template>
 <script setup>
-import { provide, watch, ref, onMounted, onBeforeUnmount } from 'vue';
+import { provide, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
-    bindToGet: Boolean
+    /**
+     * Если установлено, то получает значение модели из query-параметров при загрузке и изменяет их при изменении значений фильтров
+     */
+    bindToQuery: {
+        type: Boolean,
+        default: false,
+    },
+    /**
+     * Query-параметры, которые не учитываем в модели
+     */
+    ignoreQueryNames: {
+        type: Array,
+        default: () => (['page']),
+    },
+    /**
+     * Значения модели, которые не проставляем в query-параметры (пропускаем такие параметры)
+     */
+    ignoreQueryValues: {
+        type: Array,
+        default: () => (['', null, undefined, false]),
+    },
 });
 
-const providedParams = ref({});
-const model = defineModel();
+const model = defineModel({
+    type: Object,
+    default: () => ({})
+});
+provide('sFilterGroup-model', model);
 
-/**
- * Получить объект GET-параметров
- */
-function syncWithUrl() {
-    const paramsObj = new URLSearchParams(window.location.search);
-    return Object.fromEntries(paramsObj.entries());
+const updateValue = (name, value) => {
+    model.value[name] = value;
+    if (props.bindToQuery) setQueryParams(model.value);
 }
+provide('sFilterGroup-updateValue', updateValue);
 
-
-// Если включен bindToGet, получаем фильтр из адресной строки
-provide('params', providedParams);
-
-onMounted(() => {
-    if (props.bindToGet) {
-        providedParams.value = { ...syncWithUrl() };
-    } else {
-        providedParams.value = model.value;
+const getQueryParams = () => {
+    const result = {};
+    for (const [name, value] of (new URLSearchParams(window.location.search)).entries()){
+        if ( ! props.ignoreQueryNames.includes(name)) result[name] = value;
     }
-});
 
-// Обновление URL
-const applyParamsToUrl = (params) => {
-    router.get(window.location.pathname, new URLSearchParams(params), {
+    return result;
+}
+const setQueryParams = (params) => {
+    const filteredParams = Object.fromEntries(Object.entries(params)
+        .filter(([key, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value)));
+    router.get(window.location.pathname, new URLSearchParams(filteredParams), {
         preserveScroll: true,
         preserveState: true,
         replace: true,
     });
-};
-
-// Если нужно реагировать на изменения params
-watch(providedParams, (newParams) => {
-    // Убираем пустые значения и сбрасываем page
-    const newFilteredParams = Object.fromEntries(Object.entries(newParams).filter(([key, value]) =>
-        !['', null, undefined, false].includes(value) && key !== 'page'
-    ));
-
-    if (props.bindToGet) {
-        applyParamsToUrl(newFilteredParams);
-    }
-    
-    model.value = { ...newFilteredParams };
-
-}, { deep: true });
+}
 
 // Следим за изменением query и синхронизируемся
 const handleUrlChange = () => {
-    providedParams.value = { ...syncWithUrl() };
+    if (props.bindToQuery) model.value = getQueryParams();
 };
-
-if (props.bindToGet) {
-    onMounted(() => window.addEventListener('popstate', handleUrlChange));
-    onBeforeUnmount(() => window.removeEventListener('popstate', handleUrlChange));
-}
+onBeforeMount(() => handleUrlChange());
+onMounted(() => window.addEventListener('popstate', handleUrlChange));
+onBeforeUnmount(() => window.removeEventListener('popstate', handleUrlChange));
 </script>
 <style lang="scss">
 .s-filtergroup {
