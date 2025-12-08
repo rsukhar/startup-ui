@@ -1,4 +1,4 @@
-# SToggle + SToggleGroup
+# SToggleGroup + SToggle
 
 Открывающийся-закрывающийся блок.
 

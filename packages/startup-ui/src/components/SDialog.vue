@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import { useTemplateRef, watch, nextTick, onBeforeMount } from 'vue';
-import { useDraggable } from '@vueuse/core';
+import { useDraggable, useResizeObserver } from '@vueuse/core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const props = defineProps({
@@ -35,6 +35,8 @@ const $window = useTemplateRef('$window');
 const $header = useTemplateRef('$header');
 
 const { x, y, style } = useDraggable($window, { handle: $header });
+
+useResizeObserver($window, () => { calcaulateDialogPosition() });
 
 const calcaulateDialogPosition = () => {
     const rect = $window.value?.getBoundingClientRect()
@@ -88,6 +90,7 @@ function handleHide() {
         border: 1px solid var(--s-border);
         border-radius: var(--s-border-radius);
         max-width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 
         &-header {
             display: flex;

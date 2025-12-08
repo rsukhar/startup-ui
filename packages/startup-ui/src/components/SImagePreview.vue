@@ -98,7 +98,7 @@ watch(modalHeight, handleNewModelState);
         color: var(--s-primary-light);
         opacity: 0;
         transition: opacity 0.2s ease-in;
-        z-index: 1001;
+        z-index: 999;
     }
 
     &:hover {
@@ -130,7 +130,7 @@ watch(modalHeight, handleNewModelState);
         font-size: 20px;
         top: 20px;
         right: 20px;
-        z-index: 999;
+        z-index: 1001;
         background-color: var(--s-white);
         border-radius: 40px;
         cursor: pointer;

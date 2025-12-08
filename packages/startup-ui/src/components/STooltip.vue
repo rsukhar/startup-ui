@@ -88,13 +88,14 @@ function calculatePosition() {
         return;
     }
 
+    const isEnoughPlaceAround = ((window.innerWidth - iconRect.right) > tooltipRect.width / 2) && (iconRect.left > tooltipRect.width / 2);
     // Автоматический рассчет позиции подскази
-    // Снизу
-    if ((window.innerHeight - iconRect.top) > tooltipRect.height + 10) {
+    // Снизу (есть место снизу и width/2 слева и справа)
+    if (((window.innerHeight - iconRect.top) > tooltipRect.height + 10) && isEnoughPlaceAround) {
         positionStyle.value = tooltipPositions.bottom();
         positionClass.value = 'bottom';
-    } else if (iconRect.top > tooltipRect.height + 10) {
-        // Сверху
+    } else if ((iconRect.top > tooltipRect.height + 10) && isEnoughPlaceAround) {
+        // Сверху (есть место сверху и width/2 слева и справа)
         positionStyle.value = tooltipPositions.top();
         positionClass.value = 'top';
     } else if ((window.innerWidth - iconRect.right) > (tooltipRect.width + 10)) {

@@ -28,22 +28,30 @@
             </div>
             <div class="s-verticalmenu-children" v-if="link.children"
                  :class="{'is-opened' : openedItems.includes(link.id)}">
-                <SVerticalMenu :links="link.children" />
+                 <SVerticalMenu :links="link.children" :expandedKeys="expandedKeys" :storeExpandedKeysTo="storeExpandedKeysTo"/>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { useRemember, Link } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
+import { ref, computed } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { useStorage } from "@vueuse/core";
 
 const props = defineProps({
     // В формате [{label: '', url: '', active: ''}]
     links: Object,
+    // Узлы, открытые на старте
+    expandedKeys: {
+        type: Array,
+        default: []
+    },
+    // Сохранять раскрытые узлы в localStorage?
+    storeExpandedKeysTo: String
 });
 
-// Метод для расчета активных элементов. Реактивность не нужна, т.к. это только для стартового состояния - дальше useRemember
 const getExpandedKeys = function(links) {
     let result = [];
     for (let link of links) {
@@ -56,8 +64,15 @@ const getExpandedKeys = function(links) {
     return result;
 };
 
-// Все предки текущего активного элемента и он сам на старте на старте должны быть раскрыты
-const openedItems = useRemember(getExpandedKeys(props.links), 'OpenedSidebarItems');
+// На старте открыты все предки активной страницы и те, чьи ключи передали в expandedKeys
+const initialOpened = computed(() => [
+    ...getExpandedKeys(props.links),
+    ...props.expandedKeys
+]);
+// Хранить состояние в localStorage или нет 
+const openedItems = props.storeExpandedKeysTo
+    ? useStorage(props.storeExpandedKeysTo, initialOpened.value)
+    : ref(initialOpened.value);
 
 const toggleItem = function(id) {
     openedItems.value = openedItems.value.includes(id) ? openedItems.value.filter(i => i !== id) : [...openedItems.value, id];
