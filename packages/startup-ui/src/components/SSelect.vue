@@ -13,9 +13,9 @@
                 <FontAwesomeIcon class="s-select-dropdown-chevron" icon="chevron-down" />
             </div>
         </div>
-        <Teleport :disabled="!useTeleport" to="body">
+        <Teleport to="body">
             <div class="s-select-options" :style="optionsStyles"
-                 :class="[areOptionsShown ? 'open' : '', openDirection, {'teleported': useTeleport}]"
+                 :class="[areOptionsShown ? 'open' : '', openDirection]"
                  ref="dropdownRef" @scroll="handleScroll">
                 <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
                     <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
@@ -86,13 +86,6 @@ const props = defineProps({
         type: Number,
         default: 10,
     },
-    /**
-     * Позволить выпадающему списку вылезать за пределы родительского окна
-     */
-    useTeleport: {
-        type: Boolean,
-        default: false
-    }
 });
 const emits = defineEmits(['change', 'filter']);
 const model = defineModel();
@@ -183,33 +176,50 @@ function selectOption(optionValue) {
  * @param rect Объект с координатами прямоугольника
  */
 function determineListDirection(rect) {
-    const listHeight = dropdownRef.value.offsetHeight + Math.max(20, internalOptions.value.length * itemHeight.value);
-    const spaceBelow = window.innerHeight - rect.bottom;
-    const spaceAbove = rect.top;
+    const minOffset = Math.max(20, Math.min(6, internalOptions.value.length) * itemHeight.value);
+    const listHeight = dropdownRef.value.offsetHeight + minOffset;
+    const spaceBelow = document.documentElement.clientHeight - rect.bottom;
+
     if (spaceBelow >= listHeight) {
         // Снизу умещается
         return 'drop-down';
     } else {
         // Снизу не умещается
-        if (spaceAbove > listHeight) {
+        if (rect.top > listHeight) {
             // Сверху умещается
             return 'drop-up';
         } else {
             // Сверху тоже не умещается, размещаем там, где больше места
-            return (spaceAbove > spaceBelow) ? 'drop-up' : 'drop-down';
+            return (rect.top > spaceBelow) ? 'drop-up' : 'drop-down';
         }
     }
 }
 
 const optionsStyles = ref({});
 
+// Найти предка с position:fixed
+function hasFixedParent() {
+    let parent = $selectRef.value.parentElement;
+
+    while (parent) {
+        if (getComputedStyle(parent).position === 'fixed') {
+            return true;
+        }
+        parent = parent.parentElement;
+    }
+
+    return false;
+}
+
 function updateOptionsPosition() {
     const rect = $selectRef.value.getBoundingClientRect();
     openDirection.value = determineListDirection(rect);
 
-    if ($selectRef.value && props.useTeleport) {
+    const fixedPosition = hasFixedParent($selectRef.value);
+    if ($selectRef.value) {
         optionsStyles.value = {
-            position: 'absolute',
+            // Если есть предок с position:fixed, то ставим fixed, иначе absolute
+            position: fixedPosition ? 'fixed' : 'absolute',
             left: `${rect.left + window.scrollX}px`,
             zIndex: 9999,
             width: `${rect.width}px`,
@@ -217,10 +227,10 @@ function updateOptionsPosition() {
 
         if (openDirection.value === 'drop-up') {
             // Для drop-up
-            optionsStyles.value['bottom'] = `${(window.innerHeight - rect.bottom) + rect.height}px`;
+            optionsStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - window.scrollY}px`;
         } else {
             // Для drop-down
-            optionsStyles.value['top'] = `${rect.bottom + window.scrollY}px`;
+            optionsStyles.value['top'] = `${rect.bottom + (fixedPosition ? 0 : window.scrollY)}px`;
         }
     }
 }
@@ -350,11 +360,7 @@ onBeforeUnmount(() => {
         z-index: 1001;
         pointer-events: none;
         min-width: 100%;
-        width: fit-content;
-
-        &.teleported {
-            min-width: fit-content;
-        }
+        min-width: fit-content;
 
         &-nodata {
             padding: 0.25rem 0.25rem;

@@ -56,7 +56,6 @@ const setQueryParams = (params) => {
         .filter(([key, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value)));
     router.get(window.location.pathname, new URLSearchParams(filteredParams), {
         preserveScroll: true,
-        preserveState: true,
         replace: true,
     });
 }

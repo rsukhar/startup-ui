@@ -17,11 +17,11 @@ export default defineConfig({
                 {
                     text: 'Формы',
                     items: [
-                        { text: 'SForm > SFormRow', link: '/pages/components/forms/sform' },
+                        { text: 'SForm + SFormRow', link: '/pages/components/forms/sform' },
                         { text: 'SInput', link: '/pages/components/forms/sinput' },
                         { text: 'SSelect', link: '/pages/components/forms/sselect' },
                         { text: 'SCheckbox', link: '/pages/components/forms/scheckbox' },
-                        { text: 'SRadio', link: '/pages/components/forms/sradio' },
+                        { text: 'SRadioGroup + SRadio', link: '/pages/components/forms/sradio' },
                         { text: 'SSwitch', link: '/pages/components/forms/sswitch' },
                         { text: 'SDatePicker', link: '/pages/components/forms/sdatepicker' },
                         { text: 'SHtmlEditor', link: '/pages/components/forms/shtmleditor' },
@@ -31,7 +31,7 @@ export default defineConfig({
                 {
                     text: 'Данные',
                     items: [
-                        { text: 'SFilter', link: '/pages/components/data/sfilter' },
+                        { text: 'SFilterGroup + SFilter', link: '/pages/components/data/sfilter' },
                         { text: 'SPagination', link: '/pages/components/data/spagination' },
                         { text: 'STable', link: '/pages/components/data/stable' },
                         { text: 'STree', link: '/pages/components/data/stree' },
