@@ -227,7 +227,7 @@ function updateOptionsPosition() {
 
         if (openDirection.value === 'drop-up') {
             // Для drop-up
-            optionsStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - window.scrollY}px`;
+            optionsStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - (fixedPosition ? 0 : window.scrollY)}px`;
         } else {
             // Для drop-down
             optionsStyles.value['top'] = `${rect.bottom + (fixedPosition ? 0 : window.scrollY)}px`;
