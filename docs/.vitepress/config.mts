@@ -55,7 +55,7 @@ export default defineConfig({
                         { text: 'SProgressBar', link: '/pages/components/interfaces/sprogressbar' },
                         { text: 'SCopyText', link: '/pages/components/interfaces/scopytext' },
                         { text: 'STimeline', link: '/pages/components/interfaces/stimeline' },
-                        { text: 'SDashboard + SDashboardItem', link: '/pages/components/interfaces/sdashboard' },
+                        { text: 'SDashboard > SDashboardItem', link: '/pages/components/interfaces/sdashboard' },
                         { text: 'SStat', link: '/pages/components/interfaces/sstat' },
                     ],
                 },

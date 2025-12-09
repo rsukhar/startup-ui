@@ -1,5 +1,5 @@
 <template>
-    <div class="s-select" :class="[customClass, {disabled, inline}]" ref="selectRef">
+    <div class="s-select" :class="[{disabled, inline}]" ref="selectRef">
         <div class="s-select-field" :class="{selecting: areOptionsShown}" @click="showOptions">
             <input v-model="textFilter" v-if="filterable" class="s-select-field-filter" :placeholder="selectLabel" />
             <div v-else class="s-select-field-label">
@@ -14,44 +14,45 @@
             </div>
         </div>
         <Teleport to="body">
-            <div class="s-select-options" :style="optionsStyles"
-                 :class="[areOptionsShown ? 'open' : '', openDirection]"
-                 ref="dropdownRef" @scroll="handleScroll">
-                <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
-                    <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
-                        :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
-                        <slot name="option" :option="{label, value}" />
-                    </li>
-                </ul>
-                <template v-else-if="visibleOptions.length">
-                    <div v-if="virtual" class="s-select-scroll-container"
-                         :style="{ maxHeight: itemHeight * virtualScrollSize - 20 + 'px', position: 'relative' }"
-                         @scroll="handleScroll" ref="scrollContainer">
-                        <div :style="{ height: totalHeight }"></div>
-                        <div v-for="([value, label], index) in visibleOptions" :key="value"
-                             :style="{
-                                position: 'absolute',
-                                top: (itemHeight * (startIndex + index)) + 'px',
-                                left: 0,
-                                right: 0,
-                                height: itemHeight + 'px'
-                            }"
-                             class="s-select-options-item"
-                             :class="{ selected: value == model }"
-                             @click.stop="selectOption(value)"
-                        >
-                            <slot v-if="$slots.option" name="option" :option="option" />
-                            <template v-else>{{ label }}</template>
-                        </div>
-                    </div>
-                    <ul v-else class="s-select-options-list">
+            <div :class="[attrs.class ?? '']">
+                <div class="s-select-options" :style="optionsStyles"
+                    :class="[areOptionsShown ? 'open' : '', openDirection]"
+                    ref="dropdownRef" @scroll="handleScroll">
+                    <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
                         <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
                             :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
-                            {{ label }}
+                            <slot name="option" :option="{label, value}" />
                         </li>
                     </ul>
-                </template>
-                <div v-else class="s-select-options-nodata">Нет данных</div>
+                    <template v-else-if="visibleOptions.length">
+                        <div v-if="virtual"
+                            :style="{ maxHeight: itemHeight * virtualScrollSize - 20 + 'px', position: 'relative' }"
+                            @scroll="handleScroll" class="s-select-scroll-container" ref="scrollContainer">
+                            <div :style="{ height: totalHeight }"></div>
+                            <div v-for="([value, label], index) in visibleOptions" :key="value"
+                                :style="{
+                                    position: 'absolute',
+                                    top: (itemHeight * (startIndex + index)) + 'px',
+                                    left: 0,
+                                    height: itemHeight + 'px'
+                                }"
+                                class="s-select-options-item"
+                                :class="{ selected: value == model }"
+                                @click.stop="selectOption(value)"
+                            >
+                                <slot v-if="$slots.option" name="option" :option="option" />
+                                <template v-else>{{ label }}</template>
+                            </div>
+                        </div>
+                        <ul v-else class="s-select-options-list">
+                            <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
+                                :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
+                                {{ label }}
+                            </li>
+                        </ul>
+                    </template>
+                    <div v-else class="s-select-options-nodata">Нет данных</div>
+                </div>
             </div>
         </Teleport>
     </div>
@@ -92,9 +93,6 @@ const model = defineModel();
 const $selectRef = templateRef('selectRef');
 
 const attrs = useAttrs();
-const customClass = computed(() => {
-    return attrs.class?.includes('s-custom-select') || '';
-});
 
 const toInternalOptions = (propValue) => (propValue instanceof Array) ? JSON.parse(JSON.stringify(propValue)) : Object.entries(propValue);
 const internalOptions = ref(toInternalOptions(props.options ?? {}));
@@ -344,7 +342,6 @@ onBeforeUnmount(() => {
 
     &-options {
         position: absolute;
-        max-height: 0;
         border: 1px solid var(--s-border);
         gap: 10px;
         left: 0;
@@ -417,6 +414,10 @@ onBeforeUnmount(() => {
                 background-color: var(--s-primary-lightest);
             }
         }
+    }
+
+    &-scroll-container {
+        cursor: pointer;
     }
 
     @include mobile() {

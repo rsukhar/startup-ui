@@ -1,4 +1,4 @@
-# SDashboard + SDashboardItem
+# SDashboard > SDashboardItem
 
 Дешборд блоков (как правило, удобно использовать для отчетов).
 

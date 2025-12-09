@@ -26,11 +26,11 @@
 ## Привязка к GET-параметрам
 
 Часто бывает удобно привязать модель напрямую к GET-параметрам:
-<ul>
-<li>1. Взять стартовые значения модели из GET-параметров (без необходимости проброса через контроллер)</li>
+<ol>
+<li>Взять стартовые значения модели из GET-параметров (без необходимости проброса через контроллер)</li>
 
-<li>2. При изменениях модели автоматически обновлять GET-параметры, сбрасывая page, но оставляя любые другие параметры.</li>
-</ul>
+<li>При изменениях модели автоматически обновлять GET-параметры, сбрасывая page, но оставляя любые другие параметры.</li>
+</ol>
 
 В этом случае можно использовать атрибут `bind-to-query` , который включит такое поведение:
 
@@ -97,7 +97,7 @@ Placeholder задает «не выбранный вариант» — null-з�
 <CustomCodeBlock :code="{text: code6, lang: 'js'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import SFilterGroup from '../../../../packages/startup-ui/src/components/SFilterGroup.vue';
 import SFilter from '../../../../packages/startup-ui/src/components/SFilter.vue';
 import SRadioGroup from '../../../../packages/startup-ui/src/components/SRadioGroup.vue';
@@ -124,6 +124,18 @@ const filter2 = ref({});
 const filter3 = ref({});
 const filter4 = ref({});
 const filter5 = ref({});
+
+watch(
+    [filter, filter2, filter3, filter4, filter5],
+    (newValues) => {
+        newValues.forEach((f) => {
+        const notEmpty = Object.values(f).filter(v => v);
+        if (notEmpty.length === 0 && Object.keys(f).length > 0) {
+            for (const key in f) delete f[key];
+        }
+        });
+    }, { deep: true }
+);
 
 const code1 = `<SFilterGroup v-model="filter">
     <SFilter name="plan">
@@ -242,19 +254,12 @@ import { SFilterGroup, SFilter, SDatePicker } from 'startup-ui';
 
 </script>
 <style lang="scss" scoped>
-:root {
-    .vp-doc ul {
-        padding-left: 0;
-        margin: 0;
-    }
+.vp-doc ol {
+    margin: var(--s-base-margin) !important;
+}
 
-    .vp-doc li + li {
-        margin: 0;
-    }
-
-    .vp-doc h3 {
-        margin: 0;
-    }
+.vp-doc li {
+    margin-bottom: 10px !important;
 }
 
 .s-datepicker {
@@ -264,4 +269,6 @@ import { SFilterGroup, SFilter, SDatePicker } from 'startup-ui';
 .s-filtergroup {
     margin-bottom: 0;
 }
+
+
 </style>

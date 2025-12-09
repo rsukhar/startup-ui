@@ -1,37 +1,36 @@
 <template>
     <div class="s-htmleditor">
-        <Editor :init="initOptions" v-model="model" @update:modelValue="onEditorChange" />
+        <component
+            v-if="Editor"
+            :is="Editor"
+            v-model="model"
+            :init="initOptions"
+        />
     </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
-import Editor from '@tinymce/tinymce-vue';
-// Следующая строчка нужна для отключения запроса API-ключая, не удалять!
-import tinymce from 'tinymce/tinymce';
-import './tinymce/skins/ui/oxide/skin.min.css'
-import './tinymce/skins/ui/oxide/content.min.css'
-import axios from "axios";
+import { ref, shallowRef, onMounted } from 'vue';
 
-// темы/иконки
-import 'tinymce/icons/default';
-import 'tinymce/themes/silver/theme';
-import 'tinymce/models/dom/model';
+const Editor = shallowRef(null);
 
-import 'tinymce/plugins/advlist';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/lists';
-import 'tinymce/plugins/image';
-import 'tinymce/plugins/charmap';
-import 'tinymce/plugins/fullscreen';
-import 'tinymce/plugins/insertdatetime';
-import 'tinymce/plugins/media';
-import 'tinymce/plugins/table';
-import 'tinymce/plugins/autolink';
-import 'tinymce/plugins/code';
+onMounted(async () => {
+    await import('tinymce/tinymce');
+    await import('tinymce/icons/default');
+    await import('tinymce/themes/silver/theme');
+    await import('tinymce/models/dom/model');
 
-// стили
-import 'tinymce/skins/ui/oxide/skin.min.css';
-import 'tinymce/skins/ui/oxide/content.min.css';
+    await import('tinymce/plugins/advlist');
+    await import('tinymce/plugins/link');
+    await import('tinymce/plugins/lists');
+    await import('tinymce/plugins/image');
+    await import('tinymce/plugins/code');
+
+    // стили
+    await import('tinymce/skins/ui/oxide/skin.min.css');
+    await import('tinymce/skins/ui/oxide/content.min.css');
+
+    Editor.value = (await import('@tinymce/tinymce-vue')).default;
+});
 
 const emits = defineEmits(['changeContent']);
 
@@ -358,17 +357,12 @@ const initOptions = ref({
     }
 });
 
+
 // Загрузка картинки на сервер
 async function uploadImageToServer(blobInfo, progress) {
     const formData = new FormData();
     formData.append('file', blobInfo.blob(), blobInfo.filename());
-    try {
-        const response = await axios.post(props.uploadUrl, formData);
-        return response.data.location;
-    } catch (error) {
-        console.error('Upload error:', error);
-        throw new Error('Image upload failed: ' + error.message);
-    }
+    return '';
 }
 function onEditorChange() {
     emits('changeContent');
