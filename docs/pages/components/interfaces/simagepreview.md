@@ -8,7 +8,7 @@
 
 <div class="docs-container">
     <div class="preview-container">
-        <SImagePreview src="../../../resources/img/animals.webp" />
+        <SImagePreview :src="animals" />
     </div>
 </div>
 
@@ -20,7 +20,7 @@
 
 <div class="docs-container">
     <div class="preview-container">
-        <SImagePreview preview="../../../resources/img/nature.jpg" src="../../../resources/img/animals.webp" />
+        <SImagePreview :preview="nature" :src="animals" />
     </div>
 </div>
 
@@ -30,9 +30,9 @@
 
 <div class="docs-container">
     <div class="preview-container">
-        <SImagePreview src="../../../resources/img/animals.webp">
+        <SImagePreview :src="animals">
             <template #preview>
-                <img src="../../../resources/img/nature.jpg" />
+                <img :src="nature" />
             </template>
         </SImagePreview>
     </div>
@@ -46,7 +46,7 @@
 
 <div class="docs-container">
     <div class="preview-container">
-        <SImagePreview src="../../../resources/img/animals.webp" icon="magnifying-glass-plus" />
+        <SImagePreview :src="animals" icon="magnifying-glass-plus" />
     </div>
 </div>
 
@@ -56,7 +56,7 @@
 
 <div class="docs-container">
     <div class="preview-container">
-        <SImagePreview src="../../../resources/img/animals.webp" icon="magnifying-glass-plus">
+        <SImagePreview :src="animals" icon="magnifying-glass-plus">
             <template #icon>
                 🔍
             </template>
@@ -69,6 +69,8 @@
 <script setup>
 import SImagePreview from '../../../../packages/startup-ui/src/components/SImagePreview.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
+import animals from '../../../resources/img/animals.webp';
+import nature from '../../../resources/img/nature.jpg';
 
 const code1 = `<SImagePreview src="../../resources/img/animals.webp" />
 `;
