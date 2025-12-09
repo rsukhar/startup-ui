@@ -14,7 +14,7 @@
             </div>
         </div>
         <Teleport to="body">
-            <div :class="[attrs.class ?? '']">
+            <div class="s-select-options-wrapper" :class="[attrs.class ?? '']">
                 <div class="s-select-options" :style="optionsStyles"
                     :class="[areOptionsShown ? 'open' : '', openDirection]"
                     ref="dropdownRef" @scroll="handleScroll">
@@ -341,7 +341,7 @@ onBeforeUnmount(() => {
     }
 
     &-options {
-        position: absolute;
+        max-height: 0;
         border: 1px solid var(--s-border);
         gap: 10px;
         left: 0;
@@ -358,6 +358,10 @@ onBeforeUnmount(() => {
         pointer-events: none;
         min-width: 100%;
         min-width: fit-content;
+
+        &-wrapper {
+            position: absolute;
+        }
 
         &-nodata {
             padding: 0.25rem 0.25rem;
