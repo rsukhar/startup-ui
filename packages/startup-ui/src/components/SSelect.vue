@@ -14,10 +14,10 @@
             </div>
         </div>
         <Teleport to="body">
-            <div class="s-select-options-wrapper" :class="[attrs.class ?? '']">
-                <div class="s-select-options" :style="optionsStyles"
+            <div ref="dropdownRef" :style="optionsStyles" :class="['s-select-stylewrapper', attrs.class]">
+                <div class="s-select-options"
                     :class="[areOptionsShown ? 'open' : '', openDirection]"
-                    ref="dropdownRef" @scroll="handleScroll">
+                    @scroll="handleScroll">
                     <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
                         <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
                             :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
@@ -340,6 +340,10 @@ onBeforeUnmount(() => {
         }
     }
 
+    &-stylewrapper {
+        position: absolute;
+    }
+
     &-options {
         max-height: 0;
         border: 1px solid var(--s-border);
@@ -358,10 +362,6 @@ onBeforeUnmount(() => {
         pointer-events: none;
         min-width: 100%;
         min-width: fit-content;
-
-        &-wrapper {
-            position: absolute;
-        }
 
         &-nodata {
             padding: 0.25rem 0.25rem;
