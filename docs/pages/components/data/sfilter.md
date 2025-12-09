@@ -1,4 +1,4 @@
-# SFilterGroup + SFilter
+# SFilterGroup > SFilter
 
 Базовый пример
 

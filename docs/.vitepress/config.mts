@@ -17,11 +17,11 @@ export default defineConfig({
                 {
                     text: 'Формы',
                     items: [
-                        { text: 'SForm + SFormRow', link: '/pages/components/forms/sform' },
+                        { text: 'SForm > SFormRow', link: '/pages/components/forms/sform' },
                         { text: 'SInput', link: '/pages/components/forms/sinput' },
                         { text: 'SSelect', link: '/pages/components/forms/sselect' },
                         { text: 'SCheckbox', link: '/pages/components/forms/scheckbox' },
-                        { text: 'SRadioGroup + SRadio', link: '/pages/components/forms/sradio' },
+                        { text: 'SRadioGroup > SRadio', link: '/pages/components/forms/sradio' },
                         { text: 'SSwitch', link: '/pages/components/forms/sswitch' },
                         { text: 'SDatePicker', link: '/pages/components/forms/sdatepicker' },
                         { text: 'SHtmlEditor', link: '/pages/components/forms/shtmleditor' },
@@ -31,7 +31,7 @@ export default defineConfig({
                 {
                     text: 'Данные',
                     items: [
-                        { text: 'SFilterGroup + SFilter', link: '/pages/components/data/sfilter' },
+                        { text: 'SFilterGroup > SFilter', link: '/pages/components/data/sfilter' },
                         { text: 'SPagination', link: '/pages/components/data/spagination' },
                         { text: 'STable', link: '/pages/components/data/stable' },
                         { text: 'STree', link: '/pages/components/data/stree' },
@@ -44,7 +44,7 @@ export default defineConfig({
                         { text: 'SActionIcon', link: '/pages/components/interfaces/sactionicon' },
                         { text: 'STooltip', link: '/pages/components/interfaces/stooltip' },
                         { text: 'SNote', link: '/pages/components/interfaces/snote' },
-                        { text: 'SToggleGroup + SToggle', link: '/pages/components/interfaces/stoggle' },
+                        { text: 'SToggleGroup > SToggle', link: '/pages/components/interfaces/stoggle' },
                         { text: 'SConfirm', link: '/pages/components/interfaces/sconfirm' },
                         { text: 'SDialog', link: '/pages/components/interfaces/sdialog' },
                         { text: 'SImagePreview', link: '/pages/components/interfaces/simagepreview' },
