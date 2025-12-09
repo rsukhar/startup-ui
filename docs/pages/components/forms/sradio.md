@@ -1,4 +1,4 @@
-# SRadioGroup + SRadio
+# SRadioGroup > SRadio
 
 Радио-кнопки.
 
