@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import SHtmlEditor from '../../../resources/components/SHtmlEditor.vue';
+import SHtmlEditor from '../../../resources/components/SHtmlEditor.client.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const content1 = ref('');

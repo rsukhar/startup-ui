@@ -25,12 +25,7 @@ import { ref } from 'vue';
 import SSelect from '../../../packages/startup-ui/src/components/SSelect.vue';
 
 const props = defineProps({
-    url: {
-        type: String,
-        default() {
-            return location.pathname;
-        },
-    },
+    url: String,
     links: Object,
     total: Number,
     preserveScroll: {

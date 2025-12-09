@@ -5,6 +5,10 @@
     --vp-layout-max-width: 100%;    /* Убираем ограничение на общую ширину */
 }
 
+body {
+    font-family: var(--vp-font-family-base) !important;
+}
+
 .content-container {
     max-width: 100% !important;
 }
