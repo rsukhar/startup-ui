@@ -2,6 +2,12 @@
 
 Базовые поля ввода.
 
+<SToggle title="В чем отличие от аналогов?">
+<p>В отличие от популярных библиотек компонентов для Vue3:</p>
+<ol>
+<li>Исключает опции, которые, как правило, не используются в стартапах (напр.размеры полей), но из-за которых разные программисты реализовывают компонент по-разному. Без лишних опций унифицируется код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
+</ol>
+</SToggle>
 
 ## Стандартные поля ввода
 
@@ -13,8 +19,8 @@
 
 Также поддерживаются стандартные HTML-типы полей:
 
-<div class="docs-container">
-    <SInput v-model="value1" type="number" placeholder="Номер"/>
+<div class="docs-container" style="display: flex; flex-direction: column; gap: 10px;">
+    <SInput v-model="value1" type="number" placeholder="Номер" />
     <SInput v-model="value2" type="email" placeholder="Email"/>
     <SInput v-model="value3" type="password" placeholder="Пароль"/>
 </div>
@@ -88,11 +94,8 @@
 
 ## События
 
-Изменение значения:
-
 <div class="docs-container">
-    <p>Текущее значение: <strong>{{ currentInput || '(не задано)' }}</strong></p>
-    <SInput @change="(newValue) => currentInput = newValue" />
+    <SInput @change="(newValue) => console.log(newValue)" placeholder="Печатаем и смотрим консоль" />
 </div>
 
 <CustomCodeBlock :code="{text: code9, lang: 'vue'}" :fullCode="{text: fullCode9, lang: 'vue'}" />
@@ -116,6 +119,7 @@ import { ref } from 'vue';
 import SInput from '../../../../packages/startup-ui/src/components/SInput.vue';
 import SFormRow from '../../../../packages/startup-ui/src/components/SFormRow.vue';
 import SStatus from '../../../../packages/startup-ui/src/components/SStatus.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const value = ref('');

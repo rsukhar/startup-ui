@@ -20,7 +20,7 @@ export default defineConfig({
                         { text: 'SForm > SFormRow', link: '/pages/components/forms/sform' },
                         { text: 'SInput', link: '/pages/components/forms/sinput' },
                         { text: 'SSelect', link: '/pages/components/forms/sselect' },
-                        { text: 'SCheckbox', link: '/pages/components/forms/scheckbox' },
+                        { text: 'SCheckboxGroup > SCheckbox', link: '/pages/components/forms/scheckbox' },
                         { text: 'SRadioGroup > SRadio', link: '/pages/components/forms/sradio' },
                         { text: 'SSwitch', link: '/pages/components/forms/sswitch' },
                         { text: 'SDatePicker', link: '/pages/components/forms/sdatepicker' },

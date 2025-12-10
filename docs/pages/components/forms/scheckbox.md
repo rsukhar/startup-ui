@@ -1,6 +1,27 @@
-# SCheckbox
+# SCheckboxGroup > SCheckbox
 
-Галочки.
+Одиночная галочка или набор галочек.
+
+<SToggle title="В чем отличие от аналогов?">
+<p>В отличие от популярных библиотек компонентов для Vue3:</p>
+<ol>
+<li>Сразу идет с кликабельным стандартизированным лейблом в качестве простого атрибута. Это унифицирует код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
+<li>Поддерживает три формата передачи опций в группы чекбоксов, что удобно в зависимости от кейса: 
+<ol>
+<li><code>&lt;SCheckbox /&gt;</code> — там где опции являются частью дизайна, их можно и удобно хардкодить в шаблон;</li>
+<li><code>{value1: title1, value2: title2}</code> — что удобно для быстрого получения из key-value конфигов, а также из моделей — <code>User::pluck('name', 'id')</code>;</li>
+<li><code>[[value1, title1], [value2, title2]]</code> — что удобно для выгрузки там, где важен порядок. Это минимизирует код в контроллерах, помогая сохранять принцип «тонкого контроллера», которого мы придерживаемся.</li>
+</ol>
+</li>
+<li>Взаимозаменяемость формата опций с другими выбиралками из вариантов. Это позволяет легко заменять SCheckboxGroup на <a href="/pages/components/forms/sselect.html">SSelect</a> или <a href="/pages/components/forms/sradio.html">SRadioGroup</a>, не трогая бэкенд код.</li>
+</ol>
+</SToggle>
+
+<SToggle title="Что будет ценно улучшить">
+<ol>
+<li>Отвязаться от Font Awesome, добавляя галочку простейшим SVG.</li>
+</ol>
+</SToggle>
 
 ## Одиночная галочка
 
@@ -62,6 +83,7 @@
 import { ref } from 'vue';
 import SCheckboxGroup from '../../../../packages/startup-ui/src/components/SCheckboxGroup.vue';
 import SCheckbox from '../../../../packages/startup-ui/src/components/SCheckbox.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };

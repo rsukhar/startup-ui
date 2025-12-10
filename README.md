@@ -1,39 +1,69 @@
 # startup-ui
 
-## Запуск документации
+## Локальная установка для разработки
 
-### Устанавливаем зависимости startup-ui
+1. Устанавливаем зависимости startup-ui
+
+```
 npm install --prefix ./packages/startup-ui
+```
 
-### Устанавливаем зависимости vite-press
+2. Устанавливаем зависимости vite-press
+
+```
 cd docs
-
 npm install
+```
 
-### Запускаем локальный dev-сервер
+## Локальный запуск документации для разработки
+
+```
+cd docs
 npm run docs:dev
+```
 
-### Сборка
-npm run docs:build
+## Публикация обновлений
 
-## Публикация изменений в npm
+1. Делаем новый билд
 
-### Делаем новый билд в папке packages/startup-ui
+```
+cd packages/startup-ui
 npm run build
+```
 
-### Логинимся в npm
+2. Если не залогинены в npm, логинимся
+
+```
 npm login
+```
 
-### Повышаем версию
+3. Повышаем версию
 
-- патч:
+```
+# Если патч, то:
 npm version patch
 
-- новая функциональность, без нарушения API:
+# Если новая функциональность без изменения API, то:
 npm version minor
 
-- изменения API:
+# Если изменение API, то:
 npm version major
+```
 
-### Публикуем 
+4. Публикуем изменения
+
+```
 npm publish --access public
+```
+
+5. Обновляем документацию
+
+```
+cd docs
+npm run docs:build
+```
+
+По FTP копируем docs/.vitepress/dist/* в ftp://priceclub.beget.tech/
+
+6. Коммитим и пушим изменения
+

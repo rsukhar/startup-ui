@@ -31,16 +31,6 @@ body {
     }
 }
 
-table, li {
-    margin: 0 !important;
-    margin: 0 !important;
-}
-
-ul, ol {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
 /*
  * Исправление стилей vitepress
  */

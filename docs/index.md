@@ -7,5 +7,5 @@ hero:
   actions:
     - theme: alt
       text: Фронтенд компоненты
-      link: /pages/interfaces/sbutton
+      link: /pages/components/forms/sform.html
 

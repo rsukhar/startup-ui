@@ -2,6 +2,22 @@
 
 Радио-кнопки.
 
+<SToggle title="В чем отличие от аналогов?">
+<p>В отличие от популярных библиотек компонентов для Vue3:</p>
+<ol>
+<li>Сразу идет с кликабельным стандартизированным лейблом в качестве простого атрибута. Это унифицирует код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
+<li>Сразу из коробки идет кнопочный стиль, который часто используется.</li>
+<li>Поддерживает три формата передачи опций в группы радио-кнопок, что удобно в зависимости от кейса: 
+<ol>
+<li><code>&lt;SRadio /&gt;</code> — там где опции являются частью дизайна, их можно и удобно хардкодить в шаблон;</li>
+<li><code>{value1: title1, value2: title2}</code> — что удобно для быстрого получения из key-value конфигов, а также из моделей — <code>User::pluck('name', 'id')</code>;</li>
+<li><code>[[value1, title1], [value2, title2]]</code> — что удобно для выгрузки там, где важен порядок. Это минимизирует код в контроллерах, помогая сохранять принцип «тонкого контроллера», которого мы придерживаемся.</li>
+</ol>
+</li>
+<li>Взаимозаменяемость формата опций с другими выбиралками из вариантов. Это позволяет легко заменять SRadioGroup на <a href="/pages/components/forms/sselect.html">SSelect</a> или <a href="/pages/components/forms/scheckbox.html">SCheckboxGroup</a>, не трогая бэкенд код.</li>
+</ol>
+</SToggle>
+
 ## Группа радио-кнопок
 
 <div class="docs-container">
@@ -72,6 +88,7 @@
 import { ref } from 'vue';
 import SRadioGroup from '../../../../packages/startup-ui/src/components/SRadioGroup.vue';
 import SRadio from '../../../../packages/startup-ui/src/components/SRadio.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
