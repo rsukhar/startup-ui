@@ -4,12 +4,29 @@
 
 ## Базовый пример
 
-<CustomCodeBlock :code="{text: code, lang: 'vue'}" />
+<CustomCodeBlock :code="{text: code, lang: 'vue'}" :full-code="{text: fullcode, lang: 'vue'}" />
 
 <script setup>
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
-const code = `<template>
+const code = `<SCanvas>
+    <template #header>
+        Шапка
+    </template>
+    <template #subheader>
+        Второй блок шапки
+    </template>
+    <template #sidebar>
+        Боковой блок страницы
+    </template>
+    <template #content>
+        <slot />
+    </template>
+</SCanvas>
+<SFooter>
+    <div>&copy; suhar.ru, 2025. Все права защищены</div>
+</SFooter>`;
+const fullcode = `<template>
 <SCanvas>
     <template #header>
         Шапка
@@ -30,6 +47,6 @@ const code = `<template>
 </template>
 <script setup>
 import { SCanvas, SFooter } from 'startup-ui';
-<\/script>
-`;
+<\/script>`;
+
 </script>

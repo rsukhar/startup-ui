@@ -2,6 +2,20 @@
 
 Оповещение о произошедшем событии.
 
+<SToggleGroup>
+    <SToggle title="В чем отличие от аналогов?">
+        <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+        <ol>
+            <li>Упрощено до одного метода, не требует добавлять элемент в шаблон.</li>
+        </ol>
+    </SToggle>
+    <SToggle title="Что будет ценно улучшить">
+    <ol>
+        <li>Добавить возможность собирать серию оповещений друг под другом.</li>
+    </ol>
+    </SToggle>
+</SToggleGroup>
+
 ## Базовый пример
 
 Информационное оповещение:
@@ -37,6 +51,8 @@
 
 <script setup>
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

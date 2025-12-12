@@ -1,6 +1,6 @@
 <template>
     <div class="s-status" :class="color">
-        <FontAwesomeIcon v-if="icon" :icon="icon" class="mr-2"/>
+        <FontAwesomeIcon v-if="icon" :icon="icon" />
         <slot />
     </div>
 </template>
@@ -14,14 +14,14 @@ const props = defineProps<{
 </script>
 <style lang="scss">
 .s-status {
-    display: inline-block;
+    display: inline-flex;
     align-items: center;
     position: relative;
+    gap: 4px;
     font-family: var(--s-font-family);
-    vertical-align: middle;
     svg {
+        font-size: 12px;
         width: 16px;
-        margin-right: 2px;
     }
     
     &.text-light {

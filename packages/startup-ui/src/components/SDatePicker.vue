@@ -62,7 +62,7 @@ const props = defineProps({
     // Формат значения модели
     valueFormat: {
         type: String,
-        default: 'YYYYMMDD'
+        default: 'YYYY-MM-DD'
     },
     // Формат, в котором выводим в инпуте
     inputFormat: {
@@ -295,8 +295,7 @@ const buttonOptions = computed(() => {
         border: 1px solid #ccc;
         border-radius: var(--s-border-radius);
         cursor: pointer;
-        width: 240px;
-        padding-right: 50px;
+        padding-right: 30px;
         position: relative;
 
         input {

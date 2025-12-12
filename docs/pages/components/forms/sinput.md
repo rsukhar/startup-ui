@@ -19,7 +19,7 @@
 
 Также поддерживаются стандартные HTML-типы полей:
 
-<div class="docs-container" style="display: flex; flex-direction: column; gap: 10px;">
+<div class="docs-container">
     <SInput v-model="value1" type="number" placeholder="Номер" />
     <SInput v-model="value2" type="email" placeholder="Email"/>
     <SInput v-model="value3" type="password" placeholder="Пароль"/>

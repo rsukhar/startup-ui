@@ -18,6 +18,12 @@ body {
     border: 1px solid #4c4d4f;
     border-radius: var(--s-border-radius);
     margin-bottom: var(--s-base-margin);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.docs-container.block {
+    display: block;
 }
 
 @media (max-width: 1440px) {
@@ -99,4 +105,9 @@ body {
 
 span {
     font-style: normal !important;
+}
+
+.s-toggle-body > ol:first-child,
+.s-toggle-body > ul:first-child {
+    margin-top: 0;
 }

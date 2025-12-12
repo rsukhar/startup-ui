@@ -2,6 +2,21 @@
 
 Выпадающий список из навигационных ссылок. Выводит текст активного элемента, а если его нет, то выводит текст плейсхолдера.
 
+<SToggleGroup>
+    <SToggle title="В чем отличие от аналогов?">
+        <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+        <ol>
+            <li>Выводит в лейбле текущий активный элемент, что позволяет, например, реализовать переключение между проектами.</li>
+            <li>Поддерживает интеграцию с InertiaJS для бесшовного роутинга между страницами.</li>
+        </ol>
+    </SToggle>
+    <SToggle title="Что будет ценно улучшить">
+    <ol>
+        <li>Стрелочку отвязать от FontAwesome, чтобы снизить связанность.</li>
+    </ol>
+    </SToggle>
+</SToggleGroup>
+
 ## Базовый пример
 
 <div class="docs-container">
@@ -75,6 +90,8 @@
 
 <script setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SDropdownMenu from '../../../../packages/startup-ui/src/components/SDropdownMenu.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

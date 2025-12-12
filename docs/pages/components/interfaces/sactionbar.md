@@ -2,12 +2,14 @@
 
 Полоска действия (обычно, для выбранных элементов).
 
+<SToggle title="В чем отличие от аналогов?">В популярных библиотеках прямого аналога нет.</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container">
     <SCheckboxGroup v-model="users" :options="userOptions" />
     <SActionBar v-if="users.length">
-        <SSelect v-model="massAction" :options="massActions" />
+        <SSelect v-model="massAction" :options="massActions" style="width: 250px" />
         <SButton @click="applyMassAction">Применить</SButton>
     </SActionBar>
 </div>
@@ -16,6 +18,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SActionBar from '../../../../packages/startup-ui/src/components/SActionBar.vue';
 import SCheckboxGroup from '../../../../packages/startup-ui/src/components/SCheckboxGroup.vue';
 import SSelect from '../../../../packages/startup-ui/src/components/SSelect.vue';

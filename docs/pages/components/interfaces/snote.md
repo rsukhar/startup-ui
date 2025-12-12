@@ -2,6 +2,13 @@
 
 Текстовая заметка.
 
+<SToggle title="В чем отличие от аналогов?">
+    <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+    <ol>
+        <li>Привязка к FontAwesome, который бесплатен и оптимально решает задачи иконок для стартапов.</li>
+    </ol>
+</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container">
@@ -30,6 +37,7 @@
 В качестве иконок используются названия иконок font-awesome.
 
 <script setup>
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SNote from '../../../../packages/startup-ui/src/components/SNote.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
@@ -71,8 +79,8 @@ import SNote from 'startup-ui';
 <\/script>
 `;
 </script>
-<style lang="scss">
-.s-note:last-child {
+<style scoped lang="scss">
+.s-note {
     margin-bottom: 0;
 }
 </style>

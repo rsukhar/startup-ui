@@ -2,9 +2,17 @@
 
 Иконка вопроса со всплывающе/й подсказкой.
 
+<SToggle title="В чем отличие от аналогов?">
+    <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+    <ol>
+        <li>Текст подсказки в слоте, так что там можно размещать html-контент и ссылки на расширенную информацию.</li>
+        <li>Событийная логика сделана так, что мышку можно перевести с иконки на текст подсказки и кликнуть по ссылке, которая в ней.</li>
+    </ol>
+</SToggle>
+
 ## Базовый пример
 
-<div class="docs-container">
+<div class="docs-container" style="display:block;">
 Показы
 <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
 </div>
@@ -46,6 +54,7 @@
 <CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
 
 <script setup>
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

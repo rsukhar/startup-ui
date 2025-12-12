@@ -2,20 +2,21 @@
 
 SForm и SFormRow позволяют быстро собирать функциональные формы.
 
-<SToggle title="В чем отличие от аналогов?">
-<p>В отличие от популярных библиотек компонентов для Vue3:</p>
-<ol>
-<li>Унифицирует и упрощает вспомогательные элементы (напр. подсказки под полями) и часто используемые состояния (напр. заголовки слева) до простых атрибутов. Это обеспечивает одинаковую реализацию разными программистами, избавляет от визуальных отличий, упрощает дальнейшую поддержку и сохраняет взаимозаменяемость между проектами.</li>
-<li>Сразу из коробки связывает форму с InertiaJS-формами и/или Laravel FormRequest-ами, одинаково и аккуратно выводя ошибки валидации</li>
-<li>Минимизируют синтаксис и связанность до одной модели на уровне SForm, что делает код чище, упрощает его написание, чтение и поддержку.</li>
-</ol>
-</SToggle>
-
-<SToggle title="Что будет ценно улучшить">
-<ol>
-<li>Сразу привязывать лейблы правильным образом к соответствующим input-полям, что обеспечит поддержку <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA" target="_blank">ARIA</a> — это будет ценно для проектов на европейский рынок, т.к. там это требование законодательства.</li>
-</ol>
-</SToggle>
+<SToggleGroup>
+    <SToggle title="В чем отличие от аналогов?">
+        <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+        <ol>
+            <li>Унифицирует и упрощает вспомогательные элементы (напр. подсказки под полями) и часто используемые состояния (напр. заголовки слева) до простых атрибутов. Это обеспечивает одинаковую реализацию разными программистами, избавляет от визуальных отличий, упрощает дальнейшую поддержку и сохраняет взаимозаменяемость между проектами.</li>
+            <li>Сразу из коробки связывает форму с InertiaJS-формами и/или Laravel FormRequest-ами, одинаково и аккуратно выводя ошибки валидации</li>
+            <li>Минимизируют синтаксис и связанность до одной модели на уровне SForm, что делает код чище, упрощает его написание, чтение и поддержку.</li>
+        </ol>
+    </SToggle>
+    <SToggle title="Что будет ценно улучшить">
+        <ol>
+            <li>Сразу привязывать лейблы правильным образом к соответствующим input-полям, что обеспечит поддержку <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA" target="_blank">ARIA</a> — это будет ценно для проектов на европейский рынок, т.к. там это требование законодательства.</li>
+        </ol>
+    </SToggle>
+</SToggleGroup>
 
 ## С формой InertiaJS
 
@@ -117,6 +118,7 @@ import { reactive, ref } from 'vue';
 import SForm from '../../../../packages/startup-ui/src/components/SForm.vue';
 import SFormRow from '../../../../packages/startup-ui/src/components/SFormRow.vue';
 import SInput from '../../../../packages/startup-ui/src/components/SInput.vue';
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
 import SSwitch from '../../../../packages/startup-ui/src/components/SSwitch.vue';

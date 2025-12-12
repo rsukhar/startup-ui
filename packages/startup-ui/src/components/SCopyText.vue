@@ -48,9 +48,7 @@ const innerText = computed(() => {
     
     &-text {
         & + svg {
-            color: var(--s-primary);
             cursor: pointer;
-            margin: 0 1rem 0 0;
             &:hover {
                 color: var(--s-primary-darkest);
             }
@@ -70,7 +68,9 @@ const innerText = computed(() => {
             overflow-wrap: break-word;
             word-break: break-all;
             & + svg {
+                color: var(--s-primary);
                 font-size: 1.2em;
+                margin-right: 1rem;
             }
         }
     }
@@ -90,7 +90,8 @@ const innerText = computed(() => {
             border-bottom: 1px currentColor dashed;
             & + svg {
                 font-size: 0.8em;
-                margin-left: 0.5em;
+                margin-left: 0.2em;
+                margin-right: 0.2rem;
             }
         }
     }
