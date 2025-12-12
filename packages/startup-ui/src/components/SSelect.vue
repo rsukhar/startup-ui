@@ -390,9 +390,7 @@ onBeforeUnmount(() => {
         user-select: none;
         z-index: 1001;
         pointer-events: none;
-        min-width: 100%;
-        min-width: fit-content;
-
+        
         &-nodata {
             padding: 0.25rem 0.25rem;
             color: var(--s-text-light);
