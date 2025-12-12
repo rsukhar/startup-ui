@@ -14,9 +14,9 @@
             </div>
         </div>
         <Teleport to="body">
-            <div ref="dropdownRef" :style="optionsStyles" :class="['s-select-stylewrapper', attrs.class]">
-                <div class="s-select-options"
-                    :class="[areOptionsShown ? 'open' : '', openDirection]"
+            <div ref="dropdownRef" :style="optionsStyles" 
+                :class="['s-select-stylewrapper', attrs.class, areOptionsShown ? 'open' : 'closed']">
+                <div :class="['s-select-options', openDirection]"
                     @scroll="handleScroll">
                     <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
                         <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
@@ -340,8 +340,38 @@ onBeforeUnmount(() => {
         }
     }
 
+    // Обертка для кастомного класса
     &-stylewrapper {
         position: absolute;
+
+        &.open {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: fit-content;
+            transform: translateY(0);
+
+            & .s-select-options {
+                opacity: 1;
+                max-height: 200px;
+                pointer-events: auto;
+
+                &.drop-down {
+                    top: 100%;
+                }
+
+                &.drop-up {
+                    bottom: 100%;
+                }
+            }
+        }
+
+        &.closed {
+            max-height: 0 !important;
+
+            & .s-select-options {
+                max-height: 0 !important;
+            }
+        }
     }
 
     &-options {
@@ -355,7 +385,7 @@ onBeforeUnmount(() => {
         margin-block: 5px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         border-radius: var(--s-border-radius);
-        overflow-y: scroll;
+        overflow-y: auto;
         opacity: 0;
         user-select: none;
         z-index: 1001;
@@ -368,24 +398,6 @@ onBeforeUnmount(() => {
             color: var(--s-text-light);
         }
 
-        &.open {
-            opacity: 1;
-            pointer-events: auto;
-            overflow-y: auto;
-            overflow-x: hidden;
-            height: fit-content;
-            transform: translateY(0);
-            max-height: 200px;
-
-            &.drop-down {
-                top: 100%;
-            }
-
-            &.drop-up {
-                bottom: 100%;
-            }
-        }
-
         &-list {
             display: flex;
             flex-direction: column;
@@ -395,8 +407,6 @@ onBeforeUnmount(() => {
             padding: 0;
             cursor: pointer;
             width: 100%;
-            // Чтобы не было overflow
-            margin-right: -500px;
         }
 
         &-item {
