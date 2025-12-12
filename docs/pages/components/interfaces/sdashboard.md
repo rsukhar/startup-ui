@@ -2,6 +2,10 @@
 
 Дешборд блоков (как правило, удобно использовать для отчетов).
 
+<SToggle title="В чем отличие от аналогов?">
+    В попурярных библиотеках компонентов для Vue3 прямого аналога нет.
+</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container">
@@ -81,6 +85,7 @@
 <CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}"/>
 
 <script setup>
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SDashboard from '../../../../packages/startup-ui/src/components/SDashboard.vue';
 import SDashboardItem from '../../../../packages/startup-ui/src/components/SDashboardItem.vue';
 import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';

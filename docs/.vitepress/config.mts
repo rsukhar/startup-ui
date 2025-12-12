@@ -59,7 +59,7 @@ export default defineConfig({
                         { text: 'SStat', link: '/pages/components/interfaces/sstat' },
                     ],
                 },
-        
+
                 {
                     text: 'Шаблон',
                     items: [
@@ -70,20 +70,22 @@ export default defineConfig({
                     ]
                 }
             ],
-        
+
             // Сайдбар для Знакомства
             '/pages/welcome': [
-                {   
+                {
                     text: 'Основы',
                     items: [
                         { text: 'Что такое Startup UI', link: '/pages/welcome/basics/about' },
                         { text: 'Установка', link: '/pages/welcome/basics/installing' },
-                        { text: 'Вайб-кодинг', link: '/pages/welcome/basics/vibe-coding' }
+                        { text: 'Цвета и настройки', link: '/pages/welcome/basics/colors' },
+                        { text: 'Иконки', link: '/pages/welcome/basics/icons' }
                     ]
                 },
-                {   
-                    text: 'Дополнительно', 
+                {
+                    text: 'Дополнительно',
                     items: [
+                        { text: 'Вайб-кодинг', link: '/pages/welcome/extras/vibe-coding' },
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
                         { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' }
                     ]

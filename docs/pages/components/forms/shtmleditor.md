@@ -2,6 +2,22 @@
 
 Визуальный HTML-редактор.
 
+<SToggleGroup>
+    <SToggle title="В чем отличие от аналогов?">
+        <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+        <ol>
+            <li>Сразу используем самый удобный TinyMCE. Все остальные редакторы по юзабилити сильно хуже.</li>
+            <li>Поддержка ембеддинга видео из сервиса <a href="https://www.kinescope.com/" target="_blank">Kinescope</a>, который в моменте является наиболее удобной заменой блокируемого YouTube</li>
+        </ol>
+    </SToggle>
+    <SToggle title="Что будет ценно улучшить">
+    <ol>
+        <li>В примерах сейчас не применяются внутренние стили: шрифт и другие стилевые моменты отличаются. Нужно применить, и либо чтобы это делалось автомтически, либо явно показать в примерах атрибутами, как это делать в своих проектах.</li>
+        <li>Очень много настроек хардкодится, нужно допроработать и вынести в пропсы.</li>
+    </ol>
+    </SToggle>
+</SToggleGroup>
+
 ## Базовый пример
 
 <div class="docs-container">
@@ -20,6 +36,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SHtmlEditor from '../../../resources/components/SHtmlEditor.client.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

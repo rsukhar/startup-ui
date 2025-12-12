@@ -2,6 +2,13 @@
 
 Диалоговое окно подтверждения действия.
 
+<SToggle title="В чем отличие от аналогов?">
+    <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+    <ol>
+        <li>Упрощено до одного метода, не требует добавлять элемент в шаблон.</li>
+    </ol>
+</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container">
@@ -11,6 +18,7 @@
 <CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
 
 <script setup>
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import { SConfirm } from '../../../../packages/startup-ui/src/components/SConfirm';
 import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';

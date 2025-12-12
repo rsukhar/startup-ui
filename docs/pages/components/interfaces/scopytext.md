@@ -2,6 +2,8 @@
 
 Копируемый текст.
 
+<SToggle title="В чем отличие от аналогов?">В популярных библиотеках элементов для Vue3 прямого аналога нет.</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container block">
@@ -12,7 +14,7 @@
 
 ## Внутристрочный пример
 
-<div class="docs-container">
+<div class="docs-container" style="display:block;">
 <SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
 </div>
 
@@ -27,7 +29,8 @@
 <CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
 
 <script setup>
-import { ref } from 'vue'; 
+import { ref } from 'vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SCopyText from '../../../../packages/startup-ui/src/components/SCopyText.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

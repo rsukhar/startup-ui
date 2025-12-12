@@ -23,15 +23,13 @@ const menuLinks = [
     { label: 'Пользователи', url: '#' }
 ];
 
-const code = `<SHorizontalMenu :links="menuLinks" />
-`;
+const code = `<SHorizontalMenu :links="menuLinks" />`;
 const fullCode = `<template>
     <SHorizontalMenu :links="menuLinks" />
 </template>
 <script setup>
 import { SHorizontalMenu } from 'startup-ui';
-<\/script>
-`;
+<\/script>`;
 </script>
 <style lang="scss">
 .menu-container {

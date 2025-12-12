@@ -17,10 +17,12 @@
 
 <CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
 
+Модель принимает значение true/false.
+
 ## Недоступное состояние
 
 <div class="docs-container">
-    <SSwitch v-model="checkedSecond" disabled>Включить</SSwitch>
+    <SSwitch v-model="checkedSecond" disabled>Не работает</SSwitch>
 </div>
 
 <CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
@@ -47,8 +49,7 @@ const checked = ref(null);
 const checkedSecond = ref(null);
 const checkedThird = ref(null);
 
-const code1 = `<SSwitch v-model="checked">Включить</SSwitch>
-`;
+const code1 = `<SSwitch v-model="checked">Включить</SSwitch>`;
 const fullCode1 = `<template>
     <SSwitch v-model="checked">Включить</SSwitch>
 </template>
@@ -57,21 +58,18 @@ import { ref } from 'vue';
 import { SSwitch } from 'startup-ui';
 
 const checked = ref(false);
-<\/script>
-`;
+<\/script>`;
 
-const code2 = `<SSwitch v-model="checked" disabled>Включить</SSwitch>
-`;
+const code2 = `<SSwitch v-model="checked" disabled>Не работает</SSwitch>`;
 const fullCode2 = `<template>
-    <SSwitch v-model="checked" disabled>Включить</SSwitch>
+    <SSwitch v-model="checked" disabled>Не работает</SSwitch>
 </template>
 <script setup>
 import { ref } from 'vue';
 import { SSwitch } from 'startup-ui';
 
 const checked = ref(false);
-<\/script>
-`;
+<\/script>`;
 
 const code3 = `<SSwitch v-model="value" true-value="yes" false-value="no">
     Значение: {{ value }}
@@ -86,6 +84,5 @@ import { ref } from 'vue';
 import { SSwitch } from 'startup-ui';
 
 const value = ref(false);
-<\/script>
-`;
+<\/script>`;
 </script>

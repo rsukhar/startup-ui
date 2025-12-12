@@ -2,6 +2,13 @@
 
 Вертикальная черта с точками-пунктами.
 
+<SToggle title="В чем отличие от аналогов?">
+    <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+    <ol>
+        <li>Упрощено до минимально необходимого функционала, что обеспечивает одинаковое написание кода и взаимозаменяемость компонентов дальше.</li>
+    </ol>
+</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container">
@@ -15,6 +22,7 @@
 <CustomCodeBlock :code="{text: code1, lang: 'html'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
 
 <script setup>
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import STimeline from '../../../../packages/startup-ui/src/components/STimeline.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

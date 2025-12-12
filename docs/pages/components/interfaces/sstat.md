@@ -2,9 +2,12 @@
 
 Строчка статистики, выравненные по заголовкам.
 
+<SToggle title="В чем отличие от аналогов?">В популярных библиотеках компонентов для Vue3 прямого аналога нет.</SToggle>
+
 ## Базовый пример
 
 <div class="docs-container">
+<SStat title="Кол-во платежей">112</SStat>
 <SStat title="Сумма платежей">777 000 ₽</SStat>
 </div>
 
@@ -14,23 +17,25 @@
 
 <div class="docs-container">
 <SStat>
-  <template #title>
-    Сумма платежей <STooltip>За выбранный период</STooltip>
-  </template>
-  777 000 ₽
+    <template #title>
+        Сумма платежей <STooltip>За выбранный период</STooltip>
+    </template>
+    777 000 ₽
 </SStat>
 </div>
 
 <CustomCodeBlock :code="{text: code2, lang: 'html'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
 
 <script setup>
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SStat from '../../../../packages/startup-ui/src/components/SStat.vue';
 import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
-const code1 = `<SStat title="Сумма платежей">777 000 ₽</SStat>
-`;
+const code1 = `<SStat title="Кол-во платежей">112</SStat>
+<SStat title="Сумма платежей">777 000 ₽</SStat>`;
 const fullCode1 = `<template>
+    <SStat title="Кол-во платежей">112</SStat>
     <SStat title="Сумма платежей">777 000 ₽</SStat>
 </template>
 <script setup>

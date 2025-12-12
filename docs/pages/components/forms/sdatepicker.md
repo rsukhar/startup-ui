@@ -1,6 +1,26 @@
-## SDatePicker
+# SDatePicker
 
 Выбиралка даты.
+
+<SToggleGroup>
+    <SToggle title="В чем отличие от аналогов?">
+        <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+        <ol>
+            <li>Сразу поддерживает на уровне атрибута <a href="#выбор-вариантов-кнопками">кнопки с готовыми наборами значений</a>, которые часто нужны в фильтрах по диапазону дат.</li>
+            <li>Сразу из коробки по дефолту заточено под русскоязычную локализацию.</li>
+            <li>В отличие от западных библиотек — позволяет выбирать диапазон дат, начиная с более поздней даты. Удобно, когда нужно выбрать несколько последних месяцев.</li>
+        </ol>
+    </SToggle>
+    <SToggle title="Что будет ценно улучшить">
+    <ol>
+        <li>Сделать дни предыдущего-следующего месяца, которые идут до-после текущего показанного, тоже кликабельными.</li>
+        <li>Когда выпадающему списку не хватает места снизу (напр.когда инпут близко к низу экрана), он должен открываться от инпута наверх.</li>
+        <li>Отвязать иконки (календарь и стрелочки переключения месяца) от FontAwesome, сделать встроенными SVG. При этом сохранить поддержку font-awesome через атрибут.</li>
+        <li>Добавить возможность системной локализации всех выбиралок дат в проекте (не через атрибуты, как сейчас).</li>
+        <li>Добавить управление стрелочками с клавиатуры: стрелочки двигают маркер по датам, enter фиксирует выбор.</li>
+    </ol>
+    </SToggle>
+</SToggleGroup>
 
 ## Стандартный пример
 
@@ -10,7 +30,8 @@
 
 <CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
 
-Выбирает значение в формате `YYYY-MM-DD`
+Выбирает значение в формате `YYYY-MM-DD`. Текущее значение: <code>{{ value ?? 'null' }}</code>
+
 ## Минимальное и максимальное значения
 
 <div class="docs-container">
@@ -22,37 +43,45 @@
 ## Кастомный формат значения
 
 <div class="docs-container">
-    <SDatePicker v-model="valueThird" format="YYYYMMDD" />
+    <SDatePicker v-model="valueThird" value-format="YYYYMMDD" />
 </div>
 
 <CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
 
-При этом format не влияет на min/max поля — они всегда идут в своём стандартном формате.
+Текущее значение: <code>{{ valueThird ?? 'null' }}</code>
+
+Независимо от этого атрибуты min/max всегда идут в своём стандартном формате `YYYY-MM-DD`.
 
 ## Выбор периода
 
-Для выбора периода добавляем атрибут range:
+Для выбора периода добавляем атрибут <strong>range</strong>:
 
 <div class="docs-container">
-    <SDatePicker range v-model="valueFourth" format="YYYYMMDD" />
+    <SDatePicker range v-model="valueFourth" value-format="YYYYMMDD" />
 </div>
 
 <CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
 
-В данном примере в value будет массив вида `["20250401", "20250430"]`, у которого каждое значение идет в format-значении.
+В модель подставляется массив из двух дат в формате, указанном в <strong>value-format</strong>. Текущее значение: <code>{{ valueFourth ?? 'null' }}</code>
 
 ## Выбор вариантов кнопками
 
-Для выбора вариантов кнопками возможно задать настройки этих кнопок в формате, который возвращает Backend-класс `(new DateInterval(request()->period))->titles`, и передать данные:
+Очень часто в фильтрах по диапазону дат удобно использовать однокликовый выбор предзаданного диапазона. Набор таких диапазонов мы устанавливаем через атрибут <strong>buttons</strong>.
 
 <div class="docs-container">
-    <SDatePicker range v-model="valueFifth" format="YYYYMMDD" :buttons="buttons" />
+    <SDatePicker range v-model="valueFifth" value-format="YYYYMMDD" :buttons="buttons" />
 </div>
 
 <CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
 
+Набор доступных кнопок задается в формате <code>{title: value.join('-')}</code>, например: <code>{"2 недели": "20250901-20250914", "Месяц": "20250815-20250914"}</code>
+
+Именно в этом формате backend-класс DateInterval возвращает набор доступных кнопок: `(new DateInterval(request()->period))->titles`
+
 <script setup>
 import { ref } from 'vue';
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SDatePicker from '../../../../packages/startup-ui/src/components/SDatePicker.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
@@ -108,23 +137,20 @@ const value = ref(false);
 <\/script>
 `;
 
-const code3 = `<SDatePicker v-model="value" format="YYYYMMDD" />
-`;
+const code3 = `<SDatePicker v-model="value" value-format="YYYYMMDD" />`;
 const fullCode3 = `<template>
-    <SDatePicker v-model="value" format="YYYYMMDD" />
+    <SDatePicker v-model="value" value-format="YYYYMMDD" />
 </template>
 <script setup>
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
 const value = ref(false);
-<\/script>
-`;
+<\/script>`;
 
-const code4 = `<SDatePicker range v-model="value" format="YYYYMMDD" />
-`;
+const code4 = `<SDatePicker range v-model="value" value-format="YYYYMMDD" />`;
 const fullCode4 = `<template>
-    <SDatePicker range v-model="value" format="YYYYMMDD" />
+    <SDatePicker range v-model="value" value-format="YYYYMMDD" />
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -134,10 +160,10 @@ const value = ref(false);
 <\/script>
 `;
 
-const code5 = `<SDatePicker range v-model="value" format="YYYYMMDD" :buttons="buttons" />
+const code5 = `<SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
 `;
 const fullCode5 = `<template>
-    <SDatePicker range v-model="value" format="YYYYMMDD" :buttons="buttons" />
+    <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
 </template>
 <script setup>
 import { ref } from 'vue';
