@@ -8,6 +8,7 @@ dist/
 
 # системные файлы
 .DS_Store
+.npmrc
 
 # логи
 npm-debug.log
