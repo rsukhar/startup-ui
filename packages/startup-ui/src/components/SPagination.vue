@@ -29,7 +29,7 @@ const props = defineProps({
     url: {
         type: String,
         default() {
-            return location.pathname;
+            return (typeof location !== "undefined") ? location.pathname : '/';
         },
     },
     links: Object,
@@ -77,7 +77,7 @@ const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perP
     flex-wrap: wrap;
     gap: 1rem;
     justify-content: space-between;
-    margin-bottom: var(--s-base-margin) !important;
+    margin-bottom: var(--s-base-margin);
     font-weight: 400;
     font-family: var(--s-font-family);
     
@@ -100,6 +100,7 @@ const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perP
             justify-content: center;
             border-radius: var(--s-border-radius);
             align-items: center;
+            text-decoration: none;
             
             &.active {
                 background-color: var(--s-primary-lightest);

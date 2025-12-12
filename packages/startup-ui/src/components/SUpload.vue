@@ -6,7 +6,7 @@
             </template>
             <template v-else>
                 <SButton class="s-upload-button" outlined @click.prevent="openFileDialog">
-                    <FontAwesomeIcon class="s-upload-button-icon" icon="plus" />Выберите файл
+                    <FontAwesomeIcon class="s-upload-button-icon" icon="plus" />{{ finalUploadButtonTitle }}
                 </SButton>
             </template>
         </div>
@@ -35,11 +35,15 @@ const props = defineProps({
     accept: String,
     maxFileSize: Number,
     multiple: Boolean,
+    uploadButtonTitle: String,
 });
 
 const model = defineModel();
 const emit = defineEmits(['select', 'clear']);
 const fileInput = useTemplateRef('fileInput');
+
+// Текст, который выводится на кнопке выбора. Если явно не задан, зависит от того, выбираем один файл или несколько
+const finalUploadButtonTitle = computed(() => props.uploadButtonTitle ?? (props.multiple ? 'Выбрать файлы' : 'Выбрать файл'));
 
 const openFileDialog = () => {
     fileInput.value.click();
@@ -74,6 +78,7 @@ function select(event) {
   
 function isFileValid(file) {
     if (props.accept && !isFileTypeValid(file)) return false;
+    console.log(props.maxFileSize, file.size);
     if (props.maxFileSize && file.size > props.maxFileSize) return false;
     return true;
 }
@@ -130,6 +135,9 @@ defineExpose({ clear, remove });
         justify-content: center;
         align-items: center;
         gap: 5px;
+        & > svg:first-child {
+            margin-left: -10px;
+        }
     }
 
     &-content {

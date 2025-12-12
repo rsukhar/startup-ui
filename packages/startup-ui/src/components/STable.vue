@@ -154,6 +154,9 @@ const showNoDataMessage = computed(() => {
     &-nodata {
         color: var(--s-text-light);
         text-align: center !important;
+        & > td > *:last-child {
+            margin-bottom: 0;
+        }
     }
 }
 </style>

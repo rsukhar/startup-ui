@@ -109,7 +109,7 @@ const classes = computed(() => [
     &.small {
         font-size: 12px;
         line-height: 20px;
-        padding: 5px 10px;
+        padding: 3px 10px;
     }
     &.loading {
         opacity: 0.5;

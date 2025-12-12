@@ -38,7 +38,11 @@ const model = defineModel({
 provide('sFilterGroup-model', model);
 
 const updateValue = (name, value) => {
-    model.value[name] = value;
+    if (props.ignoreQueryValues.includes(value)) {
+        delete model.value[name];
+    } else {
+        model.value[name] = value;
+    }
     if (props.bindToQuery) setQueryParams(model.value);
 }
 provide('sFilterGroup-updateValue', updateValue);
