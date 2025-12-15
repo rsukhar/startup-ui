@@ -7,7 +7,7 @@
 ## Базовый пример
 
 <div class="docs-container block">
-<SCopyText>Секретный код для копирования</SCopyText>
+<SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 </div>
 
 <CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
@@ -34,12 +34,10 @@ import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue'
 import SCopyText from '../../../../packages/startup-ui/src/components/SCopyText.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
-const readyPercentage = ref(50);
-
-const code1 = `<SCopyText>Секретный код для копирования</SCopyText>
+const code1 = `<SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 `;
 const fullCode1 = `<template>
-    <SCopyText>Секретный код для копирования</SCopyText>
+    <SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 </template>
 <script setup>
 import { SCopyText } from 'startup-ui';

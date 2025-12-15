@@ -3,8 +3,8 @@ import path from 'path'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    title: "startup-ui",
-    description: "Docs for frontend components.",
+    title: "Startup UI",
+    description: "Библиотека компонентов для Vue3",
     lang: 'ru',
     appearance: false,
     themeConfig: {
@@ -100,6 +100,10 @@ export default defineConfig({
         docFooter: {
             prev: 'Предыдущая страница',
             next: 'Следующая страница'
+        },
+        footer: {
+            message: "Доступен под лицензией MIT",
+            copyright: "© 2025 <a href=\"https://suhar.ru\" target=\"_blank\">Стартап-бюро «Сухарь и партнеры»</a>",
         }
     },
     markdown: {

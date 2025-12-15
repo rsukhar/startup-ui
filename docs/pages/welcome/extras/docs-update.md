@@ -1,22 +1,25 @@
 #  Обновление документации
 
-```js
-npm install --prefix ./packages/startup-ui
-```
-Устанавливаем зависимости vite-press
+## Локальный запуск документации для разработки
 
-```js
-cd docs
+<CustomCodeBlock :code="{text: code, lang: 'sh'}" />
 
-npm install
-```
-Запускаем локальный dev-сервер
+## Обновляем документацию
 
-```js
-npm run docs:dev
-```
-Сборка
+<CustomCodeBlock :code="{text: code2, lang: 'sh'}" />
 
-```js
-npm run docs:build
-```
+По FTP копируем docs/.vitepress/dist/* в ftp://priceclub.beget.tech/
+
+Коммитим и пушим изменения
+
+
+<script setup>
+import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
+
+const code = `cd docs
+npm run docs:dev`;
+
+const code2 = `cd docs
+npm run docs:build`;
+
+</script>

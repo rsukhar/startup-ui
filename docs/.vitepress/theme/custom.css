@@ -3,6 +3,13 @@
     --vp-sidebar-width: 337px;      /* Левый сайдбар */
     --vp-aside-width: 500px;        /* Правый сайдбар (On this page) */
     --vp-layout-max-width: 100%;    /* Убираем ограничение на общую ширину */
+
+    --vp-home-hero-name-color: var(--s-primary);
+    --vp-button-brand-bg: var(--s-primary);
+    --vp-button-brand-hover-border: var(--s-primary);
+    --vp-c-brand-1: var(--s-primary);
+    --vp-button-brand-hover-bg: var(--s-primary-dark);
+    --vp-button-brand-hover-birder: var(--s-primary-dark);
 }
 
 body {
