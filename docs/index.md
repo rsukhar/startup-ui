@@ -6,7 +6,7 @@ hero:
   text: "Библиотека Vue3-компонентов для IT-стартапов"
   tagline: "Ускорение и систематизация разработки стартапов на базе Laravel + InertiaJS"
   image: 
-    src: ../resources/img/logo.svg
+    src: /logo.svg
     alt: Startup UI components library
   actions:
     - theme: brand

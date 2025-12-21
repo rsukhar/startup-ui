@@ -98,7 +98,7 @@ const toInternalOptions = (propValue) => (propValue instanceof Array) ? JSON.par
 const internalOptions = ref(toInternalOptions(props.options ?? {}));
 watch(() => props.options, (newOptions) => {
     internalOptions.value = toInternalOptions(newOptions ?? {})
-});
+}, { deep: true });
 
 const itemHeight = ref(35); // высота одной опции в px
 const startIndex = ref(0);

@@ -12,10 +12,14 @@
     </div>
 </template>
 <script setup>
-import { provide, watch, computed, onMounted } from 'vue';
+import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
 const props = defineProps({
-    options: Object,
+    options: {
+        // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+        type: [Object, Array],
+        required: true
+    },
     buttons: Boolean,
     vertical: Boolean,
     placeholder: String
@@ -25,10 +29,14 @@ const model = defineModel();
 
 // Нормализуем options в единый формат
 const normalizedOptions = computed(() => {
+    // Если передано массивом
+    if (props.options instanceof Array){
+        return props.options.map(item => ({ value: item[0], title: item[1] }));
+    }
     if (!props.options || Object.values(props.options) === 0) {
         return {};
     }
-    
+
     return Object.entries(props.options).map(([value, title]) => {
         // Преобразуем строковые boolean, т.к. при «распаковке» занчения становятся строковыми
         let parsedValue = value;
@@ -38,12 +46,6 @@ const normalizedOptions = computed(() => {
         
         return { value: parsedValue, title };
     });
-});
-
-onMounted(() => {
-    if (model.value === null && Object.values(props.options ?? {}).length) {
-        model.value = Object.keys(props.options)[0];
-    }
 });
 
 provide('sRadioGroupModel', model);

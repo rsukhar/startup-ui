@@ -86,16 +86,19 @@ const classes = computed(() => [
     &.color_red {
         --s-primary: var(--s-red);
         --s-primary-dark: var(--s-red-dark);
+        --s-primary-light: var(--s-red-light);
         --s-primary-lightest: var(--s-red-lightest);
     }
     &.color_green {
         --s-primary: var(--s-green);
         --s-primary-dark: var(--s-green-dark);
+        --s-primary-light: var(--s-green-light);
         --s-primary-lightest: var(--s-green-lightest);
     }
     &.color_yellow {
         --s-primary: var(--s-yellow);
         --s-primary-dark: var(--s-yellow-dark);
+        --s-primary-light: var(--s-yellow-light);
         --s-primary-lightest: var(--s-yellow-lightest);
     }
     &.disabled,
