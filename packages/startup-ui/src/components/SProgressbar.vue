@@ -48,6 +48,7 @@ const percentPosition = computed(() => ((props.percentage < 5) ? 'right' : 'left
         background-color: var(--s-primary);
         border-radius: var(--s-border-radius);
         max-width: 100%;
+        transition: width 250ms ease;
         & > div {
             position: absolute;
             width: 40px;
