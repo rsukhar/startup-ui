@@ -74,10 +74,8 @@ import SRadioGroup from "./SRadioGroup.vue";
 const props = defineProps({
     range: Boolean,
     // Формат значения модели
-    // 'YYYY-MM-DD'
     valueFormat: String,
     // Формат, в котором выводим в инпуте
-    // 'DD.MM.YYYY'
     inputFormat: String,
     min: String,
     max: String,
