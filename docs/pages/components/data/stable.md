@@ -168,11 +168,70 @@
 
 <CustomCodeBlock :code="{text: code4, lang: 'vue'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
 
+## Фиксированная шапка
+
+Чтобы зафиксировать шапку, устанавливаем высоту таблицы в атрибуте `height`.
+
+<div class="docs-container">
+    <div class="table-container">
+        <STable :data="users10" height="300px">
+            <template #header>
+                <td>Пользователь</td>
+                <td class="center">Имя</td>
+                <td class="center">Фамилия</td>
+                <td class="center">Дата рождения</td>
+                <td class="center">Рост</td>
+                <td class="center">Вес</td>
+                <td class="center">Тариф</td>
+                <td class="center">Баланс</td>
+                <td class="center">Роль</td>
+                <td class="center">Дата регистрации</td>
+                <td></td>
+            </template>
+            <template #row="{ row }">
+                <td>{{ row.username }}</td>
+                <td class="center">{{ row.name }}</td>
+                <td class="center">{{ row.secondname }}</td>
+                <td class="center">{{ row.birthdate }}</td>
+                <td class="center">{{ row.height }}</td>
+                <td class="center">{{ row.weight }}</td>
+                <td class="center">{{ row.plan }}</td>
+                <td class="center">{{ row.balance }}</td>
+                <td class="center">{{ row.role }}</td>
+                <td class="center">{{ row.created_at }}</td>
+                <td class="right">
+                    <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`" 
+                        @click="deleteUser(row.username)" icon="trash" danger />
+                </td>
+            </template>
+            <template #footer>
+                <td>ИТОГО</td>
+                <td class="center"></td>
+                <td class="center"></td>
+                <td class="center"></td>
+                <td class="center"></td>
+                <td class="center"></td>
+                <td class="center"></td>
+                <td class="center">{{ totalBalance }}</td>
+                <td class="center"></td>
+                <td class="center"></td>
+                <td></td>
+            </template>
+        </STable>
+    </div>
+</div>
+
+<CustomCodeBlock :code="{text: code10, lang: 'vue'}" :fullCode="{text: fullCode10, lang: 'vue'}" />
+
+<SNote icon="lightbulb" attention>
+Для высоты таблицы с фиксированной шапкой удобно использовать <code>80vh</code>, чтобы таблица занимала 80% от высоты экрана.
+</SNote>
+
 ## Горизонтальный скролл сверху
 
 <div class="docs-container">
     <div class="table-container">
-        <STable :data="users2" scroll="top">
+        <STable :data="users2" top-scroll>
             <template #header>
                 <td>Пользователь</td>
                 <td class="center">Имя</td>
@@ -613,11 +672,11 @@ function deleteUser(username) {
 const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
 <\/script>`;
 
-const code5 = `<STable :data="users" scroll="top">
+const code5 = `<STable :data="users" top-scroll>
     ...
 </STable>`;
 const fullCode5 = `<template>
-<STable :data="users" scroll="top">
+<STable :data="users" top-scroll>
     <template #header>
         <td>Пользователь</td>
         <td class="center">Имя</td>
@@ -673,8 +732,7 @@ function deleteUser(username) {
 }
 
 const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
-<\/script>
-`;
+<\/script>`;
 
 const code6 = `<STable>
     <template #header>
@@ -844,8 +902,88 @@ function deleteUser(username) {
 }
 
 const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
-<\/script>
-`;
+<\/script>`;
+
+
+const users10 =  ref([ 
+    { "username": "Ivanov", 'name': 'Иван', 'secondname': 'Иванов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, 
+    { "username": "Stepanov", 'name': 'Степан', 'secondname': 'Степанов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Админ", "plan": "-", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" }, 
+    { "username": "Petrov", 'name': 'Петр', 'secondname': 'Петров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Премиум", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" }, 
+    { "username": "Sidorov", 'name': 'Сергей', 'secondname': 'Сидоров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" }, 
+    { "username": "Alexeev", 'name': 'Алексей', 'secondname': 'Алексеев', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Редактор", "plan": "-", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" },
+    { "username": "Ivanov", 'name': 'Иван', 'secondname': 'Иванов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, 
+    { "username": "Stepanov", 'name': 'Степан', 'secondname': 'Степанов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Админ", "plan": "-", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" }, 
+    { "username": "Petrov", 'name': 'Петр', 'secondname': 'Петров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Премиум", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" }, 
+    { "username": "Sidorov", 'name': 'Сергей', 'secondname': 'Сидоров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" }, 
+    { "username": "Alexeev", 'name': 'Алексей', 'secondname': 'Алексеев', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Редактор", "plan": "-", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" },
+    { "username": "Ivanov", 'name': 'Иван', 'secondname': 'Иванов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, 
+    { "username": "Stepanov", 'name': 'Степан', 'secondname': 'Степанов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Админ", "plan": "-", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" }, 
+    { "username": "Petrov", 'name': 'Петр', 'secondname': 'Петров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Премиум", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" }, 
+    { "username": "Sidorov", 'name': 'Сергей', 'secondname': 'Сидоров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" }, 
+    { "username": "Alexeev", 'name': 'Алексей', 'secondname': 'Алексеев', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Редактор", "plan": "-", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }]);
+
+const code10 = `<STable :data="users" height="300px">
+    ...
+</STable>`;
+const fullCode10 = `<template>
+<STable :data="users" height="300px">
+    <template #header>
+        <td>Пользователь</td>
+        <td class="center">Имя</td>
+        <td class="center">Фамилия</td>
+        <td class="center">Дата рождения</td>
+        <td class="center">Рост</td>
+        <td class="center">Вес</td>
+        <td class="center">Тариф</td>
+        <td class="center">Баланс</td>
+        <td class="center">Роль</td>
+        <td class="center">Дата регистрации</td>
+        <td></td>
+    </template>
+    <template #row="{ row }">
+        <td>\{{ row.username }}</td>
+        <td class="center">\{{ row.name }}</td>
+        <td class="center">\{{ row.secondname }}</td>
+        <td class="center">\{{ row.birthdate }}</td>
+        <td class="center">\{{ row.height }}</td>
+        <td class="center">\{{ row.weight }}</td>
+        <td class="center">\{{ row.plan }}</td>
+        <td class="center">\{{ row.balance }}</td>
+        <td class="center">\{{ row.role }}</td>
+        <td class="center">\{{ row.created_at }}</td>
+        <td class="right">
+            <SActionIcon title="Удалить" :confirm="\`Вы действительно хотите удалить пользователя «\${row.username}»?\`" 
+                @click="deleteUser2(row.username)" icon="trash" danger />
+        </td>
+    </template>
+    <template #footer>
+        <td>ИТОГО</td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center">\{{ totalBalance2 }}</td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td class="center"></td>
+        <td></td>
+    </template>
+</STable>
+</template>
+<script setup>
+import { ref, computed } from 'vue'; 
+import { STable } from 'startup-ui';
+
+function deleteUser(username) {
+    // ...
+}
+
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+<\/script>`;
+
 </script>
 <style lang="scss">
 .vp-doc table {
@@ -864,8 +1002,15 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
     margin: 0;
 }
 
-.s-table {
-    margin: 0;
+.docs-container .s-table,
+.docs-container .s-table table {
+    margin: 0 !important;
+}
+.docs-container .s-table tr {
+    border-top: 0 !important;
+}
+.docs-container .s-table td {
+    border-bottom: 1px solid var(--s-border) !important;
 }
 
 .s-table tfoot {

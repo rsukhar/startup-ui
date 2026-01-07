@@ -1,5 +1,5 @@
 <template>
-    <div class="s-table" :class="{hoverable, striped, bordered, 'scrollon_top': props.scroll === 'top'}">
+    <div class="s-table" :class="{hoverable, striped, bordered, topscroll: topScroll, fixedheader: height}" :style="containerStyle">
         <table>
             <thead ref="theadRef" v-if="$slots.header || $slots.headers">
                 <tr v-if="$slots.header">
@@ -41,10 +41,9 @@ const props = defineProps({
         type: String,
         default: 'Ничего не найдено',
     },
-    scroll: {
-        type: [String, null],
-        default: null
-    }
+    fixedHeader: Boolean,
+    height: String,
+    topScroll: Boolean
 });
 
 // Нужно ли показывать сообщение о том, что нет данных?
@@ -53,6 +52,14 @@ const showNoDataMessage = computed(() => {
     if ( ! props.data) return false;
     if (props.data instanceof Array) return props.data.length === 0;
     return Object.values(props.data).length === 0;
+});
+
+const containerStyle = computed(() => {
+    const result = {};
+    if (props.height) {
+        result.height = props.height;
+    }
+    return result;
 });
 </script>
 <style lang="scss">
@@ -67,12 +74,23 @@ const showNoDataMessage = computed(() => {
         width: 100%;
         max-width: 100vw;
     }
-    &.scrollon_top {
+    &.topscroll {
         &, & > table {
             transform: rotateX(180deg);
         }
         & > table {
             margin-bottom: 0;
+        }
+    }
+    &.fixedheader {
+        thead td {
+            position: sticky;
+            top: 0;
+            box-shadow: inset 0 -1px var(--s-border);
+            border-bottom: 0 !important;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
         }
     }
 
