@@ -83,7 +83,7 @@ const containerStyle = computed(() => {
         }
     }
     &.fixedheader {
-        thead td {
+        thead {
             position: sticky;
             top: 0;
             box-shadow: inset 0 -1px var(--s-border);

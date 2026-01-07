@@ -994,7 +994,7 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
     border: none;
 }
 
-.vp-doc tr:nth-child(2n) {
+.vp-doc .s-table tbody tr:nth-child(2n) {
     background-color: transparent;
 }
 
@@ -1008,6 +1008,9 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 }
 .docs-container .s-table tr {
     border-top: 0 !important;
+}
+.docs-container .s-table tr {
+    background-color: transparent;
 }
 .docs-container .s-table td {
     border-bottom: 1px solid var(--s-border) !important;
