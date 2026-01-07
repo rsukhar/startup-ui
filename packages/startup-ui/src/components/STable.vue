@@ -83,15 +83,21 @@ const containerStyle = computed(() => {
         }
     }
     &.fixedheader {
-        thead {
+        thead,
+        tbody {
             position: sticky;
             z-index: 1;
-            top: 0;
             box-shadow: inset 0 -1px var(--s-border);
             border-bottom: 0 !important;
             background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); /* Safari support */
+        }
+        thead {
+            top: 0;
+        }
+        tbody {
+            bottom: 0;
         }
     }
 
