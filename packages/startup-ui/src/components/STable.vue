@@ -85,6 +85,7 @@ const containerStyle = computed(() => {
     &.fixedheader {
         thead {
             position: sticky;
+            z-index: 1;
             top: 0;
             box-shadow: inset 0 -1px var(--s-border);
             border-bottom: 0 !important;
