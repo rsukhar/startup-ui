@@ -109,6 +109,7 @@ const classes = computed(() => [
         pointer-events: none;
     }
     &.fullwidth {
+        max-width: none;
         width: 100%;
     }
     &.small {
