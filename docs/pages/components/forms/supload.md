@@ -204,7 +204,7 @@ const submit = () => {
 }
 <\/script>`;
 
-const code4 = ` <SUpload v-model="screenshot4">
+const code4 = ` <SUpload v-model="screenshot">
     <template #header="{ choose, clear, files, isDragging }">
         <div class="s-upload-area" :class="{'dragging': isDragging}">
             <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
@@ -219,7 +219,7 @@ const code4 = ` <SUpload v-model="screenshot4">
 </SUpload>
 `;
 const fullCode4 = `<template>
-    <SUpload v-model="screenshot4">
+    <SUpload v-model="screenshot">
     <template #header="{ choose, clear, files, isDragging }">
         <div class="s-upload-area" :class="{'dragging': isDragging}">
             <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
