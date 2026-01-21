@@ -60,7 +60,7 @@ const classes = computed(() => [
     background-color: var(--s-primary);
     color: var(--s-white);
     border: 1px var(--s-primary) solid;
-    width: fit-content;
+    max-width: fit-content;
     
     &:hover {
         background-color: var(--s-primary-light);
