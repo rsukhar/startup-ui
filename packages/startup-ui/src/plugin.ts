@@ -41,6 +41,8 @@ import SPagination from './components/SPagination.vue';
 components.push(SPagination);
 import STree from './components/STree.vue';
 components.push(STree);
+import SColumnSettings from './components/SColumnSettings.vue';
+components.push(SColumnSettings);
 
 /**
  * UI

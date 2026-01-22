@@ -53,8 +53,11 @@
 
 <div class="docs-container">
     <SUpload v-model="screenshot4">
-        <template #header="{ choose, clear, files }">
-            <SActionIcon v-if="!files" @click="choose()" icon="plus" />
+        <template #header="{ choose, clear, files, isDragging }">
+            <div class="s-upload-area" :class="{'dragging': isDragging}">
+                <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
+                <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
+            </div>
         </template>
         <template #preview="{ files, remove }">
             <div v-if="files">
@@ -69,7 +72,7 @@
 Слоты сразу пробрасывают методы и переменные, которые могут быть полезны в собственных шаблонах:
 
 <ul>
-    <li>В слоте кнопки выбора <strong>#header</strong>: <strong>choose()</strong> открывает окно выбора файла, <strong>clear()</strong> очищает набор выбранных файлов, <strong>files</strong> — список текущих выбранных файлов.</li>
+    <li>В слоте кнопки выбора <strong>#header</strong>: <strong>choose()</strong> открывает окно выбора файла, <strong>clear()</strong> очищает набор выбранных файлов, <strong>files</strong> — список текущих выбранных файлов, <strong>isDragging</strong> — булево значение, равное true, когда над компонентом перемещают файл.</li>
     <li>В слоте предпросмотра выбранных файлов <strong>#preview</strong>: <strong>files</strong> — список текущих выбранных файлов, <strong>remove(index)</strong> — удаление определенного файла по индексу.</li>
 </ul>
 
@@ -111,6 +114,7 @@ import SActionIcon from '../../../../packages/startup-ui/src/components/SActionI
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
 import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 const screenshot1 = ref('');
 const screenshot2 = ref('');
@@ -132,6 +136,8 @@ function submit(screenshot) {
 }
 
 const showSubmitButton = ref(false);
+
+
 
 const code1 = `<SUpload v-model="screenshot" />`;
 const fullCode1 = `<template>
@@ -198,27 +204,34 @@ const submit = () => {
 }
 <\/script>`;
 
-const code4 = `<SUpload v-model="screenshot">
-    <template \#header="{ choose, clear, files }">
-        <SActionIcon v-if="!files" @click="choose()" icon="plus" />
+const code4 = ` <SUpload v-model="screenshot">
+    <template #header="{ choose, clear, files, isDragging }">
+        <div class="s-upload-area" :class="{'dragging': isDragging}">
+            <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
+            <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
+        </div>
     </template>
     <template #preview="{ files, remove }">
         <div v-if="files">
             Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
         </div>
     </template>
-</SUpload>`;
+</SUpload>
+`;
 const fullCode4 = `<template>
     <SUpload v-model="screenshot">
-        <template #header="{ choose, clear, files }">
-            <SActionIcon v-if="!files" @click="choose()" icon="plus" />
-        </template>
-        <template #preview="{ files, remove }">
-            <div v-if="files">
-                Файл выбран  <SActionIcon @click="remove(0)" icon="trash" />
-            </div>
-        </template>
-    </SUpload>
+    <template #header="{ choose, clear, files, isDragging }">
+        <div class="s-upload-area" :class="{'dragging': isDragging}">
+            <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
+            <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
+        </div>
+    </template>
+    <template #preview="{ files, remove }">
+        <div v-if="files">
+            Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
+        </div>
+    </template>
+</SUpload>
 </template>
 <script setup>
 import { ref } from 'vue';
@@ -226,7 +239,29 @@ import { router } from "@inertiajs/vue3";
 import { SUpload, SActionIcon, SAlert } from 'startup-ui';
 
 const screenshot = ref('');
-<\/script>`;
+<\/script>
+<style lang="scss">
+.s-upload-area {
+    border: 1px dashed var(--s-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: var(--s-border-radius);
+    padding: var(--s-base-margin);
+    gap: var(--s-base-margin);
+    cursor: pointer;
+
+    &-icon {
+        font-size: 56px;
+        color: var(--s-primary);
+    }
+
+    &:hover, &.dragging {
+        border-color: var(--s-primary);
+    }
+}
+<\/style>
+`;
 
 const code5 = `<SUpload accept=".txt,.csv,.xlsx" v-model="screenshot"/>`;
 const fullCode5 = `<template>
@@ -296,3 +331,24 @@ const submit = () => {
 }
 <\/script>`;
 </script>
+<style lang="scss">
+.s-upload-area {
+    border: 1px dashed var(--s-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: var(--s-border-radius);
+    padding: var(--s-base-margin);
+    gap: var(--s-base-margin);
+    cursor: pointer;
+
+    &-icon {
+        font-size: 56px;
+        color: var(--s-primary);
+    }
+
+    &:hover, &.dragging {
+        border-color: var(--s-primary);
+    }
+}
+</style>
