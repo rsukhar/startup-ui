@@ -45,5 +45,9 @@
         "typecheck": "vue-tsc --noEmit",
         "dev": "vite"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "@vueuse/integrations": "^14.1.0",
+        "sortablejs": "^1.15.6"
+    }
 }

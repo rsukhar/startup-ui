@@ -19,9 +19,11 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: `                    @use "@/styles/variables.scss" as *;
+                additionalData: `
+                    @use "@/styles/variables.scss" as *;
                     @use "@/styles/mixins.scss" as *;
-                `            }
+                `
+            }
         },
     },
     build: {
@@ -36,6 +38,7 @@ export default defineConfig({
             external: [
                 'vue',
                 '@vueuse/core',
+                '@vueuse/integrations',
                 '@tinymce/tinymce-vue',
                 /^tinymce(\/.*)?$/,
                 '@inertiajs/vue3'

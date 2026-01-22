@@ -4,7 +4,7 @@
             <SRadioGroup v-model="radioValue" :options="buttonOptions" buttons />
         </div>
         <div class="s-datepicker-main">
-            <div class="s-datepicker-input">
+            <div class="s-datepicker-input" :class="{'range': range}">
                 <input readonly :value="displayValue" />
                 <span class="s-datepicker-input-icon">
                     <FontAwesomeIcon :icon="['far', 'calendar']" />
@@ -46,6 +46,20 @@
                     </div>
                     <div v-if="index !== calendarPages.length - 1" class="splitter"></div>
                 </div>
+                <hr v-if="withTime && !range" />
+                <div v-if="withTime && !range" class="s-datepicker-time">
+                    <div class="s-datepicker-time-control">
+                        <FontAwesomeIcon icon="chevron-up" @click="hoursUp"/>
+                        {{ displayedHours }}
+                        <FontAwesomeIcon icon="chevron-down" @click="hoursDown" />
+                    </div>
+                    :
+                    <div class="s-datepicker-time-control">
+                        <FontAwesomeIcon icon="chevron-up" @click="minutesUp"/>
+                        {{ displayedMinutes}}
+                        <FontAwesomeIcon icon="chevron-down" @click="minutesDown"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -60,15 +74,9 @@ import SRadioGroup from "./SRadioGroup.vue";
 const props = defineProps({
     range: Boolean,
     // Формат значения модели
-    valueFormat: {
-        type: String,
-        default: 'YYYY-MM-DD'
-    },
+    valueFormat: String,
     // Формат, в котором выводим в инпуте
-    inputFormat: {
-        type: String,
-        default: 'DD.MM.YYYY'
-    },
+    inputFormat: String,
     min: String,
     max: String,
     numberOfMonths: Number,
@@ -87,10 +95,14 @@ const props = defineProps({
         }
     },
     buttons: Object,
+    withTime: Boolean,
 })
 // Внешнее значение в нужном формате props.valueFormat
 const externalValue = defineModel();
-const emit = defineEmits(['update:modelValue', 'selectedInterval']);
+
+const valueFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `YYYY-MM-DD HH:mm` : 'YYYY-MM-DD');
+const inputFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
+const internalFormat = (props.withTime && !props.range) ? 'YYYYMMDDHHmm' : 'YYYYMMDD';
 
 // Внутреннее нормированное значение всегда в формате 'YYYYMMDD' или ['YYYYMMDD', 'YYYYMMDD']
 const value = computed(() => {
@@ -101,13 +113,13 @@ const value = computed(() => {
         val = [from, to];
     }
     // Если формат уже правильный или всё ещё null
-    if (props.valueFormat === 'YYYYMMDD' || val === null) {
+    if (valueFormat === internalFormat || val === null) {
         return JSON.parse(JSON.stringify((val)));
     }
     // Приводим к нужному формату
     return Array.isArray(val)
-        ? val.map(date => dayjs(date, props.valueFormat).format('YYYYMMDD'))
-        : dayjs(val, props.valueFormat).format('YYYYMMDD');
+        ? val.map(date => dayjs(date, valueFormat).format(internalFormat))
+        : dayjs(val, valueFormat, true).format(internalFormat);
 });
 
 // Значение для выбиралки с кнопками
@@ -123,10 +135,10 @@ const numOfMonths = computed(() => props.numberOfMonths ?? (props.range ? 2 : 1)
 // Значение, которое показывается в инпуте
 const displayValue = computed(() => {
     if (props.range && Array.isArray(value.value)) {
-        return value.value.filter(Boolean).map(item => dayjs(item, props.valueFormat).format(props.inputFormat))
+        return value.value.filter(Boolean).map(item => dayjs(item, valueFormat).format(inputFormat))
             .join(' — ');
     }
-    return value.value ? dayjs(value.value, props.valueFormat).format(props.inputFormat) : 'Дата не выбрана';
+    return value.value ? (dayjs(value.value, internalFormat, true).format(inputFormat)) : 'Дата не выбрана';
 })
 
 /**
@@ -168,6 +180,36 @@ function nextMonth() {
     firstMonth.value = (firstMonth.value === 12) ? 1 : (firstMonth.value + 1);
 }
 
+// Если время не задано, то по умолчанию показываем текущее время
+function getTimePart(part) {
+    const source = Array.isArray(value.value)
+        ? (value.value.length === 2 ? value.value[1] : null)
+        : value.value;
+
+    const date = source ? dayjs(source, internalFormat, true) : dayjs();
+
+    return part === 'hour' ? date.hour() : date.minute();
+}
+
+const hours = ref(getTimePart('hour'));
+const minutes = ref(getTimePart('minute'));
+
+// Прибавить/убавить часы/минуты
+const hoursUp = () => hours.value = hours.value === 23 ? 0 : hours.value + 1;
+const hoursDown = () => hours.value = hours.value === 0 ? 23 : hours.value - 1;
+const minutesUp = () => minutes.value = minutes.value === 59 ? 0 : minutes.value + 1;
+const minutesDown = () => minutes.value = minutes.value === 0 ? 59 : minutes.value - 1;
+
+const displayedHours = computed(() => hours.value < 10 ? `0${hours.value}` : hours.value);
+const displayedMinutes = computed(() => minutes.value < 10 ? `0${minutes.value}` : minutes.value);
+
+watch(() => [hours.value, minutes.value], () => {
+    if (!props.range) {
+        // Выбор одиночной даты
+        externalValue.value = dayjs(externalValue.value).hour(hours.value).minute(minutes.value).format(valueFormat);
+    }
+});
+
 // Форматирует дату в 'YYYYMMDD'
 const dateToString = (year, month, day) => year + ((month < 10) ? '0' : '') + month + ((day < 10) ? '0' : '') + day;
 
@@ -180,16 +222,23 @@ watch(isOpened, (newValue) => {
         firstYear.value = dayjs().year();
         return;
     }
-    firstMonth.value = dayjs(firstValue, props.valueFormat).month() + 1;
-    firstYear.value = dayjs(firstValue, props.valueFormat).year();
+    firstMonth.value = dayjs(firstValue, valueFormat).month() + 1;
+    firstYear.value = dayjs(firstValue, valueFormat).year();
 });
 
 const isSelected = (year, month, day) => {
+    if (prevClickedDate.value) return prevClickedDate.value.startsWith(dateToString(year, month, day));
+    if (!value.value) return;
+
     if (value.value instanceof Array) {
-        if (prevClickedDate.value) return prevClickedDate.value === dateToString(year, month, day);
-        return value.value.includes(dateToString(year, month, day));
+        // Если выбраны обе даты
+        return value.value.reduce((acc, item) => {
+            if (item.startsWith(dateToString(year, month, day))) return true;
+            return acc;
+         }, false);
     }
-    return value.value === dateToString(year, month, day);
+
+    return value.value.startsWith(dateToString(year, month, day));
 };
 
 /**
@@ -249,8 +298,13 @@ function onDateClick(year, month, day) {
     if (isBlocked(year, month, day)) return;
     if (!props.range) {
         // Выбор одиночной даты
-        externalValue.value = dayjs().year(year).month(month - 1).date(day).format(props.valueFormat);
-        isOpened.value = false;
+        let tempValue = dayjs().year(year).month(month - 1).date(day)
+        if (hours.value && minutes.value) {
+            externalValue.value = tempValue.hour(hours.value).minute(minutes.value);
+        }
+        externalValue.value = tempValue.format(valueFormat);
+
+        if (!props.withTime) isOpened.value = false;
     } else if (!prevClickedDate.value) {
         // Выбор первой даты в диапазоне
         prevClickedDate.value = dateToString(year, month, day);
@@ -258,10 +312,10 @@ function onDateClick(year, month, day) {
         const clickedDate = dateToString(year, month, day);
         let start = (prevClickedDate.value < clickedDate) ? prevClickedDate.value : clickedDate;
         let end = (prevClickedDate.value < clickedDate) ? clickedDate : prevClickedDate.value;
-        if (props.valueFormat !== 'YYYYMMDD') {
+        if (valueFormat !== internalFormat) {
             // Кастомный формат
-            start = dayjs(start, 'YYYYMMDD').format(props.valueFormat);
-            end = dayjs(end, 'YYYYMMDD').format(props.valueFormat);
+            start = dayjs(start, internalFormat).format(valueFormat);
+            end = dayjs(end, internalFormat).format(valueFormat);
         }
         externalValue.value = [start, end];
         prevClickedDate.value = null;
@@ -290,6 +344,11 @@ const buttonOptions = computed(() => {
     width: fit-content;
     font-family: var(--s-font-family);
 
+    hr {
+        width: 100%;
+        border-color: var(--s-grey);
+    }
+
     &-input {
         padding: 6px 10px;
         border: 1px solid #ccc;
@@ -303,6 +362,7 @@ const buttonOptions = computed(() => {
             outline: none;
             color: var(--s-text-light);
             cursor: pointer;
+            min-width: fit-content;
         }
 
         &-icon {
@@ -326,8 +386,13 @@ const buttonOptions = computed(() => {
         }
     }
 
+    &-main .s-datepicker-input.range {
+        width: 180px;
+    }   
+
     &-calendar {
         display: flex;
+        flex-direction: column;
         gap: 10px;
         position: absolute;
         top: 110%;
@@ -339,6 +404,11 @@ const buttonOptions = computed(() => {
         padding: 8px;
         z-index: 1000;
         min-width: 220px;
+
+        &-wrapper {
+            display: flex;
+            gap: 10px;
+        }
 
         &-page {
             display: flex;
@@ -382,6 +452,25 @@ const buttonOptions = computed(() => {
             flex-grow: 1;
             width: 1px;
             background-color: var(--s-border);
+        }
+    }
+
+    &-time {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        &-control {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            & > svg {
+                color: var(--s-primary);
+                cursor: pointer;
+            }
         }
     }
 

@@ -60,6 +60,8 @@ const classes = computed(() => [
     background-color: var(--s-primary);
     color: var(--s-white);
     border: 1px var(--s-primary) solid;
+    max-width: fit-content;
+    
     &:hover {
         background-color: var(--s-primary-light);
         border-color: var(--s-primary-light);
@@ -107,6 +109,7 @@ const classes = computed(() => [
         pointer-events: none;
     }
     &.fullwidth {
+        max-width: none;
         width: 100%;
     }
     &.small {

@@ -1,19 +1,18 @@
 <template>
     <div class="s-upload">
-        <div class="s-upload-header">
-            <template v-if="$slots.header">
-                <slot name="header" :choose="openFileDialog" :clear="clear" :files="model" />
-            </template>
-            <template v-else>
-                <SButton class="s-upload-button" outlined @click.prevent="openFileDialog">
-                    <FontAwesomeIcon class="s-upload-button-icon" icon="plus" />{{ finalUploadButtonTitle }}
-                </SButton>
-            </template>
+        <div class="s-upload-header" @dragenter.stop="onDragEnter"
+            @dragleave.stop="onDragLeave" @dragover.prevent @drop.prevent="onDrop">
+            <div v-if="$slots.header" :class="{'dragging': isDragging}">
+                <slot name="header" :choose="openFileDialog" :clear="clear" :files="model" :isDragging="isDragging" />
+            </div>
+            <SButton v-else class="s-upload-button" outlined @click.prevent="openFileDialog">
+                <FontAwesomeIcon class="s-upload-button-icon" icon="plus" />{{ finalUploadButtonTitle }}
+            </SButton>
         </div>
 
         <input ref="fileInput" class="s-upload-hiddeninput" type="file"
                 :multiple="multiple" :accept="accept" @change="select"/>
-  
+
         <div v-if="fileTitles.length" class="s-upload-content">
             <slot v-if="$slots.preview" name="preview" :files="fileTitles" :remove="remove"/>
             <div v-else v-for="(title, key) in fileTitles" :key="`${title}-${key}`" class="s-upload-content-item">
@@ -24,12 +23,12 @@
         <slot />
     </div>
 </template>
-  
+
 <script setup>
-import { computed, useTemplateRef } from 'vue';
+import { ref, computed, useTemplateRef } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SButton from './SButton.vue';
-  
+
 const props = defineProps({
     url: String,
     accept: String,
@@ -56,16 +55,16 @@ const fileTitles = computed(() => {
 });
 
 /**
- * Обработчик события select
+ * Обработчик события выбора файла
  * 
  * @param event 
  */
 function select(event) {
-    const selected = Array.from(event.target.files || []).filter(isFileValid);
-    if (!selected.length) return;
+    const selected = Array.from(event.target?.files || event.dataTransfer?.files || []).filter(isFileValid);
 
-    if (fileTitles.value.includes(event.target.files[0].name)) return;
-  
+    if (!selected.length) return;
+    if (fileTitles.value.includes(selected[0]?.name)) return;
+
     if (props.multiple) {
         const current = Array.isArray(model.value) ? [...model.value] : [];
         model.value = [...current, ...selected];
@@ -75,14 +74,13 @@ function select(event) {
 
     emit('select', model.value);
 }
-  
+
 function isFileValid(file) {
     if (props.accept && !isFileTypeValid(file)) return false;
-    console.log(props.maxFileSize, file.size);
     if (props.maxFileSize && file.size > props.maxFileSize) return false;
     return true;
 }
-  
+
 function isFileTypeValid(file) {
     const acceptableTypes = props.accept.split(',').map((type) => type.trim());
     const fileExtension = '.' + file.name.split('.').pop();
@@ -109,6 +107,27 @@ function clear() {
     emit('clear');
 }
 
+const isDragging = ref(false);
+let dragCounter = 0;
+
+function onDragEnter(event) {
+    dragCounter++;
+    isDragging.value = true;
+}
+
+function onDragLeave(event) {
+    dragCounter--;
+    if (dragCounter === 0) {
+        isDragging.value = false;
+    }
+}
+
+function onDrop(event) {
+    dragCounter = 0;
+    isDragging.value = false;
+    select(event);
+}
+
 defineExpose({ clear, remove });
 </script>
 <style lang="scss">
@@ -117,12 +136,19 @@ defineExpose({ clear, remove });
     flex-direction: column;
     gap: 10px;
     font-family: var(--s-font-family);
+    padding: var(--base-margin);
+    padding-left: 0;
     
     &-header {
         position: relative;
-        display: flex;
-        gap: 10px;
-        align-items: center;
+
+        &.dragging {
+            border-radius: 6px;
+            outline-style: dashed;
+            outline-width: 1px;
+            outline-color: var(--primary);
+            outline-offset: 5px;
+        }
     }
 
     &-header:empty {
