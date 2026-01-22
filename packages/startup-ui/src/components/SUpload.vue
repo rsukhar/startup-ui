@@ -78,7 +78,6 @@ function select(event) {
   
 function isFileValid(file) {
     if (props.accept && !isFileTypeValid(file)) return false;
-    console.log(props.maxFileSize, file.size);
     if (props.maxFileSize && file.size > props.maxFileSize) return false;
     return true;
 }
