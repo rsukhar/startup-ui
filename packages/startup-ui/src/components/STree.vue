@@ -14,16 +14,10 @@
                 <SCheckbox v-if="checkboxes" :model-value="isSelected(node.id)"
                     @click.stop="() => {}"
                     @change="(newValue) => toggle(node, newValue)">
-                    <slot v-if="$slots.node" name="node" :node="node" />
-                    <template v-else>
-                        {{ node.label }}
-                    </template>
                 </SCheckbox>
+                <slot v-if="$slots.node" name="node" :node="node" />
                 <template v-else>
-                    <slot v-if="$slots.node" name="node" :node="node" />
-                    <template v-else>
-                        {{ node.label }}
-                    </template>
+                    {{ node.label }}
                 </template>
             </div>
             <STree v-if="node.children && sharedExpandedKeys.includes(node.id)" v-model="model"
@@ -290,7 +284,7 @@ function isSelected(id) {
         box-sizing: border-box;
         display: flex;
         position: relative;
-        align-items: start;
+        align-items: center;
         cursor: pointer;
         gap: 5px;
         line-height: 1.3rem;
