@@ -31,6 +31,7 @@ const props = defineProps({
     name: String,
     title: String,
     hint: String,
+    errorKey: [String, Array]
 });
 
 const form = inject('formModel');
@@ -41,8 +42,43 @@ const modelValue = computed({
     }
 })
 
+
 const errors = inject('formErrors');
-const error = computed(() => errors.value[props.name] ?? '');
+
+/**
+ * Конвертируем ключ в regexp-шаблон
+ * 
+ * @param pattern 
+ */
+function wildcardToRegExp(pattern) {
+    const escaped = pattern
+        .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // экранируем спецсимволы
+        .replace(/\*/g, '[^.]+'); // * = один сегмент между точками
+
+    return new RegExp(`^${escaped}$`);
+}
+
+const error = computed(() => {
+    const allErrors = errors?.value;
+    // Нет ошибок
+    if (!allErrors || Object.keys(allErrors).length === 0) return null;
+    // Не заданы кастомные ключи
+    if (!props.errorKey) return allErrors[props.name] ?? null;
+
+    const keys = Array.isArray(props.errorKey) ? [...props.errorKey] : [props.errorKey]; 
+    // перебираем ключи
+    return keys
+        .flatMap(key => {
+        if (key.includes('*')) {
+            const reg = wildcardToRegExp(key);
+            return Object.entries(allErrors)
+            .filter(([k]) => reg.test(k))
+            .map(([, v]) => v);
+        }
+
+        return allErrors[key] ? [allErrors[key]] : [];
+    }).join('\n') || null;
+});
 
 const titlesWidth = inject('titlesWidth');
 
@@ -112,6 +148,7 @@ defineExpose({ focus });
         margin-top: 5px;
     }
     &-error {
+        white-space: pre-line;
         color: var(--s-red);
     }
     div:not(&-description) + &-error {
