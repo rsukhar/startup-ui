@@ -236,9 +236,9 @@ function getDescendants(node) {
  * @param newValue 
  */
 function getNodesToToggle(node, newValue, nodesToToggle = []) {
-    if (props.independentCheckboxes) return [node.id]; 
-    
-    if (node.children && node.children.length) {
+    nodesToToggle.push(node.id);
+
+    if (!props.independentCheckboxes && node.children && node.children.length) {
         for (let childNode of node.children) {
             getNodesToToggle(childNode, newValue, nodesToToggle);
         }
