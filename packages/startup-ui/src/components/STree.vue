@@ -11,16 +11,27 @@
                  @dragover.prevent="onDragOver(node, $event)" @drop="onDrop(node, $event)">
                 <FontAwesomeIcon class="s-tree-toggle" icon="caret-right" @click.stop="toggleNode(node)"
                                  v-if="node.children && node.children.length" />
-                <slot v-if="$slots.node" name="node" :node="node" />
+                <SCheckbox v-if="checkboxes" :model-value="isSelected(node.id)"
+                    @click.stop="() => {}"
+                    @change="(newValue) => toggle(node, newValue)">
+                    <slot v-if="$slots.node" name="node" :node="node" />
+                    <template v-else>
+                        {{ node.label }}
+                    </template>
+                </SCheckbox>
                 <template v-else>
-                    {{ node.label }}
+                    <slot v-if="$slots.node" name="node" :node="node" />
+                    <template v-else>
+                        {{ node.label }}
+                    </template>
                 </template>
             </div>
             <STree v-if="node.children && sharedExpandedKeys.includes(node.id)" v-model="model"
-                   :draggable="draggable"
-                   :data="node.children" @dragstart="(node, event) => emit('dragstart', node, event)"
+                   :draggable="draggable" :data="node.children" :selectable="selectable"
+                   :checkboxes="checkboxes"
+                   @dragstart="(node, event) => emit('dragstart', node, event)"
                    @drop="(targetNode, event, dropType) => emit('drop', targetNode, event, dropType)"
-                   :selectable="selectable" @change="(node) => emit('change', node)">
+                   @change="(node) => emit('change', node)">
                 <template #node="{ node: childNode }" v-if="$slots.node">
                     <slot name="node" :node="childNode" />
                 </template>
@@ -31,6 +42,7 @@
 <script setup>
 import { ref, provide, inject, watch } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import SCheckbox from './SCheckbox.vue';
 const props = defineProps({
     /**
      * Массив вида [{id, label, children: [...]}, ...]
@@ -45,6 +57,14 @@ const props = defineProps({
     },
     draggable: Boolean,
     selectable: Boolean,
+    /**
+     * Включить чекбоксы
+     */
+    checkboxes: Boolean,
+    /**
+     * При нажатии на чекбокс в родительском узле, состояние чекбоксов в потомках не меняется
+     */
+    independentCheckboxes: Boolean,
     /**
      * Ключ, по которому раскрыте узлы хранятся в localStorage
      */
@@ -172,8 +192,8 @@ function onDragLeave(event) {
         return;
     }
 
-  // курсор ушёл вбок или вообще вне компонента
-  sharedDropTarget.value = null;
+    // курсор ушёл вбок или вообще вне компонента
+    sharedDropTarget.value = null;
 }
 
 /**
@@ -207,6 +227,58 @@ function getDescendants(node) {
     }
 
     return result;
+}
+
+/**
+ * Получить id узлов, которые нужно переключить
+ * 
+ * @param node 
+ * @param newValue 
+ */
+function getNodesToToggle(node, newValue, nodesToToggle = []) {
+    if (props.independentCheckboxes) return [node.id]; 
+    
+    if (node.children && node.children.length) {
+        for (let childNode of node.children) {
+            getNodesToToggle(childNode, newValue, nodesToToggle);
+        }
+    }
+
+    return nodesToToggle;
+}
+
+function toggle(interest, newValue) {
+    // Собираем все узлы, чтобы переключить их разом
+    const nodesToToggle = getNodesToToggle(interest, newValue);
+
+    model.value = newValue
+        ? model.value.concat(nodesToToggle)
+        : model.value.filter(interestId => !nodesToToggle.includes(interestId));
+}
+
+/**
+ * Словарь предков: узел — все потомки
+ * Строим в корневом узле и делимся ссылкой с потомками
+ */
+function buildParentMap(nodes, parentId = null, map = new Map()) {
+    for (const node of nodes) {
+        if (parentId !== null) map.set(node.id, parentId)
+
+        if (node.children?.length) buildParentMap(node.children, node.id, map)
+    }
+
+    return map;
+}
+
+let parentMap = inject('parentMap', null);
+
+if (!parentMap) {
+    parentMap = buildParentMap(props.data);
+    provide('parentMap', parentMap);
+}
+
+function isSelected(id) {
+    return model.value.includes(id);
 }
 </script>
 <style lang="scss">
