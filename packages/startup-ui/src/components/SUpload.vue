@@ -143,12 +143,12 @@ defineExpose({ clear, remove });
         position: relative;
 
         &.dragging {
-        border-radius: 6px;
-        outline-style: dashed;
-        outline-width: 1px;
-        outline-color: var(--primary);
-        outline-offset: 5px;
-    }
+            border-radius: 6px;
+            outline-style: dashed;
+            outline-width: 1px;
+            outline-color: var(--primary);
+            outline-offset: 5px;
+        }
     }
 
     &-header:empty {
