@@ -30,6 +30,7 @@ export { default as SFilterGroup } from './components/SFilterGroup.vue';
 export { default as STable } from './components/STable.vue';
 export { default as SPagination } from './components/SPagination.vue';
 export { default as STree } from './components/STree.vue';
+export { default as SColumnSettings } from './components/SColumnSettings.vue';
 
 /**
  * UI
