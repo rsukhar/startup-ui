@@ -337,7 +337,7 @@ function isSelected(id) {
 
         &.bordered {
             border-radius: 0;
-            border-bottom: 1px solid var(--s-border-light);
+            border-bottom: 1px solid var(--s-border);
         }
     }
 
@@ -353,7 +353,7 @@ function isSelected(id) {
         height: 16px;
         line-height: 16px;
         text-align: center;
-        color: var(--s-border);
+        color: var(--s-border-light);
         transform-origin: center center;
         transition: transform 0.3s ease;
     }
