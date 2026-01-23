@@ -83,7 +83,7 @@ if (level === null) {
 } else {
     level += 1;
 }
-console.log(level);
+
 provide('level', level);
 
 // Список раскрытых узлов
