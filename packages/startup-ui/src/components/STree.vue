@@ -353,7 +353,7 @@ function isSelected(id) {
         height: 16px;
         line-height: 16px;
         text-align: center;
-        color: var(--s-border-light);
+        color: var(--s-border);
         transform-origin: center center;
         transition: transform 0.3s ease;
     }
