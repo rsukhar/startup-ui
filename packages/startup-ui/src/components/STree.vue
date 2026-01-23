@@ -1,16 +1,19 @@
 <template>
     <div class="s-tree" @dragleave="onDragLeave">
         <template v-for="node in data" :key="node.id">
-            <div class="s-tree-cell" :class="{
-                selected: model === node.id,
-                expanded: sharedExpandedKeys.includes(node.id),
-                dropTarget: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'center',
-                dropTargetTop: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'top',
-                dropTargetBottom: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'bottom',
-            }" @click.stop="clickNode(node)" @dragstart="onDrag(node, $event)" :draggable="draggable"
+            <div class="s-tree-cell" :style="{paddingLeft: 20 * level + 'px'}"
+                :class="{
+                    selected: model === node.id,
+                    expanded: sharedExpandedKeys.includes(node.id),
+                    bordered: bordered, 
+                    dropTarget: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'center',
+                    dropTargetTop: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'top',
+                    dropTargetBottom: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'bottom',
+                }" @click.stop="clickNode(node)" @dragstart="onDrag(node, $event)" :draggable="draggable"
                  @dragover.prevent="onDragOver(node, $event)" @drop="onDrop(node, $event)">
                 <FontAwesomeIcon class="s-tree-toggle" icon="caret-right" @click.stop="toggleNode(node)"
-                                 v-if="node.children && node.children.length" />
+                                 v-if="node.children && node.children.length" 
+                                 :style="{left: 20 * (level - 1) + 'px' }"/>
                 <SCheckbox v-if="checkboxes" :model-value="isSelected(node.id)"
                     @click.stop="() => {}"
                     @change="(newValue) => toggle(node, newValue)">
@@ -23,6 +26,7 @@
             <STree v-if="node.children && sharedExpandedKeys.includes(node.id)" v-model="model"
                    :draggable="draggable" :data="node.children" :selectable="selectable"
                    :checkboxes="checkboxes"
+                   :bordered="bordered"
                    @dragstart="(node, event) => emit('dragstart', node, event)"
                    @drop="(targetNode, event, dropType) => emit('drop', targetNode, event, dropType)"
                    @change="(node) => emit('change', node)">
@@ -63,10 +67,24 @@ const props = defineProps({
      * Ключ, по которому раскрыте узлы хранятся в localStorage
      */
     storeExpandedKeysTo: String,
+    /**
+     * Границы
+     */
+    bordered: Boolean
 });
 const emit = defineEmits(['dragstart', 'drop', 'change']);
 
 const model = defineModel();
+
+let level = inject('level', null);
+
+if (level === null) {
+    level = 1;
+} else {
+    level += 1;
+}
+console.log(level);
+provide('level', level);
 
 // Список раскрытых узлов
 let sharedExpandedKeys = inject('sharedExpandedKeys', null);
@@ -316,6 +334,11 @@ function isSelected(id) {
         &.expanded > .s-tree-toggle {
             transform: rotate(90deg);
         }
+
+        &.bordered {
+            border-radius: 0;
+            border-bottom: 1px solid var(--s-border-light);
+        }
     }
 
     & > &-cell {
@@ -333,10 +356,6 @@ function isSelected(id) {
         color: var(--s-border-light);
         transform-origin: center center;
         transition: transform 0.3s ease;
-    }
-
-    & > & {
-        padding-left: 18px;
     }
 }
 </style>
