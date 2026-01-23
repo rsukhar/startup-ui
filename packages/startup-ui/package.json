@@ -1,6 +1,6 @@
 {
     "name": "startup-ui",
-    "version": "0.9.2",
+    "version": "0.9.3",
     "description": "Vue3 UI components for IT startups. Best served with Laravel + InertiaJS",
     "type": "module",
     "main": "dist/startup-ui.cjs.js",
