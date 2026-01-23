@@ -58,7 +58,7 @@ const props = defineProps({
     /**
      * При нажатии на чекбокс в родительском узле, состояние чекбоксов в потомках не меняется
      */
-    independentCheckboxes: Boolean,
+    selectWithChildren: Boolean,
     /**
      * Ключ, по которому раскрыте узлы хранятся в localStorage
      */
@@ -232,7 +232,7 @@ function getDescendants(node) {
 function getNodesToToggle(node, newValue, nodesToToggle = []) {
     nodesToToggle.push(node.id);
 
-    if (!props.independentCheckboxes && node.children && node.children.length) {
+    if (props.selectWithChildren && node.children && node.children.length) {
         for (let childNode of node.children) {
             getNodesToToggle(childNode, newValue, nodesToToggle);
         }
