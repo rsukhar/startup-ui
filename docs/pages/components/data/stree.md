@@ -73,6 +73,24 @@
     <li><strong>drop(targetNode, event, dropType)</strong> — при заверешнии перетаскивания.</li>
 </ul>
 
+## Чек-боксы
+
+Для поддержки чек-боксов у элементов добавляем атрибут <strong>checkboxes</strong>
+
+<div class="docs-container">
+    <STree v-model="selectedPageIds7" checkboxes :data="pages" />
+</div>
+
+<CustomCodeBlock :code="{text: code7, lang: 'html'}" :fullCode="{text: fullCode7, lang: 'vue'}" />
+
+Если нужно, чтобы при выборе чек-бокса автоматически выбирались чек-боксы вложенных элементов, добавьте атрибут <strong>select-with-children</strong>:
+
+<div class="docs-container">
+    <STree v-model="selectedPageIds8" checkboxes :data="pages" select-with-children/>
+</div>
+
+<CustomCodeBlock :code="{text: code8, lang: 'html'}" :fullCode="{text: fullCode8, lang: 'vue'}" />
+
 <script setup>
 import { ref } from 'vue';
 import STree from '../../../../packages/startup-ui/src/components/STree.vue';
@@ -81,6 +99,9 @@ import { pages } from '../../../resources/data/pages.js';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const value = ref();
+
+const selectedPageIds7 = ref([]);
+const selectedPageIds8 = ref([]);
 
 const code1 = `<STree :data="pages" />`;
 const fullCode1 = `<template>
@@ -151,6 +172,27 @@ import { STree } from 'startup-ui';
 const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}];
 <\/script>`;
 
+const code7 = `<STree v-model="selectedPageIds" :data="pages" checkboxes />`;
+const fullCode7 = `<template>
+    <STree v-model="selectedPageIds" :data="pages" checkboxes />
+</template>
+<script setup>
+import { STree } from 'startup-ui';
+
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}, ...];
+const selectedPageIds = ref([]);
+<\/script>`;
+
+const code8 = `<STree v-model="selectedPageIds" :data="pages" checkboxes select-with-children />`;
+const fullCode8 = `<template>
+    <STree v-model="selectedPageIds" :data="pages" checkboxes select-with-children />
+</template>
+<script setup>
+import { STree } from 'startup-ui';
+
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}, ...];
+const selectedPageIds = ref([]);
+<\/script>`;
 </script>
 <style lang="scss">
 </style>
