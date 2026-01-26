@@ -17,11 +17,11 @@
                         </div>
                     </li>
                 </ul>
-                <div class="s-custom-dropdown-container-footer">
+                <div v-if="columnPresets && columnPresets.length" class="s-custom-dropdown-container-footer" ref="footer">
                     <a v-for="columnPreset in columnPresets" :key="columnPreset.title"
                        @click="resetValue(columnPreset.columns)">
                         <FontAwesomeIcon icon="rotate-left" />
-                        Сбросить на {{ columnPreset.title }}
+                        Сбросить {{ columnPresets.length > 1 ? `на ${ columnPreset.title }` : 'изменения' }}
                     </a>
                 </div>
             </div>
@@ -30,11 +30,11 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, useTemplateRef, nextTick } from "vue";
 import { useSortable } from "@vueuse/integrations/useSortable";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useEventListener } from "@vueuse/core";
-import { SCheckbox } from "startup-ui";
+import SCheckbox from "./SCheckbox.vue";
 
 const props = defineProps({
     /**
@@ -50,7 +50,7 @@ const props = defineProps({
      */
     columnPresets: Array,
     /**
-     * Эти колонки нельзя отключить, но можно сортировать
+     * Эти колонки нельзя отключить
      */
     permanentColumns: {
         type: Array,
@@ -58,6 +58,8 @@ const props = defineProps({
     },
 });
 const emit = defineEmits(['update:modelValue'])
+
+const $footer = useTemplateRef('footer');
 
 // Сортируемый список в HTML
 const $list = ref();
@@ -71,6 +73,16 @@ useEventListener(document, 'click', (event) => {
     if (dropdown.value && !dropdown.value.contains(event.target)) {
         isOpen.value = false;
     }
+});
+
+watch(isOpen, async (open) => {
+    if (!open) return;
+
+    await nextTick();
+    const listHeight = $list.value.getBoundingClientRect().height;
+    const btnHeight = dropdown.value.getBoundingClientRect().height;
+    
+    $footer.value.style.top = (listHeight + btnHeight) + 'px';
 });
 
 // Собирает список для отображения из известных колонок и текущего значения модели
@@ -114,6 +126,7 @@ useSortable($list, list, {
 
 // Сброс изменений
 const resetValue = function(columns) {
+    console.log(columns);
     list.value = buildList(columns);
 };
 </script>
@@ -179,7 +192,7 @@ const resetValue = function(columns) {
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 z-index: 10; /* Ensure it's above other content */
                 display: none; /* Initially hidden */
-                overflow-y: scroll;
+                overflow-y: auto;
             }
 
             &-item {

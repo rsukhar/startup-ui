@@ -57,6 +57,7 @@ export default defineConfig({
                         { text: 'STimeline', link: '/pages/components/interfaces/stimeline' },
                         { text: 'SDashboard > SDashboardItem', link: '/pages/components/interfaces/sdashboard' },
                         { text: 'SStat', link: '/pages/components/interfaces/sstat' },
+                        { text: 'SColumnSettings', link: '/pages/components/interfaces/scolumnsettings' },
                     ],
                 },
 
