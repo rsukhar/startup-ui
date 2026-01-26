@@ -113,6 +113,38 @@ InertiaJS предлагает <a href="https://inertiajs.com/docs/v2/data-props
 
 <CustomCodeBlock :code="{text: code5, lang: 'js'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
 
+## Вывод ошибок из кастомных ключей
+
+Иногда бывает нужно выводить ошибки из кастомных ключей errors-массива (или вложенных путей). Сделать это можно с помощью атрибута <strong>error-key</strong>: 
+
+<div class="docs-container">
+    <SForm v-model="formSixth" :errors="errors6" @submit.prevent="submit6">
+         <SFormRow title="Кол-во заказов" :error-key="['orders.minCount', 'orders.maxCount']">
+                <div class="order-formrow">
+                    <label class="order-formrow-item">
+                        <span>Минимум</span>
+                        <SInput v-model="formSixth.minCount" type="number" min="0" style="max-width: 80px;"/>
+                    </label>
+                    <label class="order-formrow-item">
+                        <span>Максимум</span>
+                        <SInput v-model="formSixth.maxCount" type="number" min="0" style="max-width: 80px;"/>
+                    </label>
+                </div>
+            </SFormRow>
+            <SButton>Отправить</SButton>
+    </SForm>
+</div>
+
+<CustomCodeBlock :code="{text: code7, lang: 'vue'}" :fullCode="{text: fullCode7, lang: 'vue'}" />
+
+<p>Поддерживаются следующие форматы ключей:</p>
+
+<ul>
+<li>Пути через точку: <strong>orders.0</strong></li>
+<li>Звездочка для всех вложенных ключей: <strong>orders.*</strong> </li>
+<li>Массивы: <strong>['orders.0', 'orders.1']</strong></li>
+</ul>
+
 <script setup>
 import { reactive, ref } from 'vue';
 import SForm from '../../../../packages/startup-ui/src/components/SForm.vue';
@@ -180,6 +212,31 @@ const formFifth = useForm({
     hasNotifications: '',
 });
 
+const formSixth = useForm({
+    minCount: '',
+    maxCount: '',
+});
+
+const initialErrors = {
+    'orders.minCount': 'Минимальное количество заказов не может быть меньше 1',
+    'orders.maxCount': 'Максимальное количество заказов не может быть меньше 1'
+};
+
+const errors6 = ref({});
+
+function submit6() {
+    if (!formSixth.minCount) {
+        errors6.value['orders.minCount'] = initialErrors['orders.minCount'];
+    } else {
+        delete errors6.value['orders.minCount']
+    }
+
+    if (!formSixth.maxCount) {
+        errors6.value['orders.maxCount'] = initialErrors['orders.maxCount'];
+    } else {
+        delete errors6.value['orders.maxCount']
+    }
+}
 
 const code1 = `<SForm v-model="form" method="post" action="/users/login">
     <SFormRow title="Логин" name="login">
@@ -316,4 +373,67 @@ const form = useForm({
     hasNotifications: false,
 });
 <\/script>`;
+
+const code7 = `<template>
+...
+<SFormRow title="Кол-во заказов" :error-key="['orders.minCount', 'orders.maxCount']">
+    <div class="order-formrow">
+        <label class="order-formrow-item">
+            <span>Минимум</span>
+            <SInput v-model="form.minCount" type="number" min="0" style="max-width: 80px;"/>
+        </label>
+        <label class="order-formrow-item">
+            <span>Максимум</span>
+            <SInput v-model="form.maxCount" type="number" min="0" style="max-width: 80px;"/>
+        </label>
+    </div>
+</SFormRow>
+...
+</template>
+`;
+
+const fullCode7 = `<template>
+    <SForm v-model="form" :errors="errors" @submit.prevent="submit6">
+        <SFormRow title="Кол-во заказов" :error-key="['orders.minCount', 'orders.maxCount']">
+            <div class="order-formrow">
+                <label class="order-formrow-item">
+                    <span>Минимум</span>
+                    <SInput v-model="form.minCount" type="number" min="0" style="max-width: 80px;"/>
+                </label>
+                <label class="order-formrow-item">
+                    <span>Максимум</span>
+                    <SInput v-model="form.maxCount" type="number" min="0" style="max-width: 80px;"/>
+                </label>
+            </div>
+        </SFormRow>
+        <SButton>Отправить</SButton>
+    </SForm>
+</template>
+<style lang="scss">
+.order-formrow {
+    display: flex;
+    flex-direction: row;
+    gap: var(--s-base-margin);
+
+    &-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+}
+<\/style>
+`;
 </script>
+<style lang="scss">
+.order-formrow {
+    display: flex;
+    flex-direction: row;
+    gap: var(--s-base-margin);
+
+    &-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+}
+</style>
