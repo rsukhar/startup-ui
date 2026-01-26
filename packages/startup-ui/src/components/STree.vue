@@ -25,7 +25,7 @@
             </div>
             <STree v-if="node.children && sharedExpandedKeys.includes(node.id)" v-model="model"
                    :draggable="draggable" :data="node.children" :selectable="selectable"
-                   :checkboxes="checkboxes"
+                   :checkboxes="checkboxes" :selectWithChildren="selectWithChildren"
                    :bordered="bordered"
                    @dragstart="(node, event) => emit('dragstart', node, event)"
                    @drop="(targetNode, event, dropType) => emit('drop', targetNode, event, dropType)"
