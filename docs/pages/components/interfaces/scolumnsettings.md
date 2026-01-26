@@ -63,12 +63,16 @@
 </div>
 <CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
 
+Когда набор полей всего один, по умолчанию в футере выпадающего списка выводится строка «Сбросить изменения», когда несколько — выводится название каждого набора. Это повдение можно изменить с помощью слота <strong>setpreset</strong>:
+
+<CustomCodeBlock :code="{text: code22, lang: 'vue'}" :fullCode="{text: fullCode22, lang: 'vue'}"/>
+
 ## Постоянные колонки
 
 Если нужно запретить удаление определенных колонок, передайте массив с ними в атрибут <strong>permanent-columns</strong>:
 
 <div class="s-columnsettingspage-container">
-<SColumnSettings v-model="tableColumns3" :options="availableColumns" :column-presets="columnPresets" :permanentColumns="permanentColumns"/>
+<SColumnSettings v-model="tableColumns3" :options="availableColumns" :column-presets="columnPresets" :permanentColumns="permanentColumns" />
 </div>
 
 <div class="docs-container">
@@ -280,6 +284,23 @@ const columnPresets = [{
 
 const permanentColumns = ['role'];
 <\/script>
+`;
+
+const code22 = `<template>
+...
+<SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets">
+    <template #setpreset="{ preset }"><FontAwesomeIcon icon="rotate-left" />Сбросить на \{\{ preset.title \}\}</template>
+</SColumnSettings>
+...
+</template>
+`;
+const fullCode22 = `<template>
+...
+<SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets">
+    <template #setpreset="{ preset }"><FontAwesomeIcon icon="rotate-left" />Сбросить на \{\{ preset.title \}\}</template>
+</SColumnSettings>
+...
+</template>
 `;
 </script>
 <style lang="scss">

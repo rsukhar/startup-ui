@@ -17,11 +17,13 @@
                         </div>
                     </li>
                 </ul>
-                <div v-if="columnPresets && columnPresets.length" class="s-custom-dropdown-container-footer" ref="footer">
-                    <a v-for="columnPreset in columnPresets" :key="columnPreset.title"
-                       @click="resetValue(columnPreset.columns)">
-                        <FontAwesomeIcon icon="rotate-left" />
-                        Сбросить {{ columnPresets.length > 1 ? `на ${ columnPreset.title }` : 'изменения' }}
+                <div v-if="columnPresets.length" class="s-custom-dropdown-container-footer" ref="footer">
+                    <a v-for="preset in columnPresets" :key="preset.title" @click="resetValue(preset.columns)">
+                        <slot name="setpreset" :preset="preset">
+                            <FontAwesomeIcon icon="rotate-left" />
+                            Сбросить
+                            {{ columnPresets.length > 1 ? `на ${preset.title}` : 'изменения' }}
+                        </slot>
                     </a>
                 </div>
             </div>
@@ -48,7 +50,10 @@ const props = defineProps({
     /**
      * Значение по умолчанию для сброса
      */
-    columnPresets: Array,
+    columnPresets: {
+        type: Array,
+        default: []
+    },
     /**
      * Эти колонки нельзя отключить
      */
