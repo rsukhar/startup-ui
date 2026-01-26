@@ -37,7 +37,8 @@ watch(
     () => props.errors,
     (newErrors) => {
         localErrors.value = { ...newErrors }
-    }
+    },
+    {deep: true}
 )
 
 const isLoading = ref(props.loading);
