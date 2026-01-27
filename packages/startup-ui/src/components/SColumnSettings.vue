@@ -3,9 +3,12 @@
         <div class="s-custom-dropdown-wrapper">
             <div class="s-custom-dropdown-container" :class="{ 'open': isOpen }" ref="dropdown">
                 <div @click="toggleDropdown" class="s-custom-dropdown-container-btn">
-                    <FontAwesomeIcon icon="table-columns" />
-                    <span>Настроить колонки</span>
-                    <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
+                    <slot v-if="$slots.label" name="label" />
+                    <template v-else>
+                        <FontAwesomeIcon icon="table-columns" />
+                        <span>Настроить колонки</span>
+                        <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
+                    </template>
                 </div>
                 <ul class="s-custom-dropdown-container-items" ref="$list">
                     <li class="s-custom-dropdown-container-item" v-for="item in list" :key="item.id">
@@ -84,10 +87,14 @@ watch(isOpen, async (open) => {
     if (!open) return;
 
     await nextTick();
-    const listHeight = $list.value.getBoundingClientRect().height;
+
+    if (!$footer.value) return;
+
+    const listRect = $list.value.getBoundingClientRect()
     const btnHeight = dropdown.value.getBoundingClientRect().height;
     
-    $footer.value.style.top = (listHeight + btnHeight) + 'px';
+    $footer.value.style.top = (listRect.height + btnHeight - 10) + 'px';
+    $footer.value.style.width = listRect.width + 'px';
 });
 
 // Собирает список для отображения из известных колонок и текущего значения модели
@@ -131,13 +138,13 @@ useSortable($list, list, {
 
 // Сброс изменений
 const resetValue = function(columns) {
-    console.log(columns);
     list.value = buildList(columns);
 };
 </script>
 
 <style lang="scss">
 .s-columnsettings {
+    display: inline-block;
     @include desktop() {
         margin-left: auto !important;
     }
@@ -145,7 +152,7 @@ const resetValue = function(columns) {
         margin-left: 0 !important;
     }
     .s-custom-dropdown-wrapper {
-        min-width: 230px;
+        width: fit-content;
 
         .s-custom-dropdown-container {
             position: relative;
@@ -165,7 +172,6 @@ const resetValue = function(columns) {
                 border: 1px solid var(--s-border);
                 border-radius: var(--s-border-radius);
                 transition: all .2s;
-
                 svg {
                     vertical-align: sub;
                     font-size: 16px;
@@ -207,7 +213,8 @@ const resetValue = function(columns) {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-
+                white-space: nowrap;
+                
                 &:not(:last-child) {
                     border-bottom: 1px solid var(--s-border);
                 }
@@ -244,8 +251,10 @@ const resetValue = function(columns) {
                 border-radius: var(--s-border-radius);
                 cursor: default;
                 box-sizing: border-box;
+                white-space: nowrap;
 
                 a {
+                    text-align: center;
                     display: block;
                 }
             }
