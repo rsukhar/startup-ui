@@ -3,9 +3,12 @@
         <div class="s-custom-dropdown-wrapper">
             <div class="s-custom-dropdown-container" :class="{ 'open': isOpen }" ref="dropdown">
                 <div @click="toggleDropdown" class="s-custom-dropdown-container-btn">
-                    <FontAwesomeIcon icon="table-columns" />
-                    <span>Настроить колонки</span>
-                    <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
+                    <slot v-if="$slots.label" name="label" />
+                    <template v-else>
+                        <FontAwesomeIcon icon="table-columns" />
+                        <span>Настроить колонки</span>
+                        <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
+                    </template>
                 </div>
                 <ul class="s-custom-dropdown-container-items" ref="$list">
                     <li class="s-custom-dropdown-container-item" v-for="item in list" :key="item.id">
@@ -17,11 +20,13 @@
                         </div>
                     </li>
                 </ul>
-                <div class="s-custom-dropdown-container-footer">
-                    <a v-for="columnPreset in columnPresets" :key="columnPreset.title"
-                       @click="resetValue(columnPreset.columns)">
-                        <FontAwesomeIcon icon="rotate-left" />
-                        Сбросить на {{ columnPreset.title }}
+                <div v-if="columnPresets.length" class="s-custom-dropdown-container-footer" ref="footer">
+                    <a v-for="preset in columnPresets" :key="preset.title" @click="resetValue(preset.columns)">
+                        <slot name="setpreset" :preset="preset">
+                            <FontAwesomeIcon icon="rotate-left" />
+                            Сбросить
+                            {{ columnPresets.length > 1 ? `на ${preset.title}` : 'изменения' }}
+                        </slot>
                     </a>
                 </div>
             </div>
@@ -30,11 +35,11 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, useTemplateRef, nextTick } from "vue";
 import { useSortable } from "@vueuse/integrations/useSortable";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useEventListener } from "@vueuse/core";
-import { SCheckbox } from "startup-ui";
+import SCheckbox from "./SCheckbox.vue";
 
 const props = defineProps({
     /**
@@ -48,9 +53,12 @@ const props = defineProps({
     /**
      * Значение по умолчанию для сброса
      */
-    columnPresets: Array,
+    columnPresets: {
+        type: Array,
+        default: []
+    },
     /**
-     * Эти колонки нельзя отключить, но можно сортировать
+     * Эти колонки нельзя отключить
      */
     permanentColumns: {
         type: Array,
@@ -58,6 +66,8 @@ const props = defineProps({
     },
 });
 const emit = defineEmits(['update:modelValue'])
+
+const $footer = useTemplateRef('footer');
 
 // Сортируемый список в HTML
 const $list = ref();
@@ -71,6 +81,20 @@ useEventListener(document, 'click', (event) => {
     if (dropdown.value && !dropdown.value.contains(event.target)) {
         isOpen.value = false;
     }
+});
+
+watch(isOpen, async (open) => {
+    if (!open) return;
+
+    await nextTick();
+
+    if (!$footer.value) return;
+
+    const listRect = $list.value.getBoundingClientRect()
+    const btnHeight = dropdown.value.getBoundingClientRect().height;
+    
+    $footer.value.style.top = (listRect.height + btnHeight - 10) + 'px';
+    $footer.value.style.width = listRect.width + 'px';
 });
 
 // Собирает список для отображения из известных колонок и текущего значения модели
@@ -120,6 +144,7 @@ const resetValue = function(columns) {
 
 <style lang="scss">
 .s-columnsettings {
+    display: inline-block;
     @include desktop() {
         margin-left: auto !important;
     }
@@ -127,7 +152,7 @@ const resetValue = function(columns) {
         margin-left: 0 !important;
     }
     .s-custom-dropdown-wrapper {
-        min-width: 230px;
+        width: fit-content;
 
         .s-custom-dropdown-container {
             position: relative;
@@ -147,7 +172,6 @@ const resetValue = function(columns) {
                 border: 1px solid var(--s-border);
                 border-radius: var(--s-border-radius);
                 transition: all .2s;
-
                 svg {
                     vertical-align: sub;
                     font-size: 16px;
@@ -179,7 +203,7 @@ const resetValue = function(columns) {
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                 z-index: 10; /* Ensure it's above other content */
                 display: none; /* Initially hidden */
-                overflow-y: scroll;
+                overflow-y: auto;
             }
 
             &-item {
@@ -189,7 +213,8 @@ const resetValue = function(columns) {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-
+                white-space: nowrap;
+                
                 &:not(:last-child) {
                     border-bottom: 1px solid var(--s-border);
                 }
@@ -226,8 +251,10 @@ const resetValue = function(columns) {
                 border-radius: var(--s-border-radius);
                 cursor: default;
                 box-sizing: border-box;
+                white-space: nowrap;
 
                 a {
+                    text-align: center;
                     display: block;
                 }
             }
