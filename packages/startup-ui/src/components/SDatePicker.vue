@@ -12,40 +12,42 @@
             </div>
             <Teleport to="body">
                 <div ref="calendar" :style="calendarStyles" class="s-datepicker-calendar" v-if="isOpened" @mousedown.stop>
-                    <div class="s-datepicker-calendar-page" v-for="({ month, year, daysInMonth, leadingNextMonthDays, previousMonthDaysTail, daysInPreviousMonth }, index) in calendarPages"
-                        :key="`${year}${month}`">
-                        <div>
-                            <div class="s-datepicker-calendar-header"
-                                :class="{centered: index !== 0 && index !== calendarPages.length - 1}">
-                                <div v-if="index===0" class="s-datepicker-calendar-header-controls" @click="prevMonth">
-                                    <FontAwesomeIcon icon="chevron-left" />
+                    <div class="s-datepicker-calendar-wrapper">
+                        <div class="s-datepicker-calendar-page" v-for="({ month, year, daysInMonth, leadingNextMonthDays, previousMonthDaysTail, daysInPreviousMonth }, index) in calendarPages"
+                            :key="`${year}${month}`">
+                            <div>
+                                <div class="s-datepicker-calendar-header"
+                                    :class="{centered: index !== 0 && index !== calendarPages.length - 1}">
+                                    <div v-if="index===0" class="s-datepicker-calendar-header-controls" @click="prevMonth">
+                                        <FontAwesomeIcon icon="chevron-left" />
+                                    </div>
+                                    <div class="s-datepicker-calendar-header-data">{{ monthNames[month - 1] }}&nbsp;{{ year }}</div>
+                                    <div v-if="index===(calendarPages.length - 1)" class="s-datepicker-calendar-header-controls"
+                                        @click="nextMonth">
+                                        <FontAwesomeIcon icon="chevron-right" />
+                                    </div>
                                 </div>
-                                <div class="s-datepicker-calendar-header-data">{{ monthNames[month - 1] }}&nbsp;{{ year }}</div>
-                                <div v-if="index===(calendarPages.length - 1)" class="s-datepicker-calendar-header-controls"
-                                    @click="nextMonth">
-                                    <FontAwesomeIcon icon="chevron-right" />
+                                <div class="calendar-grid">
+                                    <span v-for="(d, index) in weekDayNames" :key="index" class="day-name">{{ d }}</span>
+                                    <div v-for="day in previousMonthDaysTail" :key="dateToString(year, month, day)" class="day blocked">
+                                        {{ day + daysInPreviousMonth - previousMonthDaysTail }}
+                                    </div>
+                                    <div v-for="day in daysInMonth" :key="dateToString(year, month, day)" class="day" :class="{
+                                            selected: isSelected(year, month, day),
+                                            inrange: isHighlighted(year, month, day),
+                                            today: isToday(year, month, day),
+                                            blocked: isBlocked(year, month, day),
+                                        }" @mousedown="onDateClick(year, month, day)" @mouseover="hover(year, month, day)"
+                                        @mouseout="blur()">
+                                        {{ day }}
+                                    </div>
+                                    <div v-for="day in leadingNextMonthDays" :key="dateToString(year, month, day)" class="day blocked">
+                                        {{ day }}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="calendar-grid">
-                                <span v-for="(d, index) in weekDayNames" :key="index" class="day-name">{{ d }}</span>
-                                <div v-for="day in previousMonthDaysTail" :key="dateToString(year, month, day)" class="day blocked">
-                                    {{ day + daysInPreviousMonth - previousMonthDaysTail }}
-                                </div>
-                                <div v-for="day in daysInMonth" :key="dateToString(year, month, day)" class="day" :class="{
-                                        selected: isSelected(year, month, day),
-                                        inrange: isHighlighted(year, month, day),
-                                        today: isToday(year, month, day),
-                                        blocked: isBlocked(year, month, day),
-                                    }" @mousedown="onDateClick(year, month, day)" @mouseover="hover(year, month, day)"
-                                    @mouseout="blur()">
-                                    {{ day }}
-                                </div>
-                                <div v-for="day in leadingNextMonthDays" :key="dateToString(year, month, day)" class="day blocked">
-                                    {{ day }}
-                                </div>
-                            </div>
+                            <div v-if="index !== calendarPages.length - 1" class="splitter"></div>
                         </div>
-                        <div v-if="index !== calendarPages.length - 1" class="splitter"></div>
                     </div>
                     <hr v-if="withTime && !range" />
                     <div v-if="withTime && !range" class="s-datepicker-time">
@@ -107,7 +109,7 @@ const $calendar = useTemplateRef('calendar');
 const calendarStyles = ref({});
 
 const valueFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `YYYY-MM-DD HH:mm` : 'YYYY-MM-DD');
-const inputFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
+const inputFormat = props.inputFormat ? props.inputFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
 const internalFormat = (props.withTime && !props.range) ? 'YYYYMMDDHHmm' : 'YYYYMMDD';
 
 // Внутреннее нормированное значение всегда в формате 'YYYYMMDD' или ['YYYYMMDD', 'YYYYMMDD']
@@ -267,13 +269,11 @@ async function updateCalendarPosition() {
 
     if ($calendar.value) {
         calendarStyles.value = {
-            position: 'absolute',
             left: `${rect.left + window.scrollX}px`,
             zIndex: 9999,
         };
 
         if (openDirection.value === 'drop-up') {
-            console.log('www');
             // Для drop-up
             calendarStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - window.scrollY + 5}px`;
         } else {
