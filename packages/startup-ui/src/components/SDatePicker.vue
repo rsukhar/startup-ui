@@ -4,70 +4,74 @@
             <SRadioGroup v-model="radioValue" :options="buttonOptions" buttons />
         </div>
         <div class="s-datepicker-main">
-            <div class="s-datepicker-input" :class="{'range': range}">
+            <div class="s-datepicker-input" :class="{'range': range}" ref="input">
                 <input readonly :value="displayValue" />
                 <span class="s-datepicker-input-icon">
                     <FontAwesomeIcon :icon="['far', 'calendar']" />
                 </span>
             </div>
-            <div class="s-datepicker-calendar" v-if="isOpened" @click.stop>
-                <div class="s-datepicker-calendar-page" v-for="({ month, year, daysInMonth, leadingNextMonthDays, previousMonthDaysTail, daysInPreviousMonth }, index) in calendarPages"
-                    :key="`${year}${month}`">
-                    <div>
-                        <div class="s-datepicker-calendar-header"
-                            :class="{centered: index !== 0 && index !== calendarPages.length - 1}">
-                            <div v-if="index===0" class="s-datepicker-calendar-header-controls" @click="prevMonth">
-                                <FontAwesomeIcon icon="chevron-left" />
+            <Teleport to="body">
+                <div ref="calendar" :style="calendarStyles" class="s-datepicker-calendar" v-if="isOpened" @mousedown.stop>
+                    <div class="s-datepicker-calendar-wrapper">
+                        <div class="s-datepicker-calendar-page" v-for="({ month, year, daysInMonth, leadingNextMonthDays, previousMonthDaysTail, daysInPreviousMonth }, index) in calendarPages"
+                            :key="`${year}${month}`">
+                            <div>
+                                <div class="s-datepicker-calendar-header"
+                                    :class="{centered: index !== 0 && index !== calendarPages.length - 1}">
+                                    <div v-if="index===0" class="s-datepicker-calendar-header-controls" @click="prevMonth">
+                                        <FontAwesomeIcon icon="chevron-left" />
+                                    </div>
+                                    <div class="s-datepicker-calendar-header-data">{{ monthNames[month - 1] }}&nbsp;{{ year }}</div>
+                                    <div v-if="index===(calendarPages.length - 1)" class="s-datepicker-calendar-header-controls"
+                                        @click="nextMonth">
+                                        <FontAwesomeIcon icon="chevron-right" />
+                                    </div>
+                                </div>
+                                <div class="calendar-grid">
+                                    <span v-for="(d, index) in weekDayNames" :key="index" class="day-name">{{ d }}</span>
+                                    <div v-for="day in previousMonthDaysTail" :key="dateToString(year, month, day)" class="day blocked">
+                                        {{ day + daysInPreviousMonth - previousMonthDaysTail }}
+                                    </div>
+                                    <div v-for="day in daysInMonth" :key="dateToString(year, month, day)" class="day" :class="{
+                                            selected: isSelected(year, month, day),
+                                            inrange: isHighlighted(year, month, day),
+                                            today: isToday(year, month, day),
+                                            blocked: isBlocked(year, month, day),
+                                        }" @mousedown="onDateClick(year, month, day)" @mouseover="hover(year, month, day)"
+                                        @mouseout="blur()">
+                                        {{ day }}
+                                    </div>
+                                    <div v-for="day in leadingNextMonthDays" :key="dateToString(year, month, day)" class="day blocked">
+                                        {{ day }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="s-datepicker-calendar-header-data">{{ monthNames[month - 1] }}&nbsp;{{ year }}</div>
-                            <div v-if="index===(calendarPages.length - 1)" class="s-datepicker-calendar-header-controls"
-                                @click="nextMonth">
-                                <FontAwesomeIcon icon="chevron-right" />
-                            </div>
+                            <div v-if="index !== calendarPages.length - 1" class="splitter"></div>
                         </div>
-                        <div class="calendar-grid">
-                            <span v-for="(d, index) in weekDayNames" :key="index" class="day-name">{{ d }}</span>
-                            <div v-for="day in previousMonthDaysTail" :key="dateToString(year, month, day)" class="day blocked">
-                                {{ day + daysInPreviousMonth - previousMonthDaysTail }}
-                            </div>
-                            <div v-for="day in daysInMonth" :key="dateToString(year, month, day)" class="day" :class="{
-                                    selected: isSelected(year, month, day),
-                                    inrange: isHighlighted(year, month, day),
-                                    today: isToday(year, month, day),
-                                    blocked: isBlocked(year, month, day),
-                                }" @mousedown="onDateClick(year, month, day)" @mouseover="hover(year, month, day)"
-                                @mouseout="blur()">
-                                {{ day }}
-                            </div>
-                            <div v-for="day in leadingNextMonthDays" :key="dateToString(year, month, day)" class="day blocked">
-                                {{ day }}
-                            </div>
+                    </div>
+                    <hr v-if="withTime && !range" />
+                    <div v-if="withTime && !range" class="s-datepicker-time">
+                        <div class="s-datepicker-time-control">
+                            <FontAwesomeIcon icon="chevron-up" @click="hoursUp"/>
+                            {{ displayedHours }}
+                            <FontAwesomeIcon icon="chevron-down" @click="hoursDown" />
+                        </div>
+                        :
+                        <div class="s-datepicker-time-control">
+                            <FontAwesomeIcon icon="chevron-up" @click="minutesUp"/>
+                            {{ displayedMinutes}}
+                            <FontAwesomeIcon icon="chevron-down" @click="minutesDown"/>
                         </div>
                     </div>
-                    <div v-if="index !== calendarPages.length - 1" class="splitter"></div>
                 </div>
-                <hr v-if="withTime && !range" />
-                <div v-if="withTime && !range" class="s-datepicker-time">
-                    <div class="s-datepicker-time-control">
-                        <FontAwesomeIcon icon="chevron-up" @click="hoursUp"/>
-                        {{ displayedHours }}
-                        <FontAwesomeIcon icon="chevron-down" @click="hoursDown" />
-                    </div>
-                    :
-                    <div class="s-datepicker-time-control">
-                        <FontAwesomeIcon icon="chevron-up" @click="minutesUp"/>
-                        {{ displayedMinutes}}
-                        <FontAwesomeIcon icon="chevron-down" @click="minutesDown"/>
-                    </div>
-                </div>
-            </div>
+            </Teleport>
         </div>
     </div>
 </template>
 
 <script setup>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { ref, computed, watch } from "vue"
+import { ref, computed, watch, useTemplateRef, nextTick } from "vue"
 import dayjs from 'dayjs';
 import { useEventListener } from "@vueuse/core";
 import SRadioGroup from "./SRadioGroup.vue";
@@ -100,8 +104,12 @@ const props = defineProps({
 // Внешнее значение в нужном формате props.valueFormat
 const externalValue = defineModel();
 
+const $input = useTemplateRef('input');
+const $calendar = useTemplateRef('calendar');
+const calendarStyles = ref({});
+
 const valueFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `YYYY-MM-DD HH:mm` : 'YYYY-MM-DD');
-const inputFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
+const inputFormat = props.inputFormat ? props.inputFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
 const internalFormat = (props.withTime && !props.range) ? 'YYYYMMDDHHmm' : 'YYYYMMDD';
 
 // Внутреннее нормированное значение всегда в формате 'YYYYMMDD' или ['YYYYMMDD', 'YYYYMMDD']
@@ -204,10 +212,11 @@ const displayedHours = computed(() => hours.value < 10 ? `0${hours.value}` : hou
 const displayedMinutes = computed(() => minutes.value < 10 ? `0${minutes.value}` : minutes.value);
 
 watch(() => [hours.value, minutes.value], () => {
-    if (!props.range) {
-        // Выбор одиночной даты
-        externalValue.value = dayjs(externalValue.value).hour(hours.value).minute(minutes.value).format(valueFormat);
-    }
+    if (props.range) return;
+    if (!externalValue.value) return;
+
+    // Выбор одиночной даты
+    externalValue.value = dayjs(externalValue.value).hour(hours.value).minute(minutes.value).format(valueFormat);
 });
 
 // Форматирует дату в 'YYYYMMDD'
@@ -224,6 +233,58 @@ watch(isOpened, (newValue) => {
     }
     firstMonth.value = dayjs(firstValue, valueFormat).month() + 1;
     firstYear.value = dayjs(firstValue, valueFormat).year();
+});
+
+
+/**
+ * Определить направление раскрытия календаря списка
+ *
+ * @param rect Объект с координатами прямоугольника
+ */
+function determineCalendarDirection(rect) {
+    const calendarHeight = $calendar.value.offsetHeight;
+    const spaceBelow = document.documentElement.clientHeight - rect.bottom;
+
+    if (spaceBelow >= calendarHeight) {
+        // Снизу умещается
+        return 'drop-down';
+    } else {
+        // Снизу не умещается
+        if (rect.top > calendarHeight) {
+            // Сверху умещается
+            return 'drop-up';
+        } else {
+            // Сверху тоже не умещается, размещаем там, где больше места
+            return (rect.top > spaceBelow) ? 'drop-up' : 'drop-down';
+        }
+    }
+}
+
+const openDirection = ref('drop-down');
+
+async function updateCalendarPosition() {
+    const rect = $input.value.getBoundingClientRect();
+    await nextTick();
+    openDirection.value = determineCalendarDirection(rect);
+
+    if ($calendar.value) {
+        calendarStyles.value = {
+            left: `${rect.left + window.scrollX}px`,
+            zIndex: 9999,
+        };
+
+        if (openDirection.value === 'drop-up') {
+            // Для drop-up
+            calendarStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - window.scrollY + 5}px`;
+        } else {
+            // Для drop-down
+            calendarStyles.value['top'] = `${rect.bottom + window.scrollY + 5}px`;
+        }
+    }
+}
+watch(isOpened, (newValue) => {
+    if (!newValue) return;
+    updateCalendarPosition();
 });
 
 const isSelected = (year, month, day) => {
@@ -300,10 +361,11 @@ function onDateClick(year, month, day) {
         // Выбор одиночной даты
         let tempValue = dayjs().year(year).month(month - 1).date(day)
         if (hours.value && minutes.value) {
-            externalValue.value = tempValue.hour(hours.value).minute(minutes.value);
+            tempValue = tempValue.hour(hours.value).minute(minutes.value);
         }
         externalValue.value = tempValue.format(valueFormat);
 
+        // Если без времени, закрываем сразу после выбора дня
         if (!props.withTime) isOpened.value = false;
     } else if (!prevClickedDate.value) {
         // Выбор первой даты в диапазоне
@@ -375,6 +437,10 @@ const buttonOptions = computed(() => {
         }
     }
 
+    &-main {
+        position: relative;
+    }
+
     &-radio,
     &-radio .s-radiogroup,
     &-main,
@@ -390,71 +456,6 @@ const buttonOptions = computed(() => {
         width: 180px;
     }   
 
-    &-calendar {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        position: absolute;
-        top: 110%;
-        left: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        padding: 8px;
-        z-index: 1000;
-        min-width: 220px;
-
-        &-wrapper {
-            display: flex;
-            gap: 10px;
-        }
-
-        &-page {
-            display: flex;
-            gap: 10px;
-        }
-
-        &-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-
-            &-data {
-                display: flex;
-                gap: 10px;
-            }
-
-            &-controls {
-                border: none;
-                outline: none;
-                cursor: pointer;
-                user-select: none;
-                width: 30px;
-                height: 30px;
-                margin-top: -5px;
-                line-height: 30px;
-                margin-bottom: -5px;
-                text-align: center;
-                color: var(--s-primary);
-                &:hover {
-                    color: var(--s-primary-darkest);
-                }
-            }
-
-            &.centered {
-                justify-content: center !important;
-            }
-        }
-
-        .splitter {
-            flex-grow: 1;
-            width: 1px;
-            background-color: var(--s-border);
-        }
-    }
-
     &-time {
         display: flex;
         justify-content: center;
@@ -467,11 +468,83 @@ const buttonOptions = computed(() => {
             justify-content: center;
             align-items: center;
             gap: 10px;
+            user-select: none;
             & > svg {
                 color: var(--s-primary);
                 cursor: pointer;
             }
         }
+    }
+}
+
+.s-datepicker-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    z-index: 1000;
+    min-width: 220px;
+
+    &-wrapper {
+        display: flex;
+        gap: 10px;
+    }
+
+    &-page {
+        display: flex;
+        gap: 10px;
+    }
+
+    &-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+
+        &-data {
+            display: flex;
+            gap: 10px;
+        }
+
+        &-controls {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            user-select: none;
+            width: 30px;
+            height: 30px;
+            margin-top: -5px;
+            line-height: 30px;
+            margin-bottom: -5px;
+            text-align: center;
+            color: var(--s-primary);
+            &:hover {
+                color: var(--s-primary-darkest);
+            }
+        }
+
+        &.centered {
+            justify-content: center !important;
+        }
+    }
+
+    .splitter {
+        flex-grow: 1;
+        width: 1px;
+        background-color: var(--s-border);
+    }
+
+
+    hr {
+        width: 100%;
+        border-color: var(--s-grey);
+        margin: 0;
     }
 
     .calendar-grid {
