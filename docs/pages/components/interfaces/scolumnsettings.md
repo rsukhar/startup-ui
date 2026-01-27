@@ -72,7 +72,7 @@
 Если нужно запретить удаление определенных колонок, передайте массив с ними в атрибут <strong>permanent-columns</strong>:
 
 <div class="s-columnsettingspage-container">
-<SColumnSettings v-model="tableColumns3" :options="availableColumns" :column-presets="columnPresets" :permanentColumns="permanentColumns" />
+<SColumnSettings v-model="tableColumns3" :options="availableColumns" :column-presets="columnPresets" :permanentColumns="permanentColumns"/>
 </div>
 
 <div class="docs-container">
@@ -100,9 +100,9 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import SNote from '../../../../packages/startup-ui/src/components/SNote.vue';
 import STable from '../../../../packages/startup-ui/src/components/STable.vue';
 import SActionIcon from '../../../../packages/startup-ui/src/components/SActionIcon.vue';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SColumnSettings from '../../../../packages/startup-ui/src/components/SColumnSettings.vue';
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
@@ -120,7 +120,7 @@ const initialColumns = {
     'plan': 'Тариф',
     'balance': 'Баланс',
     'role': 'Роль',
-    'created_at': 'Дата регистрации'
+    'created_at': 'Дата регистрации',
 };
 
 // Набор доступных колонок
@@ -308,5 +308,9 @@ const fullCode22 = `<template>
     display: flex;
     justify-content: flex-end;
     margin-bottom: 20px;
+}
+
+.s-custom-dropdown-container.open li + li {
+    margin-top: 0;
 }
 </style>
