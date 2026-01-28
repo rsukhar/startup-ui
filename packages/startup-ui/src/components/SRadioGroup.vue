@@ -15,11 +15,8 @@
 import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
 const props = defineProps({
-    options: {
-        // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
-        type: [Object, Array],
-        required: true
-    },
+    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    options: [Object, Array],
     buttons: Boolean,
     vertical: Boolean,
     placeholder: String
