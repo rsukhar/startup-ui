@@ -78,6 +78,19 @@
 
 Именно в этом формате backend-класс DateInterval возвращает набор доступных кнопок: `(new DateInterval(request()->period))->titles`
 
+## Выбор времени
+
+Чтобы выбирать время, добавляем атрибут <strong>with-time</strong>. При этом, выходное значение будет в формате <strong>2025-12-22 12:27</strong>:  
+<div class="docs-container">
+    <SDatePicker with-time v-model="valueSixth" value-format="YYYYMMDD HH:mm" />
+</div>
+
+<CustomCodeBlock :code="{text: code6, lang: 'vue'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
+
+Дополнительно в формате можно дописывать <strong>HH:mm</strong> , чтобы там было время:
+<CustomCodeBlock :code="{text: code62, lang: 'vue'}" :fullCode="{text: fullCode62, lang: 'vue'}" />
+
+
 <script setup>
 import { ref } from 'vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
@@ -105,6 +118,7 @@ const valueSecond = ref(null);
 const valueThird = ref(null);
 const valueFourth = ref(null);
 const valueFifth = ref(null);
+const valueSixth = ref(null);
 
 const buttons = {
   '2 недели': '20250901-20250914',
@@ -160,8 +174,7 @@ const value = ref(false);
 <\/script>
 `;
 
-const code5 = `<SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
-`;
+const code5 = `<SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />`;
 const fullCode5 = `<template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
 </template>
@@ -178,11 +191,21 @@ const buttons = {
 <\/script>
 `;
 
-const code6 = ``;
-const fullCode6 = ``;
+const code6 = `<SDatePicker with-time v-model="value" />`;
+const fullCode6 = `<template>
+    <SDatePicker with-time v-model="value" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
+
+const value = ref(false);
+<\/script>`;
+
+const code62 = `<SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />`;
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .s-datepicker {
     color: var(--s-text);
 }

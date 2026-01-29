@@ -412,7 +412,7 @@ const buttonOptions = computed(() => {
     }
 
     &-input {
-        padding: 6px 10px;
+        padding: 6px 30px 6px 10px;
         border: 1px solid #ccc;
         border-radius: var(--s-border-radius);
         cursor: pointer;
@@ -453,7 +453,8 @@ const buttonOptions = computed(() => {
     }
 
     &-main .s-datepicker-input.range {
-        width: 180px;
+        width: fit-content;
+        min-width: 180px;
     }   
 
     &-time {
