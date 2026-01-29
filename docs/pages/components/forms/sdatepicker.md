@@ -206,9 +206,6 @@ const code62 = `<SDatePicker with-time v-model="value" value-format="YYYYMMDD HH
 
 </script>
 <style lang="scss" scoped>
-.docs-container {
-    width: 600px;
-}
 .s-datepicker {
     color: var(--s-text);
 }
