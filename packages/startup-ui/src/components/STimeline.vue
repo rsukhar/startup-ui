@@ -43,6 +43,7 @@ function keyOf(item, index){
         display: flex;
         flex-direction: column;
         align-items: start;
+        flex-shrink: 0;
         &-marker {
             border-width: 2px;
             border-style: solid;
