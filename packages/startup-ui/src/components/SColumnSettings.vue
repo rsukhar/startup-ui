@@ -10,25 +10,30 @@
                         <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
                     </template>
                 </div>
-                <ul class="s-custom-dropdown-container-items" ref="$list">
-                    <li class="s-custom-dropdown-container-item" v-for="item in list" :key="item.id">
-                        <FontAwesomeIcon icon="bars" class="reorder-btn"/>
-                        <div class="checkbox-wrapper">
-                            <SCheckbox v-model="item.isActive" :disabled="permanentColumns.includes(item.id)">
-                                {{ item.title }}
-                            </SCheckbox>
+                <Teleport to="body">
+                    <div v-if="isOpen" ref="portal" class="s-columnsettings-dropdown-portal" :style="portalStyle">
+                        <ul class="s-columnsettings-dropdown-container-items" ref="$list">
+                            <li v-for="item in list" :key="item.id" class="s-columnsettings-dropdown-container-item">
+                                <FontAwesomeIcon icon="bars" class="reorder-btn" />
+                                <div class="checkbox-wrapper">
+                                    <SCheckbox v-model="item.isActive" :disabled="permanentColumns.includes(item.id)">
+                                        {{ item.title }}
+                                    </SCheckbox>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div v-if="columnPresets.length" class="s-columnsettings-dropdown-container-footer">
+                            <a v-for="preset in columnPresets" :key="preset.title" @click="resetValue(preset.columns)">
+                                <slot name="setpreset" :preset="preset">
+                                    <FontAwesomeIcon icon="rotate-left" />
+                                    Сбросить
+                                    {{ columnPresets.length > 1 ? `на ${preset.title}` : 'изменения' }}
+                                </slot>
+                            </a>
                         </div>
-                    </li>
-                </ul>
-                <div v-if="columnPresets.length" class="s-custom-dropdown-container-footer" ref="footer">
-                    <a v-for="preset in columnPresets" :key="preset.title" @click="resetValue(preset.columns)">
-                        <slot name="setpreset" :preset="preset">
-                            <FontAwesomeIcon icon="rotate-left" />
-                            Сбросить
-                            {{ columnPresets.length > 1 ? `на ${preset.title}` : 'изменения' }}
-                        </slot>
-                    </a>
-                </div>
+                    </div>
+                </Teleport>
             </div>
         </div>
     </div>
@@ -65,59 +70,56 @@ const props = defineProps({
         default: []
     },
 });
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue']);
 
-const $footer = useTemplateRef('footer');
-
-// Сортируемый список в HTML
+const $dropdown = useTemplateRef('dropdown');
+const $portal = useTemplateRef('portal');
 const $list = ref();
+
 const isOpen = ref(false);
-const dropdown = ref();
-const toggleDropdown = () => {
-    isOpen.value = !isOpen.value;
+const portalStyle = ref({});
+
+const buildList = (modelValue) => {
+    const result = [];
+    const used = new Set();
+
+    modelValue.filter(id => props.options[id])
+        .forEach(id => {
+            result.push({ id, title: props.options[id], isActive: true });
+            used.add(id);
+        });
+
+    Object.entries(props.options).filter(([id]) => !used.has(id))
+        .forEach(([id, title]) => {
+            result.push({ id, title, isActive: false });
+        });
+
+    return result;
 };
 
-useEventListener(document, 'click', (event) => {
-    if (dropdown.value && !dropdown.value.contains(event.target)) {
-        isOpen.value = false;
-    }
-});
-
-watch(isOpen, async (open) => {
-    if (!open) return;
-
-    await nextTick();
-
-    if (!$footer.value) return;
-
-    const listRect = $list.value.getBoundingClientRect()
-    const btnHeight = dropdown.value.getBoundingClientRect().height;
-    
-    $footer.value.style.top = (listRect.height + btnHeight - 10) + 'px';
-    $footer.value.style.width = listRect.width + 'px';
-});
-
-// Собирает список для отображения из известных колонок и текущего значения модели
-const buildList = function(modelValue) {
-    const result = [],
-        addedIds = [];
-    // Добавляем включенные колонки в их порядке
-    modelValue.filter(id => props.options[id]).forEach((id) => {
-        result.push({ id: id, title: props.options[id], isActive: modelValue.includes(id) });
-        addedIds.push(id);
-    });
-    // Дособираем другие доступные варианты
-    Object.entries(props.options).filter(([id, title]) => !addedIds.includes(id)).forEach(([id, title]) => {
-        result.push({ id: id, title: title, isActive: false });
-        addedIds.push(id);
-    });
-    return result;
-}
-
-/**
- * Отображаемый список в формате [{id: 'colname1', title: 'Название колонки 1', isActive: true], ...]
- */
 const list = ref(buildList(props.modelValue));
+
+// Позионирование выпадающего списка
+const updatePosition = () => {
+    const rect = $dropdown.value.getBoundingClientRect();
+
+    portalStyle.value = {
+        position: 'fixed',
+        top: `${rect.bottom + 4}px`,
+        right: `${document.documentElement.clientWidth - rect.right}px`,
+        minWidth: `${rect.width}px`,
+        zIndex: 10000,
+    };
+};
+
+const toggleDropdown = async () => {
+    isOpen.value = !isOpen.value;
+
+    if (isOpen.value) {
+        await nextTick();
+        updatePosition();
+    }
+};
 
 // При обновлении списка доступных вариантов — пересобираем список
 watch(() => props.options, (newValue, oldValue) => {
@@ -136,8 +138,29 @@ useSortable($list, list, {
     animation: 150,
 });
 
-// Сброс изменений
-const resetValue = function(columns) {
+// Закрытие по клику вне компонента
+useEventListener(document, 'click', (event) => {
+    if (
+        $dropdown.value && $portal.value  
+        && !($dropdown.value.contains(event.target) 
+        || $portal.value.contains(event.target))
+    ) {
+        isOpen.value = false;
+    }
+});
+
+
+// Подстройка позиции при скролле и изменении размера экрана
+useEventListener(window, 'scroll', () => {
+    if (isOpen.value) updatePosition();
+});
+
+useEventListener(window, 'resize', () => {
+    if (isOpen.value) updatePosition();
+});
+
+// Сброс колонок
+const resetValue = (columns) => {
     list.value = buildList(columns);
 };
 </script>
@@ -285,6 +308,56 @@ const resetValue = function(columns) {
                 span {
                     display: none;
                 }
+            }
+        }
+    }
+}
+
+.s-columnsettings-dropdown {
+    &-portal {
+        display: flex;
+        flex-direction: column;
+        background: var(--s-white);
+        border-radius: var(--s-border-radius);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+
+    &-container {
+        &-items {
+            max-height: 300px;
+            overflow-y: auto;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        &-item {
+            padding: 10px 15px;
+            margin: 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            white-space: nowrap;
+
+            &:hover {
+                background: var(--s-gray);
+            }
+        }
+
+        &-item:not(:last-child) {
+            border-bottom: 1px solid var(--s-border);
+        }
+
+        &-footer {
+            padding: 12px 15px;
+            background: var(--s-primary-lightest);
+            border-top: 1px solid var(--s-border);
+
+            a {
+                display: block;
+                text-align: center;
+                cursor: pointer;
             }
         }
     }
