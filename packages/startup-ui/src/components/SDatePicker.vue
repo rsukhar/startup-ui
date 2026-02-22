@@ -73,6 +73,7 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { ref, computed, watch, useTemplateRef, nextTick } from "vue"
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { useEventListener } from "@vueuse/core";
 import SRadioGroup from "./SRadioGroup.vue";
 const props = defineProps({
@@ -103,6 +104,7 @@ const props = defineProps({
 })
 // Внешнее значение в нужном формате props.valueFormat
 const externalValue = defineModel();
+dayjs.extend(customParseFormat)
 
 const $input = useTemplateRef('input');
 const $calendar = useTemplateRef('calendar');
@@ -216,7 +218,7 @@ watch(() => [hours.value, minutes.value], () => {
     if (!externalValue.value) return;
 
     // Выбор одиночной даты
-    externalValue.value = dayjs(externalValue.value).hour(hours.value).minute(minutes.value).format(valueFormat);
+    externalValue.value = dayjs(externalValue.value, valueFormat, true).hour(hours.value).minute(minutes.value).format(valueFormat);
 });
 
 // Форматирует дату в 'YYYYMMDD'
