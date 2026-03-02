@@ -16,6 +16,8 @@ import type STimeline from './components/STimeline.vue';
 import type SDashboard from './components/SDashboard.vue';
 import type SDashboardItem from './components/SDashboardItem.vue';
 import type SStat from './components/SStat.vue';
+import type SFilterGroup from './components/SFilterGroup.vue';
+import type SFilter from './components/SFilter.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -53,6 +55,10 @@ declare module '@vue/runtime-core' {
         's-dashboard-item': typeof SDashboardItem;
         SStat: typeof SStat;
         's-stat': typeof SStat;
+        SFilterGroup: typeof SFilterGroup;
+        's-filter-group': typeof SFilterGroup;
+        SFilter: typeof SFilter;
+        's-filter': typeof SFilter;
     }
 }
 export { };
