@@ -5,6 +5,7 @@ import type STooltip from './components/STooltip.vue';
 import type SNote from './components/SNote.vue';
 import type SToggle from './components/SToggle.vue';
 import type SToggleGroup from './components/SToggleGroup.vue';
+import type SDialog from './components/SDialog.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -20,6 +21,8 @@ declare module '@vue/runtime-core' {
         's-toggle': typeof SToggle;
         SToggleGroup: typeof SToggleGroup;
         's-toggle-group': typeof SToggleGroup;
+        SDialog: typeof SDialog;
+        's-dialog': typeof SDialog;
     }
 }
 export { };
