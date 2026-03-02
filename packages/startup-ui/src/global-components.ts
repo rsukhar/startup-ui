@@ -9,6 +9,7 @@ import type SDialog from './components/SDialog.vue';
 import type SImagePreview from './components/SImagePreview.vue';
 import type STag from './components/STag.vue';
 import type SStatus from './components/SStatus.vue';
+import type SActionBar from './components/SActionBar.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -32,6 +33,8 @@ declare module '@vue/runtime-core' {
         's-tag': typeof STag;
         SStatus: typeof SStatus;
         's-status': typeof SStatus;
+        SActionBar: typeof SActionBar;
+        's-action-bar': typeof SActionBar;
     }
 }
 export { };
