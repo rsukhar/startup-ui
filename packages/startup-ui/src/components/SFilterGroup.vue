@@ -4,7 +4,7 @@
     </div>
 </template>
 <script setup>
-import { provide, onBeforeMount, onMounted, onBeforeUnmount } from 'vue';
+import { provide, onBeforeMount, onMounted, onBeforeUnmount, useSlots, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -29,6 +29,16 @@ const props = defineProps({
         type: Array,
         default: () => (['', null, undefined, false]),
     },
+});
+
+/**
+ * Определяем наличие debounce на дочернем компоненте (чтобы подставить reserveState)
+ */
+const slots = useSlots();
+const hasDebouncedFilter = ref(false);
+onMounted(() => {
+    const children = slots.default?.() || [];
+    hasDebouncedFilter.value = children.some(child => child.props?.debounce);
 });
 
 const model = defineModel({
@@ -57,10 +67,11 @@ const getQueryParams = () => {
 }
 const setQueryParams = (params) => {
     const filteredParams = Object.fromEntries(Object.entries(params)
-        .filter(([key, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value)));
+        .filter(([name, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value)));
     router.get(window.location.pathname, new URLSearchParams(filteredParams), {
         preserveScroll: true,
         replace: true,
+        ...(hasDebouncedFilter.value && { preserveState: true }),
     });
 }
 
