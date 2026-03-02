@@ -3,13 +3,15 @@
         <FontAwesomeIcon :icon="icon" />
     </component>
 </template>
-<script setup>
+<script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { SConfirm } from './SConfirm'
 import { computed, useAttrs } from "vue";
+import type { PropType, Component } from "vue";
+
 const props = defineProps({
     icon: {
-        type: [String, Array],
+        type: [String, Array] as PropType<string | string[]>,
         required: true,
     },
     danger: Boolean,
@@ -19,7 +21,7 @@ const props = defineProps({
         default: 'Необходимо подтверждение',
     },
     // Строка для тега, объект/функция для компонента
-    is: [String, Object, Function],
+    is: [String, Object, Function] as PropType<string | Component>,
 });
 
 const emit = defineEmits(['click']);
