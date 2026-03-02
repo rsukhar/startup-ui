@@ -19,7 +19,7 @@
         </Teleport>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useTemplateRef, watch, nextTick, ref } from 'vue';
 import { useDraggable, useResizeObserver } from '@vueuse/core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -36,7 +36,7 @@ function handleCloseImage() {
 }
 
 // Элемент, позиция которого будет вычисляться во время ondrag
-const $window = useTemplateRef('$window');
+const $window = useTemplateRef<HTMLElement>('$window');
 
 // Загрузилась картинка => изменился размер окна => вычисляем позицию
 const modalHeight = ref(0);
@@ -58,7 +58,7 @@ const calcaulateDialogPosition = () => {
     y.value = document.documentElement.clientHeight / 2 - rect.height / 2;
 }
 
-const handleNewModelState = function(newValue){
+const handleNewModelState = function(newValue: number){
     if (!newValue) {
         window.removeEventListener('resize', calcaulateDialogPosition);
         return;
