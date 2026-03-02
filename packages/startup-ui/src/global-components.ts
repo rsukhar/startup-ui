@@ -1,6 +1,7 @@
 import '@vue/runtime-core';
 import type SButton from './components/SButton.vue';
 import type SActionIcon from './components/SActionIcon.vue';
+import type STooltip from './components/STooltip.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -8,6 +9,8 @@ declare module '@vue/runtime-core' {
         's-button': typeof SButton;
         SActionIcon: typeof SActionIcon;
         's-action-icon': typeof SActionIcon;
+        STooltip: typeof STooltip;
+        's-tooltip': typeof STooltip;
     }
 }
 export { };

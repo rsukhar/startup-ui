@@ -15,28 +15,29 @@
         </Teleport>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, useTemplateRef, nextTick } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import type { PropType } from "vue";
 
 const props = defineProps({
     at: {
-        type: String,
+        type: String as PropType<'top' | 'bottom' | 'right' | 'left' | null>,
         // Положение подсказки определяется автоматически
         default: null,
-        validator: (value) => ['top', 'bottom', 'right', 'left'].includes(value)
+        validator: (value: string | null) => value === null || ['top', 'bottom', 'right', 'left'].includes(value)
     },
     icon: {
-        type: [String, Array],
+        type: [String, Array] as PropType<string | string[]>,
         default: 'circle-question',
     },
 })
 
 const isShown = ref(false);
-const $tooltip = useTemplateRef('$tooltip');
-const $icon = useTemplateRef('$icon');
+const $tooltip = useTemplateRef<HTMLElement>('$tooltip');
+const $icon = useTemplateRef<HTMLElement>('$icon');
 const positionStyle = ref({});
-const positionClass = ref(null);
+const positionClass = ref<string | null>(null);
 
 function maybeShow() {
     if (isShown.value) return;
@@ -52,13 +53,15 @@ function hide(){
     isShown.value = false;
 }
 
-function onBodyMove(event) {
-    if (!$icon.value.contains(event.target) && !$tooltip.value.contains(event.target)) {
+function onBodyMove(event: Event) {
+    if (!$icon.value || !$tooltip.value) return;
+    if (!$icon.value.contains(event.target as Node) && !$tooltip.value.contains(event.target as Node)) {
         hide();
     }
 }
 
 function calculatePosition() {
+    if (!$icon.value || !$tooltip.value) return;
     const iconRect = $icon.value.getBoundingClientRect();
     const tooltipRect = $tooltip.value.getBoundingClientRect();
     const tooltipPositions = {
