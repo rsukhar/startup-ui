@@ -13,6 +13,8 @@ import type SActionBar from './components/SActionBar.vue';
 import type SProgressbar from './components/SProgressbar.vue';
 import type SCopyText from './components/SCopyText.vue';
 import type STimeline from './components/STimeline.vue';
+import type SDashboard from './components/SDashboard.vue';
+import type SDashboardItem from './components/SDashboardItem.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -44,6 +46,10 @@ declare module '@vue/runtime-core' {
         's-copy-text': typeof SCopyText;
         STimeline: typeof STimeline;
         's-timeline': typeof STimeline;
+        SDashboard: typeof SDashboard;
+        's-dashboard': typeof SDashboard;
+        SDashboardItem: typeof SDashboardItem;
+        's-dashboard-item': typeof SDashboardItem;
     }
 }
 export { };
