@@ -18,6 +18,7 @@ import type SDashboardItem from './components/SDashboardItem.vue';
 import type SStat from './components/SStat.vue';
 import type SFilterGroup from './components/SFilterGroup.vue';
 import type SFilter from './components/SFilter.vue';
+import type SPagination from './components/SPagination.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -59,6 +60,8 @@ declare module '@vue/runtime-core' {
         's-filter-group': typeof SFilterGroup;
         SFilter: typeof SFilter;
         's-filter': typeof SFilter;
+        SPagination: typeof SPagination;
+        's-pagination': typeof SPagination;
     }
 }
 export { };
