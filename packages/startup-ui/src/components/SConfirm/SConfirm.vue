@@ -18,15 +18,23 @@
         </div>
     </Teleport>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, useTemplateRef, nextTick } from 'vue';
 import { useDraggable } from '@vueuse/core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SButton from '../SButton.vue';
 
+interface TemplateData {
+    title?: string;
+    cancelLabel?: string;
+    acceptLabel?: string;
+    onAccept?: () => void;
+    onCancel?: () => void;
+}
+
 const isOpened = ref(false);
 const confirmationText = ref('');
-const initialDialogData = {
+const initialDialogData: TemplateData = {
     title: 'Необходимо подтверждение',
     cancelLabel: 'Нет',
     acceptLabel: 'Да',
@@ -34,15 +42,15 @@ const initialDialogData = {
     onCancel: () => {}
 };
 
-const dialogData = ref({});
+const dialogData = ref<TemplateData>({});
 // Элемент, позиция которого будет вычисляться во время ondrag
-const $dialog = useTemplateRef('$dialog');
+const $dialog = useTemplateRef<HTMLElement>('$dialog');
 // Элемент, на котором будет тригериться событие dragstart
-const $header = useTemplateRef('$header')
+const $header = useTemplateRef<HTMLElement>('$header')
 
 const { x, y, style } = useDraggable($dialog, { handle: $header })
 
-function open(msg, templateData) {
+function open(msg: string, templateData: TemplateData = {}) {
     confirmationText.value = msg;
     dialogData.value = {...initialDialogData, ...templateData}
     isOpened.value = true;
@@ -56,13 +64,13 @@ function open(msg, templateData) {
 }
 
 function handleAccept() {
-    dialogData.value.onAccept();
+    dialogData.value.onAccept?.();
     dialogData.value = {};
     isOpened.value = false;
 }
 
 function handleCancel() {
-    dialogData.value.onCancel();
+    dialogData.value.onCancel?.();
     dialogData.value = {};
     isOpened.value = false;
 }

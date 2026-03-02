@@ -42,7 +42,7 @@ export { default as STooltip } from './components/STooltip.vue';
 export { default as SNote } from './components/SNote.vue';
 export { default as SToggle } from './components/SToggle.vue';
 export { default as SToggleGroup } from './components/SToggleGroup.vue';
-export { SConfirm } from './components/SConfirm/index.js';
+export { SConfirm } from './components/SConfirm';
 export { default as SDialog } from './components/SDialog.vue';
 export { default as SImagePreview } from './components/SImagePreview.vue';
 export { SAlert } from './components/SAlert/index.js';
