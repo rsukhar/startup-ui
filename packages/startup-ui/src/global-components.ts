@@ -8,6 +8,7 @@ import type SToggleGroup from './components/SToggleGroup.vue';
 import type SDialog from './components/SDialog.vue';
 import type SImagePreview from './components/SImagePreview.vue';
 import type STag from './components/STag.vue';
+import type SStatus from './components/SStatus.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -29,6 +30,8 @@ declare module '@vue/runtime-core' {
         's-image-preview': typeof SImagePreview;
         STag: typeof STag;
         's-tag': typeof STag;
+        SStatus: typeof SStatus;
+        's-status': typeof SStatus;
     }
 }
 export { };
