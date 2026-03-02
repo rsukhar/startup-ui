@@ -10,11 +10,12 @@
 </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import type { PropType } from "vue";
 
 const props = defineProps({
-    icon: String,
+    icon: [String, Array] as PropType<string | string[]>,
     title: String,
     gray: Boolean,
     attention: Boolean,
