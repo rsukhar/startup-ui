@@ -10,6 +10,7 @@ import type SImagePreview from './components/SImagePreview.vue';
 import type STag from './components/STag.vue';
 import type SStatus from './components/SStatus.vue';
 import type SActionBar from './components/SActionBar.vue';
+import type SProgressbar from './components/SProgressbar.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -35,6 +36,8 @@ declare module '@vue/runtime-core' {
         's-status': typeof SStatus;
         SActionBar: typeof SActionBar;
         's-action-bar': typeof SActionBar;
+        SProgressbar: typeof SProgressbar;
+        's-progressbar': typeof SProgressbar;
     }
 }
 export { };
