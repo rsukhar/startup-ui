@@ -29,21 +29,20 @@
         </table>
     </div>
 </template>
-<script setup>
+<script setup lang="ts" generic="T">
 import { computed } from "vue";
 
-const props = defineProps({
-    data: [Array, Object],
-    hoverable: Boolean,
-    striped: Boolean,
-    bordered: Boolean,
-    nodata: {
-        type: String,
-        default: 'Ничего не найдено',
-    },
-    fixedHeader: Boolean,
-    height: String,
-    topScroll: Boolean
+const props = withDefaults(defineProps<{
+    data?: T[] | Record<string | number, T>;
+    hoverable?: boolean;
+    striped?: boolean;
+    bordered?: boolean;
+    nodata?: string;
+    fixedHeader?: boolean;
+    height?: string;
+    topScroll?: boolean;
+}>(), {
+    nodata: 'Ничего не найдено'
 });
 
 // Нужно ли показывать сообщение о том, что нет данных?
@@ -55,7 +54,7 @@ const showNoDataMessage = computed(() => {
 });
 
 const containerStyle = computed(() => {
-    const result = {};
+    const result: Record<string, string> = {};
     if (props.height) {
         result.height = props.height;
     }

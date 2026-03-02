@@ -19,6 +19,7 @@ import type SStat from './components/SStat.vue';
 import type SFilterGroup from './components/SFilterGroup.vue';
 import type SFilter from './components/SFilter.vue';
 import type SPagination from './components/SPagination.vue';
+import type STable from './components/STable.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -62,6 +63,8 @@ declare module '@vue/runtime-core' {
         's-filter': typeof SFilter;
         SPagination: typeof SPagination;
         's-pagination': typeof SPagination;
+        STable: typeof STable;
+        's-table': typeof STable;
     }
 }
 export { };
