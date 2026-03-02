@@ -3,17 +3,19 @@
         <slot />
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, provide, computed } from 'vue';
+import type { Ref } from 'vue';
+
 const props = defineProps({
     multiple: Boolean
 });
 
-const openedItem = ref(null);
+const openedItem = ref<number | null>(null);
 const isMultiple = computed(() => props.multiple)
 
-provide('openedItem', openedItem)
-provide('isMultiple', isMultiple)
+provide('openedItem', openedItem as Ref<number | null>)
+provide('isMultiple', isMultiple as Ref<boolean>)
 </script>
 <style lang="scss">
 .s-togglegroup {

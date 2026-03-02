@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, getCurrentInstance, watch, onMounted, PropType, Ref  } from 'vue'
+import { ref, inject, getCurrentInstance, watch, onMounted } from 'vue'
+import type { PropType, Ref } from 'vue'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 const props = defineProps({
@@ -22,15 +23,15 @@ const props = defineProps({
         default: false,
     },
     color: {
-        type: String as PropType<'primary' | 'red' | 'green'>,
+        type: String as PropType<"bg" | "primary" | "red" | "green">,
         default: 'bg',
     },
 })
 
 const instance = getCurrentInstance();
-const uid = instance?.uid;
+const uid = instance?.uid as number;
 const isOpened = ref(!!props.opened)
-const openedItem = inject<Ref<number | null | undefined>>('openedItem', ref(null));
+const openedItem = inject<Ref<number | null>>('openedItem', ref(null));
 const isMultiple = inject<Ref<boolean>>('isMultiple', ref(false));
 
 function handleClick() {

@@ -3,6 +3,8 @@ import type SButton from './components/SButton.vue';
 import type SActionIcon from './components/SActionIcon.vue';
 import type STooltip from './components/STooltip.vue';
 import type SNote from './components/SNote.vue';
+import type SToggle from './components/SToggle.vue';
+import type SToggleGroup from './components/SToggleGroup.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -14,6 +16,10 @@ declare module '@vue/runtime-core' {
         's-tooltip': typeof STooltip;
         SNote: typeof SNote;
         's-note': typeof SNote;
+        SToggle: typeof SToggle;
+        's-toggle': typeof SToggle;
+        SToggleGroup: typeof SToggleGroup;
+        's-toggle-group': typeof SToggleGroup;
     }
 }
 export { };
