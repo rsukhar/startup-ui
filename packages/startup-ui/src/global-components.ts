@@ -11,6 +11,7 @@ import type STag from './components/STag.vue';
 import type SStatus from './components/SStatus.vue';
 import type SActionBar from './components/SActionBar.vue';
 import type SProgressbar from './components/SProgressbar.vue';
+import type SCopyText from './components/SCopyText.vue';
 
 declare module '@vue/runtime-core' {
     export interface GlobalComponents {
@@ -38,6 +39,8 @@ declare module '@vue/runtime-core' {
         's-action-bar': typeof SActionBar;
         SProgressbar: typeof SProgressbar;
         's-progressbar': typeof SProgressbar;
+        SCopyText: typeof SCopyText;
+        's-copy-text': typeof SCopyText;
     }
 }
 export { };

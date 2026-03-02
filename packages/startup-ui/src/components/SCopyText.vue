@@ -15,28 +15,29 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, useSlots } from 'vue';
 import { useClipboard } from '@vueuse/core';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    href: String,
-    size: {
-        type: String,
-        default: 'normal'
-    },
-    layout: {
-        type: String,
-        default: 'input' // input / inline
-    },
-    // Текст, который на самом деле будет копироваться
-    copytext: String,
+const props = withDefaults(defineProps<{
+    href?: string;
+    size?: 'small' | 'normal' | 'large';
+    layout?: 'input' | 'inline';
+    copytext?: string;
+}>(), {
+    size: 'normal',
+    layout: 'input',
 });
+
 let slots = useSlots();
 const { copy, copied, isSupported } = useClipboard();
 const innerText = computed(() => {
-    return slots.default()[0].children;
+    const defaultSlot = slots.default?.({});
+    if (defaultSlot && defaultSlot.length > 0 && typeof defaultSlot[0].children === 'string') {
+        return defaultSlot[0].children;
+    }
+    return '';
 });
 </script>
 
