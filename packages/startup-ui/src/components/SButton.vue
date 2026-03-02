@@ -4,8 +4,9 @@
     </component>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, useAttrs, inject } from "vue";
+import type { PropType, Component } from "vue";
 
 const props = defineProps({
     outlined: Boolean,
@@ -14,9 +15,9 @@ const props = defineProps({
     small: Boolean,
     disabled: Boolean,
     loading: Boolean,
-    color: String,
+    color: String as PropType<"red" | "green" | "yellow" | string>,
     // Строка для тега, объект/функция для компонента
-    is: [String, Object, Function],
+    is: [String, Object, Function] as PropType<string | Component>,
 });
 
 const form = inject('formModel', null);
@@ -122,7 +123,7 @@ const classes = computed(() => [
         cursor: wait;
         pointer-events: none;
     }
-    & > svg:first-child {
+    &>svg:first-child {
         display: inline-block;
         margin-right: 8px;
     }

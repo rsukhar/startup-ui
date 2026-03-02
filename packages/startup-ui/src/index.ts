@@ -1,3 +1,4 @@
+export * from './global-components';
 import plugin from './plugin';
 import './style.scss';
 
