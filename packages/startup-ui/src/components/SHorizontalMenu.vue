@@ -15,10 +15,24 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    // В формате [{label: '', url: '', active: '', stat: ''}]
-    links: Object,
+<script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
+
+export interface SHorizontalMenuLink {
+    label: string;
+    url?: string;
+    active?: boolean;
+    stat?: string | number;
+    className?: string;
+    children?: SHorizontalMenuLink[];
+}
+
+export interface SHorizontalMenuProps {
+    links?: SHorizontalMenuLink[];
+}
+
+const props = withDefaults(defineProps<SHorizontalMenuProps>(), {
+    links: () => [],
 });
 </script>
 
