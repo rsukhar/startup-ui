@@ -30,19 +30,18 @@
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    hasStickySidebar: {
-        type: Boolean,
-        default: false,
-    },
-    sidebarMobileTitle: {
-        type: String,
-        default: 'Содержание',
-    }
+export interface SCanvasProps {
+    hasStickySidebar?: boolean;
+    sidebarMobileTitle?: string;
+}
+
+const props = withDefaults(defineProps<SCanvasProps>(), {
+    hasStickySidebar: false,
+    sidebarMobileTitle: 'Содержание',
 });
 
 const isSidebarMenuOpened = ref(false);
