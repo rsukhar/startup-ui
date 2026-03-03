@@ -11,18 +11,24 @@
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
-const props = defineProps({
-    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
-    options: [Object, Array],
-    buttons: Boolean,
-    vertical: Boolean,
-    placeholder: String
-});
-const emits = defineEmits(['change']);
-const model = defineModel();
+
+export interface SRadioGroupProps {
+    options?: Record<string | number, any> | any[];
+    buttons?: boolean;
+    vertical?: boolean;
+    placeholder?: string;
+}
+
+const props = defineProps<SRadioGroupProps>();
+
+const emits = defineEmits<{
+    (e: 'change', value: any): void;
+}>();
+
+const model = defineModel<any>();
 
 // Нормализуем options в единый формат
 const normalizedOptions = computed(() => {
@@ -30,16 +36,16 @@ const normalizedOptions = computed(() => {
     if (props.options instanceof Array){
         return props.options.map(item => ({ value: item[0], title: item[1] }));
     }
-    if (!props.options || Object.values(props.options) === 0) {
-        return {};
+    if (!props.options || Object.keys(props.options).length === 0) {
+        return [];
     }
 
     return Object.entries(props.options).map(([value, title]) => {
         // Преобразуем строковые boolean, т.к. при «распаковке» занчения становятся строковыми
-        let parsedValue = value;
+        let parsedValue: any = value;
         if (value === 'true') parsedValue = true;
         if (value === 'false') parsedValue = false;
-        if (!isNaN(value) && value !== '') parsedValue = Number(value);
+        if (!isNaN(Number(value)) && value !== '') parsedValue = Number(value);
         
         return { value: parsedValue, title };
     });
