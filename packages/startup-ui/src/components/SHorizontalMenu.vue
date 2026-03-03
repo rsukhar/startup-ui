@@ -28,6 +28,7 @@ export interface SHorizontalMenuLink {
 }
 
 export interface SHorizontalMenuProps {
+    // В формате [{label: '', url: '', active: '', stat: ''}]
     links?: SHorizontalMenuLink[];
 }
 

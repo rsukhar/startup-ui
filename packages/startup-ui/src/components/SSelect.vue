@@ -63,6 +63,7 @@ import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export interface SSelectProps {
+    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
     options: Record<string | number, any> | any[];
     placeholder?: string;
     filterable?: boolean;

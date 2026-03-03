@@ -26,9 +26,13 @@ export interface SDropdownMenuLink {
 }
 
 export interface SDropdownMenuProps {
+    // В формате [{label: '', url: '', active: ''}]
     links?: SDropdownMenuLink[];
+    // Используется, когда ни один элемент не выбран, и нет заданного лейбла
     placeholder?: string;
+    // Если задан, выводится всегда, не зависимо от выбранного элемента
     label?: string;
+    // Если задана, используется всегда, независимо от выбранного элемента
     labelLink?: string;
 }
 

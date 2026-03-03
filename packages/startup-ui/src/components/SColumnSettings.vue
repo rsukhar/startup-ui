@@ -94,6 +94,7 @@ interface ColumnItem {
     isActive: boolean;
 }
 
+// Собирает список для отображения из известных колонок и текущего значения модели
 const buildList = (modelValue: string[]): ColumnItem[] => {
     const result: ColumnItem[] = [];
     const used = new Set<string>();
@@ -176,7 +177,7 @@ useEventListener(window, 'resize', () => {
     if (isOpen.value) updatePosition();
 });
 
-// Сброс колонок
+// Сброс изменений
 const resetValue = (columns: string[]) => {
     list.value = buildList(columns);
 };

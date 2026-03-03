@@ -16,6 +16,7 @@ import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
 
 export interface SRadioGroupProps {
+    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
     options?: Record<string | number, any> | any[];
     buttons?: boolean;
     vertical?: boolean;

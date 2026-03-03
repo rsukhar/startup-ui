@@ -12,7 +12,8 @@ import SCheckbox from './SCheckbox.vue';
 
 export interface SCheckboxGroupProps {
     modelValue?: any[];
-    options?: Record<string | number, any>;
+    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    options?: Record<string | number, any> | any[];
     vertical?: boolean;
 }
 

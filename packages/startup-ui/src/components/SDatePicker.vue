@@ -79,12 +79,16 @@ import SRadioGroup from "./SRadioGroup.vue";
 
 export interface SDatePickerProps {
     range?: boolean;
+    // Формат значения модели
     valueFormat?: string;
+    // Формат, в котором выводим в инпуте
     inputFormat?: string;
     min?: string;
     max?: string;
     numberOfMonths?: number;
+    // Название дней недели
     weekDayNames?: string[];
+    // Название месяцев
     monthNames?: string[];
     buttons?: Record<string, string>;
     withTime?: boolean;

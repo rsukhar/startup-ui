@@ -52,8 +52,11 @@ export interface SVerticalMenuLink {
 }
 
 export interface SVerticalMenuProps {
+    // В формате [{label: '', url: '', active: ''}]
     links?: SVerticalMenuLink[];
+    // Узлы, открытые на старте
     expandedKeys?: (string | number)[];
+    // Сохранять раскрытые узлы в localStorage?
     storeExpandedKeysTo?: string;
 }
 
