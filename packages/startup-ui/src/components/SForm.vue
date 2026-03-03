@@ -80,7 +80,7 @@ const formatErrors = function(errors: Record<string, any>) {
 
 provide('formModel', model.value);
 provide('formErrors', localErrors);
-provide('titlesWidth', computed(() => props.titlesWidth));
+provide('titlesWidth', props.titlesWidth);
 </script>
 <style lang="scss">
 .s-form {

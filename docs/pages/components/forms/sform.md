@@ -161,7 +161,7 @@ const useForm = (initialValues) => {
     const form = reactive({ ...original })
 
     form.post = (url) => {
-        alert(`Отправили POST-запрос на адрес ${url}\n${JSON.stringify(form, null, 2)}`)
+        alert(`Отправили POST-запрос на адрес ${url}\n${JSON.stringify(form, null, 2)}`);
     }
 
     form.reset = (...fields) => {
