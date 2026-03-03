@@ -24,28 +24,35 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, useTemplateRef } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SButton from './SButton.vue';
 
-const props = defineProps({
-    url: String,
-    accept: String,
-    maxFileSize: Number,
-    multiple: Boolean,
-    uploadButtonTitle: String,
-});
+export interface SUploadProps {
+    url?: string;
+    accept?: string;
+    maxFileSize?: number;
+    multiple?: boolean;
+    uploadButtonTitle?: string;
+}
 
-const model = defineModel();
-const emit = defineEmits(['select', 'clear']);
-const fileInput = useTemplateRef('fileInput');
+const props = defineProps<SUploadProps>();
+
+const model = defineModel<any | any[]>();
+const emit = defineEmits<{
+    (e: 'select', value: any): void;
+    (e: 'clear'): void;
+}>();
+const fileInput = useTemplateRef<HTMLInputElement>('fileInput');
 
 // Текст, который выводится на кнопке выбора. Если явно не задан, зависит от того, выбираем один файл или несколько
 const finalUploadButtonTitle = computed(() => props.uploadButtonTitle ?? (props.multiple ? 'Выбрать файлы' : 'Выбрать файл'));
 
 const openFileDialog = () => {
-    fileInput.value.click();
+    if (fileInput.value) {
+        fileInput.value.click();
+    }
 };
 
 const fileTitles = computed(() => {
@@ -59,8 +66,11 @@ const fileTitles = computed(() => {
  * 
  * @param event 
  */
-function select(event) {
-    const selected = Array.from(event.target?.files || event.dataTransfer?.files || []).filter(isFileValid);
+function select(event: Event | DragEvent) {
+    const target = event.target as HTMLInputElement;
+    const dataTransfer = (event as DragEvent).dataTransfer;
+    const files = target?.files || dataTransfer?.files || [];
+    const selected = Array.from(files).filter(isFileValid);
 
     if (!selected.length) return;
     if (fileTitles.value.includes(selected[0]?.name)) return;
@@ -75,15 +85,16 @@ function select(event) {
     emit('select', model.value);
 }
 
-function isFileValid(file) {
+function isFileValid(file: File) {
     if (props.accept && !isFileTypeValid(file)) return false;
     if (props.maxFileSize && file.size > props.maxFileSize) return false;
     return true;
 }
 
-function isFileTypeValid(file) {
-    const acceptableTypes = props.accept.split(',').map((type) => type.trim());
-    const fileExtension = '.' + file.name.split('.').pop();
+function isFileTypeValid(file: File) {
+    const acceptableTypes = (props.accept || '').split(',').map((type) => type.trim());
+    const parts = file.name.split('.');
+    const fileExtension = '.' + parts[parts.length - 1];
     return acceptableTypes.includes(fileExtension);
 }
 
@@ -92,14 +103,16 @@ function isFileTypeValid(file) {
  * 
  * @param title 
  */
-function remove(title) {
+function remove(title: string) {
     if (Array.isArray(model.value)) {
         model.value = model.value.filter(item => (item instanceof File ? item.name !== title : item !== title));
     } else {
         model.value = null;
     }
 
-    fileInput.value.value = '';
+    if (fileInput.value) {
+        fileInput.value.value = '';
+    }
 }
 
 function clear() {
@@ -110,19 +123,19 @@ function clear() {
 const isDragging = ref(false);
 let dragCounter = 0;
 
-function onDragEnter(event) {
+function onDragEnter(event: DragEvent) {
     dragCounter++;
     isDragging.value = true;
 }
 
-function onDragLeave(event) {
+function onDragLeave(event: DragEvent) {
     dragCounter--;
     if (dragCounter === 0) {
         isDragging.value = false;
     }
 }
 
-function onDrop(event) {
+function onDrop(event: DragEvent) {
     dragCounter = 0;
     isDragging.value = false;
     select(event);
