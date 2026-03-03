@@ -5,45 +5,40 @@
             <slot v-else name="prefix" />
         </span>
         <textarea class="s-input-field" v-if="type === 'textarea'" v-model="model" :rows="rows" :disabled="disabled"
-                  :placeholder="placeholder" @input="(event) => $emit('change', event.target.value)" :style="inputStyle" />
+                  :placeholder="placeholder" @input="(event) => $emit('change', (event.target as HTMLTextAreaElement).value)" :style="inputStyle" />
         <input class="s-input-field" v-else :type="type" v-model="model" :placeholder="placeholder"
-               :disabled="disabled" @input="(event) => $emit('change', event.target.value)" :style="inputStyle" />
+               :disabled="disabled" @input="(event) => $emit('change', (event.target as HTMLInputElement).value)" :style="inputStyle" />
         <span v-if="hasSuffix" class="s-input-suffix">
             <template v-if="suffix">{{ suffix }}</template>
             <slot v-else name="suffix" />
         </span>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed, useSlots } from "vue";
+import type { StyleValue } from "vue";
 
-const props = defineProps({
-    modelValue: {
-        type: [Number, String]
-    },
-    type: {
-        type: String,
-        default: 'text',
-        validator: propValue => {
-            return ['text', 'string', 'number', 'email', 'password', 'textarea', 'search'].includes(propValue);
-        }
-    },
-    placeholder: String,
-    prefix: String,
-    suffix: String,
-    disabled: {
-        type: Boolean,
-        default: false
-    },
-    rows: {
-        type: Number,
-        default: 3
-    },
-    inputStyle: [String, Object, Array],
+export interface SInputProps {
+    modelValue?: number | string | null;
+    type?: 'text' | 'string' | 'number' | 'email' | 'password' | 'textarea' | 'search';
+    placeholder?: string;
+    prefix?: string;
+    suffix?: string;
+    disabled?: boolean;
+    rows?: number;
+    inputStyle?: StyleValue;
+}
+
+const props = withDefaults(defineProps<SInputProps>(), {
+    type: 'text',
+    disabled: false,
+    rows: 3,
 });
 
-const model = defineModel();
-const emits = defineEmits(['change']);
+const model = defineModel<number | string | null>();
+const emits = defineEmits<{
+    (e: 'change', value: string): void;
+}>();
 const $slots = useSlots();
 
 const hasPrefix = computed(() => props.prefix || $slots.prefix);

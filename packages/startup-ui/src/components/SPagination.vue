@@ -65,10 +65,10 @@ function handleSelectedChange() {
     });
 }
 
-const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perPageOptions).reduce((acc: Record<number, string>, [key, value]) => {
+const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perPageOptions).reduce((acc: Record<string | number, string>, [key, value]) => {
     acc[parseInt(String(value))] = `По ${value}`;
     return acc;
-}, {}) : null;
+}, {}) : {};
 </script>
 
 <style lang="scss">

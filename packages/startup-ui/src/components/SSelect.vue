@@ -40,7 +40,7 @@
                                 :class="{ selected: value == model }"
                                 @click.stop="selectOption(value)"
                             >
-                                <slot v-if="$slots.option" name="option" :option="option" />
+                                <slot v-if="$slots.option" name="option" :option="{label, value}" />
                                 <template v-else>{{ label }}</template>
                             </div>
                         </div>
@@ -57,45 +57,39 @@
         </Teleport>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { templateRef } from '@vueuse/core';
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    options: {
-        // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
-        type: [Object, Array],
-        required: true
-    },
-    placeholder: String,
-    filterable: Boolean,
-    disabled: Boolean,
-    clearable: Boolean,
-    inline: Boolean,
-    /**
-     * Включить виртуальный скролл
-     */
-    virtual: {
-        type: Boolean,
-        default: false
-    },
-    /**
-     * Количество элементов, которые рендерятся при виртуальном скролле
-     */
-    virtualScrollSize: {
-        type: Number,
-        default: 10,
-    },
+export interface SSelectProps {
+    options: Record<string | number, any> | any[];
+    placeholder?: string;
+    filterable?: boolean;
+    disabled?: boolean;
+    clearable?: boolean;
+    inline?: boolean;
+    virtual?: boolean;
+    virtualScrollSize?: number;
+}
+
+const props = withDefaults(defineProps<SSelectProps>(), {
+    virtual: false,
+    virtualScrollSize: 10,
 });
-const emits = defineEmits(['change', 'filter']);
-const model = defineModel();
-const $selectRef = templateRef('selectRef');
+
+const emits = defineEmits<{
+    (e: 'change', value: any): void;
+    (e: 'filter', value: string): void;
+}>();
+
+const model = defineModel<any>();
+const $selectRef = templateRef<HTMLElement>('selectRef');
 
 const attrs = useAttrs();
 
-const toInternalOptions = (propValue) => (propValue instanceof Array) ? JSON.parse(JSON.stringify(propValue)) : Object.entries(propValue);
-const internalOptions = ref(toInternalOptions(props.options ?? {}));
+const toInternalOptions = (propValue: any): [any, any][] => (propValue instanceof Array) ? JSON.parse(JSON.stringify(propValue)) : Object.entries(propValue);
+const internalOptions = ref<[any, any][]>(toInternalOptions(props.options ?? {}));
 watch(() => props.options, (newOptions) => {
     internalOptions.value = toInternalOptions(newOptions ?? {})
 }, { deep: true });
@@ -116,23 +110,24 @@ const visibleOptions = computed(() => {
 });
 
 const areOptionsShown = ref(false);
-const dropdownRef = ref(null);
-const openDirection = ref(null);
-const textFilter = ref(null);
+const dropdownRef = ref<HTMLElement | null>(null);
+const openDirection = ref<string | null>(null);
+const textFilter = ref<string>('');
 
 const selectLabel = computed(() => {
-    if (model.value === null) {
+    if (model.value === null || model.value === undefined) {
         return props.placeholder;
     }
-    const option = internalOptions.value.find(([value, key]) => value == model.value);
+    const option = internalOptions.value.find(([value, _]) => value == model.value);
     return option === undefined ? props.placeholder : option[1];
 });
 
 /**
  * Обработка виртуального скролла
  */
-function handleScroll(e) {
-    const scrollTop = e.target.scrollTop;
+function handleScroll(e: Event) {
+    const target = e.target as HTMLElement;
+    const scrollTop = target.scrollTop;
     startIndex.value = Math.floor(scrollTop / itemHeight.value);
 }
 
@@ -150,18 +145,18 @@ function filterOptions() {
         return;
     }
 
-    internalOptions.value = toInternalOptions(props.options).filter(([value, label]) => {
-        return label.toLowerCase().includes(textFilter.value.toLowerCase())
+    internalOptions.value = toInternalOptions(props.options).filter(([_, label]) => {
+        return String(label).toLowerCase().includes(textFilter.value.toLowerCase())
     });
 }
 
-function handleClickOutside(event) {
-    if ($selectRef.value && !$selectRef.value.contains(event.target)) {
+function handleClickOutside(event: MouseEvent) {
+    if ($selectRef.value && !$selectRef.value.contains(event.target as Node)) {
         areOptionsShown.value = false;
     }
 }
 
-function selectOption(optionValue) {
+function selectOption(optionValue: any) {
     textFilter.value = ''
     model.value = optionValue;
     emits('change', optionValue);
@@ -173,9 +168,9 @@ function selectOption(optionValue) {
  *
  * @param rect Объект с координатами прямоугольника
  */
-function determineListDirection(rect) {
+function determineListDirection(rect: DOMRect) {
     const minOffset = Math.max(20, Math.min(6, internalOptions.value.length) * itemHeight.value);
-    const listHeight = dropdownRef.value.offsetHeight + minOffset;
+    const listHeight = (dropdownRef.value?.offsetHeight ?? 0) + minOffset;
     const spaceBelow = document.documentElement.clientHeight - rect.bottom;
 
     if (spaceBelow >= listHeight) {
@@ -193,10 +188,11 @@ function determineListDirection(rect) {
     }
 }
 
-const optionsStyles = ref({});
+const optionsStyles = ref<Record<string, string | number>>({});
 
 // Найти предка с position:fixed
 function hasFixedParent() {
+    if (!$selectRef.value) return false;
     let parent = $selectRef.value.parentElement;
 
     while (parent) {
@@ -210,10 +206,11 @@ function hasFixedParent() {
 }
 
 function updateOptionsPosition() {
+    if (!$selectRef.value) return;
     const rect = $selectRef.value.getBoundingClientRect();
     openDirection.value = determineListDirection(rect);
 
-    const fixedPosition = hasFixedParent($selectRef.value);
+    const fixedPosition = hasFixedParent();
     if ($selectRef.value) {
         optionsStyles.value = {
             // Если есть предок с position:fixed, то ставим fixed, иначе absolute
@@ -239,7 +236,7 @@ watch(areOptionsShown, (shown) => {
     }
 });
 
-function showOptions(event) {
+function showOptions() {
     areOptionsShown.value = !areOptionsShown.value;
 }
 
@@ -251,8 +248,10 @@ function handleClear() {
 onMounted(() => {
     document.addEventListener('click', handleClickOutside);
     nextTick(() => {
-        const rect = $selectRef.value.getBoundingClientRect();
-        openDirection.value = determineListDirection(rect);
+        if ($selectRef.value) {
+            const rect = $selectRef.value.getBoundingClientRect();
+            openDirection.value = determineListDirection(rect);
+        }
     })
 });
 
