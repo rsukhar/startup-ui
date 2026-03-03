@@ -39,49 +39,64 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch, useTemplateRef, nextTick } from "vue";
 import { useSortable } from "@vueuse/integrations/useSortable";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useEventListener } from "@vueuse/core";
 import SCheckbox from "./SCheckbox.vue";
 
-const props = defineProps({
+export interface SColumnSettingsPreset {
+    title: string;
+    columns: string[];
+}
+
+export interface SColumnSettingsProps {
     /**
      * Набор показанных колонок в формате: ['id1', 'id2', ...]
      */
-    modelValue: Array,
+    modelValue?: string[];
     /**
      * Набор доступных колонок: {id1: 'Название колонки 1', ...}
      */
-    options: Object,
+    options?: Record<string, string>;
     /**
      * Значение по умолчанию для сброса
      */
-    columnPresets: {
-        type: Array,
-        default: []
-    },
+    columnPresets?: SColumnSettingsPreset[];
     /**
      * Эти колонки нельзя отключить
      */
-    permanentColumns: {
-        type: Array,
-        default: []
-    },
-});
-const emit = defineEmits(['update:modelValue']);
+    permanentColumns?: string[];
+}
 
-const $dropdown = useTemplateRef('dropdown');
-const $portal = useTemplateRef('portal');
-const $list = ref();
+const props = withDefaults(defineProps<SColumnSettingsProps>(), {
+    modelValue: () => [],
+    options: () => ({}),
+    columnPresets: () => [],
+    permanentColumns: () => [],
+});
+
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: string[]): void;
+}>();
+
+const $dropdown = useTemplateRef<HTMLElement>('dropdown');
+const $portal = useTemplateRef<HTMLElement>('portal');
+const $list = ref<HTMLElement | null>(null);
 
 const isOpen = ref(false);
-const portalStyle = ref({});
+const portalStyle = ref<Record<string, string>>({});
 
-const buildList = (modelValue) => {
-    const result = [];
-    const used = new Set();
+interface ColumnItem {
+    id: string;
+    title: string;
+    isActive: boolean;
+}
+
+const buildList = (modelValue: string[]): ColumnItem[] => {
+    const result: ColumnItem[] = [];
+    const used = new Set<string>();
 
     modelValue.filter(id => props.options[id])
         .forEach(id => {
@@ -97,10 +112,11 @@ const buildList = (modelValue) => {
     return result;
 };
 
-const list = ref(buildList(props.modelValue));
+const list = ref<ColumnItem[]>(buildList(props.modelValue));
 
 // Позионирование выпадающего списка
 const updatePosition = () => {
+    if (!$dropdown.value) return;
     const rect = $dropdown.value.getBoundingClientRect();
 
     portalStyle.value = {
@@ -108,7 +124,7 @@ const updatePosition = () => {
         top: `${rect.bottom + 4}px`,
         right: `${document.documentElement.clientWidth - rect.right}px`,
         minWidth: `${rect.width}px`,
-        zIndex: 10000,
+        zIndex: '10000',
     };
 };
 
@@ -139,11 +155,12 @@ useSortable($list, list, {
 });
 
 // Закрытие по клику вне компонента
-useEventListener(document, 'click', (event) => {
+useEventListener(document, 'click', (event: Event) => {
+    const target = event.target as Node;
     if (
         $dropdown.value && $portal.value  
-        && !($dropdown.value.contains(event.target) 
-        || $portal.value.contains(event.target))
+        && !($dropdown.value.contains(target) 
+        || $portal.value.contains(target))
     ) {
         isOpen.value = false;
     }
@@ -160,7 +177,7 @@ useEventListener(window, 'resize', () => {
 });
 
 // Сброс колонок
-const resetValue = (columns) => {
+const resetValue = (columns: string[]) => {
     list.value = buildList(columns);
 };
 </script>
