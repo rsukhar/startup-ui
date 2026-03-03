@@ -69,46 +69,41 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { ref, computed, watch, useTemplateRef, nextTick } from "vue"
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { useEventListener } from "@vueuse/core";
 import SRadioGroup from "./SRadioGroup.vue";
-const props = defineProps({
-    range: Boolean,
-    // Формат значения модели
-    valueFormat: String,
-    // Формат, в котором выводим в инпуте
-    inputFormat: String,
-    min: String,
-    max: String,
-    numberOfMonths: Number,
-    // Название дней недели
-    weekDayNames: {
-        type: Array,
-        default() {
-            return ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-        }
-    },
-    // Название месяцев
-    monthNames: {
-        type: Array,
-        default() {
-            return ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-        }
-    },
-    buttons: Object,
-    withTime: Boolean,
-})
+
+export interface SDatePickerProps {
+    range?: boolean;
+    valueFormat?: string;
+    inputFormat?: string;
+    min?: string;
+    max?: string;
+    numberOfMonths?: number;
+    weekDayNames?: string[];
+    monthNames?: string[];
+    buttons?: Record<string, string>;
+    withTime?: boolean;
+}
+
+const props = withDefaults(defineProps<SDatePickerProps>(), {
+    range: false,
+    withTime: false,
+    weekDayNames: () => ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+    monthNames: () => ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+});
+
 // Внешнее значение в нужном формате props.valueFormat
-const externalValue = defineModel();
+const externalValue = defineModel<string | string[] | null>();
 dayjs.extend(customParseFormat)
 
-const $input = useTemplateRef('input');
-const $calendar = useTemplateRef('calendar');
-const calendarStyles = ref({});
+const $input = useTemplateRef<HTMLElement>('input');
+const $calendar = useTemplateRef<HTMLElement>('calendar');
+const calendarStyles = ref<Record<string, string>>({});
 
 const valueFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `YYYY-MM-DD HH:mm` : 'YYYY-MM-DD');
 const inputFormat = props.inputFormat ? props.inputFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
@@ -118,24 +113,31 @@ const internalFormat = (props.withTime && !props.range) ? 'YYYYMMDDHHmm' : 'YYYY
 const value = computed(() => {
     let val = externalValue.value;
     // Если нет значения, но есть кнопки — берём первую кнопку
-    if (val === null && props.buttons) {
+    if (!val && props.buttons && Object.keys(props.buttons).length > 0) {
         const [from, to] = Object.values(props.buttons)[0].split('-');
         val = [from, to];
     }
-    // Если формат уже правильный или всё ещё null
-    if (valueFormat === internalFormat || val === null) {
+    // Если пусто
+    if (!val) {
+        return null;
+    }
+    // Если формат уже правильный
+    if (valueFormat === internalFormat) {
         return JSON.parse(JSON.stringify((val)));
     }
     // Приводим к нужному формату
     return Array.isArray(val)
-        ? val.map(date => dayjs(date, valueFormat).format(internalFormat))
-        : dayjs(val, valueFormat, true).format(internalFormat);
+        ? val.map(date => dayjs(date as string, valueFormat).format(internalFormat))
+        : dayjs(val as string, valueFormat, true).format(internalFormat);
 });
 
 // Значение для выбиралки с кнопками
 const radioValue = computed({
-    get: () => value.value?.join('-') ?? '',
-    set: (newValue) => {
+    get: () => {
+        if (!value.value) return '';
+        return Array.isArray(value.value) ? value.value.join('-') : value.value;
+    },
+    set: (newValue: string) => {
         externalValue.value = newValue.split('-')
     }
 });
@@ -145,17 +147,16 @@ const numOfMonths = computed(() => props.numberOfMonths ?? (props.range ? 2 : 1)
 // Значение, которое показывается в инпуте
 const displayValue = computed(() => {
     if (props.range && Array.isArray(value.value)) {
-        return value.value.filter(Boolean).map(item => dayjs(item, valueFormat).format(inputFormat))
-            .join(' — ');
+        return value.value.filter(Boolean).map(item => dayjs(item, internalFormat).format(inputFormat)).join(' — ');
     }
-    return value.value ? (dayjs(value.value, internalFormat, true).format(inputFormat)) : 'Дата не выбрана';
+    return value.value && !Array.isArray(value.value) ? (dayjs(value.value, internalFormat, true).format(inputFormat)) : 'Дата не выбрана';
 })
 
 /**
  * Месяц на первой странице календаря: 1-12
  */
-const firstYear = ref((() => dayjs().format('YYYY'))());
-const firstMonth = ref((() => dayjs().format('MM'))());
+const firstYear = ref(Number(dayjs().format('YYYY')));
+const firstMonth = ref(Number(dayjs().format('MM')));
 
 /**
  * Страницы календаря в формате: [{year, month, daysInMonth}, ...]
@@ -191,7 +192,7 @@ function nextMonth() {
 }
 
 // Если время не задано, то по умолчанию показываем текущее время
-function getTimePart(part) {
+function getTimePart(part: 'hour' | 'minute') {
     const source = Array.isArray(value.value)
         ? (value.value.length === 2 ? value.value[1] : null)
         : value.value;
@@ -210,25 +211,25 @@ const hoursDown = () => hours.value = hours.value === 0 ? 23 : hours.value - 1;
 const minutesUp = () => minutes.value = minutes.value === 59 ? 0 : minutes.value + 1;
 const minutesDown = () => minutes.value = minutes.value === 0 ? 59 : minutes.value - 1;
 
-const displayedHours = computed(() => hours.value < 10 ? `0${hours.value}` : hours.value);
-const displayedMinutes = computed(() => minutes.value < 10 ? `0${minutes.value}` : minutes.value);
+const displayedHours = computed(() => hours.value < 10 ? `0${hours.value}` : hours.value.toString());
+const displayedMinutes = computed(() => minutes.value < 10 ? `0${minutes.value}` : minutes.value.toString());
 
 watch(() => [hours.value, minutes.value], () => {
     if (props.range) return;
-    if (!externalValue.value) return;
+    if (!externalValue.value || Array.isArray(externalValue.value)) return;
 
     // Выбор одиночной даты
     externalValue.value = dayjs(externalValue.value, valueFormat, true).hour(hours.value).minute(minutes.value).format(valueFormat);
 });
 
 // Форматирует дату в 'YYYYMMDD'
-const dateToString = (year, month, day) => year + ((month < 10) ? '0' : '') + month + ((day < 10) ? '0' : '') + day;
+const dateToString = (year: number, month: number, day: number) => year + ((month < 10) ? '0' : '') + month.toString() + ((day < 10) ? '0' : '') + day.toString();
 
 const isOpened = ref(false);
 watch(isOpened, (newValue) => {
     if (newValue === false) return;
     const firstValue = (externalValue.value instanceof Array) ? externalValue.value[0] : externalValue.value;
-    if (firstValue === null) {
+    if (firstValue === null || firstValue === undefined) {
         firstMonth.value = dayjs().month() + 1;
         firstYear.value = dayjs().year();
         return;
@@ -243,7 +244,8 @@ watch(isOpened, (newValue) => {
  *
  * @param rect Объект с координатами прямоугольника
  */
-function determineCalendarDirection(rect) {
+function determineCalendarDirection(rect: DOMRect) {
+    if (!$calendar.value) return 'drop-down';
     const calendarHeight = $calendar.value.offsetHeight;
     const spaceBelow = document.documentElement.clientHeight - rect.bottom;
 
@@ -265,6 +267,7 @@ function determineCalendarDirection(rect) {
 const openDirection = ref('drop-down');
 
 async function updateCalendarPosition() {
+    if (!$input.value) return;
     const rect = $input.value.getBoundingClientRect();
     await nextTick();
     openDirection.value = determineCalendarDirection(rect);
@@ -272,7 +275,7 @@ async function updateCalendarPosition() {
     if ($calendar.value) {
         calendarStyles.value = {
             left: `${rect.left + window.scrollX}px`,
-            zIndex: 9999,
+            zIndex: '9999',
         };
 
         if (openDirection.value === 'drop-up') {
@@ -289,9 +292,9 @@ watch(isOpened, (newValue) => {
     updateCalendarPosition();
 });
 
-const isSelected = (year, month, day) => {
+const isSelected = (year: number, month: number, day: number) => {
     if (prevClickedDate.value) return prevClickedDate.value.startsWith(dateToString(year, month, day));
-    if (!value.value) return;
+    if (!value.value) return false;
 
     if (value.value instanceof Array) {
         // Если выбраны обе даты
@@ -307,8 +310,8 @@ const isSelected = (year, month, day) => {
 /**
  * Наведенная дата в формате 'YYYYMMDD'
  */
-const hoveredDate = ref(null);
-const hover = (year, month, day) => hoveredDate.value = dateToString(year, month, day);
+const hoveredDate = ref<string | null>(null);
+const hover = (year: number, month: number, day: number) => hoveredDate.value = dateToString(year, month, day);
 const blur = () => hoveredDate.value = null;
 
 /**
@@ -322,13 +325,13 @@ const highlights = computed(() => {
         const start = (prevClickedDate.value < hoveredDate.value) ? prevClickedDate.value : hoveredDate.value;
         const end = (prevClickedDate.value < hoveredDate.value) ? hoveredDate.value : prevClickedDate.value;
         return [start, end];
-    } else if (value.value) {
+    } else if (value.value && Array.isArray(value.value)) {
         return value.value;
     }
     return null;
 });
 
-const isHighlighted = function(year, month, day) {
+const isHighlighted = function(year: number, month: number, day: number) {
     return highlights.value && highlights.value[0] <= dateToString(year, month, day) && highlights.value[1] >= dateToString(year, month, day);
 }
 
@@ -339,30 +342,32 @@ const isHighlighted = function(year, month, day) {
  * @param m
  * @param d
  */
-function isBlocked(y, m, d) {
+function isBlocked(y: number, m: number, d: number) {
     const parsedMin = props.min ? dayjs(props.min, 'YYYY-MM-DD') : null;
     const parsedMax = props.max ? dayjs(props.max, 'YYYY-MM-DD') : null;
     const parsedDate = dayjs().year(y).month(m - 1).date(d);
 
-    return parsedDate.isBefore(parsedMin, 'day') || parsedDate.isAfter(parsedMax, 'day');
+    if (parsedMin && parsedDate.isBefore(parsedMin, 'day')) return true;
+    if (parsedMax && parsedDate.isAfter(parsedMax, 'day')) return true;
+    return false;
 }
 
 // Совпадает ли дата с сегодняшним числом
-function isToday(y, m, d) {
+function isToday(y: number, m: number, d: number) {
     return dayjs().year(y).month(m - 1).date(d).isSame(dayjs(), 'day');
 }
 
 /**
  * Предыдущая выбранная в периоде дата в формате 'YYYYMMDD'
  */
-const prevClickedDate = ref(null);
+const prevClickedDate = ref<string | null>(null);
 
-function onDateClick(year, month, day) {
+function onDateClick(year: number, month: number, day: number) {
     if (isBlocked(year, month, day)) return;
     if (!props.range) {
         // Выбор одиночной даты
         let tempValue = dayjs().year(year).month(month - 1).date(day)
-        if (hours.value && minutes.value) {
+        if (hours.value !== undefined && minutes.value !== undefined) {
             tempValue = tempValue.hour(hours.value).minute(minutes.value);
         }
         externalValue.value = tempValue.format(valueFormat);
@@ -388,10 +393,12 @@ function onDateClick(year, month, day) {
 }
 
 // Закрытие по клику вне
-useEventListener(document, 'mousedown', (e) => {
-    isOpened.value = false;
-    prevClickedDate.value = null;
-});
+if (typeof document !== 'undefined') {
+    useEventListener(document, 'mousedown', (e) => {
+        isOpened.value = false;
+        prevClickedDate.value = null;
+    });
+}
 
 // Значения кнопок (из DateInterval приходят в формате Лейбл -> Значение, потому что значение может повторяться для разных лейблов
 const buttonOptions = computed(() => {
