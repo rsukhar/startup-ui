@@ -9,17 +9,24 @@
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { inject, computed } from "vue";
+import type { Ref } from "vue";
 
-const props = defineProps({
-    value: [String, Number],
-    disabled: Boolean
-});
+export interface SCheckboxProps {
+    value?: string | number | boolean;
+    disabled?: boolean;
+}
 
-const model = defineModel();
-const groupValue = inject('groupValue', null);
+const props = defineProps<SCheckboxProps>();
+
+const model = defineModel<any>();
+const groupValue = inject<Ref<any[]> | null>('groupValue', null);
+
+const emits = defineEmits<{
+    (e: 'change', value: boolean | any): void;
+}>();
 
 // Устанавливаем значение как computed-свойство, чтобы связать чекбосы, переданные через слоты, с внутренней моделью
 const isChecked = computed({
@@ -28,20 +35,25 @@ const isChecked = computed({
         if (groupValue != null && props.value != null) {
             return groupValue.value.includes(props.value) ?? false;
         } else {
-            // Передано значение напрямую
-            return model.value;
+            return Boolean(model.value);
         }
     },
-    set(val) {
+    set(val: boolean) {
         if (groupValue && props.value != null) {
-            groupValue.value.includes(props.value) 
-                ? groupValue.value.splice(groupValue.value.indexOf(props.value), 1)
-                : groupValue.value.push(props.value);
+            if (val) {
+                if (!groupValue.value.includes(props.value)) {
+                    groupValue.value.push(props.value);
+                }
+            } else {
+                const index = groupValue.value.indexOf(props.value);
+                if (index > -1) {
+                    groupValue.value.splice(index, 1);
+                }
+            }
         }
         model.value = val;
     }
 });
-const emits = defineEmits(['change']);
 
 function handleCheck() {
     if (props.disabled) return;

@@ -6,16 +6,19 @@
         </SCheckbox>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { provide, computed } from 'vue';
 import SCheckbox from './SCheckbox.vue';
 
-const props = defineProps({
-    modelValue: Object,
-    options: Object,
-    vertical: Boolean
-});
-const model = defineModel();
+export interface SCheckboxGroupProps {
+    modelValue?: any[];
+    options?: Record<string | number, any>;
+    vertical?: boolean;
+}
+
+const props = defineProps<SCheckboxGroupProps>();
+const model = defineModel<any[]>({ default: () => [] });
+
 provide('groupValue', model);
 
 const internalOptions = computed(() => props.options ?? {});
