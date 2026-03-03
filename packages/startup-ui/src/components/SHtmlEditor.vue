@@ -3,21 +3,29 @@
         <Editor :init="initOptions" v-model="model" @update:modelValue="onEditorChange" />
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
+// @ts-ignore
 import Editor from '@tinymce/tinymce-vue';
 // Следующая строчка нужна для отключения запроса API-ключая, не удалять!
+// @ts-ignore
 import tinymce from 'tinymce/tinymce';
 import 'tinymce/skins/ui/oxide/skin.min.css'
 import 'tinymce/skins/ui/oxide/content.min.css'
 import axios from "axios";
-const emits = defineEmits(['changeContent']);
 
-const props = defineProps({
-    uploadUrl: String,
-    placeholder: String,
-});
-const model = defineModel();
+export interface SHtmlEditorProps {
+    uploadUrl?: string;
+    placeholder?: string;
+}
+
+const props = defineProps<SHtmlEditorProps>();
+
+const emits = defineEmits<{
+    (e: 'changeContent'): void;
+}>();
+
+const model = defineModel<string>();
 const initOptions = ref({
     license_key: 'mit',
     selector: 'textarea',
@@ -141,7 +149,7 @@ const initOptions = ref({
     license_validator: () => true,
     
     // Включаем возможность загрузки файлов
-    images_upload_handler: function (blobInfo, progress) {
+    images_upload_handler: function (blobInfo: any, progress: any) {
         return uploadImageToServer(blobInfo, progress);
     },
     convert_urls: false,
@@ -162,7 +170,7 @@ const initOptions = ref({
     media_live_embeds: true, // Показывать превью сразу
     media_filter_html: false, // Не фильтровать iframe и другие теги
     // Добавляем Kinescope в список провайдеров
-    media_url_resolver: function (data, resolve, reject) {
+    media_url_resolver: function (data: any, resolve: any, reject: any) {
         const kinescopeRegex = /https:\/\/kinescope\.io\/embed\/([a-zA-Z0-9]+)/;
         const match = data.url.match(kinescopeRegex);
         if (match) {
@@ -199,15 +207,15 @@ const initOptions = ref({
             classes: ['s-note', 'error'],
         }
     },  
-    setup(editor) {
+    setup(editor: any) {
         // Была ли картинка ранее завернута в div
-        const isImgAlreadyWrapped = (img) => {
+        const isImgAlreadyWrapped = (img: any) => {
             const parent = img.parentNode;
             return !!(parent && parent.tagName && parent.tagName.toLowerCase() === 'div' && parent.firstElementChild === img && parent.children.length === 1);
         };
 
         // Обернуть img в div, переставив кастомные классы на обертку
-        const wrapImageNode = (img) => {
+        const wrapImageNode = (img: any) => {
             if (!img || !img.parentNode) return;
             if (isImgAlreadyWrapped(img)) return;
 
@@ -230,10 +238,10 @@ const initOptions = ref({
             try { editor.nodeChanged(); } catch (err) {}
         };
 
-        const wrapImagesInRoot = (root) => {
+        const wrapImagesInRoot = (root: any) => {
             if (!root || !root.querySelectorAll) return;
                 const imgs = root.querySelectorAll('img');
-                imgs.forEach(img => {
+                imgs.forEach((img: any) => {
                 try { wrapImageNode(img); } catch (err) {}
             });
         };
@@ -245,7 +253,7 @@ const initOptions = ref({
 
     // 1) Monkey-patch insertContent: перехватываем html перед вставкой
     const origInsertContent = editor.insertContent.bind(editor);
-    editor.insertContent = (content, args) => {
+    editor.insertContent = (content: any, args: any) => {
       if (typeof content === 'string' && content.includes('<img')) {
         const tmp = doc.createElement('div');
         tmp.innerHTML = content;
@@ -256,7 +264,7 @@ const initOptions = ref({
     };
 
     // 3) Модифицируем DOM-фрагмент перед вставкой для paste/drag&drop
-    editor.on('PastePostProcess', (e) => {
+    editor.on('PastePostProcess', (e: any) => {
       // e.node — это DocumentFragment / элемент уже в документе редактора
       wrapImagesInRoot(e.node);
     });
@@ -267,7 +275,7 @@ const initOptions = ref({
       editor.undoManager.transact(() => {
         for (const m of mutations) {
           if (m.type === 'childList') {
-            m.addedNodes.forEach(node => {
+            m.addedNodes.forEach((node: any) => {
               if (node.nodeType !== 1) return;
               const tag = node.tagName && node.tagName.toLowerCase();
               if (tag === 'img') {
@@ -278,16 +286,16 @@ const initOptions = ref({
               }
             });
           } else if (m.type === 'attributes' && m.attributeName === 'class') {
-            const target = m.target;
+            const target = m.target as HTMLElement;
             // если класс поменяли у img — переместим класс в wrapper
             if (target && target.tagName && target.tagName.toLowerCase() === 'img') {
               if (!isImgAlreadyWrapped(target) && (target.getAttribute('class') || '').trim()) {
                 wrapImageNode(target);
               } else if ((target.getAttribute('class') || '').trim()) {
                 // Если картинка уже обернута в div, добавляем класс к обертке
-                const wrapper = target.parentNode;
+                const wrapper = target.parentNode as HTMLElement;
                 const classes = target.getAttribute ? (target.getAttribute('class') || '') : '';
-                if (classes) {
+                if (classes && wrapper) {
                     wrapper.className = classes;
                     target.removeAttribute('class');
                 }
@@ -314,13 +322,13 @@ const initOptions = ref({
 });
 
 // Загрузка картинки на сервер
-async function uploadImageToServer(blobInfo, progress) {
+async function uploadImageToServer(blobInfo: any, progress: any) {
     const formData = new FormData();
     formData.append('file', blobInfo.blob(), blobInfo.filename());
     try {
-        const response = await axios.post(props.uploadUrl, formData);
+        const response = await axios.post(props.uploadUrl || '', formData);
         return response.data.location;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Upload error:', error);
         throw new Error('Image upload failed: ' + error.message);
     }
