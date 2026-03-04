@@ -24,10 +24,12 @@ import { useTemplateRef, watch, nextTick, ref } from 'vue';
 import { useDraggable, useResizeObserver } from '@vueuse/core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-const props = defineProps({
-    src: String,
-    preview: String,
-});
+export interface SImagePreviewProps {
+    src?: string;
+    preview?: string;
+}
+
+const props = defineProps<SImagePreviewProps>();
 
 const isFullImgShown = ref(false);
 function handleCloseImage() {

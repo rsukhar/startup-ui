@@ -21,11 +21,13 @@ import { useTemplateRef, watch, nextTick, onBeforeMount } from 'vue';
 import { useDraggable, useResizeObserver } from '@vueuse/core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-const props = defineProps({
-    title: String,
-    width: String,
-    notModal: Boolean
-});
+export interface SDialogProps {
+    title?: string;
+    width?: string;
+    notModal?: boolean;
+}
+
+const props = defineProps<SDialogProps>();
 
 const emit = defineEmits<{
     (e: 'overlay-click'): void;

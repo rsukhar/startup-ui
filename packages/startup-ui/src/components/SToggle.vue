@@ -13,20 +13,19 @@
 
 <script setup lang="ts">
 import { ref, inject, getCurrentInstance, watch, onMounted } from 'vue'
-import type { PropType, Ref } from 'vue'
+import type { Ref } from 'vue'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    title: String,
-    opened: {
-        type: Boolean,
-        default: false,
-    },
-    color: {
-        type: String as PropType<"bg" | "primary" | "red" | "green">,
-        default: 'bg',
-    },
-})
+export interface SToggleProps {
+    title?: string;
+    opened?: boolean;
+    color?: "bg" | "primary" | "red" | "green";
+}
+
+const props = withDefaults(defineProps<SToggleProps>(), {
+    opened: false,
+    color: 'bg',
+});
 
 const instance = getCurrentInstance();
 const uid = instance?.uid as number;

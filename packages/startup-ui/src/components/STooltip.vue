@@ -18,20 +18,16 @@
 <script setup lang="ts">
 import { ref, useTemplateRef, nextTick } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import type { PropType } from "vue";
 
-const props = defineProps({
-    at: {
-        type: String as PropType<'top' | 'bottom' | 'right' | 'left' | null>,
-        // Положение подсказки определяется автоматически
-        default: null,
-        validator: (value: string | null) => value === null || ['top', 'bottom', 'right', 'left'].includes(value)
-    },
-    icon: {
-        type: [String, Array] as PropType<string | string[]>,
-        default: 'circle-question',
-    },
-})
+export interface STooltipProps {
+    at?: 'top' | 'bottom' | 'right' | 'left' | null;
+    icon?: string | string[];
+}
+
+const props = withDefaults(defineProps<STooltipProps>(), {
+    at: null,
+    icon: 'circle-question',
+});
 
 const isShown = ref(false);
 const $tooltip = useTemplateRef<HTMLElement>('$tooltip');

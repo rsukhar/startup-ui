@@ -7,9 +7,11 @@
 import { ref, provide, computed } from 'vue';
 import type { Ref } from 'vue';
 
-const props = defineProps({
-    multiple: Boolean
-});
+export interface SToggleGroupProps {
+    multiple?: boolean;
+}
+
+const props = defineProps<SToggleGroupProps>();
 
 const openedItem = ref<number | null>(null);
 const isMultiple = computed(() => props.multiple)

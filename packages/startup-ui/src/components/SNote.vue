@@ -12,16 +12,17 @@
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import type { PropType } from "vue";
 
-const props = defineProps({
-    icon: [String, Array] as PropType<string | string[]>,
-    title: String,
-    gray: Boolean,
-    attention: Boolean,
-    success: Boolean,
-    error: Boolean,
-});
+export interface SNoteProps {
+    icon?: string | string[];
+    title?: string;
+    gray?: boolean;
+    attention?: boolean;
+    success?: boolean;
+    error?: boolean;
+}
+
+const props = defineProps<SNoteProps>();
 </script>
 
 <style lang="scss">

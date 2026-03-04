@@ -6,18 +6,25 @@
 
 <script setup lang="ts">
 import { computed, useAttrs, inject } from "vue";
-import type { PropType, Component } from "vue";
+import type { Component } from "vue";
+export interface SButtonProps {
+    outlined?: boolean;
+    transparent?: boolean;
+    fullwidth?: boolean;
+    small?: boolean;
+    disabled?: boolean;
+    loading?: boolean;
+    color?: "red" | "green" | "yellow" | string;
+    is?: string | Component;
+}
 
-const props = defineProps({
-    outlined: Boolean,
-    transparent: Boolean,
-    fullwidth: Boolean,
-    small: Boolean,
-    disabled: Boolean,
-    loading: Boolean,
-    color: String as PropType<"red" | "green" | "yellow" | string>,
-    // Строка для тега, объект/функция для компонента
-    is: [String, Object, Function] as PropType<string | Component>,
+const props = withDefaults(defineProps<SButtonProps>(), {
+    outlined: false,
+    transparent: false,
+    fullwidth: false,
+    small: false,
+    disabled: false,
+    loading: false,
 });
 
 const form = inject('formModel', null);
