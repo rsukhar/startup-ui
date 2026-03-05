@@ -88,7 +88,8 @@ export default defineConfig({
                     items: [
                         { text: 'Вайб-кодинг', link: '/pages/welcome/extras/vibe-coding' },
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
-                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' }
+                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' },
+                        { text: 'Документация для LLM', link: '/pages/welcome/extras/llms' }
                     ]
                 }
             ]
@@ -108,21 +109,7 @@ export default defineConfig({
         }
     },
     markdown: {
-        theme: {
-            name: 'my-custom-theme',
-            settings: [
-                {
-                    scope: ['entity.name.tag'],
-                    settings: { foreground: 'var(--vp-code-tag)', fontStyle: '' }
-                },
-                {
-                    scope: ['entity.other.attribute-name', 'meta.directive.vue'],
-                    settings: { foreground: 'var(--vp-code-attr)', fontStyle: '' }
-                }
-            ],
-            bg: 'var(--vp-code-bg)',
-            fg: 'var(--vp-code-fg)'
-        }
+        theme: 'one-dark-pro'
     },
     vite: {
         css: {

@@ -1,0 +1,8 @@
+# Startup UI - LLM Documentation Index
+# List of Markdown documentation links for AI agents.
+
+## Components
+/pages/welcome/extras/llm/components/sbutton.md
+/pages/welcome/extras/llm/components/sactionicon.md
+/pages/welcome/extras/llm/components/stooltip.md
+/pages/welcome/extras/llm/components/snote.md
