@@ -6,3 +6,16 @@
 /pages/welcome/extras/llm/components/sactionicon.md
 /pages/welcome/extras/llm/components/stooltip.md
 /pages/welcome/extras/llm/components/snote.md
+/pages/welcome/extras/llm/components/stoggle.md
+/pages/welcome/extras/llm/components/sconfirm.md
+/pages/welcome/extras/llm/components/sdialog.md
+/pages/welcome/extras/llm/components/simagepreview.md
+/pages/welcome/extras/llm/components/salert.md
+/pages/welcome/extras/llm/components/stag.md
+/pages/welcome/extras/llm/components/sstatus.md
+/pages/welcome/extras/llm/components/sactionbar.md
+/pages/welcome/extras/llm/components/sprogressbar.md
+/pages/welcome/extras/llm/components/scopytext.md
+/pages/welcome/extras/llm/components/stimeline.md
+/pages/welcome/extras/llm/components/sdashboard.md
+/pages/welcome/extras/llm/components/sstat.md

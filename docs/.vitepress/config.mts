@@ -112,6 +112,21 @@ export default defineConfig({
         theme: 'one-dark-pro'
     },
     vite: {
+        plugins: [
+            {
+                name: 'charset-utf8-for-raw',
+                configureServer(server) {
+                    server.middlewares.use((req, res, next) => {
+                        const url = (req as any).url?.split('?')[0];
+                        if (url && (url.endsWith('.md') || url.endsWith('.txt'))) {
+                            const ext = url.endsWith('.md') ? 'text/markdown' : 'text/plain';
+                            res.setHeader('Content-Type', `${ext}; charset=utf-8`);
+                        }
+                        next();
+                    });
+                }
+            }
+        ],
         css: {
             preprocessorOptions: {
                 scss: {
