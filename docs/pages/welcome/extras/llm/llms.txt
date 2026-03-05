@@ -19,8 +19,16 @@
 /pages/welcome/extras/llm/components/stimeline.md
 /pages/welcome/extras/llm/components/sdashboard.md
 /pages/welcome/extras/llm/components/sstat.md
+/pages/welcome/extras/llm/components/scolumnsettings.md
 /pages/welcome/extras/llm/components/scanvas.md
 /pages/welcome/extras/llm/components/sfooter.md
 /pages/welcome/extras/llm/components/sdropdownmenu.md
 /pages/welcome/extras/llm/components/shorizontalmenu.md
 /pages/welcome/extras/llm/components/sverticalmenu.md
+/pages/welcome/extras/llm/components/sfiltergroup.md
+/pages/welcome/extras/llm/components/spagination.md
+/pages/welcome/extras/llm/components/stable.md
+/pages/welcome/extras/llm/components/stree.md
+/pages/welcome/extras/llm/components/sform.md
+/pages/welcome/extras/llm/components/sinput.md
+/pages/welcome/extras/llm/components/sselect.md

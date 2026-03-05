@@ -29,8 +29,16 @@ Markdown версии компонентов для парсинга LLM.
 <a href="/pages/welcome/extras/llm/components/stimeline.md" target="_blank">STimeline.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sdashboard.md" target="_blank">SDashboard > SDashboardItem.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sstat.md" target="_blank">SStat.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/scolumnsettings.md" target="_blank">SColumnSettings.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/scanvas.md" target="_blank">SCanvas.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sfooter.md" target="_blank">SFooter.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sdropdownmenu.md" target="_blank">SDropdownMenu.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/shorizontalmenu.md" target="_blank">SHorizontalMenu.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sverticalmenu.md" target="_blank">SVerticalMenu.md</a>
+<a href="/pages/welcome/extras/llm/components/sverticalmenu.md" target="_blank">SVerticalMenu.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sfiltergroup.md" target="_blank">SFilterGroup > SFilter.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/spagination.md" target="_blank">SPagination.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/stable.md" target="_blank">STable.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/stree.md" target="_blank">STree.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sform.md" target="_blank">SForm > SFormRow.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sinput.md" target="_blank">SInput.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sselect.md" target="_blank">SSelect.md</a>
