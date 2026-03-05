@@ -19,3 +19,8 @@
 /pages/welcome/extras/llm/components/stimeline.md
 /pages/welcome/extras/llm/components/sdashboard.md
 /pages/welcome/extras/llm/components/sstat.md
+/pages/welcome/extras/llm/components/scanvas.md
+/pages/welcome/extras/llm/components/sfooter.md
+/pages/welcome/extras/llm/components/sdropdownmenu.md
+/pages/welcome/extras/llm/components/shorizontalmenu.md
+/pages/welcome/extras/llm/components/sverticalmenu.md

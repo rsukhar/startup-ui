@@ -28,4 +28,9 @@ Markdown версии компонентов для парсинга LLM.
 <a href="/pages/welcome/extras/llm/components/scopytext.md" target="_blank">SCopyText.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/stimeline.md" target="_blank">STimeline.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sdashboard.md" target="_blank">SDashboard > SDashboardItem.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sstat.md" target="_blank">SStat.md</a>
+<a href="/pages/welcome/extras/llm/components/sstat.md" target="_blank">SStat.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/scanvas.md" target="_blank">SCanvas.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sfooter.md" target="_blank">SFooter.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sdropdownmenu.md" target="_blank">SDropdownMenu.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/shorizontalmenu.md" target="_blank">SHorizontalMenu.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sverticalmenu.md" target="_blank">SVerticalMenu.md</a>
