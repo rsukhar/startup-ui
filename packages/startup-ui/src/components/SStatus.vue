@@ -6,10 +6,10 @@
 </template>
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-type Color = 'gray' | 'primary' | 'primary-dark' | 'primary-darkest' | 'primary-light' | 'primary-lightest' | 'red' | 'red-dark' | 'red-light' | 'red-lightest' | 'yellow' | 'yellow-dark' | 'yellow-light' | 'yellow-lightest' | 'green' | 'green-dark' | 'green-light' | 'green-lightest';
+type Color = 'text-light' | 'gray' | 'primary' | 'primary-dark' | 'primary-darkest' | 'primary-light' | 'primary-lightest' | 'red' | 'red-dark' | 'red-light' | 'red-lightest' | 'yellow' | 'yellow-dark' | 'yellow-light' | 'yellow-lightest' | 'green' | 'green-dark' | 'green-light' | 'green-lightest';
 const props = defineProps<{
     color?: Color,
-    icon: String,
+    icon?: string | string[],
 }>();
 </script>
 <style lang="scss">

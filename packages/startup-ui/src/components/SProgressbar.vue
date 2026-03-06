@@ -5,17 +5,17 @@
         </div>
         <div class="s-progressbar-bar">
             <div class="s-progressbar-completed" :style="{ width: percentage + '%' }">
-                <div :class="`at_${percentPosition}`">{{ parseInt(percentage) }}%</div>
+                <div :class="`at_${percentPosition}`">{{ Math.trunc(percentage) }}%</div>
             </div>
         </div>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
-const props = defineProps({
-    label: String,
-    percentage: Number,
-});
+const props = defineProps<{
+    label?: string;
+    percentage: number;
+}>();
 const percentPosition = computed(() => ((props.percentage < 5) ? 'right' : 'left'));
 </script>
 <style lang="scss">

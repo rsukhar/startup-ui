@@ -5,17 +5,18 @@
         </template>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed, inject, useSlots, cloneVNode, ref, watch } from 'vue';
+// @ts-ignore
 import debounce from "lodash/debounce";
-const props = defineProps({
-    name: String,
-    debounce: Number,
-});
-const groupModel = inject('sFilterGroup-model', {});
+const props = defineProps<{
+    name?: string;
+    debounce?: number;
+}>();
+const groupModel = inject<import('vue').Ref<Record<string, any>>>('sFilterGroup-model');
 const slots = useSlots();
-const groupUpdateValue = inject('sFilterGroup-updateValue', (name, value) => ({}));
-const updateParam = ref(() => {});
+const groupUpdateValue = inject<(name: string, value: any) => void>('sFilterGroup-updateValue', (name: string, value: any) => ({}));
+const updateParam = ref<(val: any) => void>(() => {});
 
 /**
  * Пересоздаем функцию обновления url-параметров при изменении debounce или name
@@ -23,29 +24,29 @@ const updateParam = ref(() => {});
 watch(
     () => [props.debounce, props.name],
     ([debounceValue, name]) => {
-        updateParam.value = debounce((val) => {
-            groupUpdateValue(name, val);
-        }, debounceValue ?? 0);
+        updateParam.value = debounce((val: any) => {
+            if (name && typeof name === 'string') groupUpdateValue(name, val);
+        }, (debounceValue as number) ?? 0);
     },
     { immediate: true }
 );
 
 // Для генерируемого поля делаем отдельную переменную, чтобы гибче управлять состоянием фильтра
-const nestedModel = ref(null);
+const nestedModel = ref<any>(null);
 
 const nestedNodes = computed(() => {
-    const vnodes = slots.default?.() || [];
-    return vnodes.map((vnode) => {
+    const vnodes = (slots as any).default?.() || [];
+    return vnodes.map((vnode: any) => {
         if (typeof vnode.type !== 'object') return vnode;
-        nestedModel.value = groupModel?.value[props.name] ?? null;
+        nestedModel.value = (groupModel && groupModel.value && props.name) ? groupModel.value[props.name] : null;
         // Если элемент SDatePicker с атрибутом range — превращаем в массив
-        if (nestedModel.value && vnode.type.__name === 'SDatePicker' && vnode.props.range !== null) {
-            nestedModel.value = nestedModel.value.split('-');
+        if (nestedModel.value && vnode.type.__name === 'SDatePicker' && vnode.props?.range !== null) {
+            nestedModel.value = String(nestedModel.value).split('-');
         }
         // Копируем vnodes с инпутами и добавляем к ним modelValue
         return cloneVNode(vnode, {
             modelValue: nestedModel.value,
-            'onUpdate:modelValue': (val) => {
+            'onUpdate:modelValue': (val: any) => {
                 const finalValue = Array.isArray(val) ? val.join('-') : val;
                 updateParam.value(finalValue);
             },

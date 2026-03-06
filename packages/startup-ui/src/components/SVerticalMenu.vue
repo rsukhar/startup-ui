@@ -34,26 +34,39 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
 import { ref, computed } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useStorage } from "@vueuse/core";
 
-const props = defineProps({
+export interface SVerticalMenuLink {
+    id: string | number;
+    label: string;
+    url?: string;
+    active?: boolean;
+    className?: string;
+    type?: string;
+    isPublished?: boolean;
+    children?: SVerticalMenuLink[];
+}
+
+export interface SVerticalMenuProps {
     // В формате [{label: '', url: '', active: ''}]
-    links: Object,
+    links?: SVerticalMenuLink[];
     // Узлы, открытые на старте
-    expandedKeys: {
-        type: Array,
-        default: []
-    },
+    expandedKeys?: (string | number)[];
     // Сохранять раскрытые узлы в localStorage?
-    storeExpandedKeysTo: String
+    storeExpandedKeysTo?: string;
+}
+
+const props = withDefaults(defineProps<SVerticalMenuProps>(), {
+    links: () => [],
+    expandedKeys: () => [],
 });
 
-const getExpandedKeys = function(links) {
-    let result = [];
+const getExpandedKeys = function(links: SVerticalMenuLink[]): (string | number)[] {
+    let result: (string | number)[] = [];
     for (let link of links) {
         const expandedChildren = link.children ? getExpandedKeys(link.children) : [];
         // Собираем активные вложенные элементы и рекурсией передаём наверх
@@ -69,13 +82,16 @@ const initialOpened = computed(() => [
     ...getExpandedKeys(props.links),
     ...props.expandedKeys
 ]);
+
 // Хранить состояние в localStorage или нет 
 const openedItems = props.storeExpandedKeysTo
-    ? useStorage(props.storeExpandedKeysTo, initialOpened.value)
-    : ref(initialOpened.value);
+    ? useStorage<(string | number)[]>(props.storeExpandedKeysTo, initialOpened.value)
+    : ref<(string | number)[]>(initialOpened.value);
 
-const toggleItem = function(id) {
-    openedItems.value = openedItems.value.includes(id) ? openedItems.value.filter(i => i !== id) : [...openedItems.value, id];
+const toggleItem = function(id: string | number) {
+    openedItems.value = openedItems.value.includes(id) 
+        ? openedItems.value.filter(i => i !== id) 
+        : [...openedItems.value, id];
 }
 </script>
 

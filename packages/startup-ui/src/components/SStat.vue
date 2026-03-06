@@ -9,14 +9,14 @@
     </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    title: String,
-    value: [String, Number],
-    nowrap: Boolean,
-    large: Boolean,
-    wide: Boolean,
-});
+<script setup lang="ts">
+const props = defineProps<{
+    title?: string;
+    value?: string | number;
+    nowrap?: boolean;
+    large?: boolean;
+    wide?: boolean;
+}>();
 </script>
 
 <style lang="scss">

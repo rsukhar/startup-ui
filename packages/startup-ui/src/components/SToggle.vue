@@ -12,25 +12,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, getCurrentInstance, watch, onMounted, PropType, Ref  } from 'vue'
+import { ref, inject, getCurrentInstance, watch, onMounted } from 'vue'
+import type { Ref } from 'vue'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    title: String,
-    opened: {
-        type: Boolean,
-        default: false,
-    },
-    color: {
-        type: String as PropType<'primary' | 'red' | 'green'>,
-        default: 'bg',
-    },
-})
+export interface SToggleProps {
+    title?: string;
+    opened?: boolean;
+    color?: "bg" | "primary" | "red" | "green";
+}
+
+const props = withDefaults(defineProps<SToggleProps>(), {
+    opened: false,
+    color: 'bg',
+});
 
 const instance = getCurrentInstance();
-const uid = instance?.uid;
+const uid = instance?.uid as number;
 const isOpened = ref(!!props.opened)
-const openedItem = inject<Ref<number | null | undefined>>('openedItem', ref(null));
+const openedItem = inject<Ref<number | null>>('openedItem', ref(null));
 const isMultiple = inject<Ref<boolean>>('isMultiple', ref(false));
 
 function handleClick() {

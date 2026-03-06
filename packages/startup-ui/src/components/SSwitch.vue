@@ -11,20 +11,21 @@
             </label>
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { onMounted } from 'vue';
-const props = defineProps({
-    disabled: Boolean,
-    trueValue: {
-        type: [Boolean, String, Number],
-        default: true
-    },
-    falseValue: {
-        type: [Boolean, String, Number],
-        default: false
-    }
+
+export interface SSwitchProps {
+    disabled?: boolean;
+    trueValue?: boolean | string | number;
+    falseValue?: boolean | string | number;
+}
+
+const props = withDefaults(defineProps<SSwitchProps>(), {
+    trueValue: true,
+    falseValue: false
 });
-const model = defineModel();
+
+const model = defineModel<any>();
 
 onMounted(() => {
     model.value = model.value === props.trueValue ? props.trueValue : props.falseValue;

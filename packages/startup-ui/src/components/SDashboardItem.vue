@@ -14,18 +14,19 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from "vue";
 
-const props = defineProps({
-    title: String,
-    maxContentHeight: [String, Number],
-    gray: Boolean,
-    green: Boolean,
-    red: Boolean,
-});
+const props = defineProps<{
+    title?: string;
+    maxContentHeight?: string | number;
+    gray?: boolean;
+    green?: boolean;
+    red?: boolean;
+}>();
+
 const contentStyle = computed(() => {
-    return props.maxContentHeight ? ('max-height: ' + parseInt(props.maxContentHeight) + 'px') : '';
+    return props.maxContentHeight ? ('max-height: ' + parseInt(String(props.maxContentHeight)) + 'px') : '';
 })
 </script>
 
