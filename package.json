@@ -8,9 +8,9 @@
     "types": "dist/types/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/types/index.d.ts",
             "import": "./dist/startup-ui.es.js",
-            "require": "./dist/startup-ui.cjs.js",
-            "types": "./dist/types/index.d.ts"
+            "require": "./dist/startup-ui.cjs.js"
         }
     },
     "files": [
