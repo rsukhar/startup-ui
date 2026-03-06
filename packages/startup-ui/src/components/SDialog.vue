@@ -16,23 +16,29 @@
         </Teleport>
     </template>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useTemplateRef, watch, nextTick, onBeforeMount } from 'vue';
 import { useDraggable, useResizeObserver } from '@vueuse/core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-const props = defineProps({
-    title: String,
-    width: String,
-    notModal: Boolean
-});
-const emit = defineEmits(['overlay-click', 'hide']);
+export interface SDialogProps {
+    title?: string;
+    width?: string;
+    notModal?: boolean;
+}
 
-const model = defineModel();
+const props = defineProps<SDialogProps>();
+
+const emit = defineEmits<{
+    (e: 'overlay-click'): void;
+    (e: 'hide'): void;
+}>();
+
+const model = defineModel<boolean>();
 // Элемент, позиция которого будет вычисляться во время ondrag
-const $window = useTemplateRef('$window');
+const $window = useTemplateRef<HTMLElement>('$window');
 // Элемент, на котором будет тригериться событие dragstart
-const $header = useTemplateRef('$header');
+const $header = useTemplateRef<HTMLElement>('$header');
 
 const { x, y, style } = useDraggable($window, { handle: $header });
 
@@ -45,7 +51,7 @@ const calcaulateDialogPosition = () => {
     y.value = document.documentElement.clientHeight / 2 - rect.height / 2;
 }
 
-const handleNewModelState = function(newValue){
+const handleNewModelState = function(newValue?: boolean){
     if (!newValue) {
         window.removeEventListener('resize', calcaulateDialogPosition);
         return;
@@ -61,9 +67,9 @@ onBeforeMount(() => handleNewModelState(model.value));
 watch(model, handleNewModelState);
 
 function handleOverlayClick() {
-    const handled = emit('overlay-click');
-    // Если никто не обработал событие, закрываем диалог
-    if (!handled) handleHide();
+    emit('overlay-click');
+    //Если никто не обработал событие, то закрываем диалог
+    handleHide();
 }
 
 function handleHide() {

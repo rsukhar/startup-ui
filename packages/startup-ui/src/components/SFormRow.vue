@@ -1,9 +1,9 @@
 <template>
     <div class="s-formrow" :class="{error: error !== ''}">
-        <div v-if="$slots.title" class="s-formrow-title" :style="{width: titlesWidth ? titlesWidth + 'px' : null}">
+        <div v-if="$slots.title" class="s-formrow-title" :style="{width: titlesWidth ? titlesWidth + 'px' : undefined}">
             <slot name="title" />
         </div>
-        <div v-else class="s-formrow-title" @click="focus" :style="{width: titlesWidth ? titlesWidth + 'px' : null}">
+        <div v-else class="s-formrow-title" @click="focus" :style="{width: titlesWidth ? titlesWidth + 'px' : undefined}">
             {{ title ?? '' }}
         </div>
 
@@ -23,34 +23,36 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useTemplateRef, computed, inject, cloneVNode, useSlots } from 'vue';
+import type { Ref } from 'vue';
 
-const props = defineProps({
-    class: String,
-    name: String,
-    title: String,
-    hint: String,
-    errorKey: [String, Array]
-});
+export interface SFormRowProps {
+    class?: string;
+    name?: string;
+    title?: string;
+    hint?: string;
+    errorKey?: string | string[];
+}
 
-const form = inject('formModel');
+const props = defineProps<SFormRowProps>();
+
+const form = inject<Record<string, any>>('formModel');
 const modelValue = computed({
-    get: () => form?.[props.name],
+    get: () => props.name && form ? form[props.name] : undefined,
     set: (field) => {
-        if (form) form[props.name] = field
+        if (form && props.name) form[props.name] = field
     }
 })
 
-
-const errors = inject('formErrors');
+const errors = inject<Ref<Record<string, any>>>('formErrors');
 
 /**
  * Конвертируем ключ в regexp-шаблон
  * 
  * @param pattern 
  */
-function wildcardToRegExp(pattern) {
+function wildcardToRegExp(pattern: string) {
     const escaped = pattern
         .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // экранируем спецсимволы
         .replace(/\*/g, '[^.]+'); // * = один сегмент между точками
@@ -63,7 +65,7 @@ const error = computed(() => {
     // Нет ошибок
     if (!allErrors || Object.keys(allErrors).length === 0) return null;
     // Не заданы кастомные ключи
-    if (!props.errorKey) return allErrors[props.name] ?? null;
+    if (!props.errorKey) return props.name ? (allErrors[props.name] ?? null) : null;
 
     const keys = Array.isArray(props.errorKey) ? [...props.errorKey] : [props.errorKey]; 
     // перебираем ключи
@@ -80,13 +82,13 @@ const error = computed(() => {
     }).join('\n') || null;
 });
 
-const titlesWidth = inject('titlesWidth');
+const titlesWidth = inject<Ref<number | string> | number | string>('titlesWidth');
 
 const slots = useSlots();
 
 const nestedNodes = computed(() => {
-    const vnodes = slots.default?.() || [];
-    return vnodes.map((vnode) => {
+    const vnodes = (slots as any).default?.() || [];
+    return vnodes.map((vnode: any) => {
         // Текстовые узлы и div'ы выводим как есть
         if (typeof vnode.type !== 'object') return vnode;
         const inputType = vnode.props?.type;
@@ -94,7 +96,7 @@ const nestedNodes = computed(() => {
         // Копируем vnodes с инпутами и добавляем к ним modelValue
         return cloneVNode(vnode, {
             modelValue: modelValue.value,
-            'onUpdate:modelValue': (val) => {
+            'onUpdate:modelValue': (val: any) => {
                 if (inputType === 'number') {
                     modelValue.value = val === '' ? null : Number(val);
                 } else {
@@ -105,10 +107,11 @@ const nestedNodes = computed(() => {
     });
 });
 
-const input = useTemplateRef('input');
+const input = useTemplateRef<HTMLElement>('input');
 
 function focus() {
-    const $input = input.value.querySelector('input, textarea');
+    if (!input.value) return;
+    const $input = input.value.querySelector<HTMLElement>('input, textarea');
     if ($input) {
         $input.focus();
     }

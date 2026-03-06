@@ -12,18 +12,19 @@
 </div>
 </template>
 
-<script setup>
-const props = defineProps({
-    items: Array,
-    keyBy: {
-        type: [Function, String],
-        default: 'id',
-    }
+<script setup lang="ts" generic="T">
+const props = withDefaults(defineProps<{
+    items?: T[];
+    keyBy?: string | ((item: T, index: number) => string | number);
+}>(), {
+    keyBy: 'id',
 });
 
-function keyOf(item, index){
+function keyOf(item: T, index: number): string | number {
     if (typeof props.keyBy === 'function') return props.keyBy(item, index);
-    if (typeof props.keyBy === 'string' && item && props.keyBy in item) return item[props.keyBy];
+    if (typeof props.keyBy === 'string' && item && typeof item === 'object' && props.keyBy in item) {
+        return (item as any)[props.keyBy];
+    }
     return index;
 }
 </script>

@@ -4,33 +4,41 @@
         <span class="s-radio-text"><slot /></span>
     </label>
 </template>
-<script setup>
+<script setup lang="ts">
 import { inject, computed } from 'vue';
-const props = defineProps({
-    value: {
-        type: [Number, String, Boolean],
-        required: true
-    },
-    disabled: Boolean,
-    labelClass: String,
-});
-const emits = defineEmits(['change']);
+import type { Ref } from 'vue';
 
-const radioGroupModel = inject('sRadioGroupModel');
+export interface SRadioProps {
+    value: number | string | boolean;
+    disabled?: boolean;
+    labelClass?: string;
+}
+
+const props = defineProps<SRadioProps>();
+
+const emits = defineEmits<{
+    (e: 'change', value: any): void;
+}>();
+
+const radioGroupModel = inject<Ref<any> | null>('sRadioGroupModel', null);
 
 const model = computed({
     // Значение находится в состоянии «выбрано», если radioGroupModel.value === props.value
     // Или если значение кнопки — пустота и model пустой ('', null или undefined)
     get: () => {
-        const empties = ['', null, undefined];
+        if (!radioGroupModel) return props.value;
+
+        const empties = ['', null, undefined] as any[];
         if (empties.includes(props.value) && empties.includes(radioGroupModel.value)) {
-            return props.value
+            return props.value;
         }
 
-        return radioGroupModel.value
+        return radioGroupModel.value;
     },
     set: (newValue) => { 
-        if (!props.disabled) radioGroupModel.value = newValue
+        if (!props.disabled && radioGroupModel) {
+            radioGroupModel.value = newValue;
+        }
     }
 });
 </script>

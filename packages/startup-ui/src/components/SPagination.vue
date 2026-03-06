@@ -20,32 +20,33 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { router } from "@inertiajs/vue3";
 import SSelect from './SSelect.vue';
 
-const props = defineProps({
-    url: {
-        type: String,
-        default() {
-            return (typeof location !== "undefined") ? location.pathname : '/';
-        },
-    },
-    links: Object,
-    total: Number,
-    preserveScroll: {
-        type: Boolean,
-        default: true,
-    },
-    preserveState: {
-        type: Boolean,
-        default: false,
-    },
-    perPageOptions: Array,
-    per_page: Number,
-    from: Number,
-    to: Number,
+interface PaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+    [key: string]: any;
+}
+
+const props = withDefaults(defineProps<{
+    url?: string;
+    links?: PaginationLink[];
+    total?: number;
+    preserveScroll?: boolean;
+    preserveState?: boolean;
+    perPageOptions?: number[] | string[] | Record<string, number | string>;
+    per_page?: number;
+    from?: number;
+    to?: number;
+}>(), {
+    url: () => (typeof location !== "undefined") ? location.pathname : '/',
+    preserveScroll: true,
+    preserveState: false,
+    links: () => [],
 });
 const currentPerPage = ref(props.per_page);
 
@@ -55,7 +56,7 @@ const currentPerPage = ref(props.per_page);
 function handleSelectedChange() {
     // Преобразуем GET-параметры в объект
     const search = location.search.substring(1);
-    const query = search ? JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}') : {};
+    const query: Record<string, any> = search ? JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}') : {};
     // удаляем параметр page, чтобы при переключении пагинации страница сбрасывалась на первую
     delete query['page'];
     query.perpage = currentPerPage.value;
@@ -64,10 +65,10 @@ function handleSelectedChange() {
     });
 }
 
-const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perPageOptions).reduce((acc, [key, value]) => {
-    acc[parseInt(value)] = `По ${value}`;
+const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perPageOptions).reduce((acc: Record<string | number, string>, [key, value]) => {
+    acc[parseInt(String(value))] = `По ${value}`;
     return acc;
-}, {}) : null
+}, {}) : {};
 </script>
 
 <style lang="scss">

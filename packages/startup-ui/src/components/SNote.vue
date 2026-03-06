@@ -10,17 +10,19 @@
 </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const props = defineProps({
-    icon: String,
-    title: String,
-    gray: Boolean,
-    attention: Boolean,
-    success: Boolean,
-    error: Boolean,
-});
+export interface SNoteProps {
+    icon?: string | string[];
+    title?: string;
+    gray?: boolean;
+    attention?: boolean;
+    success?: boolean;
+    error?: boolean;
+}
+
+const props = defineProps<SNoteProps>();
 </script>
 
 <style lang="scss">

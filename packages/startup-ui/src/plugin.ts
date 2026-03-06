@@ -15,6 +15,8 @@ import SSelect from './components/SSelect.vue';
 components.push(SSelect);
 import SCheckbox from './components/SCheckbox.vue';
 components.push(SCheckbox);
+import SCheckboxGroup from './components/SCheckboxGroup.vue';
+components.push(SCheckboxGroup);
 import SRadio from './components/SRadio.vue';
 components.push(SRadio);
 import SRadioGroup from './components/SRadioGroup.vue';

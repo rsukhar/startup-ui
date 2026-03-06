@@ -5,16 +5,21 @@
         </Transition>
     </teleport>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 
-const alertText = ref(null);
+interface AlertOptions {
+    type?: 'success' | 'info' | 'error';
+    closeAfter?: number;
+}
+
+const alertText = ref<string | null>(null);
 const isShown = ref(false);
 const alertClass = ref('type_info');
 
-let timeoutId;
+let timeoutId: ReturnType<typeof setTimeout>;
 
-const open = (text, options = {}) => {
+const open = (text: string, options: AlertOptions = {}) => {
     alertText.value = text;
     isShown.value = true;
     if (options.type) {
@@ -27,9 +32,9 @@ const open = (text, options = {}) => {
     }, options.closeAfter ?? 3000);
 }
 
-const success = (text, options) => open(text, {...options, type: 'success'});
-const info = (text, options) => open(text, {...options, type: 'info'});
-const error = (text, options) => open(text, {...options, type: 'error'});
+const success = (text: string, options?: Omit<AlertOptions, 'type'>) => open(text, {...options, type: 'success'});
+const info = (text: string, options?: Omit<AlertOptions, 'type'>) => open(text, {...options, type: 'info'});
+const error = (text: string, options?: Omit<AlertOptions, 'type'>) => open(text, {...options, type: 'error'});
 
 defineExpose({ success, info, error, open });
 </script>

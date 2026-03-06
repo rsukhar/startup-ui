@@ -4,51 +4,57 @@
         <slot />
     </form>
 </template>
-<script setup>
+<script setup lang="ts">
 import { router } from '@inertiajs/vue3';
 import { ref, provide, watch, computed, getCurrentInstance } from 'vue'
 
-const props = defineProps({
-    method: {
-        type: String,
-        default: 'post',
-    },
-    action: String,
-    titlesAtLeft: Boolean,
-    loading: Boolean,
-    titlesWidth: {
-        type: [Number, String],
-        default: 220
-    },
-    errors: {
-        type: Object,
-        required: false
-    }
+export interface SFormProps {
+    method?: string;
+    action?: string;
+    titlesAtLeft?: boolean;
+    loading?: boolean;
+    titlesWidth?: number | string;
+    errors?: Record<string, any>;
+}
+
+const props = withDefaults(defineProps<SFormProps>(), {
+    method: 'post',
+    titlesAtLeft: false,
+    loading: false,
+    titlesWidth: 220,
+    errors: () => ({})
 })
-const emit = defineEmits(['submit', 'update:modelValue']);
+
+const emit = defineEmits<{
+    (e: 'submit', event: Event): void;
+    (e: 'update:modelValue', value: any): void;
+}>();
+
 const instance = getCurrentInstance();
 const hasSubmitListener = computed(() =>
     !!instance?.vnode.props?.onSubmit
 )
 
-const model = defineModel();
-const localErrors = ref({ ...props.errors })
+const model = defineModel<Record<string, any>>();
+const localErrors = ref<Record<string, any>>({ ...props.errors })
+
 watch(
     () => props.errors,
     (newErrors) => {
         localErrors.value = { ...newErrors }
     },
-    {deep: true}
+    { deep: true }
 )
 
 const isLoading = ref(props.loading);
-function handleSubmit(event) {
+
+function handleSubmit(event: Event) {
     if (hasSubmitListener.value) {
         emit('submit', event);
-    } else {
+    } else if (props.action) {
         isLoading.value = true;
         router.visit(props.action, {
-            method: props.method ?? 'post',
+            method: (props.method as any) ?? 'post',
             data: model.value,
             preserveScroll: true,
             preserveState: true,
@@ -61,17 +67,20 @@ function handleSubmit(event) {
 /**
  * Приводит ключи ошибок в порядок, обеспечивая значения без вложенных индексов
  */
-const formatErrors = function(errors){
+const formatErrors = function(errors: Record<string, any>) {
     const result = JSON.parse(JSON.stringify(errors));
     Object.keys(result).forEach(key => {
-        if (key.includes('.') && !result[key.split('.')[0]]) result[key.split('.')[0]] = result[key];
+        const rootKey = key.split('.')[0];
+        if (rootKey && key.includes('.') && !result[rootKey]) {
+            result[rootKey] = result[key];
+        }
     });
     return result;
 }
 
 provide('formModel', model.value);
 provide('formErrors', localErrors);
-provide('titlesWidth', props.titlesWidth)
+provide('titlesWidth', props.titlesWidth);
 </script>
 <style lang="scss">
 .s-form {

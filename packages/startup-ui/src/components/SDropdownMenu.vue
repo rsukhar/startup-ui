@@ -6,7 +6,7 @@
             <FontAwesomeIcon icon="caret-down" />
         </component>
         <div class="s-dropdownmenu-list" ref="$list" :class="[direction]">
-            <Link v-if="links" v-for="link in links" :key="link.label" :href="link.url" :class="{ active: link.active }">
+            <Link v-if="links" v-for="link in links" :key="link.label" :href="link.url ?? ''" :class="{ active: link.active }">
                 {{ link.label }}
             </Link>
             <slot />
@@ -14,32 +14,37 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, useTemplateRef, computed, nextTick } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-const props = defineProps({
+export interface SDropdownMenuLink {
+    label: string;
+    url?: string;
+    active?: boolean;
+}
+
+export interface SDropdownMenuProps {
     // В формате [{label: '', url: '', active: ''}]
-    links: {
-        type: Array,
-        default: () => ([]),
-    },
+    links?: SDropdownMenuLink[];
     // Используется, когда ни один элемент не выбран, и нет заданного лейбла
-    placeholder: {
-        type: String,
-        default: 'Перейти к',
-    },
+    placeholder?: string;
     // Если задан, выводится всегда, не зависимо от выбранного элемента
-    label: String,
+    label?: string;
     // Если задана, используется всегда, независимо от выбранного элемента
-    labelLink: String,
+    labelLink?: string;
+}
+
+const props = withDefaults(defineProps<SDropdownMenuProps>(), {
+    links: () => [],
+    placeholder: 'Перейти к',
 });
 
 // Активная выбранная ссылка из числа переданных ссылок
 const activeLink = computed(() => {
     for (let link of props.links) {
-        if (link.active) return JSON.parse(JSON.stringify(link));
+        if (link.active) return JSON.parse(JSON.stringify(link)) as SDropdownMenuLink;
     }
     return null;
 });
@@ -53,12 +58,13 @@ const labelUrl = computed(() => props.labelLink ?? activeLink.value?.url);
 // Каким компонентом выводим
 const labelComponent = computed(() => labelUrl.value ? Link : 'span');
 
-const $container = useTemplateRef('$container');
-const $list = useTemplateRef('$list');
+const $container = useTemplateRef<HTMLElement>('$container');
+const $list = useTemplateRef<HTMLElement>('$list');
 const direction = ref('right');
 
 const placeList = async () => {
     await nextTick();
+    if (!$container.value || !$list.value) return;
     const labelX = $container.value.getBoundingClientRect().x;
     const menuWidth = $list.value.getBoundingClientRect().width;
     direction.value = menuWidth + 10 > labelX ? 'left' : 'right';

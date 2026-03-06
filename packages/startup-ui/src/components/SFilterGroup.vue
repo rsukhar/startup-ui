@@ -3,32 +3,27 @@
         <slot />
     </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { provide, onBeforeMount, onMounted, onBeforeUnmount, useSlots, ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 
-const props = defineProps({
+const props = withDefaults(defineProps<{
     /**
      * Если установлено, то получает значение модели из query-параметров при загрузке и изменяет их при изменении значений фильтров
      */
-    bindToQuery: {
-        type: Boolean,
-        default: false,
-    },
+    bindToQuery?: boolean;
     /**
      * Query-параметры, которые не учитываем в модели
      */
-    ignoreQueryNames: {
-        type: Array,
-        default: () => (['page']),
-    },
+    ignoreQueryNames?: string[];
     /**
      * Значения модели, которые не проставляем в query-параметры (пропускаем такие параметры)
      */
-    ignoreQueryValues: {
-        type: Array,
-        default: () => (['', null, undefined, false]),
-    },
+    ignoreQueryValues?: any[];
+}>(), {
+    bindToQuery: false,
+    ignoreQueryNames: () => ['page'],
+    ignoreQueryValues: () => ['', null, undefined, false],
 });
 
 /**
@@ -37,38 +32,40 @@ const props = defineProps({
 const slots = useSlots();
 const hasDebouncedFilter = ref(false);
 onMounted(() => {
-    const children = slots.default?.() || [];
-    hasDebouncedFilter.value = children.some(child => child.props?.debounce);
+    const children = slots.default?.({}) || [];
+    hasDebouncedFilter.value = children.some((child: any) => child.props?.debounce);
 });
 
-const model = defineModel({
+const model = defineModel<Record<string, any>>({
     type: Object,
     default: () => ({})
 });
 provide('sFilterGroup-model', model);
 
-const updateValue = (name, value) => {
+const updateValue = (name: string, value: any) => {
     if (props.ignoreQueryValues.includes(value)) {
-        delete model.value[name];
+        if (model.value) delete model.value[name];
     } else {
-        model.value[name] = value;
+        if (model.value) model.value[name] = value;
     }
-    if (props.bindToQuery) setQueryParams(model.value);
+    if (props.bindToQuery && model.value) setQueryParams(model.value);
 }
 provide('sFilterGroup-updateValue', updateValue);
 
 const getQueryParams = () => {
-    const result = {};
+    const result: Record<string, string> = {};
     for (const [name, value] of (new URLSearchParams(window.location.search)).entries()){
         if ( ! props.ignoreQueryNames.includes(name)) result[name] = value;
     }
 
     return result;
 }
-const setQueryParams = (params) => {
-    const filteredParams = Object.fromEntries(Object.entries(params)
-        .filter(([name, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value)));
-    router.get(window.location.pathname, new URLSearchParams(filteredParams), {
+const setQueryParams = (params: Record<string, any>) => {
+    const filteredParams: Record<string, string> = Object.fromEntries(Object.entries(params)
+        .filter(([name, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value))
+        .map(([name, value]) => [name, String(value)])
+    );
+    router.get(window.location.pathname, filteredParams, {
         preserveScroll: true,
         replace: true,
         ...(hasDebouncedFilter.value && { preserveState: true }),
