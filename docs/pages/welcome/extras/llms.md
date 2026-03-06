@@ -41,4 +41,10 @@ Markdown версии компонентов для парсинга LLM.
 <a href="/pages/welcome/extras/llm/components/stree.md" target="_blank">STree.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sform.md" target="_blank">SForm > SFormRow.md</a><br/>
 <a href="/pages/welcome/extras/llm/components/sinput.md" target="_blank">SInput.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sselect.md" target="_blank">SSelect.md</a>
+<a href="/pages/welcome/extras/llm/components/sselect.md" target="_blank">SSelect.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/scheckbox.md" target="_blank">SCheckboxGroup > SCheckbox.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sradio.md" target="_blank">SRadioGroup > SRadio.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sswitch.md" target="_blank">SSwitch.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/sdatepicker.md" target="_blank">SDatePicker.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/shtmleditor.md" target="_blank">SHtmlEditor.md</a><br/>
+<a href="/pages/welcome/extras/llm/components/supload.md" target="_blank">SUpload.md</a>

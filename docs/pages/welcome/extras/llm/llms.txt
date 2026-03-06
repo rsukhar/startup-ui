@@ -32,3 +32,9 @@
 /pages/welcome/extras/llm/components/sform.md
 /pages/welcome/extras/llm/components/sinput.md
 /pages/welcome/extras/llm/components/sselect.md
+/pages/welcome/extras/llm/components/scheckbox.md
+/pages/welcome/extras/llm/components/sradio.md
+/pages/welcome/extras/llm/components/sswitch.md
+/pages/welcome/extras/llm/components/sdatepicker.md
+/pages/welcome/extras/llm/components/shtmleditor.md
+/pages/welcome/extras/llm/components/supload.md
