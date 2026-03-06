@@ -24,7 +24,7 @@ const code = `<SCanvas>
     </template>
 </SCanvas>
 <SFooter>
-    <div>&copy; suhar.ru, 2025. Все права защищены</div>
+    <div>&copy; suhar.ru, 2026. Все права защищены</div>
 </SFooter>`;
 const fullcode = `<template>
 <SCanvas>
@@ -42,7 +42,7 @@ const fullcode = `<template>
     </template>
 </SCanvas>
 <SFooter>
-    <div>&copy; suhar.ru, 2025. Все права защищены</div>
+    <div>&copy; suhar.ru, 2026. Все права защищены</div>
 </SFooter>
 </template>
 <script setup>

@@ -1,0 +1,21 @@
+# Startup UI AI Rules
+
+Guidelines for using Startup UI library components in Vue 3 projects. 
+
+## Core Principles
+- **Naming**: All components start with the `S` prefix (e.g., `SButton`, `SInput`).
+- **Typography & Types**: The library is strictly typed. Always rely on **TypeScript interfaces** for props and emits definition.
+
+## Documentation & Examples (Advanced Usage)
+If TypeScript types are not enough to understand usage patterns, slots, or examples, refer to these resources:
+
+- **Component Specs**: https://startup-ui.suhar.ru/pages/components/{category}/{scomponentname}.md
+- **Full Index**: https://startup-ui.suhar.ru/llms/llms.txt
+
+## Categories
+- **Forms**: `sform`, `sinput`, `sselect`, `scheckbox`, `sradio`, `sswitch`, `sdatepicker`, `shtmleditor`, `supload`.
+- **Data**: `sfilter`, `spagination`, `stable`, `stree`.
+- **Interfaces**: `sbutton`, `sactionicon`, `stooltip`, `snote`, `stoggle`, `sconfirm`, `sdialog`, `salert`, `stag`, `sstatus`, `sactionbar`, `sprogressbar`, `scopytext`, `stimeline`, `sdashboard`, `sstat`, `scolumnsettings`.
+- **Template**: `scanvas`, `sdropdownmenu`, `shorizontalmenu`, `sverticalmenu`.
+
+Whenever you are asked to implement a UI feature, check if a Startup UI component can fulfill the requirement first.

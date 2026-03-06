@@ -7,6 +7,7 @@ export default defineConfig({
     description: "Библиотека компонентов для Vue3",
     lang: 'ru',
     appearance: false,
+    cleanUrls: true,
     themeConfig: {
         nav: [
             { text: 'Знакомство', link: '/pages/welcome/basics/about', activeMatch: '/pages/welcome' },
@@ -88,7 +89,8 @@ export default defineConfig({
                     items: [
                         { text: 'Вайб-кодинг', link: '/pages/welcome/extras/vibe-coding' },
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
-                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' }
+                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' },
+                        { text: 'Документация для LLM', link: '/pages/welcome/extras/llms' }
                     ]
                 }
             ]
@@ -108,29 +110,39 @@ export default defineConfig({
         }
     },
     markdown: {
-        theme: {
-            name: 'my-custom-theme',
-            settings: [
-                {
-                    scope: ['entity.name.tag'],
-                    settings: { foreground: 'var(--vp-code-tag)', fontStyle: '' }
-                },
-                {
-                    scope: ['entity.other.attribute-name', 'meta.directive.vue'],
-                    settings: { foreground: 'var(--vp-code-attr)', fontStyle: '' }
-                }
-            ],
-            bg: 'var(--vp-code-bg)',
-            fg: 'var(--vp-code-fg)'
-        }
+        theme: 'one-dark-pro'
     },
     vite: {
+        plugins: [
+            {
+                name: 'llm-md-proxy',
+                configureServer(server) {
+                    server.middlewares.use((req, res, next) => {
+                        const [urlPath, query] = (req as any).url?.split('?') || [];
+                        
+                        // Прозрачная подмена /pages/components/.../name.md -> /llms/components/.../name.md
+                        // Делаем это только если нет query params (т.е. это не внутренний запрос Vite/Vue)
+                        if (!query && urlPath && urlPath.startsWith('/pages/components/') && urlPath.endsWith('.md')) {
+                            const categories = ['forms', 'data', 'interfaces', 'template'];
+                            for (const cat of categories) {
+                                if (urlPath.includes(`/${cat}/`)) {
+                                    (req as any).url = urlPath.replace('/pages/components/', '/llms/components/');
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        next();
+                    });
+                }
+            }
+        ],
         css: {
             preprocessorOptions: {
                 scss: {
                         // Этот код подключает SCSS-миксины, переменные и т.д. во все <style lang="scss">
-                        additionalData: `                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
-                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/variables.scss')}" as *;
+                        additionalData: `                        @use "${path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
+                        @use "${path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../packages/startup-ui/src/styles/variables.scss')}" as *;
                         `                    }
             }
         }
