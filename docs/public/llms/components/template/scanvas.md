@@ -118,3 +118,72 @@ You can make the sidebar sticky (so it scrolls with the page) using the `hasStic
 | sidebar | The left-hand navigation sidebar. On mobile, this is hidden by default and accessible via a burger menu. |
 | content | The main area for the page content. Takes up the remaining space next to the sidebar. |
 | default | Renders between the subheader and the main `sidebar`/`content` section. Commonly used for page-wide alerts or appending `SFooter` at the end of the canvas. |
+---
+
+# SFooter
+
+A simple container component used to display the page footer. It is typically placed inside the default slot of `SCanvas`.
+
+## Import
+
+```javascript
+import { SFooter } from 'startup-ui';
+```
+
+## Basic Example
+
+The footer accepts content via its default slot and provides base styling with a dark header background (`var(--s-bg-header)`). Links inside the footer are automatically styled to contrast with the dark background.
+
+```vue
+<SFooter>
+    <div class="s-footer-h">
+        <div class="logo-and-socials">
+            <span>Startup UI © 2026</span>
+        </div>
+        <div class="rights">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+        </div>
+    </div>
+</SFooter>
+```
+
+## Placement inside SCanvas
+
+```vue
+<template>
+    <SCanvas>
+        <template #content>
+            <p>Main page content...</p>
+        </template>
+
+        <!-- SFooter is usually placed here -->
+        <SFooter>
+            <div class="s-footer-h">
+                <a href="/about">About Us</a>
+                <a href="/contacts">Contact</a>
+            </div>
+        </SFooter>
+    </SCanvas>
+</template>
+```
+
+## Utility Classes
+
+While `SFooter` has no props of its own, its CSS includes an `.s-footer-h` class specifically designed to center the content with a maximum width (`1200px`):
+
+```vue
+<SFooter>
+    <div class="s-footer-h">
+        <!-- Content will be centered with a max-width and flex gap -->
+        <div>Column 1</div>
+        <div>Column 2</div>
+    </div>
+</SFooter>
+```
+
+## SFooter Slots
+
+| Name | Description |
+|------|-------------|
+| default | The content of the footer block. |

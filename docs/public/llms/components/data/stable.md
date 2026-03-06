@@ -81,6 +81,7 @@ The component comes with built-in CSS classes that you can apply directly to `<t
 | striped | boolean | `false` | If true, adds alternating background colors to rows. |
 | bordered | boolean | `false` | If true, adds vertical and horizontal borders between all cells. |
 | nodata | string | `'Ничего не найдено'` | Text displayed when `data` is completely empty. |
+| fixedHeader | boolean | `false` | Manually enables sticky header/footer even without a fixed height. |
 | height | string | `undefined` | Fixed height for the container (e.g. `300px`). Automatically triggers `fixedheader` mode if set. |
 | topScroll | boolean | `false` | Inverts the table so that the horizontal scrollbar appears at the top. |
 

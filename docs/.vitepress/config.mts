@@ -7,6 +7,7 @@ export default defineConfig({
     description: "Библиотека компонентов для Vue3",
     lang: 'ru',
     appearance: false,
+    cleanUrls: true,
     themeConfig: {
         nav: [
             { text: 'Знакомство', link: '/pages/welcome/basics/about', activeMatch: '/pages/welcome' },
@@ -114,14 +115,23 @@ export default defineConfig({
     vite: {
         plugins: [
             {
-                name: 'charset-utf8-for-raw',
+                name: 'llm-md-proxy',
                 configureServer(server) {
                     server.middlewares.use((req, res, next) => {
-                        const url = (req as any).url?.split('?')[0];
-                        if (url && (url.endsWith('.md') || url.endsWith('.txt'))) {
-                            const ext = url.endsWith('.md') ? 'text/markdown' : 'text/plain';
-                            res.setHeader('Content-Type', `${ext}; charset=utf-8`);
+                        const [urlPath, query] = (req as any).url?.split('?') || [];
+                        
+                        // Прозрачная подмена /pages/components/.../name.md -> /llms/components/.../name.md
+                        // Делаем это только если нет query params (т.е. это не внутренний запрос Vite/Vue)
+                        if (!query && urlPath && urlPath.startsWith('/pages/components/') && urlPath.endsWith('.md')) {
+                            const categories = ['forms', 'data', 'interfaces', 'template'];
+                            for (const cat of categories) {
+                                if (urlPath.includes(`/${cat}/`)) {
+                                    (req as any).url = urlPath.replace('/pages/components/', '/llms/components/');
+                                    break;
+                                }
+                            }
                         }
+                        
                         next();
                     });
                 }
@@ -131,8 +141,8 @@ export default defineConfig({
             preprocessorOptions: {
                 scss: {
                         // Этот код подключает SCSS-миксины, переменные и т.д. во все <style lang="scss">
-                        additionalData: `                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
-                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/variables.scss')}" as *;
+                        additionalData: `                        @use "${path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
+                        @use "${path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../packages/startup-ui/src/styles/variables.scss')}" as *;
                         `                    }
             }
         }

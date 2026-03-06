@@ -1,50 +1,34 @@
 # Документация для LLM
 
-Startup UI предоставляет документацию компонентов в формате Markdown, оптимизированном для ИИ-агентов (LLM).
+Наш проект (Startup UI) предоставляет документацию, специально оптимизированную для нейросетей (LLM), таких как ChatGPT, Claude, Gemini, Cursor AI, GitHub Copilot и др. 
 
-## llms.txt
+## Как это работает?
+Любая страница компонента (например, `/pages/components/forms/sinput`) имеет свою копию, написанную на чистом Markdown с подробными и понятными инструкциями для ИИ. 
 
-Файл `llms.txt` содержит список ссылок на все страницы документации компонентов в формате Markdown. Это помогает LLM быстро находить нужную информацию.
+Чтобы получить версию для нейросети, просто **добавьте `.md`** в конец URL-адреса этого компонента.
 
-<a href="/pages/welcome/extras/llm/llms.txt" target="_blank">Открыть llms.txt</a>
+**Пример:**
+- Страница документации: `startup-ui.suhar.ru/pages/components/interfaces/sbutton`
+- Версия для нейросети: `startup-ui.suhar.ru/pages/components/interfaces/sbutton.md`
 
-## Расширение .md
+---
 
-Markdown версии компонентов для парсинга LLM.
+## Сценарии использования
 
-<a href="/pages/welcome/extras/llm/components/sbutton.md" target="_blank">SButton.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sactionicon.md" target="_blank">SActionIcon.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/stooltip.md" target="_blank">STooltip.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/snote.md" target="_blank">SNote.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/stoggle.md" target="_blank">SToggleGroup > SToggle.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sconfirm.md" target="_blank">SConfirm.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sdialog.md" target="_blank">SDialog.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/simagepreview.md" target="_blank">SImagePreview.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/salert.md" target="_blank">SAlert.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/stag.md" target="_blank">STag.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sstatus.md" target="_blank">SStatus.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sactionbar.md" target="_blank">SActionBar.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sprogressbar.md" target="_blank">SProgressBar.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/scopytext.md" target="_blank">SCopyText.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/stimeline.md" target="_blank">STimeline.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sdashboard.md" target="_blank">SDashboard > SDashboardItem.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sstat.md" target="_blank">SStat.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/scolumnsettings.md" target="_blank">SColumnSettings.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/scanvas.md" target="_blank">SCanvas.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sfooter.md" target="_blank">SFooter.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sdropdownmenu.md" target="_blank">SDropdownMenu.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/shorizontalmenu.md" target="_blank">SHorizontalMenu.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sverticalmenu.md" target="_blank">SVerticalMenu.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sfiltergroup.md" target="_blank">SFilterGroup > SFilter.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/spagination.md" target="_blank">SPagination.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/stable.md" target="_blank">STable.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/stree.md" target="_blank">STree.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sform.md" target="_blank">SForm > SFormRow.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sinput.md" target="_blank">SInput.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sselect.md" target="_blank">SSelect.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/scheckbox.md" target="_blank">SCheckboxGroup > SCheckbox.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sradio.md" target="_blank">SRadioGroup > SRadio.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sswitch.md" target="_blank">SSwitch.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/sdatepicker.md" target="_blank">SDatePicker.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/shtmleditor.md" target="_blank">SHtmlEditor.md</a><br/>
-<a href="/pages/welcome/extras/llm/components/supload.md" target="_blank">SUpload.md</a>
+### 1. Работа в редакторах кода с встроенными ИИ моделями (Cursor, ClaudeCode и др.)
+Вы можете скопировать `.md` ссылку на нужный компонент и вставить ее прямо в чат с агентом (через `@` или просто текстом). Нейросеть мгновенно поймет, как правильно использовать этот компонент.
+
+### 2. Настройка правил проекта (AI Rules)
+Если вы хотите, чтобы ваш редактор лучше понимал стандарты разработки Startup UI, используйте наш готовый файл правил. Его можно подключить как системную инструкцию:
+
+**[Файл правил (rules.txt)](/llms/rules.txt)**
+
+### 3. Сторонние ИИ сервисы (ChatGPT, Claude.ai)
+Откройте страницу компонента, добавьте `.md` в строке браузера, скопируйте весь текст и вставьте его в контекст беседы со своим промптом. Это сэкономит контекст и улучшит точность ответа.
+
+---
+
+## Полный индекс
+Для масштабных задач у нас есть текстовый файл-индекс со всеми путями к LLM-файлам:
+
+[Открыть текстовый индекс (llms.txt)](/llms/llms.txt)
