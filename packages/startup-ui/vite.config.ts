@@ -9,6 +9,7 @@ export default defineConfig({
         entryRoot: 'src',
         outDir: 'dist/types',
         insertTypesEntry: true,
+        cleanVueFileName: true,
         tsconfigPath: './tsconfig.json'
     })],
     resolve: {
