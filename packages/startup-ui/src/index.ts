@@ -16,6 +16,7 @@ export { default as SFormRow } from './components/SFormRow.vue';
 export { default as SInput } from './components/SInput.vue';
 export { default as SSelect } from './components/SSelect.vue';
 export { default as SCheckbox } from './components/SCheckbox.vue';
+export { default as SCheckboxGroup } from './components/SCheckboxGroup.vue';
 export { default as SRadioGroup } from './components/SRadioGroup.vue';
 export { default as SRadio } from './components/SRadio.vue';
 export { default as SSwitch } from './components/SSwitch.vue';
