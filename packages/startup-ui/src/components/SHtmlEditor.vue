@@ -17,6 +17,7 @@ import axios from "axios";
 export interface SHtmlEditorProps {
     uploadUrl?: string;
     placeholder?: string;
+    media?: boolean;
 }
 
 const props = defineProps<SHtmlEditorProps>();
@@ -134,9 +135,10 @@ const initOptions = ref({
     skin_url: '/tinymce/skins/ui/oxide',
     plugins: [
         'advlist', 'lists', 'link', 'image', 'charmap',
-        'fullscreen', 'insertdatetime', 'media', 'table', 'autolink', 'code'
+        'fullscreen', 'insertdatetime', 'table', 'autolink', 'code',
+        ...(props.media ? ['media'] : []),
     ],
-    toolbar: 'blocks | bullist numlist | link image | media | fullscreen code ',
+    toolbar: `blocks | bullist numlist | link image | ${props.media ? 'media | ' : ''}fullscreen code `,
     branding: false, // Убираем брендинг
     promotion: false, // Убираем рекламные предложения
     // Отключаем все облачные функции
