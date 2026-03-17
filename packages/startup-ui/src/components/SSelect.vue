@@ -14,7 +14,7 @@
             </div>
         </div>
         <Teleport to="body">
-            <div ref="dropdownRef" :style="optionsStyles" 
+            <div v-if="areOptionsShown" ref="dropdownRef" :style="optionsStyles" 
                 :class="['s-select-stylewrapper', attrs.class, areOptionsShown ? 'open' : 'closed']">
                 <div :class="['s-select-options', openDirection]"
                     @scroll="handleScroll">
@@ -212,27 +212,37 @@ function updateOptionsPosition() {
     openDirection.value = determineListDirection(rect);
 
     const fixedPosition = hasFixedParent();
-    if ($selectRef.value) {
-        optionsStyles.value = {
-            // Если есть предок с position:fixed, то ставим fixed, иначе absolute
-            position: fixedPosition ? 'fixed' : 'absolute',
-            left: `${rect.left + window.scrollX}px`,
-            zIndex: 9999,
-            width: `${rect.width}px`,
-        };
+    const scrollX = fixedPosition ? 0 : window.scrollX;
+    const scrollY = fixedPosition ? 0 : window.scrollY;
 
-        if (openDirection.value === 'drop-up') {
-            // Для drop-up
-            optionsStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - (fixedPosition ? 0 : window.scrollY)}px`;
-        } else {
-            // Для drop-down
-            optionsStyles.value['top'] = `${rect.bottom + (fixedPosition ? 0 : window.scrollY)}px`;
-        }
+    let left = rect.left + scrollX;
+    const width = rect.width;
+
+    // Предотвращение горизонтального скролла
+    if (left + width > window.innerWidth) {
+        left = window.innerWidth - width - 10;
+    }
+
+    optionsStyles.value = {
+        // Если есть предок с position:fixed, то ставим fixed, иначе absolute
+        position: fixedPosition ? 'fixed' : 'absolute',
+        left: `${left}px`,
+        zIndex: 9999,
+        width: `${width}px`,
+    };
+
+    if (openDirection.value === 'drop-up') {
+        // Для drop-up
+        optionsStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - scrollY}px`;
+    } else {
+        // Для drop-down
+        optionsStyles.value['top'] = `${rect.bottom + scrollY}px`;
     }
 }
 
-watch(areOptionsShown, (shown) => {
+watch(areOptionsShown, async (shown) => {
     if (shown) {
+        await nextTick();
         updateOptionsPosition();
     }
 });
