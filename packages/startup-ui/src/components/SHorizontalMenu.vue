@@ -1,7 +1,7 @@
 <template>
     <div class="s-horizontalmenu">
         <template v-for="link in links" :key="link.label">
-            <slot v-if="$slots['item-' + slotKey(link.label)]" :name="'item-' + slotKey(link.label)" :link="link" />
+            <slot v-if="$slots['items']" name="items" :link="link" />
             <div v-else class="s-horizontalmenu-item" :class="[link.className, link.active ? 'active' : '']">
                 <Link class="s-horizontalmenu-label" v-if="link.url" :href="link.url">{{ link.label }}</Link>
                 <div class="s-horizontalmenu-label" v-else>{{ link.label }}</div>
