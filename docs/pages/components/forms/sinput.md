@@ -37,9 +37,7 @@
 </template>
 ```
 
-## Многострочное поле ввода (Textarea)
-
-Для создания многострочного поля используйте `type="textarea"`. По умолчанию отображается 3 строки, это можно изменить через проп `rows`.
+## Многострочное поле ввода
 
 <div class="docs-container">
     <SInput v-model="value4" type="textarea" placeholder="Введите длинный текст..." />
@@ -51,12 +49,22 @@
 </template>
 ```
 
-## Префикс и суффикс
-
-Вы можете добавить текст или иконки внутри поля ввода. Простые строки передаются через пропсы `prefix` и `suffix`, а для сложного HTML (например, иконок) используйте соответствующие слоты.
+## Плейсхолдер
 
 <div class="docs-container">
-    <SInput v-model="value6" prefix="$" type="number" placeholder="Цена" />
+    <SInput v-model="value5" placeholder="Введите имя" />
+</div>
+
+```vue
+<template>
+    <SInput v-model="value" placeholder="Введите имя" />
+</template>
+```
+
+## Префикс
+
+<div class="docs-container">
+    <SInput v-model="value6" prefix="$" type="number" />
 </div>
 
 ```vue
@@ -65,10 +73,10 @@
 </template>
 ```
 
-Пример с кастомным префиксом через слот:
+Если нужен кастомный префикс:
 
 <div class="docs-container">
-    <SInput v-model="value7" type="number" placeholder="С иконкой в начале">
+    <SInput v-model="value7" type="number">
         <template #prefix>
             <SStatus icon="star" />
         </template>
@@ -85,10 +93,10 @@
 </template>
 ```
 
-## Недоступное состояние (Disabled)
+## Недоступное состояние
 
 <div class="docs-container">
-    <SInput v-model="value8" disabled placeholder="Поле отключено" />
+    <SInput v-model="value8" disabled />
 </div>
 
 ```vue
@@ -97,12 +105,12 @@
 </template>
 ```
 
-## Поле с кнопкой очистки
+## Поле ввода с кнопкой очистки
 
-Для этого достаточно использовать стандартный HTML5 тип `search`:
+Просто используем стандартный HTML5-тип search:
 
 <div class="docs-container">
-    <SInput v-model="value9" type="search" placeholder="Поиск..." />
+    <SInput v-model="value9" type="search" />
 </div>
 
 ```vue
@@ -112,8 +120,6 @@
 ```
 
 ## События
-
-Компонент прокидывает событие `change` при вводе текста:
 
 <div class="docs-container">
     <SInput @change="(newValue) => console.log(newValue)" placeholder="Печатаем и смотрим консоль" />
@@ -125,12 +131,12 @@
 </template>
 ```
 
-## Кастомные стили
+## Кастомные стили для инпута
 
-Если нужно задать стили напрямую вложенному тегу `input` или `textarea`, используйте проп `input-style`:
+Если нужно задать кастомные стили именно для вложенного инпута, то задаем их через input-style:
 
 <div class="docs-container">
-    <SInput input-style="text-align: center" placeholder="Текст по центру" />
+    <SInput input-style="text-align: center" />
 </div>
 
 ```vue

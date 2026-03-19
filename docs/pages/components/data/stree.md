@@ -1,4 +1,3 @@
-
 # STree
 
 Дерево элементов.
@@ -40,7 +39,7 @@ const pages = [
 
 ## Выбор элемента
 
-Для возможности выбора элемента добавляем атрибут **selectable**.
+Для возможности выбора элемента добавляем атрибут <strong>selectable</strong>
 
 <div class="docs-container">
     <STree :data="pages" selectable v-model="value" />
@@ -64,9 +63,9 @@ const pages = [...];
 
 </div>
 
-В модель подставляется ID. Текущее значение: `{{ value ?? 'null' }}`
+В модель подставляется ID. Текущее значение: <code>{{ value ?? 'null' }}</code>
 
-Также изменения можно отслеживать с помощью события `change`:
+Также изменения можно отслеживать с помощью change-события:
 
 <div v-pre>
 
@@ -77,8 +76,6 @@ const pages = [...];
 </div>
 
 ## Кастомный шаблон элемента
-
-Используйте слот `#node` для настройки внешнего вида элементов дерева.
 
 <div class="docs-container">
     <STree :data="pages">
@@ -109,9 +106,9 @@ const pages = [...];
 
 </div>
 
-## Раскрытые элементы
+## Раскрытые корневые элементы
 
-Набор раскрытых корневых элементов передаём с помощью атрибута **expanded-keys**.
+Набор раскрытых корневых элементов передаём с помощью атрибута <strong>expanded-keys</strong>
 
 <div class="docs-container">
     <STree :data="pages" :expanded-keys="[34]" />
@@ -127,7 +124,7 @@ const pages = [...];
 
 ## Перетаскивание элементов
 
-Для поддержки перетаскивания элементов добавляем атрибут **draggable**. Отработка логики перетаскивания (обновление данных) ложится на плечи разработчика через событие `@drop`.
+Для поддержки перетаскивания элементов добавляем атрибут <strong>draggable</strong>
 
 <div class="docs-container">
     <STree :data="pages" draggable />
@@ -155,12 +152,15 @@ function onDrop(targetNode, event, dropType) {
 </div>
 
 При этом выполняются события:
-- **dragstart(node, event)** — при начале перетаскивания.
-- **drop(targetNode, event, dropType)** — при завершении перетаскивания. `dropType` может принимать значения `inner`, `before` или `after`.
+
+<ul>
+    <li><strong>dragstart(node, event)</strong> — при начале перетаскивания;</li>
+    <li><strong>drop(targetNode, event, dropType)</strong> — при заверешнии перетаскивания.</li>
+</ul>
 
 ## Чек-боксы
 
-Для поддержки чек-боксов у элементов добавляем атрибут **checkboxes**.
+Для поддержки чек-боксов у элементов добавляем атрибут <strong>checkboxes</strong>
 
 <div class="docs-container">
     <STree v-model="selectedPageIds7" checkboxes :data="pages" />

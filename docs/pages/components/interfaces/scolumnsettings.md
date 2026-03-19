@@ -87,7 +87,7 @@ const tableColumns = ref(Object.keys(initialColumns));
 
 ## Сброс колонок до значений по умолчанию
 
-Если нужно сбрасывать колонки до набора по умолчанию, это можно сделать с помощью свойства `column-presets`:
+Если нужно сбрасывать колонки до набора по умолчанию, это можно сделать так:
 
 <div class="s-columnsettingspage-container">
 <SColumnSettings v-model="tableColumns2" :options="availableColumns" :column-presets="columnPresets" />
@@ -132,7 +132,7 @@ const columnPresets = [{
 
 </div>
 
-Когда набор полей всего один, по умолчанию в футере выпадающего списка выводится строка «Сбросить изменения», когда несколько — выводится название каждого набора. Это поведение можно изменить с помощью слота `#setpreset`:
+Когда набор полей всего один, по умолчанию в футере выпадающего списка выводится строка «Сбросить изменения», когда несколько — выводится название каждого набора. Это повдение можно изменить с помощью слота <strong>setpreset</strong>:
 
 <div v-pre>
 
@@ -150,7 +150,7 @@ const columnPresets = [{
 
 ## Постоянные колонки
 
-Если нужно запретить выключение определенных колонок пользователями, передайте массив с ключами этих колонок в свойство `permanent-columns`:
+Если нужно запретить удаление определенных колонок, передайте массив с ними в атрибут <strong>permanent-columns</strong>:
 
 <div class="s-columnsettingspage-container">
 <SColumnSettings v-model="tableColumns3" :options="availableColumns" :column-presets="columnPresets" :permanentColumns="permanentColumns"/>

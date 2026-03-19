@@ -114,7 +114,14 @@ export default defineConfig({
         }
     },
     markdown: {
-        theme: 'one-dark-pro'
+        theme: 'github-dark-default',
+        codeTransformers: [
+            {
+                postprocess(html) {
+                    return html.replace(/#ffa198/gi, '#7EE787');
+                }
+            }
+        ]
     },
     vite: {
         plugins: [

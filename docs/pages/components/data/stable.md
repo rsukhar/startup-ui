@@ -115,7 +115,7 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 ## Подсветка строк при наведении
 
-Для подсветки при наведении добавляем атрибут **hoverable**
+Для подсветки при наведении добавляем атрибут <strong>hoverable</strong>
 
 <div class="docs-container">
     <STable :data="users" hoverable>
@@ -159,7 +159,7 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 ## Явные границы по краям ячеек
 
-Для отрисовки границ добавляем атрибут **bordered**
+Для отрисовки границ добавляем атрибут <strong>bordered</strong>
 
 <div class="docs-container">
     <STable :data="users" bordered>
@@ -203,7 +203,7 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 ## Выделение четных строк
 
-Для выделения четных строк добавляем атрибут **striped**
+Для выделения четных строк добавляем атрибут <strong>striped</strong>
 
 <div class="docs-container">
     <STable :data="users" striped>

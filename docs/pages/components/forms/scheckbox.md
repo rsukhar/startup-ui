@@ -26,8 +26,6 @@
 
 ## Одиночная галочка
 
-Модель принимает значение true/false.
-
 <div class="docs-container">
     <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
 </div>
@@ -45,9 +43,9 @@ const isAccepted = ref(false);
 </script>
 ```
 
-## Группа галочек
+Модель принимает значение true/false.
 
-В при использовании группы в модели будет храниться массив выбранных значений.
+## Группа галочек
 
 <div class="docs-container">
     <SCheckboxGroup v-model="types">
@@ -56,8 +54,6 @@ const isAccepted = ref(false);
         <SCheckbox value="idea">Идея</SCheckbox>
     </SCheckboxGroup>
 </div>
-
-<br>Текущее значение: <code>{{ types }}</code>
 
 ```vue
 <template>
@@ -76,9 +72,11 @@ const types = ref([]);
 </script>
 ```
 
+В данном случае в модели будет храниться массив выбранных значений: <code>{{ types }}</code>
+
 ## Динамический набор значений
 
-Когда набор вариантов идет из базы данных или конфига, вместо ручного перебора элементов через `v-for` используйте атрибут **options**.
+В предыдущем примере набор вариантов хардкодился в шаблоне, что удобно, когда набор значений относится к логическому уровню интерфейса. Но когда набор вариантов идет из базы данных или конфига, очень неудобно каждый раз формировать набор элементов через v-for, и вместо этого используем атрибут <strong>options</strong>.
 
 <div class="docs-container">
     <SCheckboxGroup v-model="users" :options="userOptions" />
@@ -98,11 +96,11 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
 </script>
 ```
 
-Где `options` — это объект в формате `{value1: title1, value2: title2}` или массив в формате `[[value1, title1], [value2, title2]]`.
+Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
 
 ## Вертикальный список галочек
 
-Чтобы выводить группу галочек вертикальным списком, добавляем атрибут **vertical**:
+Чтобы выводить группу галочек вертикальным списком, добавляем атрибут <strong>vertical</strong>:
 
 <div class="docs-container">
     <SCheckboxGroup v-model="usersSecond" :options="userOptions" vertical />
@@ -124,7 +122,7 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
 
 ## Недоступное значение
 
-Добавляем атрибут **disabled** элементу, который должен быть недоступен для переключения.
+Добавляем атрибут <strong>disabled</strong> значению, которое должно быть недоступно для переключения.
 
 <div class="docs-container">
     <SCheckboxGroup v-model="typesDisabled">

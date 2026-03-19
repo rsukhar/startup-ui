@@ -47,7 +47,7 @@ const submit = () => {
 
 ## Авто-отправка при выборе
 
-Если нужна авто-отправка, то выполняем отправку формы по событию **select**:
+Если нужна авто-отправка, то выполняем отправку формы по событию <strong>select</strong>:
 
 <div class="docs-container">
     <SUpload v-model="screenshot2" @select="submit" />
@@ -72,7 +72,7 @@ const submit = () => {
 
 ## Кастомный текст кнопки
 
-Можно задать произвольный текст кнопки с помощью атрибута **upload-button-title**
+Можно задать произвольный текст кнопки с помощью атрибута <strong>upload-button-title</strong>
 
 <div class="docs-container">
     <SUpload v-model="screenshot3" upload-button-title="Выбрать скриншот" />
@@ -145,12 +145,14 @@ const submit = () => {
 
 Слоты сразу пробрасывают методы и переменные, которые могут быть полезны в собственных шаблонах:
 
-*   В слоте кнопки выбора **#header**: **choose()** открывает окно выбора файла, **clear()** очищает набор выбранных файлов, **files** — список текущих выбранных файлов, **isDragging** — булево значение, равное true, когда над компонентом перемещают файл.
-*   В слоте предпросмотра выбранных файлов **#preview**: **files** — список текущих выбранных файлов, **remove(title)** — удаление определенного файла по имени/заголовку.
+<ul>
+    <li>В слоте кнопки выбора <strong>#header</strong>: <strong>choose()</strong> открывает окно выбора файла, <strong>clear()</strong> очищает набор выбранных файлов, <strong>files</strong> — список текущих выбранных файлов, <strong>isDragging</strong> — булево значение, равное true, когда над компонентом перемещают файл.</li>
+    <li>В слоте предпросмотра выбранных файлов <strong>#preview</strong>: <strong>files</strong> — список текущих выбранных файлов, <strong>remove(index)</strong> — удаление определенного файла по индексу.</li>
+</ul>
 
 ## Ограничения выбора
 
-Для ограничения выбора по расширению добавляем атрибут **accept**:
+Для ограничения выбора по расширению добавляем атрибут <strong>accept</strong>:
 
 <div class="docs-container">
     <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot5" />
@@ -161,7 +163,7 @@ const submit = () => {
 <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot" />
 ```
 
-Для ограничения выбора по размеру файла добавляем атрибут **max-file-size** (в байтах):
+Для ограничения выбора по размеру файла добавляем атрибут <strong>max-file-size</strong> (в байтах):
 
 <div class="docs-container">
     <SUpload :max-file-size="512000" v-model="screenshot6" />
@@ -173,8 +175,6 @@ const submit = () => {
 ```
 
 ## Выбор нескольких файлов
-
-Для выбора нескольких файлов добавляем атрибут **multiple**. В этом случае модель будет массивом.
 
 <div class="docs-container">
     <SUpload multiple v-model="screenshot7" />

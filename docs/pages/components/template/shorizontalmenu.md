@@ -1,10 +1,8 @@
 # SHorizontalMenu
 
-Горизонтальное меню. Обычно размещается в шапке или subheader-блоке.
+Горизонтальное меню. Обычно размещается в subheader-блоке.
 
 ## Базовый пример
-
-В свойство `links` необходимо передать массив объектов в формате `[{label, url, active}, ...]`.
 
 <div class="docs-container">
     <div class="menu-container">
@@ -41,6 +39,8 @@ const menuLinks = [
 }
 </style>
 ```
+
+Где menuLinks — это массив в формате `[{label, url, active}, ...]`
 
 ## Интерфейс компонента SHorizontalMenu
 

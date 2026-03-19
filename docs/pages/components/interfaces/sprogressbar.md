@@ -11,7 +11,6 @@
 
 ## Базовый пример
 
-Используйте проп `percentage` (число от 0 до 100) для установки прогресса. Текст-пояснение передается через основной слот:
 
 <div class="docs-container" style="display: block">
     <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>

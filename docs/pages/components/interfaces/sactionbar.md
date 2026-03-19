@@ -6,8 +6,6 @@
 
 ## Базовый пример
 
-`SActionBar` отображается условно (например, через `v-if`), когда выбраны один или несколько элементов. Содержимое передается в основной слот:
-
 <div class="docs-container">
     <SCheckboxGroup v-model="users" :options="userOptions" />
     <SActionBar v-if="users.length">

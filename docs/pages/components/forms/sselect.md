@@ -25,9 +25,6 @@
 </SToggleGroup>
 
 ## Классический вариант
-
-Где `options` — это объект вариантов выбора в формате `{value1: title1, value2: title2}` или массив в формате `[[value1, title1], [value2, title2]]`.
-
 <div class="docs-container">
     <SSelect v-model="value1" :options="options" placeholder="Выберите" />
 </div>
@@ -46,9 +43,9 @@ const value = ref(null);
 </script>
 ```
 
-## Фильтрация при вводе
+Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
 
-Параметр **filterable** позволяет искать варианты по названию.
+## Фильтрация при вводе
 
 <div class="docs-container">
     <SSelect v-model="value2" :options="options" filterable placeholder="Выберите" />
@@ -70,7 +67,7 @@ const value = ref(null);
 
 ## Получение значений по API
 
-Список значений можно получать и по API, обрабатывая событие `@filter`.
+Список значений можно получать и по API.
 
 ```vue
 <template>
@@ -95,9 +92,11 @@ function onFilter(query) {
 </script>
 ```
 
+В данном примере API должно возвращать в data-поле массив {value: title} значений.
+
 ## Возможность сброса значения
 
-Иногда бывает нужно сделать возможность сбрасывать значение в невыбранное (`null`). Для этого используется атрибут **clearable**:
+Иногда бывает нужно сделать возможность сбрасывать значение в невыбранное (null). Для этого используется атрибут <strong>clearable</strong>:
 
 <div class="docs-container">
     <SSelect v-model="value6" :options="options" clearable placeholder="Не выбрано" />
@@ -119,7 +118,7 @@ const user = ref(null);
 
 ## Виртуальный скролл
 
-Когда доступно очень много вариантов выбора, можно применить виртуальный скролл для более быстрой загрузки, добавив атрибут **virtual**:
+Когда доступно очень много вариантов выбора, можно применить виртуальный скролл для более быстрой загрузки, добавив атрибут <strong>virtual</strong>:
 
 <div class="docs-container">
     <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />

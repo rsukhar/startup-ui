@@ -11,8 +11,6 @@
 
 ## Базовый пример
 
-В свойство `links` необходимо передать массив объектов (ссылки и дочерние элементы). 
-
 <div class="docs-container">
     <SVerticalMenu :links="menuLinks" />
 </div>
@@ -49,9 +47,11 @@ const menuLinks = [
 </script>
 ```
 
+Где menuLinks — это массив в формате `[{label, url, active, ?type, ?className, ?children}, ...]`
+
 ## Раскрытые элементы
 
-Чтобы нужные элементы были раскрыты сразу, мы передаем массив их ID в атрибуте `expanded-keys`:
+Чтобы нужные элементы были раскрыты сразу, мы передаем массив их ID в атрибуте <strong>expanded-keys</strong>:
 
 <div class="docs-container">
     <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
@@ -65,7 +65,9 @@ const menuLinks = [
 
 ## Запоминание раскрытых элементов
 
-Когда мы добавляем атрибут `store-expanded-keys-to`, раскрытые элементы сохраняются в localStorage (по указанному ключу). Теперь, если обновить страницу, раскрытые элементы останутся в том же состоянии.
+Во всякого рода документациях
+
+Когда мы добавляем атрибут <strong>store-expanded-keys-to</strong>, раскрытые элементы сохраняются в localStorage. Теперь, если обновить страницу, раскрытые элементы сохранятся.
 
 <div class="docs-container">
     <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />

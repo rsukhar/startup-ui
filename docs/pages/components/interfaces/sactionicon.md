@@ -12,7 +12,7 @@
 
 ## Стандартный пример
 
-Используются стандартные иконки FontAwesome. Типовой пример с событием `@click`:
+Используются стандартые иконки FontAwesome. Типовой пример с click-событием:
 
 <div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
     <SActionIcon icon="pen-to-square" title="Редактировать" @click="greet('Hello!')" />
@@ -50,7 +50,7 @@ function greet(msg) {
 
 ## Ссылка в иконке
 
-Если указать атрибут `href`, то по умолчанию иконка станет семантически правильным анкором:
+Если указать href-атрибут, то по умолчанию иконка станет анкором:
 
 <div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
     <SActionIcon icon="pen-to-square" title="Перейти на сайт" href="https://startup-ui.suhar.ru" />
@@ -73,7 +73,7 @@ function greet(msg) {
 
 </div>
 
-При необходимости через атрибут `is` можно передать `Link`-компонент InertiaJS:
+Но при необходимости также через атрибут is можно также передать Link-компонент InertiaJs:
 
 <div v-pre>
 
@@ -85,7 +85,7 @@ function greet(msg) {
 
 ## Подтверждение действия
 
-Для опасных действий можно выделить иконку цветом (атрибут `danger`) и запросить подтверждение перед выполнением (атрибут `confirm`):
+Для небезопасных действий выделяем иконку цветом (атрибут <strong>danger</strong>) и запрашиваем подтверждение перед выполнением (атрибут <strong>confirm</strong>):
 
 <div class="docs-container">
     <SActionIcon title="Удалить" @click="deleteUser" icon="trash" danger confirm="Вы действительно хотите удалить пользователя?" />

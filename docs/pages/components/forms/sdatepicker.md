@@ -108,11 +108,11 @@ const value = ref([]);
 </script>
 ```
 
-В модель подставляется массив из двух дат в формате, указанном в **value-format**. Текущее значение: <code>{{ valueFourth ?? 'null' }}</code>
+В модель подставляется массив из двух дат в формате, указанном в <strong>value-format</strong>. Текущее значение: <code>{{ valueFourth ?? 'null' }}</code>
 
 ## Выбор вариантов кнопками
 
-Очень часто в фильтрах по диапазону дат удобно использовать однокликовый выбор предзаданного диапазона. Набор таких диапазонов мы устанавливаем через атрибут **buttons**.
+Очень часто в фильтрах по диапазону дат удобно использовать однокликовый выбор предзаданного диапазона. Набор таких диапазонов мы устанавливаем через атрибут <strong>buttons</strong>.
 
 <div class="docs-container">
     <SDatePicker range v-model="valueFifth" value-format="YYYYMMDD" :buttons="buttons" />
@@ -141,7 +141,7 @@ const buttons = {
 
 ## Выбор времени
 
-Чтобы выбирать время, добавляем атрибут **with-time**. При этом, выходное значение будет в формате **2025-12-22 12:27**:
+Чтобы выбирать время, добавляем атрибут <strong>with-time</strong>. При этом, выходное значение будет в формате <strong>2025-12-22 12:27</strong>:
 
 <div class="docs-container">
     <SDatePicker with-time v-model="valueSixth" value-format="YYYYMMDD HH:mm" />
