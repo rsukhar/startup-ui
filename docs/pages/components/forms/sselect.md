@@ -25,92 +25,55 @@
 </SToggleGroup>
 
 ## Классический вариант
+
+Где `options` — это объект вариантов выбора в формате `{value1: title1, value2: title2}` или массив в формате `[[value1, title1], [value2, title2]]`.
+
 <div class="docs-container">
     <SSelect v-model="value1" :options="options" placeholder="Выберите" />
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+```vue
+<template>
+    <SSelect v-model="value" :options="options" placeholder="Выберите" />
+</template>
 
-Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
+<script setup>
+import { ref } from 'vue';
+import { SSelect } from 'startup-ui';
+
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+const value = ref(null);
+</script>
+```
 
 ## Фильтрация при вводе
+
+Параметр **filterable** позволяет искать варианты по названию.
 
 <div class="docs-container">
     <SSelect v-model="value2" :options="options" filterable placeholder="Выберите" />
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+```vue
+<template>
+    <SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SSelect } from 'startup-ui';
+
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+const value = ref(null);
+</script>
+```
 
 ## Получение значений по API
 
-Список значений можно получать и по API.
+Список значений можно получать и по API, обрабатывая событие `@filter`.
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
-
-В данном примере API должно возвращать в data-поле массив {value: title} значений.
-
-## Возможность сброса значения
-
-Иногда бывает нужно сделать возможность сбрасывать значение в невыбранное (null). Для этого используется атрибут <strong>clearable</strong>:
-
-<div class="docs-container">
-    <SSelect v-model="value6" :options="options" clearable placeholder="Не выбрано" />
-</div>
-
-<CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
-
-## Виртуальный скролл
-
-Когда доступно очень много вариантов выбора, можно применить виртуальный скролл для более быстрой загрузки, добавив атрибут <strong>virtual</strong>:
-
-<div class="docs-container">
-    <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
-</div>
-
-<CustomCodeBlock :code="{text: code6, lang: 'vue'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
-
-<script setup>
-import { ref } from 'vue';
-import SSelect from '../../../../packages/startup-ui/src/components/SSelect.vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import { regions } from '../../../resources/data/regions.js';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-
-const value1 = ref(null);
-const value2 = ref(null);
-const value3 = ref(null);
-const value4 = ref(null);
-const value5 = ref(null);
-const value6 = ref(null);
-const region = ref(null);
-
-const code1 = `<SSelect v-model="value" :options="options" placeholder="Выберите" />`;
-const fullCode1 = `<template>
-    <SSelect v-model="value" :options="options" placeholder="Выберите" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const value = ref('');
-<\/script>`;
-
-const code2 = `<SSelect v-model="value" :options="options" filterable placeholder="Выберите" />`;
-const fullCode2 = `<template>
-    <SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const value = ref('');
-<\/script>`;
-
-const code3 = `<SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />`;
-const fullCode3 = `<template>
+```vue
+<template>
     <SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
 </template>
 
@@ -121,67 +84,116 @@ import axios from "axios";
 
 const isLoading = ref(false);
 const selectOptions = ref({});
-const value = ref('');
+const value = ref(null);
 
-function onFilter(query){
-  isLoading.value = true;
-  axios.post(\`/select_options/search\`, { query: query })
+function onFilter(query) {
+    isLoading.value = true;
+    axios.post('/select_options/search', { query: query })
         .then((response) => selectOptions.value = response.data)
         .finally(() => isLoading.value = false);
 }
-<\/script>`;
+</script>
+```
 
-const code5 = `<SSelect v-model="user" :options="users" clearable placeholder="Не выбрано" />`;
-const fullCode5 = `<template>
+## Возможность сброса значения
+
+Иногда бывает нужно сделать возможность сбрасывать значение в невыбранное (`null`). Для этого используется атрибут **clearable**:
+
+<div class="docs-container">
+    <SSelect v-model="value6" :options="options" clearable placeholder="Не выбрано" />
+</div>
+
+```vue
+<template>
     <SSelect v-model="user" :options="users" clearable placeholder="Не выбрано" />
 </template>
+
 <script setup>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const user = ref('');
-<\/script>`;
 
-const code6 = `<SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />`;
-const fullCode6 = `<template>
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+const user = ref(null);
+</script>
+```
+
+## Виртуальный скролл
+
+Когда доступно очень много вариантов выбора, можно применить виртуальный скролл для более быстрой загрузки, добавив атрибут **virtual**:
+
+<div class="docs-container">
+    <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
+</div>
+
+```vue
+<template>
     <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
 </template>
+
 <script setup>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
 
-const props = defineProps({
-    regions: Object
-});
-
-const region = ref('');
-<\/script>
-`;
+// Представим, что здесь огромный список регионов
+const regions = [ [ 225, "Россия (225)" ], ... ]; 
+const region = ref(null);
 </script>
-<style lang="scss" scoped>
-:root {
-    .vp-doc ul {
-        padding-left: 0;
-        margin: 0;
-    }
+```
 
-    .vp-doc li + li {
-        margin: 0;
-    }
-}
+## Интерфейс компонента
 
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | any | - | Текущее выбранное значение. |
+| options | Record \| Array | - | Список вариантов (объект или массив пар). |
+| placeholder | string | - | Текст заглушки. |
+| filterable | boolean | `false` | Включает текстовый поиск. |
+| clearable | boolean | `false` | Показывает кнопку сброса значения. |
+| disabled | boolean | `false` | Отключает компонент. |
+| inline | boolean | `false` | Убирает границы и делает селект компактным. |
+| virtual | boolean | `false` | Включает виртуальный скролл. |
+| virtualScrollSize | number | `10` | Количество одновременно отображаемых элементов при виртуальном скролле. |
+
+### Слоты (Slots)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| value | `{ value: any }` | Кастомное отображение выбранного значения. |
+| option | `{ option: { label: string, value: any } }` | Кастомное отображение элемента в выпадающем списке. |
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| change | `(value: any)` | Вызывается при изменении значения. |
+| filter | `(query: string)` | Вызывается при вводе текста в режиме поиска. |
+
+<script setup>
+import { ref } from 'vue';
+import SSelect from '../../../../packages/startup-ui/src/components/SSelect.vue';
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
+import { regions } from '../../../resources/data/regions.js';
+
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+
+const value1 = ref(null);
+const value2 = ref(null);
+const value6 = ref(null);
+const region = ref(null);
+</script>
+
+<style lang="scss">
 .docs-container {
     padding: 20px;
-    border: 1px solid #4c4d4f;
-    border-radius: 6px;
+    border: 1px solid var(--s-border);
+    border-radius: var(--s-border-radius);
+    background: var(--s-bg-light);
 }
 
 .s-select {
     min-width: 200px;
-    height: 40px;
-}
-
-.s-input-field {
-    color: var(--s-text);
 }
 </style>

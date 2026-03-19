@@ -61,7 +61,6 @@ npm install @fortawesome/free-solid-svg-icons
 npm install @fortawesome/free-regular-svg-icons
 npm install @fortawesome/free-brands-svg-icons`;
 
-
 const code2 = `// resources/js/font-awesome.js
 import { library } from "@fortawesome/fontawesome-svg-core";
 import * as regular from "@fortawesome/free-regular-svg-icons";

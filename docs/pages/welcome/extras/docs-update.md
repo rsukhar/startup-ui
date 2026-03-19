@@ -12,7 +12,6 @@
 
 Коммитим и пушим изменения
 
-
 <script setup>
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 

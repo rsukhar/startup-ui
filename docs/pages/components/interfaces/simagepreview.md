@@ -4,7 +4,7 @@
 
 ## Базовый пример
 
-Выводим картинку, которая увеличивается при клике.
+Выводим картинку, которая увеличивается при клике:
 
 <div class="docs-container">
     <div class="preview-container">
@@ -12,11 +12,19 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <SImagePreview src="/img/animals.webp" />
+</template>
+```
+
+</div>
 
 ## Кастомное превью
 
-Если первоначально до клика показывается другое изображение (напр.меньшего размера), то используем атрибут preview:
+Если первоначально до клика показывается другое изображение (напр. меньшего размера), используйте атрибут `preview`:
 
 <div class="docs-container">
     <div class="preview-container">
@@ -24,9 +32,17 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+<div v-pre>
 
-Если нужно вставить кастомный контент, используем слот “preview”:
+```vue
+<template>
+    <SImagePreview preview="/img/nature.jpg" src="/img/animals.webp" />
+</template>
+```
+
+</div>
+
+Если нужен полностью кастомный контент превью, используйте слот `#preview`:
 
 <div class="docs-container">
     <div class="preview-container">
@@ -38,11 +54,23 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'html'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <SImagePreview src="/img/animals.webp">
+        <template #preview>
+            <img src="/img/nature.jpg" />
+        </template>
+    </SImagePreview>
+</template>
+```
+
+</div>
 
 ## Кастомная иконка увеличения
 
-В icon-атрибуте указываем название иконки:
+В атрибуте `icon` указываем название иконки FontAwesome:
 
 <div class="docs-container">
     <div class="preview-container">
@@ -50,9 +78,17 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'vue'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
+<div v-pre>
 
-Если нужно вставить кастомный контент, используем слот “icon”:
+```vue
+<template>
+    <SImagePreview src="/img/animals.webp" icon="magnifying-glass-plus" />
+</template>
+```
+
+</div>
+
+Для полностью кастомной иконки используйте слот `#icon`:
 
 <div class="docs-container">
     <div class="preview-container">
@@ -64,80 +100,43 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code5, lang: 'html'}" :fullCode="{text: fullCode5, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <SImagePreview src="/img/animals.webp">
+        <template #icon>
+            🔍
+        </template>
+    </SImagePreview>
+</template>
+```
+
+</div>
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| src | string | undefined | URL полноразмерного изображения, показываемого в модальном окне. |
+| preview | string | undefined | URL миниатюры. Если не указан, используется `src`. |
+| icon | string \| string[] | `'magnifying-glass'` | Имя иконки FontAwesome для оверлея при наведении. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| preview | Полностью заменяет стандартный элемент `<img>` миниатюры. |
+| icon | Заменяет иконку увеличения, появляющуюся при наведении. |
 
 <script setup>
 import SImagePreview from '../../../../packages/startup-ui/src/components/SImagePreview.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 import animals from '../../../resources/img/animals.webp';
 import nature from '../../../resources/img/nature.jpg';
-
-const code1 = `<SImagePreview src="../../resources/img/animals.webp" />
-`;
-const fullCode1 = `<template>
-<SImagePreview src="../../resources/img/animals.webp" />
-</template>
-<script setup>
-import { SImagePreview } from 'startup-ui';
-<\/script>
-`;
-
-const code2 = `<SImagePreview preview="../../resources/img/nature.jpg" src="../../resources/img/animals.webp" />
-`;
-const fullCode2 = `<template>
-<SImagePreview preview="../../resources/img/nature.jpg" src="../../resources/img/animals.webp" />
-</template>
-<script setup>
-import { SImagePreview } from 'startup-ui';
-<\/script>
-`;
-
-const code3 = `<SImagePreview src="../../resources/img/animals.webp">
-    <template #preview>
-        <img src="../../resources/img/nature.jpg" />
-    </template>
-</SImagePreview>
-`;
-const fullCode3 = `<template>
-<SImagePreview src="../../resources/img/animals.webp">
-    <template #preview>
-        <img src="../../resources/img/nature.jpg" />
-    </template>
-</SImagePreview>
-</template>
-<script setup>
-import { SImagePreview } from 'startup-ui';
-<\/script>
-`;
-
-const code4 = `<SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus" />
-`;
-const fullCode4 = `<template>
-    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus" />
-</template>
-<script setup>
-import { SImagePreview } from 'startup-ui';
-<\/script>
-`;
-
-const code5 = `<SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus">
-    <template #icon>
-        🔍
-    </template>
-</SImagePreview>
-`;
-const fullCode5 = `<template>
-<SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus">
-    <template #icon>
-        🔍
-    </template>
-</SImagePreview>
-</template>
-<script setup>
-import { SImagePreview } from 'startup-ui';
-<\/script>
-`;
 </script>
+
 <style lang="scss">
 .preview-container {
     max-width: 200px;

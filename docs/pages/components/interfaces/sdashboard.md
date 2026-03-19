@@ -1,12 +1,14 @@
-# SDashboard > SDashboardItem
+# SDashboard / SDashboardItem
 
-Дешборд блоков (как правило, удобно использовать для отчетов).
+Дешборд блоков (обычно используется для отчетов, статистики и модульных интерфейсов).
 
 <SToggle title="В чем отличие от аналогов?">
-    В попурярных библиотеках компонентов для Vue3 прямого аналога нет.
+    В популярных библиотеках компонентов для Vue3 прямого аналога нет.
 </SToggle>
 
 ## Базовый пример
+
+Добавьте компоненты `SDashboardItem` внутрь контейнера `SDashboard`. Контейнер автоматически распределит элементы на 1-5 колонок в зависимости от ширины экрана.
 
 <div class="docs-container">
 <SDashboard>
@@ -19,11 +21,30 @@
 </SDashboard>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'html'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+<SDashboard>
+  <SDashboardItem title="Продажи">
+    Информация о продажах.
+  </SDashboardItem>
+  <SDashboardItem title="Списания за услуги">
+    Информация о стоимости услуг.
+  </SDashboardItem>
+</SDashboard>
+</template>
+
+<script setup>
+import { SDashboardItem, SDashboard } from 'startup-ui';
+</script>
+```
+
+</div>
 
 ## Кастомный заголовок
 
-Если текста не достаточно, то для заголовка можно использовать слот:
+Если текста в свойстве `title` недостаточно, то для заголовка можно использовать слот `#title`:
 
 <div class="docs-container">
 <SDashboard>  
@@ -36,11 +57,30 @@
 </SDashboard>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'html'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+<SDashboard>  
+    <SDashboardItem>
+        <template #title>
+            Продажи <STooltip>Только с подписанными актами</STooltip>
+        </template>
+        Информация о продажах.
+  </SDashboardItem>
+</SDashboard>
+</template>
+
+<script setup>
+import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
+</script>
+```
+
+</div>
 
 ## Доп.элемент справа от заголовка
 
-Справа от заголовка часто бывает сподручно разместить дополнительную ссылку или что-то ещё. Сделать это можно в слоте #extra:
+Справа от заголовка часто бывает нужно разместить дополнительную ссылку или кнопку. Сделать это можно в слоте `#extra`:
 
 <div class="docs-container">
 <SDashboard>
@@ -53,11 +93,30 @@
 </SDashboard>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'html'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+<SDashboard>
+    <SDashboardItem title="Мой тариф">
+        <template #extra>
+            <a href="/docs/plans/">Как работают тарифы?</a>
+        </template>
+        Описание работы тарифов
+    </SDashboardItem>
+</SDashboard>
+</template>
+
+<script setup>
+import { SDashboardItem, SDashboard } from 'startup-ui';
+</script>
+```
+
+</div>
 
 ## Максимальная высота контента
 
-Иногда динамически генерируемый контент внутри SDashboardItem может превращаться в длинную простыню. Чтобы не занимать большое пространство подобным блоком, такой контент можно ограничить по высоте, и в случае превышения в блоке появится свой внутренний горизонтальный скролл.
+Иногда контент внутри `SDashboardItem` может превращаться в длинную простыню. Чтобы не занимать большое пространство, контент можно ограничить по высоте атрибутом `maxContentHeight`: появится внутренний скролл.
 
 <div class="docs-container">
 <SDashboard>
@@ -67,11 +126,27 @@
 </SDashboard>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'vue'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+<SDashboard>
+  <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
+    ...
+  </SDashboardItem>
+</SDashboard>
+</template>
+
+<script setup>
+import { SDashboardItem, SDashboard } from 'startup-ui';
+</script>
+```
+
+</div>
 
 ## Цвета
 
-По умолчанию блоки идут в самом светлом цвете акцента, но при необходимости можно использовать кастомные выделения цветом:
+По умолчанию блоки идут в светлом цвете акцента, но при необходимости можно использовать кастомные выделения цветом (булевы свойства):
 
 <div class="docs-container">
 <SDashboard>
@@ -82,124 +157,61 @@
 </SDashboard>
 </div>
 
-<CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+<SDashboard>
+  <SDashboardItem title="Обычный блок" />
+  <SDashboardItem gray title="Серый блок" />
+  <SDashboardItem green title="Зеленый блок" />
+  <SDashboardItem red title="Красный блок" />
+</SDashboard>
+</template>
+
+<script setup>
+import { SDashboardItem, SDashboard } from 'startup-ui';
+</script>
+```
+
+</div>
+
+## Интерфейс компонента SDashboard
+
+### Свойства (Props)
+
+_Нет свойств. Это просто контейнер для обертки и автоматического позиционирования (flex/grid)._
+
+## Интерфейс компонента SDashboardItem
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| title | string | undefined | Текстовый заголовок блока дашборда. |
+| maxContentHeight | string \| number | undefined | Фиксированная максимальная высота контента (например, `300` или `'300px'`). При переполнении появится скролл. |
+| gray | boolean | `false` | Применяет серый цвет фона. |
+| green | boolean | `false` | Применяет светло-зеленый цвет фона. |
+| red | boolean | `false` | Применяет светло-красный цвет фона. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Основное содержимое блока. |
+| title | Заменяет строковый заголовок (`title`) на кастомный HTML/компоненты. |
+| extra | Контейнер с правой стороны заголовка, полезен для ссылок или кнопок действий. |
 
 <script setup>
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SDashboard from '../../../../packages/startup-ui/src/components/SDashboard.vue';
 import SDashboardItem from '../../../../packages/startup-ui/src/components/SDashboardItem.vue';
 import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const code1 = `<SDashboard>
-  <SDashboardItem title="Продажи">
-    Информация о продажах.
-  </SDashboardItem>
-  <SDashboardItem title="Списания за услуги">
-    Информация о стоимости услуг.
-  </SDashboardItem>
-</SDashboard>
-`;
-const fullCode1 = `<template>
-<SDashboard>
-  <SDashboardItem title="Продажи">
-    Информация о продажах.
-  </SDashboardItem>
-  <SDashboardItem title="Списания за услуги">
-    Информация о стоимости услуг.
-  </SDashboardItem>
-</SDashboard>
-</template>
-<script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
-<\/script>
-`;
-
-const code2 = `<SDashboardItem>
-    <template #title>
-        Продажи <STooltip>Только с подписанными актами</STooltip>
-    </template>
-    Информация о продажах.
-</SDashboardItem>
-`;
-const fullCode2 = `<template>
-<SDashboard>  
-    <SDashboardItem>
-        <template #title>
-            Продажи <STooltip>Только с подписанными актами</STooltip>
-        </template>
-        Информация о продажах.
-  </SDashboardItem>
-</SDashboard>
-</template>
-<script setup>
-import { SDashboardItem, SDashboard, STooltip} from 'startup-ui';
-<\/script>
-`;
-
-const code3 = `<SDashboard>
-    <SDashboardItem title="Мой тариф">
-        <template #extra>
-        <Link href="/docs/plans/">Как работают тарифы?</Link>
-        </template>
-        Описание работы тарифов
-    </SDashboardItem>
-</SDashboard>
-`;
-const fullCode3 = `<template>
-<SDashboard>
-    <SDashboardItem title="Мой тариф">
-        <template #extra>
-        <Link href="/docs/plans/">Как работают тарифы?</Link>
-        </template>
-        Описание работы тарифов
-    </SDashboardItem>
-</SDashboard>
-</template>
-<script setup>
-import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
-<\/script>
-`;
-
-const code4 = `<SDashboardItem title="Регистрации пользователей" :max-content-height="300">
-...
-</SDashboardItem>
-`;
-const fullCode4 = `<template>
-<SDashboard>
-  <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
-    ...
-  </SDashboardItem>
-</SDashboard>
-</template>
-<script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
-<\/script>
-`;
-
-const code5 = `<SDashboardItem title="Обычный блок" />
-<SDashboardItem gray title="Серый блок" />
-<SDashboardItem green title="Зеленый блок" />
-<SDashboardItem red title="Красный блок" />
-`;
-const fullCode5 = `<template>
-<SDashboard>
-  <SDashboardItem title="Обычный блок" />
-  <SDashboardItem gray title="Серый блок" />
-  <SDashboardItem green title="Зеленый блок" />
-  <SDashboardItem red title="Красный блок" />
-</SDashboard>
-</template>
-<script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
-<\/script>
-`;
-
 </script>
+
 <style lang="scss">
 .s-dashboard {
     color: var(--s-text);
     margin-bottom: 0;
 }
 </style>
-

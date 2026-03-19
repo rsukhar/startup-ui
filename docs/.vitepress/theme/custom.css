@@ -118,3 +118,26 @@ span {
 .s-toggle-body > ul:first-child {
     margin-top: 0;
 }
+
+div[class*="language-"] {
+    background-color: #0d1117 !important;
+    border-radius: var(--s-border-radius) !important;
+    margin-bottom: var(--s-base-margin) !important;
+}
+
+div[class*="language-"] pre {
+    padding: 16px 0px !important;
+    margin: 0 !important;
+    background-color: transparent !important;
+}
+
+div[class*="language-"] code {
+    font-size: 14px !important;
+    font-family: var(--vp-font-family-mono) !important;
+}
+
+.api-header {
+    margin-top: 40px !important;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--vp-c-divider);
+}

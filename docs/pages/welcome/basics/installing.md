@@ -18,7 +18,6 @@ Startup UI доступен в репозитории npm.
 
 <CustomCodeBlock :code="{text: code3, lang: 'js'}" />
 
-
 <script setup>
 import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';

@@ -35,41 +35,92 @@
     </SRadioGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+```vue
+<template>
+    <SRadioGroup v-model="type">
+        <SRadio value="bug">Ошибка</SRadio>
+        <SRadio value="question">Вопрос</SRadio>
+        <SRadio value="idea">Идея</SRadio>
+    </SRadioGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SRadio, SRadioGroup } from 'startup-ui';
+
+const type = ref(null);
+</script>
+```
 
 Модель будет принимать значение выбранного варианта: <code>{{ type }}</code>
 
 ## Динамический набор значений
 
-В предыдущем примере набор вариантов хардкодился в шаблоне, что удобно, когда набор значений относится к логическому уровню интерфейса. Но когда набор вариантов идет из базы данных или конфига, очень неудобно каждый раз формировать набор элементов через v-for, и вместо этого используем атрибут <strong>options</strong>.
+В предыдущем примере набор вариантов хардкодился в шаблоне, что удобно, когда набор значений относится к логическому уровню интерфейса. Но когда набор вариантов идет из базы данных или конфига, очень неудобно каждый раз формировать набор элементов через v-for, и вместо этого используем атрибут **options**.
 
 <div class="docs-container">
     <SRadioGroup v-model="typeSecond" :options="options" />
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+```vue
+<template>
+    <SRadioGroup v-model="type" :options="options" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SRadioGroup } from 'startup-ui';
+
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
+const type = ref(null);
+</script>
+```
 
 Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
 
 ## Кнопочный стиль
 
-Чтобы заменить стиль с кружочками на группу кнопок, добавляем атрибут <strong>buttons</strong>:
+Чтобы заменить стиль с кружочками на группу кнопок, добавляем атрибут **buttons**:
 
 <div class="docs-container">
     <SRadioGroup v-model="typeThird" :options="options" buttons />
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+```vue
+<template>
+    <SRadioGroup v-model="type" :options="options" buttons />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SRadioGroup } from 'startup-ui';
+
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
+const type = ref(null);
+</script>
+```
 
 ## Вертикальный список радио-кнопок
 
-Чтобы выводить группу радио-кнопок вертикальным списком, добавляем атрибут <strong>vertical</strong>:
+Чтобы выводить группу радио-кнопок вертикальным списком, добавляем атрибут **vertical**:
 
 <div class="docs-container">
     <SRadioGroup v-model="typeFourth" :options="options" vertical/>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'vue'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
+```vue
+<template>
+    <SRadioGroup v-model="type" :options="options" vertical />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SRadioGroup } from 'startup-ui';
+
+const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+const type = ref(null);
+</script>
+```
 
 ## Недоступное значение
 
@@ -83,7 +134,22 @@
     </SRadioGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code5, lang: 'js'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
+```vue
+<template>
+    <SRadioGroup v-model="type">
+        <SRadio value="bug" disabled>Ошибка</SRadio>
+        <SRadio value="question">Вопрос</SRadio>
+        <SRadio value="idea">Идея</SRadio>
+    </SRadioGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SRadioGroup, SRadio } from 'startup-ui';
+
+const type = ref(null);
+</script>
+```
 
 ## Нулевое значение (плейсхолдер)
 
@@ -93,7 +159,59 @@
     <SRadioGroup v-model="typeSixth" placeholder="Все" :options="options" />
 </div>
 
-<CustomCodeBlock :code="{text: code6, lang: 'vue'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
+```vue
+<template>
+    <SRadioGroup v-model="type" placeholder="Все" :options="types" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SRadioGroup } from 'startup-ui';
+
+const types = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
+const type = ref(null);
+</script>
+```
+
+## Интерфейс компонента SRadioGroup
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `any` | `undefined` | Выбранное значение. |
+| options | `Record \| Array` | `{}` | Список вариантов (объект `{value: title}` или массив `[[value, title]]`). |
+| buttons | `boolean` | `false` | Использовать стиль кнопок вместо кружочков. |
+| vertical | `boolean` | `false` | Расположение элементов в колонку. |
+| placeholder | `string` | `undefined` | Текст для «нулевого» варианта выбора (с пустым значением). |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Содержимое группы (обычно компоненты `SRadio`). |
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| change | `(value: any)` | Вызывается при изменении выбранного значения. |
+
+## Интерфейс компонента SRadio
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| value | `string \| number \| boolean` | - | **Обязательное.** Значение элемента. |
+| disabled | `boolean` | `false` | Отключает возможность выбора. |
+| labelClass | `string` | `undefined` | Кастомные CSS классы для лейбла. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Текст или HTML-содержимое лейбла радио-кнопки. |
 
 <script setup>
 import { ref } from 'vue';
@@ -101,7 +219,6 @@ import SRadioGroup from '../../../../packages/startup-ui/src/components/SRadioGr
 import SRadio from '../../../../packages/startup-ui/src/components/SRadio.vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
 
@@ -111,90 +228,10 @@ const typeThird = ref(null);
 const typeFourth = ref(null);
 const typeFifth = ref(null);
 const typeSixth = ref('');
-
-const code1 = `<SRadioGroup v-model="type">
-    <SRadio value="bug">Ошибка</SRadio>
-    <SRadio value="question">Вопрос</SRadio>
-    <SRadio value="idea">Идея</SRadio>
-</SRadioGroup>`;
-const fullCode1 = `<template>
-    <SRadioGroup v-model="type">
-        <SRadio value="bug">Ошибка</SRadio>
-        <SRadio value="question">Вопрос</SRadio>
-        <SRadio value="idea">Идея</SRadio>
-    </SRadioGroup>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SRadio, SRadioGroup } from 'startup-ui';
-
-const type = ref(null);
-<\/script>`;
-
-const code2 = `<SRadioGroup v-model="type" :options="options" />`;
-const fullCode2 = `<template>
-    <SRadioGroup v-model="type" :options="options" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-const type = ref(null);
-<\/script>`;
-
-const code3 = `<SRadioGroup v-model="type" :options="options" buttons />`;
-const fullCode3 = `<template>
-    <SRadioGroup v-model="type" :options="options" buttons />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-const type = ref(null);
-<\/script>`;
-
-const code4 = `<SRadioGroup v-model="type" :options="options" vertical />`;
-const fullCode4 = `<template>
-    <SRadioGroup v-model="type" :options="options" vertical />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-const type = ref(null);
-<\/script>`;
-
-const code5 = `<SRadioGroup v-model="type">
-    <SRadio value="bug" disabled>Ошибка</SRadio>
-    <SRadio value="question">Вопрос</SRadio>
-    <SRadio value="idea">Идея</SRadio>
-</SRadioGroup>`;
-const fullCode5 = `<template>
-    <SRadioGroup v-model="type">
-        <SRadio value="bug" disabled>Ошибка</SRadio>
-        <SRadio value="question">Вопрос</SRadio>
-        <SRadio value="idea">Идея</SRadio>
-    </SRadioGroup>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SRadioGroup, SRadio } from 'startup-ui';
-
-const type = ref(null);
-<\/script>`;
-
-const code6 = `<SRadioGroup v-model="type" placeholder="Все" :options="types" />`;
-const fullCode6 = `<template>
-    <SRadioGroup v-model="type" placeholder="Все" :options="types" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const types = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-const type = ref(null);
-<\/script>`;
 </script>
+
+<style lang="scss">
+.s-radio {
+    color: var(--s-text);
+}
+</style>

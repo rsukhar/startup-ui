@@ -1,52 +1,92 @@
 # SCanvas + SFooter
 
-Общий шаблон страницы.
+`SCanvas` — это основной компонент-обертка для макета приложения. Он структурирует страницу на шапку, подшапку, боковую панель и основную область контента, а также автоматически обрабатывает мобильную адаптивность (например, скрывает сайдбар за бургер-меню).
 
-## Базовый пример
+`SFooter` — простой контейнер для подвала страницы. Обычно он помещается в слот по умолчанию внутри `SCanvas`.
 
-<CustomCodeBlock :code="{text: code, lang: 'vue'}" :full-code="{text: fullcode, lang: 'vue'}" />
+## Базовый пример макета
 
-<script setup>
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
+Используйте предоставленные слоты для сборки архитектуры вашей страницы:
 
-const code = `<SCanvas>
-    <template #header>
-        Шапка
-    </template>
-    <template #subheader>
-        Второй блок шапки
-    </template>
-    <template #sidebar>
-        Боковой блок страницы
-    </template>
-    <template #content>
-        <slot />
-    </template>
-</SCanvas>
-<SFooter>
-    <div>&copy; suhar.ru, 2026. Все права защищены</div>
-</SFooter>`;
-const fullcode = `<template>
+```vue
+<template>
 <SCanvas>
+    <!-- Верхняя навигационная панель -->
     <template #header>
-        Шапка
+        <div class="logo">Мое Приложение</div>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/settings">Настройки</a>
+        </nav>
     </template>
+
+    <!-- Вторичная шапка (подшапка) -->
     <template #subheader>
-        Второй блок шапки
+        <div class="s-canvas-subheader-title">
+            Заголовок страницы
+        </div>
     </template>
+
+    <!-- Левая боковая панель -->
     <template #sidebar>
-        Боковой блок страницы
+        <ul>
+            <li>Пункт 1</li>
+            <li>Пункт 2</li>
+        </ul>
     </template>
+
+    <!-- Основной контент страницы -->
     <template #content>
-        <slot />
+        <p>Здесь располагается основной контент страницы или router-view.</p>
     </template>
+
+    <!-- Любой контент вне главной сетки (например, подвал SFooter) помещается в слот по умолчанию -->
+    <SFooter>
+        <div class="s-footer-h">
+            <div>&copy; suhar.ru, 2026. Все права защищены</div>
+            <div class="rights">
+                <a href="/privacy">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </SFooter>
 </SCanvas>
-<SFooter>
-    <div>&copy; suhar.ru, 2026. Все права защищены</div>
-</SFooter>
 </template>
+
 <script setup>
 import { SCanvas, SFooter } from 'startup-ui';
-<\/script>`;
-
 </script>
+```
+
+## Утилиты SFooter
+
+У компонента `SFooter` нет собственных свойств, но его CSS включает класс `.s-footer-h`, специально созданный для центрирования контента с максимальной шириной (`1200px`):
+
+```vue
+<SFooter>
+    <div class="s-footer-h">
+        <!-- Контент будет центрирован с max-width и отступами (gap) -->
+        <div>Колонка 1</div>
+        <div>Колонка 2</div>
+    </div>
+</SFooter>
+```
+
+## Интерфейс компонента SCanvas
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| header | Самая верхняя навигационная панель. Элементы с классом `.right` будут выровнены по правому краю на десктопе. |
+| subheader | Вторичная шапка под основной. Часто используется для хлебных крошек или подзаголовка. |
+| sidebar | Левая боковая панель навигации. На мобильных устройствах по умолчанию скрыта и доступна через бургер-меню. |
+| content | Основная область для контента страницы. Занимает оставшееся пространство рядом с сайдбаром. |
+| default | Рендерится между подшапкой и блоками `sidebar`/`content`. Часто используется для плашек (alerts) на всю ширину или для размещения `SFooter` в низу интерфейса. |
+
+## Интерфейс компонента SFooter
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Содержимое подвала (футера). |

@@ -1,5 +1,9 @@
 import { defineConfig } from 'vitepress'
-import path from 'path'
+import path from 'node:path'
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -115,23 +119,37 @@ export default defineConfig({
     vite: {
         plugins: [
             {
+                name: 'middleware',
+                configureServer(server) {
+                    server.middlewares.use((req, res, next) => {
+                        if (req.url?.endsWith('.html')) {
+                            const newUrl = req.url.slice(0, -5);
+                            res.statusCode = 301;
+                            res.setHeader('Location', newUrl);
+                            res.end();
+                            return;
+                        }
+                        next();
+                    });
+                }
+            },
+            {
                 name: 'llm-md-proxy',
                 configureServer(server) {
                     server.middlewares.use((req, res, next) => {
-                        const [urlPath, query] = (req as any).url?.split('?') || [];
-                        
-                        // Прозрачная подмена /pages/components/.../name.md -> /llms/components/.../name.md
-                        // Делаем это только если нет query params (т.е. это не внутренний запрос Vite/Vue)
-                        if (!query && urlPath && urlPath.startsWith('/pages/components/') && urlPath.endsWith('.md')) {
-                            const categories = ['forms', 'data', 'interfaces', 'template'];
-                            for (const cat of categories) {
-                                if (urlPath.includes(`/${cat}/`)) {
-                                    (req as any).url = urlPath.replace('/pages/components/', '/llms/components/');
-                                    break;
-                                }
+                        const url = req.url || '';
+                        if (url.endsWith('.md')) {
+                            // Путь к компонентам: docs/pages/components/...
+                            // Запрос обычно вида /pages/components/...
+                            const cleanPath = url.split('?')[0];
+                            const fullPath = path.join(server.config.root, cleanPath);
+
+                            if (fs.existsSync(fullPath)) {
+                                res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+                                res.end(fs.readFileSync(fullPath));
+                                return;
                             }
                         }
-                        
                         next();
                     });
                 }
@@ -141,10 +159,12 @@ export default defineConfig({
             preprocessorOptions: {
                 scss: {
                         // Этот код подключает SCSS-миксины, переменные и т.д. во все <style lang="scss">
-                        additionalData: `                        @use "${path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
-                        @use "${path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../packages/startup-ui/src/styles/variables.scss')}" as *;
-                        `                    }
+                        additionalData: `
+                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
+                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/variables.scss')}" as *;
+                        `
+                }
             }
         }
-    },
+    }
 })

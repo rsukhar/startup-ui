@@ -11,31 +11,51 @@
 
 ## Базовый пример
 
-<SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
+Используйте проп `percentage` (число от 0 до 100) для установки прогресса. Текст-пояснение передается через основной слот:
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+<div class="docs-container" style="display: block">
+    <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
+</div>
+
+<div v-pre>
+
+```vue
+<template>
+    <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SProgressBar } from 'startup-ui';
+
+const readyPercentage = ref(50);
+</script>
+```
+
+</div>
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| percentage | number | undefined | Обязательный. Текущее значение прогресса от 0 до 100. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Текстовая метка, отображаемая рядом с полосой прогресса (например, «Обновляем проект...»). |
 
 <script setup>
 import { ref } from 'vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SProgressBar from '../../../../packages/startup-ui/src/components/SProgressbar.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const readyPercentage = ref(50);
-
-const code1= `<SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
-`;
-const fullCode1 = `<template>
-    <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
-</template>
-<script setup>
-import { ref } from 'vue'; 
-import { SProgressBar } from 'startup-ui';
-
-const readyPercentage = ref(50);
-<\/script>
-`; 
 </script>
+
 <style lang="scss">
 .s-progressbar {
     color: var(--s-text);

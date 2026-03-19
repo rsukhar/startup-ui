@@ -1,48 +1,81 @@
 # STooltip
 
-Иконка вопроса со всплывающе/й подсказкой.
+Иконка вопроса со всплывающей подсказкой.
 
 <SToggle title="В чем отличие от аналогов?">
     <p>В отличие от популярных библиотек компонентов для Vue3:</p>
     <ol>
-        <li>Текст подсказки в слоте, так что там можно размещать html-контент и ссылки на расширенную информацию.</li>
+        <li>Текст подсказки в слоте, так что там можно размещать HTML-контент и ссылки на расширенную информацию.</li>
         <li>Событийная логика сделана так, что мышку можно перевести с иконки на текст подсказки и кликнуть по ссылке, которая в ней.</li>
     </ol>
 </SToggle>
 
 ## Базовый пример
 
+Текст подсказки передается в основной слот компонента:
+
 <div class="docs-container" style="display:block;">
 Показы
 <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    Показы 
+    <STooltip>
+        Кол-во показов поискового сниппета. 
+        Данные из вебмастера за последний день, когда они есть для запроса
+    </STooltip>
+</template>
+```
+
+</div>
 
 ## Фиксированное положение
 
-По умолчанию положение подсказки выбирается исходя из того, где эта подсказка уместится на экране. Но если нужно указать положение явно, можно использовать атрибут `at`:
+По умолчанию положение подсказки выбирается автоматически исходя из свободного места на экране. Чтобы указать положение явно, используйте атрибут `at`:
 
-<div class="docs-container">
-    <div>Подсказка сверху <STooltip at="top">Подсказка сверху</STooltip></div>
-    <div>Подсказка слева <STooltip at="left">Подсказка слева</STooltip></div>
-    <div>Подсказка справа <STooltip at="right">Подсказка справа</STooltip></div>
-    <div>Подсказка снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
+<div class="docs-container" style="gap: 20px">
+    <div>Сверху <STooltip at="top">Подсказка сверху</STooltip></div>
+    <div>Справа <STooltip at="right">Подсказка справа</STooltip></div>
+    <div>Снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
+    <div>Слева <STooltip at="left">Подсказка слева</STooltip></div>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <STooltip at="top">Подсказка сверху</STooltip>
+    <STooltip at="right">Подсказка справа</STooltip>
+    <STooltip at="bottom">Подсказка снизу</STooltip>
+    <STooltip at="left">Подсказка слева</STooltip>
+</template>
+```
+
+</div>
 
 ## Кастомная иконка
 
-Если нужна другая иконка, то её можно заменить атрибутом icon:
+Если нужна другая иконка, её можно заменить атрибутом `icon`:
 
 <div class="docs-container">
-    <div>Подсказка с другой иконкой <STooltip icon="circle-info">Подсказка с другой иконкой</STooltip></div>
+    <div>Подсказка с другой иконкой <STooltip icon="circle-info">Используем иконку circle-info</STooltip></div>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+<div v-pre>
 
-Если нужна совсем нестандартная иконка/область наведения, то можно использовать слот icon:
+```vue
+<template>
+    <STooltip icon="circle-info">Используем иконку circle-info</STooltip>
+</template>
+```
+
+</div>
+
+Для совсем нестандартных триггеров (эмодзи, текст, другие компоненты) используйте слот `#icon`:
 
 <div class="docs-container">
     <STooltip>
@@ -51,71 +84,40 @@
     </STooltip>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <STooltip>
+        <template #icon>❓</template>
+        Используем в качестве иконки эмодзи
+    </STooltip>
+</template>
+```
+
+</div>
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| at | `'top'` \| `'bottom'` \| `'right'` \| `'left'` \| `null` | `null` | Принудительно задает положение подсказки. По умолчанию рассчитывается автоматически. |
+| icon | string \| string[] | `'circle-question'` | Имя иконки FontAwesome для триггера подсказки. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Содержимое внутри пузыря подсказки. Поддерживает HTML. |
+| icon | Переопределяет стандартную иконку FontAwesome. Позволяет разместить эмодзи, текст или кастомные элементы. |
 
 <script setup>
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const code1 = `Показы <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
-`;
-const fullCode1 = `<template>
-<p>
-Показы <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
-</p>
-</template>
-<script setup>
-import STooltip from 'startup-ui';
-<\/script>
-`;
-
-const code2 = `<div>Подсказка сверху <STooltip at="top">Подсказка сверху</STooltip></div>
-<div>Подсказка справа <STooltip at="right">Подсказка справа</STooltip></div>
-<div>Подсказка снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
-<div>Подсказка слева <STooltip at="left">Подсказка слева</STooltip></div>
-`;
-const fullCode2 = `<template>
-    <div>Подсказка сверху <STooltip at="top">Подсказка сверху</STooltip></div>
-    <div>Подсказка справа <STooltip at="right">Подсказка справа</STooltip></div>
-    <div>Подсказка снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
-    <div>Подсказка слева <STooltip at="left">Подсказка слева</STooltip></div>
-</template>
-<script setup>
-import { STooltip } from 'startup-ui';
-<\/script>
-`;
-
-const code3 = `<div>Подсказка с другой иконкой <STooltip icon="circle-info">Подсказка с другой иконкой</STooltip></div>
-`;
-const fullCode3 = `<template>
-<div>Подсказка с другой иконкой <STooltip icon="circle-info">Подсказка с другой иконкой</STooltip></div>
-</template>
-<script setup>
-import { STooltip } from 'startup-ui';
-<\/script>
-`;
-
-const code4 = `<div>Подсказка с другой иконкой 
-    <STooltip>
-        <template #icon>❓</template>
-        Используем в качестве иконки эмодзи
-    </STooltip>
-</div>
-`;
-const fullCode4 = `<template>
-<div>Подсказка с другой иконкой 
-    <STooltip>
-        <template #icon>❓</template>
-        Используем в качестве иконки эмодзи
-    </STooltip>
-</div>
-</template>
-<script setup>
-import { STooltip } from 'startup-ui';
-<\/script>
-`;
 </script>
+
 <style lang="scss" scoped>
 .s-tooltip {
     font-family: 'Open Sans', sans-serif;
