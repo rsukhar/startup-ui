@@ -6,43 +6,45 @@
 
 Startup UI доступен в репозитории npm.
 
-<CustomCodeBlock :code="{text: code, lang: 'sh'}" />
+```sh
+# Если используете npm
+npm install startup-ui
+
+# Если используете yarn
+yarn add startup-ui
+```
 
 ## Подключаем стили
 
-<CustomCodeBlock :code="{text: code2, lang: 'js'}" />
+```js
+// app.js
+import 'startup-ui/dist/index.css';
+```
 
 ## Добавляем первый компонент
 
 Чтобы убедиться, что всё работает, добавляем любой компонент в SFC-шаблон:
 
-<CustomCodeBlock :code="{text: code3, lang: 'js'}" />
+<div v-pre>
 
-
-<script setup>
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
-
-const code = `# Если используете npm
-npm install startup-ui
-
-# Если используете yarn
-yarn add startup-ui`;
-
-const code2 = `// app.js
-import 'startup-ui/dist/index.css';`;
-
-const code3 = `// Index.vue
+```vue
+// Index.vue
 <template>
     <SButton>Все работает!</SButton>
 </template>
 <script setup>
 import { SButton } from 'startup-ui';
-<\/script>`;
 </script>
+```
+
+</div>
 
 Должна появиться кнопка:
 
 <div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
     <SButton>Все работает!</SButton>
 </div>
+
+<script setup>
+import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
+</script>

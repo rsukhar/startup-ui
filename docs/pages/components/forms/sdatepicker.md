@@ -28,7 +28,18 @@
     <SDatePicker v-model="value" />
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+```vue
+<template>
+    <SDatePicker v-model="value" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
+
+const value = ref(null);
+</script>
+```
 
 Выбирает значение в формате `YYYY-MM-DD`. Текущее значение: <code>{{ value ?? 'null' }}</code>
 
@@ -38,7 +49,20 @@
     <SDatePicker v-model="valueSecond" :min="minDate" :max="maxDate" />
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+```vue
+<template>
+    <SDatePicker v-model="value" :min="minDate" :max="maxDate" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
+
+const minDate = '2025-01-01'; // Пример
+const maxDate = '2025-12-31'; // Пример
+const value = ref(null);
+</script>
+```
 
 ## Кастомный формат значения
 
@@ -46,7 +70,18 @@
     <SDatePicker v-model="valueThird" value-format="YYYYMMDD" />
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+```vue
+<template>
+    <SDatePicker v-model="value" value-format="YYYYMMDD" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
+
+const value = ref(null);
+</script>
+```
 
 Текущее значение: <code>{{ valueThird ?? 'null' }}</code>
 
@@ -54,13 +89,24 @@
 
 ## Выбор периода
 
-Для выбора периода добавляем атрибут <strong>range</strong>:
+Для выбора периода добавляем атрибут **range**:
 
 <div class="docs-container">
     <SDatePicker range v-model="valueFourth" value-format="YYYYMMDD" />
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
+```vue
+<template>
+    <SDatePicker range v-model="value" value-format="YYYYMMDD" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
+
+const value = ref([]);
+</script>
+```
 
 В модель подставляется массив из двух дат в формате, указанном в <strong>value-format</strong>. Текущее значение: <code>{{ valueFourth ?? 'null' }}</code>
 
@@ -72,7 +118,22 @@
     <SDatePicker range v-model="valueFifth" value-format="YYYYMMDD" :buttons="buttons" />
 </div>
 
-<CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
+```vue
+<template>
+    <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
+
+const value = ref([]);
+const buttons = {
+  '2 недели': '20250901-20250914',
+  'Месяц': '20250815-20250914',
+};
+</script>
+```
 
 Набор доступных кнопок задается в формате <code>{title: value.join('-')}</code>, например: <code>{"2 недели": "20250901-20250914", "Месяц": "20250815-20250914"}</code>
 
@@ -80,33 +141,60 @@
 
 ## Выбор времени
 
-Чтобы выбирать время, добавляем атрибут <strong>with-time</strong>. При этом, выходное значение будет в формате <strong>2025-12-22 12:27</strong>:  
+Чтобы выбирать время, добавляем атрибут <strong>with-time</strong>. При этом, выходное значение будет в формате <strong>2025-12-22 12:27</strong>:
+
 <div class="docs-container">
     <SDatePicker with-time v-model="valueSixth" value-format="YYYYMMDD HH:mm" />
 </div>
 
-<CustomCodeBlock :code="{text: code6, lang: 'vue'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
+```vue
+<template>
+    <SDatePicker with-time v-model="value" />
+</template>
 
-Дополнительно в формате можно дописывать <strong>HH:mm</strong> , чтобы там было время:
-<CustomCodeBlock :code="{text: code62, lang: 'vue'}" :fullCode="{text: fullCode62, lang: 'vue'}" />
+<script setup>
+import { ref } from 'vue';
+import { SDatePicker } from 'startup-ui';
 
+const value = ref(null);
+</script>
+```
+
+Дополнительно в формате можно дописывать **HH:mm**, чтобы там было время:
+
+```vue
+<SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />
+```
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `string \| string[]` | `null` | Выбранное значение (строка для одиночного выбора, массив для диапазона). |
+| range | `boolean` | `false` | Режим выбора периода (диапазона дат). |
+| value-format | `string` | `'YYYY-MM-DD'` | Формат значения в модели. Если `with-time` включен, по умолчанию `'YYYY-MM-DD HH:mm'`. |
+| input-format | `string` | `'DD.MM.YYYY'` | Формат отображения даты в текстовом поле. |
+| min | `string` | `undefined` | Минимально допустимая дата (в формате `YYYY-MM-DD`). |
+| max | `string` | `undefined` | Максимально допустимая дата (в формате `YYYY-MM-DD`). |
+| number-of-months | `number` | `1 \| 2` | Количество отображаемых месяцев в календаре (по умолчанию 2 для `range`, иначе 1). |
+| buttons | `Record<string, string>` | `undefined` | Набор кнопок быстрого выбора диапазона (`{ название: 'date1-date2' }`). |
+| with-time | `boolean` | `false` | Позволяет выбирать время (часы и минуты). Только для одиночного выбора. |
+| week-day-names | `string[]` | `['Пн', ..., 'Вс']` | Названия дней недели. |
+| month-names | `string[]` | `['Январь', ..., 'Декабрь']` | Названия месяцев. |
 
 <script setup>
 import { ref } from 'vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SDatePicker from '../../../../packages/startup-ui/src/components/SDatePicker.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
 
 function toDateString(date) {
   return date.toISOString().split('T')[0];
 }
 
 let minDate = new Date();
-
-// Сегодня + 5 дней
 let maxDate = new Date(minDate);
 maxDate.setDate(minDate.getDate() + 5);
 
@@ -124,87 +212,8 @@ const buttons = {
   '2 недели': '20250901-20250914',
   'Месяц': '20250815-20250914',
 };
-
-const code1 = `<SDatePicker v-model="value" />
-`;
-const fullCode1 = `<template>
-    <SDatePicker v-model="value" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-<\/script>
-`;
-
-const code2 = `<SDatePicker v-model="value" min="${minDate}" max="${maxDate}" />
-`;
-const fullCode2 = `<template>
-    <SDatePicker v-model="value" min="${minDate}" max="${maxDate}" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-<\/script>
-`;
-
-const code3 = `<SDatePicker v-model="value" value-format="YYYYMMDD" />`;
-const fullCode3 = `<template>
-    <SDatePicker v-model="value" value-format="YYYYMMDD" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-<\/script>`;
-
-const code4 = `<SDatePicker range v-model="value" value-format="YYYYMMDD" />`;
-const fullCode4 = `<template>
-    <SDatePicker range v-model="value" value-format="YYYYMMDD" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-<\/script>
-`;
-
-const code5 = `<SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />`;
-const fullCode5 = `<template>
-    <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-
-const buttons = {
-  '2 недели': '20250901-20250914',
-  'Месяц': '20250815-20250914',
-};
-<\/script>
-`;
-
-const code6 = `<SDatePicker with-time v-model="value" />`;
-const fullCode6 = `<template>
-    <SDatePicker with-time v-model="value" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-<\/script>`;
-
-const code62 = `<SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />`;
-
 </script>
+
 <style lang="scss" scoped>
 .s-datepicker {
     color: var(--s-text);

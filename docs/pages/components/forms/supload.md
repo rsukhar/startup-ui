@@ -26,7 +26,24 @@
     <SButton v-if="screenshot1" @click="submit">Отправить</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+```vue
+<template>
+    <SUpload v-model="screenshot" />
+    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SUpload, SButton, SAlert } from 'startup-ui';
+
+const screenshot = ref(null);
+
+const submit = () => {
+    // Логика отправки
+    SAlert.success('Файл отправлен');
+}
+</script>
+```
 
 ## Авто-отправка при выборе
 
@@ -36,7 +53,22 @@
     <SUpload v-model="screenshot2" @select="submit" />
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+```vue
+<template>
+    <SUpload v-model="screenshot" @select="submit" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SUpload, SAlert } from 'startup-ui';
+
+const screenshot = ref(null);
+
+const submit = () => {
+    SAlert.success('Файл отправлен');
+}
+</script>
+```
 
 ## Кастомный текст кнопки
 
@@ -47,7 +79,11 @@
     <SButton v-if="screenshot3" @click="submit">Отправить</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'html'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+```vue
+<template>
+    <SUpload v-model="screenshot" upload-button-title="Выбрать скриншот" />
+</template>
+```
 
 ## Кастомный шаблон
 
@@ -60,186 +96,30 @@
             </div>
         </template>
         <template #preview="{ files, remove }">
-            <div v-if="files">
-                Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
+            <div v-if="files && files.length">
+                Файл выбран <SActionIcon @click="remove(files[0])" icon="trash" />
             </div>
         </template>
     </SUpload>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'html'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
-
-Слоты сразу пробрасывают методы и переменные, которые могут быть полезны в собственных шаблонах:
-
-<ul>
-    <li>В слоте кнопки выбора <strong>#header</strong>: <strong>choose()</strong> открывает окно выбора файла, <strong>clear()</strong> очищает набор выбранных файлов, <strong>files</strong> — список текущих выбранных файлов, <strong>isDragging</strong> — булево значение, равное true, когда над компонентом перемещают файл.</li>
-    <li>В слоте предпросмотра выбранных файлов <strong>#preview</strong>: <strong>files</strong> — список текущих выбранных файлов, <strong>remove(index)</strong> — удаление определенного файла по индексу.</li>
-</ul>
-
-## Ограничения выбора
-
-Для ограничения выбора по расширению добавляем атрибут <strong>accept</strong>:
-
-<div class="docs-container">
-    <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot5" />
-    <SButton v-if="screenshot5" @click="submit">Отправить</SButton>
-</div>
-
-<CustomCodeBlock :code="{text: code5, lang: 'vue'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
-
-Для ограничения выбора по размеру файла добавляем атрибут <strong>max-file-size</strong> (в байтах):
-
-<div class="docs-container">
-    <SUpload :max-file-size="512000" v-model="screenshot6" />
-    <SButton v-if="screenshot6" @click="submit">Отправить</SButton>
-</div>
-
-<CustomCodeBlock :code="{text: code6, lang: 'vue'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
-
-## Выбор нескольких файлов
-
-<div class="docs-container">
-    <SUpload multiple v-model="screenshot7" />
-    <SButton v-if="screenshot7.length" @click="submit">Отправить</SButton>
-</div>
-
-<CustomCodeBlock :code="{text: code7, lang: 'vue'}" :fullCode="{text: fullCode7, lang: 'vue'}" />
-
-<script setup>
-import { ref } from 'vue'; 
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SUpload from '../../../../packages/startup-ui/src/components/SUpload.vue';
-import SActionIcon from '../../../../packages/startup-ui/src/components/SActionIcon.vue';
-import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
-import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
-const screenshot1 = ref('');
-const screenshot2 = ref('');
-const screenshot3 = ref('');
-const screenshot4 = ref('');
-const screenshot5 = ref('');
-const screenshot6 = ref('');
-const screenshot7 = ref([]);
-
-function submit(screenshot) {
-    SAlert.success('Файл отправлен');
-    screenshot1.value = '';
-    screenshot2.value = '';
-    screenshot3.value = '';
-    screenshot4.value = '';
-    screenshot5.value = '';
-    screenshot6.value = '';
-    screenshot7.value = [];
-}
-
-const showSubmitButton = ref(false);
-
-
-
-const code1 = `<SUpload v-model="screenshot" />`;
-const fullCode1 = `<template>
-    <SUpload v-model="screenshot" />
-    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SButton, SAlert } from 'startup-ui';
-
-const screenshot = ref('');
-
-const submit = () => {
-    router.post(\`/photos\`,  { screenshot: screenshot.value }, {
-        replace: false,
-        preserveState: true,
-        onError: (error) => console.error(error),
-        onSuccess: () => SAlert.success('Файл отправлен'),
-    });
-}
-<\/script>`;
-
-const code2 = `<SUpload v-model="screenshot" @select="submit" />`;
-const fullCode2 = `<template>
-    <SUpload v-model="screenshot" @select="submit" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SButton, SAlert } from 'startup-ui';
-
-const screenshot = ref('');
-
-const submit = () => {
-    router.post(\`/photos\`,  { screenshot: screenshot.value }, {
-        replace: false,
-        preserveState: true,
-        onError: (error) => console.error(error),
-        onSuccess: () => SAlert.success('Файл отправлен'),
-    });
-}
-<\/script>`;
-
-const code3 = `<SUpload v-model="screenshot" upload-button-title="Выбрать скриншот" />`;
-const fullCode3 = `<template>
-    <SUpload v-model="screenshot" upload-button-title="Выбрать скриншот" />
-    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SActionIcon, SAlert } from 'startup-ui';
-
-const screenshot = ref('');
-
-const submit = () => {
-    router.post(\`/photos\`,  { screenshot: screenshot.value }, {
-        replace: false,
-        preserveState: true,
-        onError: (error) => console.error(error),
-        onSuccess: () => SAlert.success('Файл отправлен'),
-    });
-}
-<\/script>`;
-
-const code4 = ` <SUpload v-model="screenshot">
-    <template #header="{ choose, clear, files, isDragging }">
-        <div class="s-upload-area" :class="{'dragging': isDragging}">
-            <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
-            <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
-        </div>
-    </template>
-    <template #preview="{ files, remove }">
-        <div v-if="files">
-            Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
-        </div>
-    </template>
-</SUpload>
-`;
-const fullCode4 = `<template>
+```vue
+<template>
     <SUpload v-model="screenshot">
-    <template #header="{ choose, clear, files, isDragging }">
-        <div class="s-upload-area" :class="{'dragging': isDragging}">
-            <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
-            <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
-        </div>
-    </template>
-    <template #preview="{ files, remove }">
-        <div v-if="files">
-            Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
-        </div>
-    </template>
-</SUpload>
+        <template #header="{ choose, clear, files, isDragging }">
+            <div class="s-upload-area" :class="{'dragging': isDragging}">
+                <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
+                <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
+            </div>
+        </template>
+        <template #preview="{ files, remove }">
+            <div v-if="files && files.length">
+                Файл выбран <SActionIcon @click="remove(files[0])" icon="trash" />
+            </div>
+        </template>
+    </SUpload>
 </template>
-<script setup>
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SActionIcon, SAlert } from 'startup-ui';
 
-const screenshot = ref('');
-<\/script>
 <style lang="scss">
 .s-upload-area {
     border: 1px dashed var(--s-border);
@@ -260,77 +140,115 @@ const screenshot = ref('');
         border-color: var(--s-primary);
     }
 }
-<\/style>
-`;
+</style>
+```
 
-const code5 = `<SUpload accept=".txt,.csv,.xlsx" v-model="screenshot"/>`;
-const fullCode5 = `<template>
-    <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot"/>
-    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SButton, SAlert } from 'startup-ui';
+Слоты сразу пробрасывают методы и переменные, которые могут быть полезны в собственных шаблонах:
 
-const screenshot = ref('');
+<ul>
+    <li>В слоте кнопки выбора <strong>#header</strong>: <strong>choose()</strong> открывает окно выбора файла, <strong>clear()</strong> очищает набор выбранных файлов, <strong>files</strong> — список текущих выбранных файлов, <strong>isDragging</strong> — булево значение, равное true, когда над компонентом перемещают файл.</li>
+    <li>В слоте предпросмотра выбранных файлов <strong>#preview</strong>: <strong>files</strong> — список текущих выбранных файлов, <strong>remove(index)</strong> — удаление определенного файла по индексу.</li>
+</ul>
 
-const submit = () => {
-    router.post(\`/photos\`,  { screenshot: screenshot.value }, {
-        replace: false,
-        preserveState: true,
-        onError: (error) => console.error(error),
-        onSuccess: () => SAlert.success('Файл отправлен'),
-    });
-}
-<//script>`;
+## Ограничения выбора
 
-const code6 = `<SUpload :max-file-size="512000" />`;
-const fullCode6 = `<template>
-    <div class="docs-container">
-        <SUpload :max-file-size="512000" />
-        <SButton v-if="screenshot" @click="submit">Отправить</SButton>
-    </div>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SButton, SAlert } from 'startup-ui';
+Для ограничения выбора по расширению добавляем атрибут <strong>accept</strong>:
 
-const screenshot = ref('');
+<div class="docs-container">
+    <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot5" />
+    <SButton v-if="screenshot5" @click="submit">Отправить</SButton>
+</div>
 
-const submit = () => {
-    router.post(\`/photos\`,  { screenshot: screenshot.value }, {
-        replace: false,
-        preserveState: true,
-        onError: (error) => console.error(error),
-        onSuccess: () => SAlert.success('Файл отправлен'),
-    });
-}
-<//script>`;
+```vue
+<SUpload accept=".txt,.csv,.xlsx" v-model="screenshot" />
+```
 
-const code7 = `<SUpload multiple v-model="screenshots" />`;
-const fullCode7 = `<template>
+Для ограничения выбора по размеру файла добавляем атрибут <strong>max-file-size</strong> (в байтах):
+
+<div class="docs-container">
+    <SUpload :max-file-size="512000" v-model="screenshot6" />
+    <SButton v-if="screenshot6" @click="submit">Отправить</SButton>
+</div>
+
+```vue
+<SUpload :max-file-size="512000" v-model="screenshot" />
+```
+
+## Выбор нескольких файлов
+
+<div class="docs-container">
+    <SUpload multiple v-model="screenshot7" />
+    <SButton v-if="screenshot7 && screenshot7.length" @click="submit">Отправить</SButton>
+</div>
+
+```vue
+<template>
     <SUpload multiple v-model="screenshots" />
-    <SButton v-if="screenshots.length" @click="submit">Отправить</SButton>
 </template>
+
 <script setup>
 import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
-import { SUpload, SButton, SAlert } from 'startup-ui';
-
-const screenshot = ref([]);
-
-const submit = () => {
-    router.post(\`/photos\`,  { screenshot: screenshot.value }, {
-        replace: false,
-        preserveState: true,
-        onError: (error) => console.error(error),
-        onSuccess: () => SAlert.success('Файл отправлен'),
-    });
-}
-<\/script>`;
+const screenshots = ref([]);
 </script>
+```
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `any \| any[]` | `null` | Выбранный файл (объект File или строка) или массив файлов. |
+| accept | `string` | `undefined` | Допустимые типы файлов (напр. `.jpg,.png`). |
+| max-file-size | `number` | `undefined` | Максимальный размер файла в байтах. |
+| multiple | `boolean` | `false` | Позволяет выбирать несколько файлов. |
+| upload-button-title | `string` | `'Выбрать файл(ы)'` | Текст на кнопке выбора (если не используется слот `header`). |
+
+### Слоты (Slots)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| header | `{ choose, clear, files, isDragging }` | Кастомная область выбора (триггер). |
+| preview | `{ files, remove }` | Кастомная область предпросмотра выбранных файлов. |
+| default | - | Содержимое под списком файлов. |
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| select | `value` | Вызывается при выборе файлов. |
+| clear | - | Вызывается при полной очистке списка. |
+
+<script setup>
+import { ref } from 'vue'; 
+import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
+import SUpload from '../../../../packages/startup-ui/src/components/SUpload.vue';
+import SActionIcon from '../../../../packages/startup-ui/src/components/SActionIcon.vue';
+import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
+import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+const screenshot1 = ref(null);
+const screenshot2 = ref(null);
+const screenshot3 = ref(null);
+const screenshot4 = ref(null);
+const screenshot5 = ref(null);
+const screenshot6 = ref(null);
+const screenshot7 = ref([]);
+
+function submit() {
+    SAlert.success('Файл отправлен');
+    screenshot1.value = null;
+    screenshot2.value = null;
+    screenshot3.value = null;
+    screenshot4.value = null;
+    screenshot5.value = null;
+    screenshot6.value = null;
+    screenshot7.value = [];
+}
+</script>
+
 <style lang="scss">
 .s-upload-area {
     border: 1px dashed var(--s-border);

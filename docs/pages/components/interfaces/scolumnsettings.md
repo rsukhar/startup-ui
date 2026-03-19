@@ -4,7 +4,6 @@
 
 ## Базовый пример
 
-
 <div class="s-columnsettingspage-container">
 <SColumnSettings v-model="tableColumns" :options="availableColumns"/>
 </div>
@@ -30,7 +29,61 @@
         </template>
     </STable>
 </div>
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+
+<div v-pre>
+
+```vue
+<template>
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+        <SColumnSettings v-model="tableColumns" :options="availableColumns" />
+    </div>
+
+    <STable :data="users">
+        <template #header>
+            <td>Пользователь</td>
+            <template v-for="tableColumn in tableColumns" :key="tableColumn">
+                <td class="center">{{ availableColumns[tableColumn] }}</td>
+            </template>
+            <td></td>
+        </template>
+        <template #row="{ row }">
+            <td>{{ row.username }}</td>
+            <template v-for="tableColumn in tableColumns" :key="tableColumn">
+                <td class="center">{{ row[tableColumn] }}</td>
+            </template>
+            <td class="right">
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`" 
+                    @click="deleteUser(row.username)" icon="trash" danger />
+            </td>
+        </template>
+    </STable>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue';
+import { STable, SActionIcon, SColumnSettings } from 'startup-ui';
+
+const users = ref([
+    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000 },
+    { "username": "Petrov", "role": "admin", "plan": "Расширенный", "balance": 4500 }
+]);
+
+function deleteUser(username) {
+    users.value = users.value.filter(user => user.username !== username);
+}
+
+const initialColumns = {
+    'plan': 'Тариф',
+    'balance': 'Баланс',
+    'role': 'Роль'
+};
+
+const availableColumns = computed(() => initialColumns);
+const tableColumns = ref(Object.keys(initialColumns));
+</script>
+```
+
+</div>
 
 ## Сброс колонок до значений по умолчанию
 
@@ -61,11 +114,39 @@
         </template>
     </STable>
 </div>
-<CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+
+<div v-pre>
+
+```vue
+<template>
+    <SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets"/>
+</template>
+
+<script setup>
+const columnPresets = [{
+    title: 'Стандартные колонки',
+    columns: [ 'plan', 'balance', 'role', 'created_at'],
+}];
+</script>
+```
+
+</div>
 
 Когда набор полей всего один, по умолчанию в футере выпадающего списка выводится строка «Сбросить изменения», когда несколько — выводится название каждого набора. Это повдение можно изменить с помощью слота <strong>setpreset</strong>:
 
-<CustomCodeBlock :code="{text: code22, lang: 'vue'}" :fullCode="{text: fullCode22, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets">
+        <template #setpreset="{ preset }">
+            <FontAwesomeIcon icon="rotate-left" /> Сбросить на {{ preset.title }}
+        </template>
+    </SColumnSettings>
+</template>
+```
+
+</div>
 
 ## Постоянные колонки
 
@@ -96,7 +177,38 @@
         </template>
     </STable>
 </div>
-<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+
+<div v-pre>
+
+```vue
+<template>
+    <SColumnSettings 
+        v-model="tableColumns" 
+        :options="availableColumns" 
+        :permanent-columns="['role']" 
+    />
+</template>
+```
+
+</div>
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| modelValue / v-model | `string[]` | `[]` | Массив ключей активных колонок. |
+| options | `Record<string, string>` | `{}` | Объект (словарь), сопоставляющий ключи колонок с их отображаемыми заголовками, например `{ id: 'Идентификатор' }`. |
+| columnPresets | `SColumnSettingsPreset[]` | `[]` | Массив объектов `{ title: string, columns: string[] }`. Используется для быстрого сброса колонок на заданные пресеты. |
+| permanentColumns | `string[]` | `[]` | Массив ключей колонок, которые пользователь не может выключить. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| label | Основное содержимое кнопки, открывающей выпадающий список. По умолчанию отображает иконку и текст "Настроить колонки". |
+| setpreset | Слот для переопределения шаблона кнопки пресета в подвале выпадающего списка. Передает параментр `{ preset }`. |
 
 <script setup>
 import { ref, computed } from 'vue';
@@ -104,7 +216,6 @@ import STable from '../../../../packages/startup-ui/src/components/STable.vue';
 import SActionIcon from '../../../../packages/startup-ui/src/components/SActionIcon.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SColumnSettings from '../../../../packages/startup-ui/src/components/SColumnSettings.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const users =  ref([ 
     { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, { "username": "Stepanov", "role": "admin", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" }, 
@@ -123,16 +234,7 @@ const initialColumns = {
     'created_at': 'Дата регистрации',
 };
 
-// Набор доступных колонок
-const availableColumns = computed(() => {
-    return {
-        plan: 'Тариф',
-        balance: 'Баланс',
-        role: 'Роль',
-        created_at: 'Дата регистрации',
-    }
-});
-
+const availableColumns = computed(() => initialColumns);
 const tableColumns = ref(Object.keys(initialColumns));
 const tableColumns2 = ref(Object.keys(initialColumns));
 const tableColumns3 = ref(Object.keys(initialColumns));
@@ -143,166 +245,8 @@ const columnPresets = [{
 }];
 
 const permanentColumns = ['role'];
-
-
-const code1 = `<SColumnSettings v-model="tableColumns" :options="availableColumns" />`;
-const fullCode1 = `<template>
-    <STable :data="users">
-        <template #header>
-            <td>Пользователь</td>
-            <template v-for="tableColumn in tableColumns" :key="tableColumn">
-                <td class="center">\{\{ availableColumns[tableColumn] \}\}</td>
-            </template>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>\{\{ row.username \}\}</td>
-            <template v-for="tableColumn in tableColumns" :key="tableColumn">
-                <td class="center">\{\{ row[tableColumn] \}\}</td>
-            </template>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="\`Вы действительно хотите удалить пользователя «\${row.username\}»?\`" 
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-    </STable>
-</template>
-<script lang="scss">
-import { ref, computed } from 'vue';
-import { STable, SActionIcon, SColumnSettings } from 'startup-ui';
-
-const props = defineProps({
-    data: Array,
-    availableColumns: Object,
-});
-
-const users = ref([...props.data]);
-
-function deleteUser(username) {
-    users.value = users.value.filter(user => user.username !== username);
-}
-
-const tableColumns = ref(Object.keys(initialColumns));
-<\/script>
-`;
-
-const code2 = `<SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets"/>`;
-const fullCode2 = `<template>
-    <p>
-        <SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets"/>
-    </p>
-    <STable :data="users">
-        <template #header>
-            <td>Пользователь</td>
-            <template v-for="tableColumn in tableColumns" :key="tableColumn">
-                <td class="center">\{\{ availableColumns[tableColumn] \}\}</td>
-            </template>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>\{\{ row.username \}\}</td>
-            <template v-for="tableColumn in tableColumns" :key="tableColumn">
-                <td class="center">\{\{ row[tableColumn] \}\}</td>
-            </template>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="\`Вы действительно хотите удалить пользователя «\${row.username\}»?\`" 
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-    </STable>
-</template>
-<script lang="scss">
-import { ref, computed } from 'vue';
-import { STable, SActionIcon, SColumnSettings } from 'startup-ui';
-
-const props = defineProps({
-    data: Array,
-    availableColumns: Object,
-});
-
-const users = ref([...props.data]);
-
-function deleteUser(username) {
-    users.value = users.value.filter(user => user.username !== username);
-}
-
-const tableColumns = ref(Object.keys(initialColumns));
-
-const columnPresets = [{
-    title: 'Стандартные колонки',
-    columns: [ 'plan', 'balance', 'role', 'created_at'],
-}];
-<\/script>
-`;
-
-const code3 = `<SColumnSettings v-model="tableColumns" :permanent-columns="permanentColumns" :column-presets="columnPresets" :options="availableColumns" />`;
-const fullCode3 = `<template>
-    <p>
-        <SColumnSettings v-model="tableColumns" :permanent-columns="permanentColumns" :column-presets="columnPresets" :options="availableColumns" />
-    </p>
-    <STable :data="users">
-        <template #header>
-            <td>Пользователь</td>
-            <template v-for="tableColumn in tableColumns" :key="tableColumn">
-                <td class="center">\{\{ availableColumns[tableColumn] \}\}</td>
-            </template>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>\{\{ row.username \}\}</td>
-            <template v-for="tableColumn in tableColumns" :key="tableColumn">
-                <td class="center">\{\{ row[tableColumn] \}\}</td>
-            </template>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="\`Вы действительно хотите удалить пользователя «\${row.username\}»?\`" 
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-    </STable>
-</template>
-<script>
-import { ref, computed } from 'vue';
-import { STable, SActionIcon, SColumnSettings } from 'startup-ui';
-
-const props = defineProps({
-    data: Array,
-    availableColumns: Object,
-});
-
-const users = ref([...props.data]);
-
-function deleteUser(username) {
-    users.value = users.value.filter(user => user.username !== username);
-}
-
-const tableColumns = ref(Object.keys(initialColumns));
-
-const columnPresets = [{
-    title: 'Стандартные колонки',
-    columns: [ 'plan', 'balance', 'role', 'created_at'],
-}];
-
-const permanentColumns = ['role'];
-<\/script>
-`;
-
-const code22 = `<template>
-...
-<SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets">
-    <template #setpreset="{ preset }"><FontAwesomeIcon icon="rotate-left" />Сбросить на \{\{ preset.title \}\}</template>
-</SColumnSettings>
-...
-</template>
-`;
-const fullCode22 = `<template>
-...
-<SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets">
-    <template #setpreset="{ preset }"><FontAwesomeIcon icon="rotate-left" />Сбросить на \{\{ preset.title \}\}</template>
-</SColumnSettings>
-...
-</template>
-`;
 </script>
+
 <style lang="scss">
 .s-columnsettingspage-container {
     display: flex;

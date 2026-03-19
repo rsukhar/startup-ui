@@ -14,7 +14,43 @@
     </SActionBar>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+<div v-pre>
+
+```vue
+<template>
+    <SCheckboxGroup v-model="users" :options="userOptions" />
+    <SActionBar v-if="users.length">
+        <SSelect v-model="massAction" :options="massActions" />
+        <SButton @click="applyMassAction">Применить</SButton>
+    </SActionBar>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SCheckboxGroup, SActionBar, SSelect, SButton, SAlert } from 'startup-ui';
+
+const users = ref([]);
+const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+
+const massActions = { sendBonus: 'Отправить бонус', greet: 'Поприветствовать', delete: 'Удалить' };
+const massAction = ref('sendBonus');
+
+function applyMassAction() {
+    users.value = [];
+    SAlert.success('Действие выполнено');
+}
+</script>
+```
+
+</div>
+
+## Интерфейс компонента
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Интерактивные элементы, кнопки или формы для отображения в панели действий. Контент использует flexbox, элементы располагаются в ряд. |
 
 <script setup>
 import { ref } from 'vue';
@@ -24,7 +60,6 @@ import SCheckboxGroup from '../../../../packages/startup-ui/src/components/SChec
 import SSelect from '../../../../packages/startup-ui/src/components/SSelect.vue';
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
 import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const massActions = { sendBonus: 'Отправить бонус', greet: 'Поприветствовать', delete: 'Удалить' };
 const massAction = ref('sendBonus');
@@ -40,37 +75,4 @@ const userOptions = {
     2: 'Петров',
     3: 'Сидоров'
 };
-
-const code1 = `<SCheckboxGroup v-model="users" :options="userOptions" />
-<SActionBar v-if="users.length">
-    <SSelect v-model="massAction" :options="massActions" />
-    <SButton @click="applyMassAction">Применить</SButton>
-</SActionBar>
-`;
-const fullCode1 = `<template>
-    <SCheckboxGroup v-model="users" :options="userOptions" />
-    <SActionBar v-if="users.length">
-        <SSelect v-model="massAction" :options="massActions" />
-        <SButton @click="applyMassAction">Применить</SButton>
-    </SActionBar>
-</template>
-<script setup>
-import { SCheckboxGroup, SActionBar, SSelect, SButton} from 'startup-ui';
-
-const massActions = { sendBonus: 'Отправить бонус', greet: 'Поприветствовать', delete: 'Удалить' };
-const massAction = ref('sendBonus');
-
-function applyMassAction() {
-    ...
-    SAlert.success('Действие выполнено');
-}
-
-const users = ref([]);
-const userOptions = {
-    1: 'Иванов',
-    2: 'Петров',
-    3: 'Сидоров'
-}; 
-<\/script>
-`;
 </script>

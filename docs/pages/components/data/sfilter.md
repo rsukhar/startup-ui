@@ -36,7 +36,29 @@
     </SFilterGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+```vue
+<template>
+    <SFilterGroup v-model="filter">
+        <SFilter name="plan">
+            <SRadioGroup buttons>
+                <SRadio value="">Все тарифы</SRadio>
+                <SRadio value="base">Базовый</SRadio>
+                <SRadio value="premium">Премиум</SRadio>
+            </SRadioGroup>
+        </SFilter>
+        <SFilter name="period">
+            <SDatePicker range value-format="YYYYMMDD" />
+        </SFilter>
+    </SFilterGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue'; 
+import { SFilterGroup, SFilter, SRadioGroup, SRadio, SDatePicker } from 'startup-ui';
+
+const filter = ref({});
+</script>
+```
 
 Текущее значение: <code>{{ filter }}</code>
 
@@ -51,7 +73,11 @@
 
 В этом случае можно использовать атрибут `bind-to-query` , который включит такое поведение:
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" />
+```vue
+<SFilterGroup bind-to-query>
+  <!-- ... -->
+</SFilterGroup>
+```
 
 ## Часто используемые поля
 
@@ -65,7 +91,23 @@
     </SFilterGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+```vue
+<template>
+    <SFilterGroup v-model="filter">
+        <SFilter name="role">
+            <SRadioGroup buttons placeholder="Все" :options="roles" />
+        </SFilter>
+    </SFilterGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue'; 
+import { SFilterGroup, SFilter, SRadioGroup } from 'startup-ui';
+
+const filter = ref({});
+const roles = { customer: 'Пользователь', admin: 'Админ', editor: 'Редактор' };
+</script>
+```
 
 Текущее значение: <code>{{ filter2 }}</code>.
 
@@ -81,7 +123,23 @@ Placeholder задает «не выбранный вариант» — null-з�
     </SFilterGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}" />
+```vue
+<template>
+    <SFilterGroup v-model="filter">
+        <SFilter name="status">
+            <SSelect placeholder="Любой статус" :options="statusOptions" clearable />
+        </SFilter>
+    </SFilterGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue'; 
+import { SFilterGroup, SFilter, SSelect } from 'startup-ui';
+
+const filter = ref({});
+const statusOptions = { warning: 'Предупреждение', success: 'Удачно', error: 'Ошибка' };
+</script>
+```
 
 Текущее значение: <code>{{ filter3 }}</code>
 
@@ -95,7 +153,22 @@ Placeholder задает «не выбранный вариант» — null-з�
     </SFilterGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code5, lang: 'js'}" :fullCode="{text: fullCode5, lang: 'vue'}" />
+```vue
+<template>
+    <SFilterGroup v-model="filter">
+        <SFilter name="q" :debounce="500" style="max-width: 350px">
+            <SInput type="search" placeholder="Поиск по никнейму" />
+        </SFilter>
+    </SFilterGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue'; 
+import { SFilterGroup, SFilter, SInput } from 'startup-ui';
+
+const filter = ref({});
+</script>
+```
 
 Текущее значение: <code>{{ filter4 }}</code>
 
@@ -109,9 +182,61 @@ Placeholder задает «не выбранный вариант» — null-з�
     </SFilterGroup>
 </div>
 
-<CustomCodeBlock :code="{text: code6, lang: 'js'}" :fullCode="{text: fullCode6, lang: 'vue'}" />
+```vue
+<template>
+    <SFilterGroup v-model="filter">
+        <SFilter name="period">
+            <SDatePicker range value-format="YYYYMMDD" />
+        </SFilter>
+    </SFilterGroup>
+</template>
+
+<script setup>
+import { ref } from 'vue'; 
+import { SFilterGroup, SFilter, SDatePicker } from 'startup-ui';
+
+const filter = ref({});
+</script>
+```
 
 Текущее значение: <code>{{ filter5 }}</code>
+
+## Интерфейс компонента SFilterGroup
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `Object` | `{}` | Объект, хранящий состояние всех вложенных `SFilter`. |
+| bindToQuery | boolean | `false` | Автоматически синхронизирует состояние с GET-параметрами (через Inertia). |
+| ignoreQueryNames | `string[]` | `['page']` | GET-параметры, которые игнорируются при сбросе фильтров. |
+| ignoreQueryValues | `any[]` | `['', null, undefined, false]` | Значения, при которых параметр удаляется из URL (чтобы не мусорить пустой строкой). |
+| title | string | - | Заголовок группы фильтров. |
+| loading | boolean | `false` | Состояние загрузки (скелетон или спиннер). |
+| showAll | boolean | `false` | Если `true`, кнопка «Показать все» заменяется на «Скрыть». |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Содержимое группы (обычно компоненты `SFilter`). |
+
+## Интерфейс компонента SFilter
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| name | string | `undefined` | **Обязательное.** Ключ для хранения значения в `v-model` родительской группы. |
+| debounce | number | `0` | Задержка в миллисекундах перед сохранением. Критично для текстовых инпутов при `bindToQuery`. |
+| title | string | - | Заголовок конкретного фильтра. |
+| opened | boolean | `false` | Раскрыт ли фильтр по умолчанию. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Содержимое фильтра (чекбоксы, инпуты и т.д.). |
 
 <script setup>
 import { ref, watch } from 'vue';
@@ -124,7 +249,6 @@ import SRadio from '../../../../packages/startup-ui/src/components/SRadio.vue';
 import SDatePicker from '../../../../packages/startup-ui/src/components/SDatePicker.vue';
 import SSelect from '../../../../packages/startup-ui/src/components/SSelect.vue';
 import SInput from '../../../../packages/startup-ui/src/components/SInput.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const roles = {
     customer: 'Пользователь',
@@ -155,128 +279,19 @@ watch(
         });
     }, { deep: true }
 );
-
-const code1 = `<SFilterGroup v-model="filter">
-    <SFilter name="plan">
-        <SRadioGroup buttons>
-            <SRadio value="">Все тарифы</SRadio>
-            <SRadio value="base">Базовый</SRadio>
-            <SRadio value="premium">Премиум</SRadio>
-        </SRadioGroup>
-    </SFilter>
-    <SFilter name="period">
-        <SDatePicker range value-format="YYYYMMDD" />
-    </SFilter>
-</SFilterGroup>`;
-const fullCode1 = `<template>
-    <SFilterGroup v-model="filter">
-        <SFilter name="plan">
-            <SRadioGroup buttons>
-                <SRadio value="">Все тарифы</SRadio>
-                <SRadio value="base">Базовый</SRadio>
-                <SRadio value="premium">Премиум</SRadio>
-            </SRadioGroup>
-        </SFilter>
-        <SFilter name="period">
-            <SDatePicker range value-format="YYYYMMDD" />
-        </SFilter>
-    </SFilterGroup>
-</template>
-<script setup>
-import { ref } from 'vue'; 
-import { SFilterGroup, SFilter, SRadioGroup, SRadio, SDatePicker } from 'startup-ui';
-<\/script>`;
-
-const code2 = `<SFilterGroup bind-to-query>
-  ...
-</SFilterGroup>`;
-
-const code3 = `<SFilterGroup v-model="filter">
-    <SFilter name="role">
-        <SRadioGroup buttons placeholder="Все" :options="roles" />
-    </SFilter>
-</SFilterGroup>`;
-const fullCode3 = `<template>
-    <SFilterGroup v-model="filter">
-        <SFilter name="role">
-            <SRadioGroup buttons placeholder="Все" :options="roles" />
-        </SFilter>
-    </SFilterGroup>
-</template>
-<script setup>
-import { ref } from 'vue'; 
-import { SFilterGroup, SFilter, SRadioGroup } from 'startup-ui';
-<\/script>`;
-
-const code4 = `<SFilterGroup v-model="filter">
-    <SFilter name="status">
-        <SSelect placeholder="Любой статус" :options="statusOptions" clearable />
-    </SFilter>
-</SFilterGroup>`;
-const fullCode4 = `<template>
-    <SFilterGroup v-model="filter">
-        <SFilter name="status">
-            <SSelect placeholder="Любой статус" :options="statusOptions" clearable />
-        </SFilter>
-    </SFilterGroup>
-</template>
-<script setup>
-import { ref } from 'vue'; 
-import { SFilterGroup, SFilter, SSelect } from 'startup-ui';
-<\/script>`;
-
-const code5 = `<SFilterGroup v-model="filter">
-    <SFilter name="q" :debounce="500" style="max-width: 350px">
-        <SInput type="search" placeholder="Поиск по никнейму" />
-    </SFilter>
-</SFilterGroup>`;
-const fullCode5 = `<template>
-    <SFilterGroup v-model="filter">
-        <SFilter name="q" :debounce="500" style="max-width: 350px">
-            <SInput type="search" placeholder="Поиск по никнейму" />
-        </SFilter>
-    </SFilterGroup>
-</template>
-<script setup>
-import { ref } from 'vue'; 
-import { SFilterGroup, SFilter, SInput } from 'startup-ui';
-<\/script>`;
-
-const code6 = `<SFilterGroup v-model="filter5">
-    <SFilter name="period">
-        <SDatePicker range value-format="YYYYMMDD" />
-    </SFilter>
-</SFilterGroup>`;
-
-const fullCode6 = `<template>
-    <SFilterGroup v-model="filter5">
-        <SFilter name="period">
-            <SDatePicker range value-format="YYYYMMDD" />
-        </SFilter>
-    </SFilterGroup>
-</template>
-<script setup>
-import { ref } from 'vue'; 
-import { SFilterGroup, SFilter, SDatePicker } from 'startup-ui';
-<\/script>`;
-
 </script>
+
 <style lang="scss" scoped>
 .vp-doc ol {
     margin: var(--s-base-margin) !important;
 }
-
 .vp-doc li {
     margin-bottom: 10px !important;
 }
-
 .s-datepicker {
     color: var(--s-text);
 }
-
 .s-filtergroup {
     margin-bottom: 0;
 }
-
-
 </style>
