@@ -18,6 +18,7 @@ export interface SHtmlEditorProps {
     uploadUrl?: string;
     placeholder?: string;
     media?: boolean;
+    height?: number;
 }
 
 const props = defineProps<SHtmlEditorProps>();
@@ -30,7 +31,7 @@ const model = defineModel<string>();
 const initOptions = ref({
     license_key: 'mit',
     selector: 'textarea',
-    height: 500,
+    height: props.height ?? 500,
     placeholder: props.placeholder || '',
     menubar: false,
     body_class: 'g-html',

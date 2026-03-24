@@ -34,6 +34,16 @@
 
 <CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
 
+## Высота редактора
+
+По умолчанию высота равна 500px. Можно изменить через проп `height`.
+
+<div class="docs-container">
+    <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="300" />
+</div>
+
+<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+
 <script setup>
 import { ref } from 'vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
@@ -43,6 +53,7 @@ import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const content1 = ref('');
 const content2 = ref('');
+const content3 = ref('');
 
 const code1 = `<SHtmlEditor v-model="content" upload-url="/image/upload" />
 `;
@@ -67,6 +78,19 @@ import { ref } from 'vue';
 import { SHtmlEditor } from 'startup-ui';
 
 const content = ref(false);
+<\/script>
+`;
+
+const code3 = `<SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+`;
+const fullCode3 = `<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SHtmlEditor } from 'startup-ui';
+
+const content = ref('');
 <\/script>
 `;
 </script>
