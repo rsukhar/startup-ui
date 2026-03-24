@@ -27,26 +27,44 @@
     <SActionIcon icon="user" title="Профиль" @click="greet('Hello!')" />
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SActionIcon icon="pen-to-square" title="Редактировать" @click="greet('Hello!')" />
-    <SActionIcon :icon="['far', 'calendar']" title="Календарь" @click="greet('Hello!')" />
-    <SActionIcon icon="xmark" title="Закрыть" @click="greet('Hello!')" />
-    <SActionIcon icon="arrow-up-right-from-square" title="Открыть" @click="greet('Hello!')" />
+    <SActionIcon :icon="['far', 'calendar']" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="xmark" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="arrow-up-right-from-square" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="circle-question" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="copy" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="bars" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="cloud-arrow-down" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="folder-open" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="user" title="Редактировать" @click="greet('Hello!')" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SActionIcon icon="pen-to-square" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon :icon="['far', 'calendar']" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="xmark" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="arrow-up-right-from-square" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="circle-question" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="copy" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="bars" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="cloud-arrow-down" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="folder-open" title="Редактировать" @click="greet('Hello!')" />
+    <SActionIcon icon="user" title="Редактировать" @click="greet('Hello!')" />
 </template>
 
 <script setup>
 import { SActionIcon } from 'startup-ui';
 
 function greet(msg) {
-  alert(msg);
+  alert(msg)
 }
 </script>
 ```
-
-</div>
+:::
 
 ## Ссылка в иконке
 
@@ -65,23 +83,59 @@ function greet(msg) {
     <SActionIcon icon="user" title="Перейти на сайт" href="https://startup-ui.suhar.ru" />
 </div>
 
-<div v-pre>
-
-```vue
-<SActionIcon icon="pen-to-square" title="Перейти на сайт" href="https://startup-ui.suhar.ru" />
+:::code-group
+```vue [Пример]
+<template>
+    <SActionIcon icon="pen-to-square" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon :icon="['far', 'calendar']" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="xmark" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="arrow-up-right-from-square" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="circle-question" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="copy" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="bars" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="cloud-arrow-down" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="folder-open" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="user" title="Перейти на сайт" href="https://suhar.ru" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SActionIcon icon="pen-to-square" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon :icon="['far', 'calendar']" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="xmark" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="arrow-up-right-from-square" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="circle-question" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="copy" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="bars" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="cloud-arrow-down" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="folder-open" title="Перейти на сайт" href="https://suhar.ru" />
+    <SActionIcon icon="user" title="Перейти на сайт" href="https://suhar.ru" />
+</template>
 
-</div>
+<script setup>
+import { SActionIcon } from 'startup-ui';
+</script>
+```
+:::
 
 Но при необходимости также через атрибут is можно также передать Link-компонент InertiaJs:
 
-<div v-pre>
-
-```vue
-<SActionIcon icon="pen-to-square" title="Редактировать" :is="Link" href="/users/edit" />
+:::code-group
+```vue [Пример]
+<template>
+    <SActionIcon icon="pen-to-square" title="Редактировать" :is="Link" href="/users/" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SActionIcon icon="pen-to-square" title="Редактировать" :is="Link" href="/users/" />
+</template>
 
-</div>
+<script setup>
+import { SActionIcon } from 'startup-ui';
+</script>
+```
+:::
 
 ## Подтверждение действия
 
@@ -91,19 +145,28 @@ function greet(msg) {
     <SActionIcon title="Удалить" @click="deleteUser" icon="trash" danger confirm="Вы действительно хотите удалить пользователя?" />
 </div>
 
-<div v-pre>
-
-```vue
-<SActionIcon 
-    title="Удалить" 
-    icon="trash" 
-    danger 
-    confirm="Вы действительно хотите удалить пользователя?" 
-    @click="deleteUser" 
-/>
+:::code-group
+```vue [Пример]
+<template>
+    <SActionIcon title="Удалить" @click="deleteUser(user.username)" icon="trash" danger
+        confirm="Вы действительно хотите удалить пользователя?" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SActionIcon title="Удалить" @click="deleteUser(user.username)" icon="trash" danger
+        confirm="Вы действительно хотите удалить пользователя?" />
+</template>
 
-</div>
+<script setup>
+import { SActionIcon } from 'startup-ui';
+
+function deleteUser() {
+    ...
+}
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

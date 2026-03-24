@@ -21,12 +21,18 @@
 <SButton @click="isShownFirst = true">Открыть окно</SButton>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SDialog v-model="isShown" title="Войти в личный кабинет">
-        <SForm v-model="form" method="post" action="/users/login">
+        ...
+    </SDialog>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет">
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
             <SFormRow title="Логин" name="login">
                 <SInput />
             </SFormRow>
@@ -47,8 +53,7 @@ import { SDialog, SButton } from 'startup-ui';
 const isShown = ref(false);
 </script>
 ```
-
-</div>
+:::
 
 ## Фиксированная ширина
 
@@ -69,17 +74,38 @@ const isShown = ref(false);
 <SButton @click="isShownSecond = true">Открыть окно</SButton>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SDialog v-model="isShown" title="Войти в личный кабинет" width="500px">
         ...
     </SDialog>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" width="500px">
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
 
-</div>
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
 
 ## Не-модальное окно
 
@@ -101,17 +127,39 @@ const isShown = ref(false);
 <SButton @click="isShownThird = true">Открыть окно</SButton>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SDialog v-model="isShown" title="Войти в личный кабинет" not-modal>
         ...
     </SDialog>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" not-modal>
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
 
-</div>
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
 
 ## Не закрывать по клику на оверлей
 
@@ -133,17 +181,39 @@ const isShown = ref(false);
 <SButton @click="isShownFourth = true">Открыть окно</SButton>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SDialog v-model="isShown" title="Войти" @overlay-click.stop.prevent>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" @overlay-click.stop.prevent>
         ...
     </SDialog>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" @overlay-click.stop.prevent>
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
 
-</div>
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

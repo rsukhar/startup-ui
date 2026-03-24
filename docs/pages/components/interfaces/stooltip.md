@@ -18,19 +18,24 @@
 <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    Показы 
-    <STooltip>
-        Кол-во показов поискового сниппета. 
-        Данные из вебмастера за последний день, когда они есть для запроса
-    </STooltip>
+    Показы <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <p>
+    Показы <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
+    </p>
+</template>
 
-</div>
+<script setup>
+import STooltip from 'startup-ui';
+</script>
+```
+:::
 
 ## Фиксированное положение
 
@@ -43,18 +48,28 @@
     <div>Слева <STooltip at="left">Подсказка слева</STooltip></div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <STooltip at="top">Подсказка сверху</STooltip>
-    <STooltip at="right">Подсказка справа</STooltip>
-    <STooltip at="bottom">Подсказка снизу</STooltip>
-    <STooltip at="left">Подсказка слева</STooltip>
+    <div>Подсказка сверху <STooltip at="top">Подсказка сверху</STooltip></div>
+    <div>Подсказка справа <STooltip at="right">Подсказка справа</STooltip></div>
+    <div>Подсказка снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
+    <div>Подсказка слева <STooltip at="left">Подсказка слева</STooltip></div>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <div>Подсказка сверху <STooltip at="top">Подсказка сверху</STooltip></div>
+    <div>Подсказка справа <STooltip at="right">Подсказка справа</STooltip></div>
+    <div>Подсказка снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
+    <div>Подсказка слева <STooltip at="left">Подсказка слева</STooltip></div>
+</template>
 
-</div>
+<script setup>
+import { STooltip } from 'startup-ui';
+</script>
+```
+:::
 
 ## Кастомная иконка
 
@@ -64,15 +79,22 @@
     <div>Подсказка с другой иконкой <STooltip icon="circle-info">Используем иконку circle-info</STooltip></div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <STooltip icon="circle-info">Используем иконку circle-info</STooltip>
+    <div>Подсказка с другой иконкой <STooltip icon="circle-info">Подсказка с другой иконкой</STooltip></div>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <div>Подсказка с другой иконкой <STooltip icon="circle-info">Подсказка с другой иконкой</STooltip></div>
+</template>
 
-</div>
+<script setup>
+import { STooltip } from 'startup-ui';
+</script>
+```
+:::
 
 Если нужна совсем нестандартная иконка/область наведения, то можно использовать слот icon:
 
@@ -83,9 +105,8 @@
     </STooltip>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <STooltip>
         <template #icon>❓</template>
@@ -93,8 +114,21 @@
     </STooltip>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <div>Подсказка с другой иконкой
+        <STooltip>
+            <template #icon>❓</template>
+            Используем в качестве иконки эмодзи
+        </STooltip>
+    </div>
+</template>
 
-</div>
+<script setup>
+import { STooltip } from 'startup-ui';
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

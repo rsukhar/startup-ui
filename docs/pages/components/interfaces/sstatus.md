@@ -18,17 +18,26 @@
     <SStatus color="text-light" icon="pause">Не запущен</SStatus>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SStatus color="green" icon="check">Работает</SStatus>
     <SStatus color="red-dark" icon="triangle-exclamation">Остановлен</SStatus>
     <SStatus color="text-light" icon="pause">Не запущен</SStatus>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SStatus color="green" icon="check">Работает</SStatus>
+    <SStatus color="red-dark" icon="triangle-exclamation">Остановлен</SStatus>
+    <SStatus color="text-light" icon="pause">Не запущен</SStatus>
+</template>
 
-</div>
+<script setup>
+import { SStatus } from 'startup-ui';
+</script>
+```
+:::
 
 ## Различные цвета
 
@@ -48,19 +57,42 @@
     <SStatus color="green-dark" icon="check">green-dark</SStatus>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SStatus color="text" icon="check">text</SStatus>
+    <SStatus color="text-light" icon="check">text-light</SStatus>
     <SStatus color="primary" icon="check">primary</SStatus>
+    <SStatus color="primary-dark" icon="check">primary-dark</SStatus>
+    <SStatus color="primary-darkest" icon="check">primary-darkest</SStatus>
     <SStatus color="red" icon="check">red</SStatus>
+    <SStatus color="red-dark" icon="check">red-dark</SStatus>
     <SStatus color="yellow" icon="check">yellow</SStatus>
+    <SStatus color="yellow-dark" icon="check">yellow-dark</SStatus>
     <SStatus color="green" icon="check">green</SStatus>
+    <SStatus color="green-dark" icon="check">green-dark</SStatus>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SStatus color="text" icon="check">text</SStatus>
+    <SStatus color="text-light" icon="check">text-light</SStatus>
+    <SStatus color="primary" icon="check">primary</SStatus>
+    <SStatus color="primary-dark" icon="check">primary-dark</SStatus>
+    <SStatus color="primary-darkest" icon="check">primary-darkest</SStatus>
+    <SStatus color="red" icon="check">red</SStatus>
+    <SStatus color="red-dark" icon="check">red-dark</SStatus>
+    <SStatus color="yellow" icon="check">yellow</SStatus>
+    <SStatus color="yellow-dark" icon="check">yellow-dark</SStatus>
+    <SStatus color="green" icon="check">green</SStatus>
+    <SStatus color="green-dark" icon="check">green-dark</SStatus>
+</template>
 
-</div>
+<script setup>
+import { SStatus } from 'startup-ui';
+</script>
+```
+:::
 
 ## Интерфейс компонента
 
@@ -81,3 +113,14 @@
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SStatus from '../../../../packages/startup-ui/src/components/SStatus.vue';
 </script>
+<style lang="scss">
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+
+    .s-status {
+        flex-basis: 150px;
+    }
+}
+</style>

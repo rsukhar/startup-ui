@@ -16,9 +16,13 @@
     <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
+</template>
+```
+```vue [Весь код]
 <template>
     <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
 </template>
@@ -30,8 +34,7 @@ import { SProgressBar } from 'startup-ui';
 const readyPercentage = ref(50);
 </script>
 ```
-
-</div>
+:::
 
 ## Интерфейс компонента
 

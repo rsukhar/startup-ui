@@ -7,7 +7,7 @@
         <p>В отличие от популярных библиотек компонентов для Vue3:</p>
         <ol>
             <li>Сразу идет с кликабельным стандартизированным лейблом в качестве простого атрибута. Это унифицирует код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
-            <li>Поддерживает три формата передачи опций в группы чекбоксов, что удобно в зависимости от кейса: 
+            <li>Поддерживает три формата передачи опций в группы чекбоксов, что удобно в зависимости от кейса:
             <ol>
                 <li><code>&lt;SCheckbox /&gt;</code> — там где опции являются частью дизайна, их можно и удобно хардкодить в шаблон;</li>
                 <li><code>{value1: title1, value2: title2}</code> — что удобно для быстрого получения из key-value конфигов, а также из моделей — <code>User::pluck('name', 'id')</code>;</li>
@@ -30,7 +30,13 @@
     <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
+</template>
+```
+```vue [Весь код]
 <template>
     <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
 </template>
@@ -39,9 +45,10 @@
 import { ref } from 'vue';
 import { SCheckbox } from 'startup-ui';
 
-const isAccepted = ref(false);
+const isAccepted = ref('');
 </script>
 ```
+:::
 
 Модель принимает значение true/false.
 
@@ -55,7 +62,17 @@ const isAccepted = ref(false);
     </SCheckboxGroup>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SCheckboxGroup v-model="types">
+        <SCheckbox value="bug">Ошибка</SCheckbox>
+        <SCheckbox value="question">Вопрос</SCheckbox>
+        <SCheckbox value="idea">Идея</SCheckbox>
+    </SCheckboxGroup>
+</template>
+```
+```vue [Весь код]
 <template>
     <SCheckboxGroup v-model="types">
         <SCheckbox value="bug">Ошибка</SCheckbox>
@@ -71,6 +88,7 @@ import { SCheckbox, SCheckboxGroup } from 'startup-ui';
 const types = ref([]);
 </script>
 ```
+:::
 
 В данном случае в модели будет храниться массив выбранных значений: <code>{{ types }}</code>
 
@@ -82,7 +100,13 @@ const types = ref([]);
     <SCheckboxGroup v-model="users" :options="userOptions" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SCheckboxGroup v-model="users" :options="userOptions" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SCheckboxGroup v-model="users" :options="userOptions" />
 </template>
@@ -95,6 +119,7 @@ const users = ref([]);
 const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
 </script>
 ```
+:::
 
 Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
 
@@ -106,19 +131,26 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
     <SCheckboxGroup v-model="usersSecond" :options="userOptions" vertical />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SCheckboxGroup v-model="users" :options="userOptions" vertical />
+</template>
+```
+```vue [Весь код]
 <template>
     <SCheckboxGroup v-model="users" :options="userOptions" vertical />
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { SCheckboxGroup } from 'startup-ui';
+import { SCheckbox } from 'startup-ui';
 
 const users = ref([]);
 const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
 </script>
 ```
+:::
 
 ## Недоступное значение
 
@@ -132,7 +164,17 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
     </SCheckboxGroup>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SCheckboxGroup v-model="types">
+        <SCheckbox value="bug" disabled>Ошибка</SCheckbox>
+        <SCheckbox value="question">Вопрос</SCheckbox>
+        <SCheckbox value="idea">Идея</SCheckbox>
+    </SCheckboxGroup>
+</template>
+```
+```vue [Весь код]
 <template>
     <SCheckboxGroup v-model="types">
         <SCheckbox value="bug" disabled>Ошибка</SCheckbox>
@@ -148,6 +190,7 @@ import { SCheckbox, SCheckboxGroup } from 'startup-ui';
 const types = ref([]);
 </script>
 ```
+:::
 
 ## Интерфейс компонента SCheckboxGroup
 

@@ -24,13 +24,22 @@
     <SButton @click="SAlert.info('Информация')">Информация</SButton>
 </div>
 
-<div v-pre>
-
-```javascript
-SAlert.info('Информация');
+:::code-group
+```vue [Пример]
+<template>
+    <SButton @click="SAlert.info('Информация')">Информация</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton @click="SAlert.info('Информация')">Информация</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+</script>
+```
+:::
 
 Оповещение об успешном действии:
 
@@ -38,13 +47,22 @@ SAlert.info('Информация');
     <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
 </div>
 
-<div v-pre>
-
-```javascript
-SAlert.success('Успех');
+:::code-group
+```vue [Пример]
+<template>
+    <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+</script>
+```
+:::
 
 Оповещение об ошибке:
 
@@ -52,31 +70,22 @@ SAlert.success('Успех');
     <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
 </div>
 
-<div v-pre>
-
-```javascript
-SAlert.error('Ошибка');
-```
-
-</div>
-
-Полный пример использования:
-
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SButton @click="SAlert.info('Информация')">Информация</SButton>
-    <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+    <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
+</template>
+```
+```vue [Весь код]
+<template>
     <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
 </template>
 
 <script setup>
-import { SButton, SAlert } from 'startup-ui';
+import { SButton, SAlert} from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Увеличенное время до закрытия
 
@@ -86,15 +95,28 @@ import { SButton, SAlert } from 'startup-ui';
     <SButton @click="closeWithDelay">Информация</SButton>
 </div>
 
-<div v-pre>
-
-```javascript
-SAlert.info('Закроется через 5 секунд', {
-    closeAfter: 5000,
-});
+:::code-group
+```vue [Пример]
+<template>
+    <SButton @click="closeWithDelay">Информация</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton @click="closeWithDelay">Информация</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+
+function closeWithDelay() {
+    SAlert.info('Закроется через 5 секунд', {
+        closeAfter: 5000,
+    });
+}
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

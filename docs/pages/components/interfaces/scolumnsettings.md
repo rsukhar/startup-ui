@@ -23,16 +23,20 @@
                 <td class="center">{{ row[tableColumn] }}</td>
             </template>
             <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`" 
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
                     @click="deleteUser(row.username)" icon="trash" danger />
             </td>
         </template>
     </STable>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SColumnSettings v-model="tableColumns" :options="availableColumns" />
+</template>
+```
+```vue [Весь код]
 <template>
     <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
         <SColumnSettings v-model="tableColumns" :options="availableColumns" />
@@ -52,7 +56,7 @@
                 <td class="center">{{ row[tableColumn] }}</td>
             </template>
             <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`" 
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
                     @click="deleteUser(row.username)" icon="trash" danger />
             </td>
         </template>
@@ -82,8 +86,7 @@ const availableColumns = computed(() => initialColumns);
 const tableColumns = ref(Object.keys(initialColumns));
 </script>
 ```
-
-</div>
+:::
 
 ## Сброс колонок до значений по умолчанию
 
@@ -108,33 +111,60 @@ const tableColumns = ref(Object.keys(initialColumns));
                 <td class="center">{{ row[tableColumn] }}</td>
             </template>
             <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`" 
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
                     @click="deleteUser(row.username)" icon="trash" danger />
             </td>
         </template>
     </STable>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets"/>
 </template>
+```
+```vue [Весь код]
+<template>
+    <p>
+        <SColumnSettings v-model="tableColumns" :options="availableColumns" :column-presets="columnPresets"/>
+    </p>
+    <STable :data="users">
+        <template #header>
+            <td>Пользователь</td>
+            <template v-for="tableColumn in tableColumns" :key="tableColumn">
+                <td class="center">{{ availableColumns[tableColumn] }}</td>
+            </template>
+            <td></td>
+        </template>
+        <template #row="{ row }">
+            <td>{{ row.username }}</td>
+            <template v-for="tableColumn in tableColumns" :key="tableColumn">
+                <td class="center">{{ row[tableColumn] }}</td>
+            </template>
+            <td class="right">
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
+                    @click="deleteUser(row.username)" icon="trash" danger />
+            </td>
+        </template>
+    </STable>
+</template>
 
 <script setup>
+import { ref, computed } from 'vue';
+import { STable, SActionIcon, SColumnSettings } from 'startup-ui';
+
+const tableColumns = ref(Object.keys(initialColumns));
+
 const columnPresets = [{
     title: 'Стандартные колонки',
     columns: [ 'plan', 'balance', 'role', 'created_at'],
 }];
 </script>
 ```
-
-</div>
+:::
 
 Когда набор полей всего один, по умолчанию в футере выпадающего списка выводится строка «Сбросить изменения», когда несколько — выводится название каждого набора. Это повдение можно изменить с помощью слота <strong>setpreset</strong>:
-
-<div v-pre>
 
 ```vue
 <template>
@@ -145,8 +175,6 @@ const columnPresets = [{
     </SColumnSettings>
 </template>
 ```
-
-</div>
 
 ## Постоянные колонки
 
@@ -171,26 +199,64 @@ const columnPresets = [{
                 <td class="center">{{ row[tableColumn] }}</td>
             </template>
             <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`" 
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
                     @click="deleteUser(row.username)" icon="trash" danger />
             </td>
         </template>
     </STable>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SColumnSettings 
-        v-model="tableColumns" 
-        :options="availableColumns" 
-        :permanent-columns="['role']" 
+    <SColumnSettings
+        v-model="tableColumns"
+        :options="availableColumns"
+        :permanent-columns="['role']"
     />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <p>
+        <SColumnSettings v-model="tableColumns" :permanent-columns="permanentColumns" :column-presets="columnPresets" :options="availableColumns" />
+    </p>
+    <STable :data="users">
+        <template #header>
+            <td>Пользователь</td>
+            <template v-for="tableColumn in tableColumns" :key="tableColumn">
+                <td class="center">{{ availableColumns[tableColumn] }}</td>
+            </template>
+            <td></td>
+        </template>
+        <template #row="{ row }">
+            <td>{{ row.username }}</td>
+            <template v-for="tableColumn in tableColumns" :key="tableColumn">
+                <td class="center">{{ row[tableColumn] }}</td>
+            </template>
+            <td class="right">
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
+                    @click="deleteUser(row.username)" icon="trash" danger />
+            </td>
+        </template>
+    </STable>
+</template>
 
-</div>
+<script>
+import { ref, computed } from 'vue';
+import { STable, SActionIcon, SColumnSettings } from 'startup-ui';
+
+const tableColumns = ref(Object.keys(initialColumns));
+
+const columnPresets = [{
+    title: 'Стандартные колонки',
+    columns: [ 'plan', 'balance', 'role', 'created_at'],
+}];
+
+const permanentColumns = ['role'];
+</script>
+```
+:::
 
 ## Интерфейс компонента
 
@@ -217,8 +283,8 @@ import SActionIcon from '../../../../packages/startup-ui/src/components/SActionI
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SColumnSettings from '../../../../packages/startup-ui/src/components/SColumnSettings.vue';
 
-const users =  ref([ 
-    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, { "username": "Stepanov", "role": "admin", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" }, 
+const users =  ref([
+    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, { "username": "Stepanov", "role": "admin", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" },
     { "username": "Petrov", "role": "customer", "plan": "Базовый", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" }, { "username": "Sidorov", "role": "customer", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" }, { "username": "Alexeev", "role": "customer", "plan": "Базовый", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }]);
 
 function deleteUser(username) {

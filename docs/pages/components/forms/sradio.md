@@ -8,7 +8,7 @@
         <ol>
             <li>Сразу идет с кликабельным стандартизированным лейблом в качестве простого атрибута. Это унифицирует код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
             <li>Сразу из коробки идет кнопочный стиль, который часто используется.</li>
-            <li>Поддерживает три формата передачи опций в группы радио-кнопок, что удобно в зависимости от кейса: 
+            <li>Поддерживает три формата передачи опций в группы радио-кнопок, что удобно в зависимости от кейса:
             <ol>
                 <li><code>&lt;SRadio /&gt;</code> — там где опции являются частью дизайна, их можно и удобно хардкодить в шаблон;</li>
                 <li><code>{value1: title1, value2: title2}</code> — что удобно для быстрого получения из key-value конфигов, а также из моделей — <code>User::pluck('name', 'id')</code>;</li>
@@ -35,7 +35,17 @@
     </SRadioGroup>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SRadioGroup v-model="type">
+        <SRadio value="bug">Ошибка</SRadio>
+        <SRadio value="question">Вопрос</SRadio>
+        <SRadio value="idea">Идея</SRadio>
+    </SRadioGroup>
+</template>
+```
+```vue [Весь код]
 <template>
     <SRadioGroup v-model="type">
         <SRadio value="bug">Ошибка</SRadio>
@@ -51,6 +61,7 @@ import { SRadio, SRadioGroup } from 'startup-ui';
 const type = ref(null);
 </script>
 ```
+:::
 
 Модель будет принимать значение выбранного варианта: <code>{{ type }}</code>
 
@@ -62,7 +73,13 @@ const type = ref(null);
     <SRadioGroup v-model="typeSecond" :options="options" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SRadioGroup v-model="type" :options="options" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SRadioGroup v-model="type" :options="options" />
 </template>
@@ -75,6 +92,7 @@ const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
 const type = ref(null);
 </script>
 ```
+:::
 
 Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
 
@@ -86,7 +104,13 @@ const type = ref(null);
     <SRadioGroup v-model="typeThird" :options="options" buttons />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SRadioGroup v-model="type" :options="options" buttons />
+</template>
+```
+```vue [Весь код]
 <template>
     <SRadioGroup v-model="type" :options="options" buttons />
 </template>
@@ -99,6 +123,7 @@ const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
 const type = ref(null);
 </script>
 ```
+:::
 
 ## Вертикальный список радио-кнопок
 
@@ -108,7 +133,13 @@ const type = ref(null);
     <SRadioGroup v-model="typeFourth" :options="options" vertical/>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SRadioGroup v-model="type" :options="options" vertical />
+</template>
+```
+```vue [Весь код]
 <template>
     <SRadioGroup v-model="type" :options="options" vertical />
 </template>
@@ -121,6 +152,7 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
 const type = ref(null);
 </script>
 ```
+:::
 
 ## Недоступное значение
 
@@ -134,7 +166,17 @@ const type = ref(null);
     </SRadioGroup>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SRadioGroup v-model="type">
+        <SRadio value="bug" disabled>Ошибка</SRadio>
+        <SRadio value="question">Вопрос</SRadio>
+        <SRadio value="idea">Идея</SRadio>
+    </SRadioGroup>
+</template>
+```
+```vue [Весь код]
 <template>
     <SRadioGroup v-model="type">
         <SRadio value="bug" disabled>Ошибка</SRadio>
@@ -150,6 +192,7 @@ import { SRadioGroup, SRadio } from 'startup-ui';
 const type = ref(null);
 </script>
 ```
+:::
 
 ## Нулевое значение (плейсхолдер)
 
@@ -159,7 +202,13 @@ const type = ref(null);
     <SRadioGroup v-model="typeSixth" placeholder="Все" :options="options" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SRadioGroup v-model="type" placeholder="Все" :options="types" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SRadioGroup v-model="type" placeholder="Все" :options="types" />
 </template>
@@ -172,6 +221,7 @@ const types = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
 const type = ref(null);
 </script>
 ```
+:::
 
 ## Интерфейс компонента SRadioGroup
 

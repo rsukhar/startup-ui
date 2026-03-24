@@ -4,54 +4,54 @@
 
 ## Базовый пример
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
-<SCanvas>
-    <!-- Верхняя навигационная панель -->
-    <template #header>
-        <div class="logo">Мое Приложение</div>
-        <nav>
-            <a href="/">Главная</a>
-            <a href="/settings">Настройки</a>
-        </nav>
-    </template>
-
-    <!-- Вторичная шапка (подшапка) -->
-    <template #subheader>
-        <div class="s-canvas-subheader-title">
-            Заголовок страницы
-        </div>
-    </template>
-
-    <!-- Левая боковая панель -->
-    <template #sidebar>
-        <ul>
-            <li>Пункт 1</li>
-            <li>Пункт 2</li>
-        </ul>
-    </template>
-
-    <!-- Основной контент страницы -->
-    <template #content>
-        <p>Здесь располагается основной контент страницы или router-view.</p>
-    </template>
-
-    <!-- Любой контент вне главной сетки (например, подвал SFooter) помещается в слот по умолчанию -->
+    <SCanvas>
+        <template #header>
+            Шапка
+        </template>
+        <template #subheader>
+            Второй блок шапки
+        </template>
+        <template #sidebar>
+            Боковой блок страницы
+        </template>
+        <template #content>
+            <slot />
+        </template>
+    </SCanvas>
     <SFooter>
-        <div class="s-footer-h">
-            <div>&copy; suhar.ru, 2026. Все права защищены</div>
-            <div class="rights">
-                <a href="/privacy">Политика конфиденциальности</a>
-            </div>
-        </div>
+        <div>&copy; suhar.ru, 2025. Все права защищены</div>
     </SFooter>
-</SCanvas>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SCanvas>
+        <template #header>
+            Шапка
+        </template>
+        <template #subheader>
+            Второй блок шапки
+        </template>
+        <template #sidebar>
+            Боковой блок страницы
+        </template>
+        <template #content>
+            <slot />
+        </template>
+    </SCanvas>
+    <SFooter>
+        <div>&copy; suhar.ru, 2025. Все права защищены</div>
+    </SFooter>
 </template>
 
 <script setup>
 import { SCanvas, SFooter } from 'startup-ui';
 </script>
 ```
+:::
 
 ## Утилиты SFooter
 

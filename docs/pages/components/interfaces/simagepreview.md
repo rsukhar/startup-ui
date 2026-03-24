@@ -12,15 +12,22 @@
     </div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SImagePreview src="/img/animals.webp" />
+    <SImagePreview src="../../resources/img/animals.webp" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SImagePreview src="../../resources/img/animals.webp" />
+</template>
 
-</div>
+<script setup>
+import { SImagePreview } from 'startup-ui';
+</script>
+```
+:::
 
 ## Кастомное превью
 
@@ -32,15 +39,22 @@
     </div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SImagePreview preview="/img/nature.jpg" src="/img/animals.webp" />
+    <SImagePreview preview="../../resources/img/nature.jpg" src="../../resources/img/animals.webp" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SImagePreview preview="../../resources/img/nature.jpg" src="../../resources/img/animals.webp" />
+</template>
 
-</div>
+<script setup>
+import { SImagePreview } from 'startup-ui';
+</script>
+```
+:::
 
 Если нужно вставить кастомный контент, используем слот "preview":
 
@@ -54,19 +68,30 @@
     </div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SImagePreview src="/img/animals.webp">
+    <SImagePreview src="../../resources/img/animals.webp">
         <template #preview>
-            <img src="/img/nature.jpg" />
+            <img src="../../resources/img/nature.jpg" />
         </template>
     </SImagePreview>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SImagePreview src="../../resources/img/animals.webp">
+        <template #preview>
+            <img src="../../resources/img/nature.jpg" />
+        </template>
+    </SImagePreview>
+</template>
 
-</div>
+<script setup>
+import { SImagePreview } from 'startup-ui';
+</script>
+```
+:::
 
 ## Кастомная иконка увеличения
 
@@ -78,15 +103,22 @@
     </div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SImagePreview src="/img/animals.webp" icon="magnifying-glass-plus" />
+    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus" />
+</template>
 
-</div>
+<script setup>
+import { SImagePreview } from 'startup-ui';
+</script>
+```
+:::
 
 Если нужно вставить кастомный контент, используем слот "icon":
 
@@ -100,19 +132,30 @@
     </div>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SImagePreview src="/img/animals.webp">
+    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus">
         <template #icon>
             🔍
         </template>
     </SImagePreview>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus">
+        <template #icon>
+            🔍
+        </template>
+    </SImagePreview>
+</template>
 
-</div>
+<script setup>
+import { SImagePreview } from 'startup-ui';
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

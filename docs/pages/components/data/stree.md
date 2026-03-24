@@ -16,9 +16,13 @@
     <STree :data="pages" />
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <STree :data="pages" />
+</template>
+```
+```vue [Весь код]
 <template>
     <STree :data="pages" />
 </template>
@@ -26,14 +30,10 @@
 <script setup>
 import { STree } from 'startup-ui';
 
-const pages = [
-  { id: 1, label: 'Страница 1' }, 
-  { id: 2, label: 'Страница 2' }
-];
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}];
 </script>
 ```
-
-</div>
+:::
 
 Где `pages` — это массив вида: `[{id, label, children: [...]}, ...]`
 
@@ -45,9 +45,13 @@ const pages = [
     <STree :data="pages" selectable v-model="value" />
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <STree :data="pages" selectable v-model="value" />
+</template>
+```
+```vue [Весь код]
 <template>
     <STree :data="pages" selectable v-model="value" />
 </template>
@@ -60,20 +64,30 @@ const value = ref(null);
 const pages = [...];
 </script>
 ```
-
-</div>
+:::
 
 В модель подставляется ID. Текущее значение: <code>{{ value ?? 'null' }}</code>
 
 Также изменения можно отслеживать с помощью change-события:
 
-<div v-pre>
-
-```vue
-<STree :data="pages" selectable @change="(node) => console.log(node)" />
+:::code-group
+```vue [Пример]
+<template>
+    <STree :data="pages" selectable @change="(node) => console.log(node)" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <STree :data="pages" selectable @change="(node) => console.log(node)" />
+</template>
 
-</div>
+<script setup>
+import { STree } from 'startup-ui';
+
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}];
+</script>
+```
+:::
 
 ## Кастомный шаблон элемента
 
@@ -85,9 +99,17 @@ const pages = [...];
     </STree>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <STree :data="pages">
+        <template #node="{ node }">
+            <FontAwesomeIcon :icon="node.icon" /> {{ node.label }}
+        </template>
+    </STree>
+</template>
+```
+```vue [Весь код]
 <template>
     <STree :data="pages">
         <template #node="{ node }">
@@ -100,11 +122,10 @@ const pages = [...];
 import { STree } from 'startup-ui';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-const pages = [...];
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}];
 </script>
 ```
-
-</div>
+:::
 
 ## Раскрытые корневые элементы
 
@@ -114,13 +135,24 @@ const pages = [...];
     <STree :data="pages" :expanded-keys="[34]" />
 </div>
 
-<div v-pre>
-
-```vue
-<STree :data="pages" :expanded-keys="[34]" />
+:::code-group
+```vue [Пример]
+<template>
+    <STree :data="pages" :expanded-keys="[34]" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <STree :data="pages" :expanded-keys="[34]" />
+</template>
 
-</div>
+<script setup>
+import { STree } from 'startup-ui';
+
+const pages = [{id: 34, label: 'Страница 1', children: [{id: 7, label: 'Страница 7'}]}, {id: 2, label: 'Страница 2'}];
+</script>
+```
+:::
 
 ## Перетаскивание элементов
 
@@ -130,9 +162,13 @@ const pages = [...];
     <STree :data="pages" draggable />
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <STree :data="pages" draggable @drop="onDrop" />
+</template>
+```
+```vue [Весь код]
 <template>
     <STree :data="pages" draggable @drop="onDrop" />
 </template>
@@ -148,8 +184,7 @@ function onDrop(targetNode, event, dropType) {
 }
 </script>
 ```
-
-</div>
+:::
 
 При этом выполняются события:
 
@@ -166,13 +201,25 @@ function onDrop(targetNode, event, dropType) {
     <STree v-model="selectedPageIds7" checkboxes :data="pages" />
 </div>
 
-<div v-pre>
-
-```vue
-<STree v-model="selectedPageIds" :data="pages" checkboxes />
+:::code-group
+```vue [Пример]
+<template>
+    <STree v-model="selectedPageIds" :data="pages" checkboxes />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <STree v-model="selectedPageIds" :data="pages" checkboxes />
+</template>
 
-</div>
+<script setup>
+import { STree } from 'startup-ui';
+
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}, ...];
+const selectedPageIds = ref([]);
+</script>
+```
+:::
 
 Если нужно, чтобы при выборе чек-бокса автоматически выбирались чек-боксы вложенных элементов, добавьте атрибут **select-with-children**:
 
@@ -180,13 +227,25 @@ function onDrop(targetNode, event, dropType) {
     <STree v-model="selectedPageIds8" checkboxes :data="pages" select-with-children/>
 </div>
 
-<div v-pre>
-
-```vue
-<STree v-model="selectedPageIds" :data="pages" checkboxes select-with-children />
+:::code-group
+```vue [Пример]
+<template>
+    <STree v-model="selectedPageIds" :data="pages" checkboxes select-with-children />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <STree v-model="selectedPageIds" :data="pages" checkboxes select-with-children />
+</template>
 
-</div>
+<script setup>
+import { STree } from 'startup-ui';
+
+const pages = [{id: 1, label: 'Страница 1'}, {id: 2, label: 'Страница 2'}, ...];
+const selectedPageIds = ref([]);
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

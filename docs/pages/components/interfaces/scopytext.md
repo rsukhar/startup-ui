@@ -11,15 +11,22 @@
 <SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SCopyText>ABCD-EFGH-1234-5678</SCopyText>
+</template>
 
-</div>
+<script setup>
+import { SCopyText } from 'startup-ui';
+</script>
+```
+:::
 
 ## Внутристрочный пример
 
@@ -28,15 +35,22 @@
 <SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <p><SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.</p>
+    <SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
+</template>
 
-</div>
+<script setup>
+import SCopyText from 'startup-ui';
+</script>
+```
+:::
 
 ## Копируем не то, что выводим
 
@@ -45,15 +59,22 @@
     <SCopyText copytext="777">Секретный код: 777</SCopyText>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SCopyText copytext="777">Секретный код: 777</SCopyText>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SCopyText copytext="777">Секретный код: 777</SCopyText>
+</template>
 
-</div>
+<script setup>
+import SCopyText from 'startup-ui';
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

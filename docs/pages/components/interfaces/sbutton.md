@@ -24,14 +24,22 @@
     <SButton small>Маленькая кнопка</SButton>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SButton>Основное действие</SButton>
     <SButton outlined>Дополнительное действие</SButton>
     <SButton transparent>Прозрачная кнопка</SButton>
-    <SButton disabled>Недоступная кнопка</SButton>
+    <SButton disabled>Заблокированная кнопка</SButton>
+    <SButton small>Маленькая кнопка</SButton>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SButton>Основное действие</SButton>
+    <SButton outlined>Дополнительное действие</SButton>
+    <SButton transparent>Прозрачная кнопка</SButton>
+    <SButton disabled>Заблокированная кнопка</SButton>
     <SButton small>Маленькая кнопка</SButton>
 </template>
 
@@ -39,8 +47,7 @@
 import { SButton } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ### Красная кнопка
 
@@ -52,17 +59,30 @@ import { SButton } from 'startup-ui';
     <SButton small color="red">Маленькая кнопка</SButton>
 </div>
 
-<div v-pre>
-
-```vue
-<SButton color="red">Основное действие</SButton>
-<SButton outlined color="red">Дополнительное действие</SButton>
-<SButton transparent color="red">Прозрачная кнопка</SButton>
-<SButton disabled color="red">Недоступная кнопка</SButton>
-<SButton small color="red">Маленькая кнопка</SButton>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton color="red">Основное действие</SButton>
+    <SButton outlined color="red">Дополнительное действие</SButton>
+    <SButton transparent color="red">Прозрачная кнопка</SButton>
+    <SButton disabled color="red">Заблокированная кнопка</SButton>
+    <SButton small color="red">Маленькая кнопка</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton color="red">Основное действие</SButton>
+    <SButton outlined color="red">Дополнительное действие</SButton>
+    <SButton transparent color="red">Прозрачная кнопка</SButton>
+    <SButton disabled color="red">Заблокированная кнопка</SButton>
+    <SButton small color="red">Маленькая кнопка</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton } from 'startup-ui';
+</script>
+```
+:::
 
 ### Зеленая кнопка
 
@@ -74,17 +94,30 @@ import { SButton } from 'startup-ui';
     <SButton small color="green">Маленькая кнопка</SButton>
 </div>
 
-<div v-pre>
-
-```vue
-<SButton color="green">Основное действие</SButton>
-<SButton outlined color="green">Дополнительное действие</SButton>
-<SButton transparent color="green">Прозрачная кнопка</SButton>
-<SButton disabled color="green">Недоступная кнопка</SButton>
-<SButton small color="green">Маленькая кнопка</SButton>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton color="green">Основное действие</SButton>
+    <SButton outlined color="green">Дополнительное действие</SButton>
+    <SButton transparent color="green">Прозрачная кнопка</SButton>
+    <SButton disabled color="green">Заблокированная кнопка</SButton>
+    <SButton small color="green">Маленькая кнопка</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton color="green">Основное действие</SButton>
+    <SButton outlined color="green">Дополнительное действие</SButton>
+    <SButton transparent color="green">Прозрачная кнопка</SButton>
+    <SButton disabled color="green">Заблокированная кнопка</SButton>
+    <SButton small color="green">Маленькая кнопка</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton } from 'startup-ui';
+</script>
+```
+:::
 
 ### Жёлтая кнопка
 
@@ -96,17 +129,30 @@ import { SButton } from 'startup-ui';
     <SButton small color="yellow">Маленькая кнопка</SButton>
 </div>
 
-<div v-pre>
-
-```vue
-<SButton color="yellow">Основное действие</SButton>
-<SButton outlined color="yellow">Дополнительное действие</SButton>
-<SButton transparent color="yellow">Прозрачная кнопка</SButton>
-<SButton disabled color="yellow">Недоступная кнопка</SButton>
-<SButton small color="yellow">Маленькая кнопка</SButton>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton color="yellow">Основное действие</SButton>
+    <SButton outlined color="yellow">Дополнительное действие</SButton>
+    <SButton transparent color="yellow">Прозрачная кнопка</SButton>
+    <SButton disabled color="yellow">Заблокированная кнопка</SButton>
+    <SButton small color="yellow">Маленькая кнопка</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton color="yellow">Основное действие</SButton>
+    <SButton outlined color="yellow">Дополнительное действие</SButton>
+    <SButton transparent color="yellow">Прозрачная кнопка</SButton>
+    <SButton disabled color="yellow">Заблокированная кнопка</SButton>
+    <SButton small color="yellow">Маленькая кнопка</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton } from 'startup-ui';
+</script>
+```
+:::
 
 ### Кнопка на всю ширину формы
 
@@ -117,24 +163,34 @@ import { SButton } from 'startup-ui';
     <SButton fullwidth color="yellow">Основное действие</SButton>
 </div>
 
-<div v-pre>
-
-```vue
-<SButton fullwidth>Основное действие</SButton>
-<SButton fullwidth color="red">Основное действие</SButton>
-<SButton fullwidth color="green">Основное действие</SButton>
-<SButton fullwidth color="yellow">Основное действие</SButton>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton fullwidth>Основное действие</SButton>
+    <SButton fullwidth color="red">Основное действие</SButton>
+    <SButton fullwidth color="green">Основное действие</SButton>
+    <SButton fullwidth color="yellow">Основное действие</SButton>
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SButton fullwidth>Основное действие</SButton>
+    <SButton fullwidth color="red">Основное действие</SButton>
+    <SButton fullwidth color="green">Основное действие</SButton>
+    <SButton fullwidth color="yellow">Основное действие</SButton>
+</template>
 
-</div>
+<script setup>
+import { SButton } from 'startup-ui';
+</script>
+```
+:::
 
 ## Действия по кнопке
 
 ### Отправка формы
 
 Если кнопка внутри формы, то отправляет форму:
-
-<div v-pre>
 
 ```vue
 <template>
@@ -145,41 +201,27 @@ import { SButton } from 'startup-ui';
 </template>
 ```
 
-</div>
-
 ### Кастомное действие
-
-<div v-pre>
 
 ```vue
 <SButton @click="createUser">Создать пользователя</SButton>
 ```
 
-</div>
-
 ### Переход по ссылке
 
 Если добавляем href, то кнопка по умолчанию становится семантически правильным анкором:
-
-<div v-pre>
 
 ```vue
 <SButton href="https://startup-ui.suhar.ru">Документация</SButton>
 ```
 
-</div>
-
 ### Переход по внутренней ссылке InertiaJs
 
 Если нужно сделать кнопку внутренней InertjaJS-ссылкой, то используем атрибут "is":
 
-<div v-pre>
-
 ```vue
 <SButton :is="Link" href="/projects/create">Создать проект</SButton>
 ```
-
-</div>
 
 ## Интерфейс компонента
 

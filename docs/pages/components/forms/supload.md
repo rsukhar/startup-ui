@@ -26,7 +26,13 @@
     <SButton v-if="screenshot1" @click="submit">Отправить</SButton>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SUpload v-model="screenshot" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SUpload v-model="screenshot" />
     <SButton v-if="screenshot" @click="submit">Отправить</SButton>
@@ -34,16 +40,22 @@
 
 <script setup>
 import { ref } from 'vue';
+import { router } from "@inertiajs/vue3";
 import { SUpload, SButton, SAlert } from 'startup-ui';
 
-const screenshot = ref(null);
+const screenshot = ref('');
 
 const submit = () => {
-    // Логика отправки
-    SAlert.success('Файл отправлен');
+    router.post(`/photos`, { screenshot: screenshot.value }, {
+        replace: false,
+        preserveState: true,
+        onError: (error) => console.error(error),
+        onSuccess: () => SAlert.success('Файл отправлен'),
+    });
 }
 </script>
 ```
+:::
 
 ## Авто-отправка при выборе
 
@@ -53,22 +65,35 @@ const submit = () => {
     <SUpload v-model="screenshot2" @select="submit" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SUpload v-model="screenshot" @select="submit" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SUpload v-model="screenshot" @select="submit" />
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { SUpload, SAlert } from 'startup-ui';
+import { router } from "@inertiajs/vue3";
+import { SUpload, SButton, SAlert } from 'startup-ui';
 
-const screenshot = ref(null);
+const screenshot = ref('');
 
 const submit = () => {
-    SAlert.success('Файл отправлен');
+    router.post(`/photos`, { screenshot: screenshot.value }, {
+        replace: false,
+        preserveState: true,
+        onError: (error) => console.error(error),
+        onSuccess: () => SAlert.success('Файл отправлен'),
+    });
 }
 </script>
 ```
+:::
 
 ## Кастомный текст кнопки
 
@@ -79,11 +104,36 @@ const submit = () => {
     <SButton v-if="screenshot3" @click="submit">Отправить</SButton>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SUpload v-model="screenshot" upload-button-title="Выбрать скриншот" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SUpload v-model="screenshot" upload-button-title="Выбрать скриншот" />
+    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { router } from "@inertiajs/vue3";
+import { SUpload, SActionIcon, SAlert } from 'startup-ui';
+
+const screenshot = ref('');
+
+const submit = () => {
+    router.post(`/photos`, { screenshot: screenshot.value }, {
+        replace: false,
+        preserveState: true,
+        onError: (error) => console.error(error),
+        onSuccess: () => SAlert.success('Файл отправлен'),
+    });
+}
+</script>
+```
+:::
 
 ## Кастомный шаблон
 
@@ -103,7 +153,8 @@ const submit = () => {
     </SUpload>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SUpload v-model="screenshot">
         <template #header="{ choose, clear, files, isDragging }">
@@ -113,35 +164,39 @@ const submit = () => {
             </div>
         </template>
         <template #preview="{ files, remove }">
-            <div v-if="files && files.length">
-                Файл выбран <SActionIcon @click="remove(files[0])" icon="trash" />
+            <div v-if="files">
+                Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
+            </div>
+        </template>
+    </SUpload>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SUpload v-model="screenshot">
+        <template #header="{ choose, clear, files, isDragging }">
+            <div class="s-upload-area" :class="{'dragging': isDragging}">
+                <FontAwesomeIcon icon="cloud-arrow-up" class="s-upload-area-icon"/>
+                <p>Перетащите файл сюда или <a href="javascript:void(0)" @click="choose">нажмите</a> для загрузки</p>
+            </div>
+        </template>
+        <template #preview="{ files, remove }">
+            <div v-if="files">
+                Файл выбран <SActionIcon @click="remove(0)" icon="trash" />
             </div>
         </template>
     </SUpload>
 </template>
 
-<style lang="scss">
-.s-upload-area {
-    border: 1px dashed var(--s-border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: var(--s-border-radius);
-    padding: var(--s-base-margin);
-    gap: var(--s-base-margin);
-    cursor: pointer;
+<script setup>
+import { ref } from 'vue';
+import { router } from "@inertiajs/vue3";
+import { SUpload, SActionIcon, SAlert } from 'startup-ui';
 
-    &-icon {
-        font-size: 56px;
-        color: var(--s-primary);
-    }
-
-    &:hover, &.dragging {
-        border-color: var(--s-primary);
-    }
-}
-</style>
+const screenshot = ref('');
+</script>
 ```
+:::
 
 Слоты сразу пробрасывают методы и переменные, которые могут быть полезны в собственных шаблонах:
 
@@ -159,9 +214,36 @@ const submit = () => {
     <SButton v-if="screenshot5" @click="submit">Отправить</SButton>
 </div>
 
-```vue
-<SUpload accept=".txt,.csv,.xlsx" v-model="screenshot" />
+:::code-group
+```vue [Пример]
+<template>
+    <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SUpload accept=".txt,.csv,.xlsx" v-model="screenshot"/>
+    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { router } from "@inertiajs/vue3";
+import { SUpload, SButton, SAlert } from 'startup-ui';
+
+const screenshot = ref('');
+
+const submit = () => {
+    router.post(`/photos`, { screenshot: screenshot.value }, {
+        replace: false,
+        preserveState: true,
+        onError: (error) => console.error(error),
+        onSuccess: () => SAlert.success('Файл отправлен'),
+    });
+}
+</script>
+```
+:::
 
 Для ограничения выбора по размеру файла добавляем атрибут <strong>max-file-size</strong> (в байтах):
 
@@ -170,9 +252,36 @@ const submit = () => {
     <SButton v-if="screenshot6" @click="submit">Отправить</SButton>
 </div>
 
-```vue
-<SUpload :max-file-size="512000" v-model="screenshot" />
+:::code-group
+```vue [Пример]
+<template>
+    <SUpload :max-file-size="512000" />
+</template>
 ```
+```vue [Весь код]
+<template>
+    <SUpload :max-file-size="512000" />
+    <SButton v-if="screenshot" @click="submit">Отправить</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { router } from "@inertiajs/vue3";
+import { SUpload, SButton, SAlert } from 'startup-ui';
+
+const screenshot = ref('');
+
+const submit = () => {
+    router.post(`/photos`, { screenshot: screenshot.value }, {
+        replace: false,
+        preserveState: true,
+        onError: (error) => console.error(error),
+        onSuccess: () => SAlert.success('Файл отправлен'),
+    });
+}
+</script>
+```
+:::
 
 ## Выбор нескольких файлов
 
@@ -181,16 +290,36 @@ const submit = () => {
     <SButton v-if="screenshot7 && screenshot7.length" @click="submit">Отправить</SButton>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SUpload multiple v-model="screenshots" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SUpload multiple v-model="screenshots" />
+    <SButton v-if="screenshots.length" @click="submit">Отправить</SButton>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-const screenshots = ref([]);
+import { router } from "@inertiajs/vue3";
+import { SUpload, SButton, SAlert } from 'startup-ui';
+
+const screenshot = ref([]);
+
+const submit = () => {
+    router.post(`/photos`, { screenshot: screenshot.value }, {
+        replace: false,
+        preserveState: true,
+        onError: (error) => console.error(error),
+        onSuccess: () => SAlert.success('Файл отправлен'),
+    });
+}
 </script>
 ```
+:::
 
 ## Интерфейс компонента
 
@@ -220,7 +349,7 @@ const screenshots = ref([]);
 | clear | - | Вызывается при полной очистке списка. |
 
 <script setup>
-import { ref } from 'vue'; 
+import { ref } from 'vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SUpload from '../../../../packages/startup-ui/src/components/SUpload.vue';

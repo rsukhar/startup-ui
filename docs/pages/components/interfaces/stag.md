@@ -15,15 +15,22 @@
 <STag>Новый</STag>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <STag>Новый</STag>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <STag>Новый</STag>
+</template>
 
-</div>
+<script setup>
+import { STag } from 'startup-ui';
+</script>
+```
+:::
 
 ## Различные цвета
 
@@ -53,20 +60,62 @@
 <STag color="green-lightest">green-lightest</STag>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <STag color="gray">gray</STag>
     <STag color="primary">primary</STag>
     <STag color="primary-dark">primary-dark</STag>
+    <STag color="primary-darkest">primary-darkest</STag>
+    <STag color="primary-light">primary-light</STag>
+    <STag color="primary-lightest">primary-lightest</STag>
+
     <STag color="red">red</STag>
+    <STag color="red-dark">red-dark</STag>
+    <STag color="red-light">red-light</STag>
+    <STag color="red-lightest">red-lightest</STag>
+
     <STag color="yellow">yellow</STag>
+    <STag color="yellow-dark">yellow-dark</STag>
+    <STag color="yellow-light">yellow-light</STag>
+    <STag color="yellow-lightest">yellow-lightest</STag>
+
     <STag color="green">green</STag>
+    <STag color="green-dark">green-dark</STag>
+    <STag color="green-light">green-light</STag>
+    <STag color="green-lightest">green-lightest</STag>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <STag color="gray">gray</STag>
+    <STag color="primary">primary</STag>
+    <STag color="primary-dark">primary-dark</STag>
+    <STag color="primary-darkest">primary-darkest</STag>
+    <STag color="primary-light">primary-light</STag>
+    <STag color="primary-lightest">primary-lightest</STag>
 
-</div>
+    <STag color="red">red</STag>
+    <STag color="red-dark">red-dark</STag>
+    <STag color="red-light">red-light</STag>
+    <STag color="red-lightest">red-lightest</STag>
+
+    <STag color="yellow">yellow</STag>
+    <STag color="yellow-dark">yellow-dark</STag>
+    <STag color="yellow-light">yellow-light</STag>
+    <STag color="yellow-lightest">yellow-lightest</STag>
+
+    <STag color="green">green</STag>
+    <STag color="green-dark">green-dark</STag>
+    <STag color="green-light">green-light</STag>
+    <STag color="green-lightest">green-lightest</STag>
+</template>
+
+<script setup>
+import { STag } from 'startup-ui';
+</script>
+```
+:::
 
 ## Интерфейс компонента
 

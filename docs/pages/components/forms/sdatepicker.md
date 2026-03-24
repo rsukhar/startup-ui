@@ -28,7 +28,13 @@
     <SDatePicker v-model="value" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDatePicker v-model="value" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SDatePicker v-model="value" />
 </template>
@@ -37,9 +43,10 @@
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
-const value = ref(null);
+const value = ref(false);
 </script>
 ```
+:::
 
 Выбирает значение в формате `YYYY-MM-DD`. Текущее значение: <code>{{ value ?? 'null' }}</code>
 
@@ -49,20 +56,25 @@ const value = ref(null);
     <SDatePicker v-model="valueSecond" :min="minDate" :max="maxDate" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SDatePicker v-model="value" :min="minDate" :max="maxDate" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDatePicker v-model="value" min="{{ minDate }}" max="{{ maxDate }}" />
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
-const minDate = '2025-01-01'; // Пример
-const maxDate = '2025-12-31'; // Пример
-const value = ref(null);
+const value = ref(false);
 </script>
 ```
+:::
 
 ## Кастомный формат значения
 
@@ -70,7 +82,13 @@ const value = ref(null);
     <SDatePicker v-model="valueThird" value-format="YYYYMMDD" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDatePicker v-model="value" value-format="YYYYMMDD" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SDatePicker v-model="value" value-format="YYYYMMDD" />
 </template>
@@ -79,9 +97,10 @@ const value = ref(null);
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
-const value = ref(null);
+const value = ref(false);
 </script>
 ```
+:::
 
 Текущее значение: <code>{{ valueThird ?? 'null' }}</code>
 
@@ -95,7 +114,13 @@ const value = ref(null);
     <SDatePicker range v-model="valueFourth" value-format="YYYYMMDD" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDatePicker range v-model="value" value-format="YYYYMMDD" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" />
 </template>
@@ -104,9 +129,10 @@ const value = ref(null);
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
-const value = ref([]);
+const value = ref(false);
 </script>
 ```
+:::
 
 В модель подставляется массив из двух дат в формате, указанном в <strong>value-format</strong>. Текущее значение: <code>{{ valueFourth ?? 'null' }}</code>
 
@@ -118,7 +144,13 @@ const value = ref([]);
     <SDatePicker range v-model="valueFifth" value-format="YYYYMMDD" :buttons="buttons" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
 </template>
@@ -127,13 +159,15 @@ const value = ref([]);
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
-const value = ref([]);
+const value = ref(false);
+
 const buttons = {
   '2 недели': '20250901-20250914',
   'Месяц': '20250815-20250914',
 };
 </script>
 ```
+:::
 
 Набор доступных кнопок задается в формате <code>{title: value.join('-')}</code>, например: <code>{"2 недели": "20250901-20250914", "Месяц": "20250815-20250914"}</code>
 
@@ -147,7 +181,13 @@ const buttons = {
     <SDatePicker with-time v-model="valueSixth" value-format="YYYYMMDD HH:mm" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDatePicker with-time v-model="value" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SDatePicker with-time v-model="value" />
 </template>
@@ -156,9 +196,10 @@ const buttons = {
 import { ref } from 'vue';
 import { SDatePicker } from 'startup-ui';
 
-const value = ref(null);
+const value = ref(false);
 </script>
 ```
+:::
 
 Дополнительно в формате можно дописывать **HH:mm**, чтобы там было время:
 

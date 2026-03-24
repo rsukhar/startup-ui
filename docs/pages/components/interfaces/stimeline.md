@@ -20,9 +20,17 @@
     </STimeline>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <STimeline :items="items">
+        <template #item="{ item }">
+            <strong>{{ item.last_visit_diff }} назад</strong> {{ item.username }} остановил переходы
+        </template>
+    </STimeline>
+</template>
+```
+```vue [Весь код]
 <template>
     <STimeline :items="items">
         <template #item="{ item }">
@@ -32,17 +40,25 @@
 </template>
 
 <script setup>
-import { STimeline } from 'startup-ui';
+import STimeline from 'startup-ui';
 
 const items = [
-    { id: 1, last_visit_diff: '2 д. 6 ч', username: 'Иванов' }, 
-    { id: 2, last_visit_diff: '4 д. 2 ч', username: 'Петров' }, 
-    { id: 3, last_visit_diff: '22 д. 1 ч', username: 'Сидоров' }
+    {
+        last_visit_diff: '2 д. 6 ч',
+        username: 'Иванов',
+    },
+    {
+        last_visit_diff: '4 д. 2 ч',
+        username: 'Петров',
+    },
+    {
+        last_visit_diff: '22 д. 1 ч',
+        username: 'Сидоров',
+    }
 ];
 </script>
 ```
-
-</div>
+:::
 
 ## Интерфейс компонента
 
@@ -67,12 +83,12 @@ const items = [
         id: 1,
         last_visit_diff: '2 д. 6 ч',
         username: 'Иванов',
-    }, 
+    },
     {
         id: 2,
         last_visit_diff: '4 д. 2 ч',
         username: 'Петров',
-    }, 
+    },
     {
         id: 3,
         last_visit_diff: '22 д. 1 ч',

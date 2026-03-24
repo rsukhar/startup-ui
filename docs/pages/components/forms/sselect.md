@@ -7,7 +7,7 @@
         <p>В отличие от популярных библиотек компонентов для Vue3:</p>
         <ol>
             <li>Исключает опции, которые, как правило, не используются в стартапах (флоат лейблы, размеры), но из-за которых разные программисты реализовывают компонент по-разному. Без лишних опций унифицируется код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
-            <li>Поддерживает два формата передачи опций, удобных для выгрузки из контроллеров Laravel: 
+            <li>Поддерживает два формата передачи опций, удобных для выгрузки из контроллеров Laravel:
             <ol>
                 <li><code>{value1: title1, value2: title2}</code> — что удобно для быстрого получения из key-value конфигов, а также из моделей — <code>User::pluck('name', 'id')</code>;</li>
                 <li><code>[[value1, title1], [value2, title2]]</code> — что удобно для выгрузки там, где важен порядок. Это минимизирует код в контроллерах, помогая сохранять принцип «тонкого контроллера», которого мы придерживаемся.</li>
@@ -29,7 +29,13 @@
     <SSelect v-model="value1" :options="options" placeholder="Выберите" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSelect v-model="value" :options="options" placeholder="Выберите" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SSelect v-model="value" :options="options" placeholder="Выберите" />
 </template>
@@ -37,11 +43,11 @@
 <script setup>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
-
-const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-const value = ref(null);
+const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
+const value = ref('');
 </script>
 ```
+:::
 
 Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
 
@@ -51,7 +57,13 @@ const value = ref(null);
     <SSelect v-model="value2" :options="options" filterable placeholder="Выберите" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
 </template>
@@ -59,17 +71,23 @@ const value = ref(null);
 <script setup>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
-
-const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-const value = ref(null);
+const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
+const value = ref('');
 </script>
 ```
+:::
 
 ## Получение значений по API
 
 Список значений можно получать и по API.
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
 </template>
@@ -81,16 +99,17 @@ import axios from "axios";
 
 const isLoading = ref(false);
 const selectOptions = ref({});
-const value = ref(null);
+const value = ref('');
 
-function onFilter(query) {
-    isLoading.value = true;
-    axios.post('/select_options/search', { query: query })
+function onFilter(query){
+  isLoading.value = true;
+  axios.post(`/select_options/search`, { query: query })
         .then((response) => selectOptions.value = response.data)
         .finally(() => isLoading.value = false);
 }
 </script>
 ```
+:::
 
 В данном примере API должно возвращать в data-поле массив {value: title} значений.
 
@@ -102,7 +121,13 @@ function onFilter(query) {
     <SSelect v-model="value6" :options="options" clearable placeholder="Не выбрано" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSelect v-model="user" :options="users" clearable placeholder="Не выбрано" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SSelect v-model="user" :options="users" clearable placeholder="Не выбрано" />
 </template>
@@ -110,11 +135,11 @@ function onFilter(query) {
 <script setup>
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
-
-const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-const user = ref(null);
+const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
+const user = ref('');
 </script>
 ```
+:::
 
 ## Виртуальный скролл
 
@@ -124,7 +149,13 @@ const user = ref(null);
     <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
 </template>
@@ -133,11 +164,14 @@ const user = ref(null);
 import { ref } from 'vue';
 import { SSelect } from 'startup-ui';
 
-// Представим, что здесь огромный список регионов
-const regions = [ [ 225, "Россия (225)" ], ... ]; 
-const region = ref(null);
+const props = defineProps({
+    regions: Object
+});
+
+const region = ref('');
 </script>
 ```
+:::
 
 ## Интерфейс компонента
 

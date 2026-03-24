@@ -25,32 +25,22 @@
     </div>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <div class="menu-container">
-        <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
-    </div>
+    <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
 </template>
 
 <script setup>
 import { SDropdownMenu } from 'startup-ui';
-
-const adminLinks = [
-    { label: 'Заказы', url: '#' }, 
-    { label: 'Страницы', url: '#' }, 
-    { label: 'Пользователи', url: '#' }
-];
 </script>
-
-<style scoped>
-.menu-container {
-    display: flex;
-    max-width: 200px;
-    line-height: 60px;
-    background-color: transparent;
-}
-</style>
 ```
+:::
 
 Где links — это массив в формате `[{label, url, active}, ...]`
 В атрибут "placeholder" подставляем текст, который выводится в лейбле, когда ни одна из ссылок не активна.
@@ -67,11 +57,22 @@ const adminLinks = [
     </div>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
+</template>
+
+<script setup>
+import { SDropdownMenu } from 'startup-ui';
+</script>
+```
+:::
 
 Когда нужно задать кастомный лейбл, используем одноименный слот `label`, при этом ссылку с лейбла также задаем через атрибут `labelLink`:
 
@@ -88,7 +89,20 @@ const adminLinks = [
     </div>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
+        <template #label>
+            <span class="userblock">
+                <FontAwesomeIcon icon="circle-user" />
+                <span>{{ authUser.username }}</span>
+            </span>
+        </template>
+    </SDropdownMenu>
+</template>
+```
+```vue [Весь код]
 <template>
     <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
         <template #label>
@@ -103,20 +117,9 @@ const adminLinks = [
 <script setup>
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { SDropdownMenu } from 'startup-ui';
-
-const authUser = { username: 'Admin' };
-const adminLinks = [ /* ... */ ];
 </script>
-
-<style scoped>
-.userblock {
-    display: flex;
-    gap: 10px;
-    line-height: inherit;
-    align-items: center;
-}
-</style>
 ```
+:::
 
 ## Задаем ссылки вручную
 
@@ -131,7 +134,8 @@ const adminLinks = [ /* ... */ ];
     </div>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SDropdownMenu label="Помощь">
         <a href="/docs/">Документация</a>
@@ -139,6 +143,19 @@ const adminLinks = [ /* ... */ ];
     </SDropdownMenu>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SDropdownMenu label="Помощь">
+        <a href="/docs/">Документация</a>
+        <a href=".." target="_blank">Телеграм-группа</a>
+    </SDropdownMenu>
+</template>
+
+<script setup>
+import { SDropdownMenu } from 'startup-ui';
+</script>
+```
+:::
 
 Также можно использовать комбинированный вариант, когда часть ссылок задается атрибутом, а часть — через слот:
 
@@ -150,7 +167,15 @@ const adminLinks = [ /* ... */ ];
     </div>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SDropdownMenu label="Помощь" :links="helpLinks">
+        <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
+    </SDropdownMenu>
+</template>
+```
+```vue [Весь код]
 <template>
     <SDropdownMenu label="Помощь" :links="helpLinks">
         <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
@@ -165,6 +190,7 @@ const helpLinks = [
 ];
 </script>
 ```
+:::
 
 ## Интерфейс компонента
 
@@ -191,8 +217,8 @@ import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue'
 import SDropdownMenu from '../../../../packages/startup-ui/src/components/SDropdownMenu.vue';
 
 const adminLinks = [
-    { label: 'Заказы', url: '#' }, 
-    { label: 'Страницы', url: '#' }, 
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
     { label: 'Пользователи', url: '#' }
 ];
 

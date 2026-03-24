@@ -15,7 +15,13 @@
     <SVerticalMenu :links="menuLinks" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SVerticalMenu :links="menuLinks" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SVerticalMenu :links="menuLinks" />
 </template>
@@ -24,28 +30,29 @@
 import { SVerticalMenu } from 'startup-ui';
 
 const menuLinks = [
-    { 
-        id: 34, 
-        title: "Мануал", 
-        label: "Мануал", 
-        type: "section", 
-        children: [ 
-            { id: 6, label: "Быстрый запуск", url: "/docs/quick-start/" }, 
+    {
+        id: 34,
+        title: "Мануал",
+        label: "Мануал",
+        type: "section",
+        children: [
+            { id: 6, label: "Быстрый запуск", url: "/docs/quick-start/" },
             { id: 30, label: "Тарифы", url: "/docs/plans/" }
-        ] 
-    }, 
-    { 
-        id: 8, 
-        title: "Кейсы", 
-        label: "Кейсы", 
-        type: "section", 
-        children: [ 
+        ]
+    },
+    {
+        id: 8,
+        title: "Кейсы",
+        label: "Кейсы",
+        type: "section",
+        children: [
             { id: 9, label: "Кейс №1: Ландшафтный дизайн", url: "/docs/case1/" }
-        ] 
+        ]
     }
 ];
 </script>
 ```
+:::
 
 Где menuLinks — это массив в формате `[{label, url, active, ?type, ?className, ?children}, ...]`
 
@@ -57,11 +64,24 @@ const menuLinks = [
     <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
+</template>
+
+<script setup>
+import { SVerticalMenu } from 'startup-ui';
+
+const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true } ] } ]
+</script>
+```
+:::
 
 ## Запоминание раскрытых элементов
 
@@ -73,11 +93,24 @@ const menuLinks = [
     <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
+</template>
+
+<script setup>
+import { SVerticalMenu } from 'startup-ui';
+
+const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true } ] } ]
+</script>
+```
+:::
 
 ## Интерфейс компонента SVerticalMenu
 

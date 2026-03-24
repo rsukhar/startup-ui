@@ -22,26 +22,24 @@
     <SPagination v-bind="users" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <!-- Пример: inertia('User/Index', ['users' => Users::paginate()]) -->
+    <SPagination v-bind="users" />
+</template>
+```
+```vue [Весь код]
+<template>
+    // inertia('User/Index', ['users' => Users::paginate()])
     <SPagination v-bind="users" />
 </template>
 
 <script setup>
 import { SPagination } from 'startup-ui';
-
-const props = defineProps({
-    users: Object // Пагинатор Laravel
-});
 </script>
-
-<style scoped>
-.s-pagination {
-    margin-bottom: 0;
-}
-</style>
 ```
+:::
 
 Laravel-пагинатор на выходе формирует объект с ключами `{current_page, from, last_page, links, per_page, to, total}`. SPaginator использует ровно то же именование входных атрибутов, поэтому пробрасываем их как есть через v-bind.
 
@@ -53,9 +51,13 @@ Laravel-пагинатор на выходе формирует объект с 
     <SPagination v-bind="users2" :per-page-options="[15, 25, 50]" />
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
 </template>
@@ -63,15 +65,8 @@ Laravel-пагинатор на выходе формирует объект с 
 <script setup>
 import { SPagination } from 'startup-ui';
 </script>
-
-<style scoped>
-.s-pagination {
-    margin-bottom: 0;
-}
-</style>
 ```
-
-</div>
+:::
 
 Изменение кол-ва вариантов на странице меняет query-параметр perpage, сбрасывает query-параметр page и сохраняет все остальные query-параметры нетронутыми.
 
@@ -114,7 +109,7 @@ const getQueryParams = () => {
 
 const generatePaginator = (total, page, perpage) => {
     perpage = Math.max(1, perpage ?? 15);
-    const lastPage = Math.ceil(total / perpage); 
+    const lastPage = Math.ceil(total / perpage);
     const links = [];
     for (let curPage = 1; curPage <= lastPage; curPage++){
         if (curPage === 1) links.push({ has_url: (page > 2), label: "&#8592;", active: false });

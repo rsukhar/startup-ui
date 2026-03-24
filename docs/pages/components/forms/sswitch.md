@@ -15,7 +15,13 @@
     <SSwitch v-model="checked">Включить</SSwitch>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSwitch v-model="checked">Включить</SSwitch>
+</template>
+```
+```vue [Весь код]
 <template>
     <SSwitch v-model="checked">Включить</SSwitch>
 </template>
@@ -27,6 +33,7 @@ import { SSwitch } from 'startup-ui';
 const checked = ref(false);
 </script>
 ```
+:::
 
 Модель принимает значение true/false.
 
@@ -36,7 +43,13 @@ const checked = ref(false);
     <SSwitch v-model="checkedSecond" disabled>Не работает</SSwitch>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSwitch v-model="checked" disabled>Не работает</SSwitch>
+</template>
+```
+```vue [Весь код]
 <template>
     <SSwitch v-model="checked" disabled>Не работает</SSwitch>
 </template>
@@ -48,6 +61,7 @@ import { SSwitch } from 'startup-ui';
 const checked = ref(false);
 </script>
 ```
+:::
 
 ## Кастомные да/нет-значения
 
@@ -57,7 +71,15 @@ const checked = ref(false);
     <SSwitch v-model="checkedThird" true-value="yes" false-value="no">Значение: {{ checkedThird }}</SSwitch>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SSwitch v-model="value" true-value="yes" false-value="no">
+        Значение: {{ value }}
+    </SSwitch>
+</template>
+```
+```vue [Весь код]
 <template>
     <SSwitch v-model="value" true-value="yes" false-value="no">
         Значение: {{ value }}
@@ -68,9 +90,10 @@ const checked = ref(false);
 import { ref } from 'vue';
 import { SSwitch } from 'startup-ui';
 
-const value = ref('no');
+const value = ref(false);
 </script>
 ```
+:::
 
 ## Интерфейс компонента
 

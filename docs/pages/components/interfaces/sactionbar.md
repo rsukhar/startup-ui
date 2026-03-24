@@ -14,9 +14,17 @@
     </SActionBar>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SCheckboxGroup v-model="users" :options="userOptions" />
+    <SActionBar v-if="users.length">
+        <SSelect v-model="massAction" :options="massActions" />
+        <SButton @click="applyMassAction">Применить</SButton>
+    </SActionBar>
+</template>
+```
+```vue [Весь код]
 <template>
     <SCheckboxGroup v-model="users" :options="userOptions" />
     <SActionBar v-if="users.length">
@@ -26,23 +34,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { SCheckboxGroup, SActionBar, SSelect, SButton, SAlert } from 'startup-ui';
-
-const users = ref([]);
-const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+import { SCheckboxGroup, SActionBar, SSelect, SButton} from 'startup-ui';
 
 const massActions = { sendBonus: 'Отправить бонус', greet: 'Поприветствовать', delete: 'Удалить' };
 const massAction = ref('sendBonus');
 
 function applyMassAction() {
-    users.value = [];
+    ...
     SAlert.success('Действие выполнено');
 }
+
+const users = ref([]);
+const userOptions = {
+    1: 'Иванов',
+    2: 'Петров',
+    3: 'Сидоров'
+};
 </script>
 ```
-
-</div>
+:::
 
 ## Интерфейс компонента
 

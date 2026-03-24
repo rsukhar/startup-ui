@@ -16,42 +16,29 @@
 <SButton @click="deleteUser">Удалить пользователя</SButton>
 </div>
 
-<div v-pre>
-
-```javascript
-SConfirm.open('Вы действительно хотите удалить пользователя?', {
-    title: 'Подтверждение удаления',
-    onAccept: () => SAlert.success('Пользователь удален')
-});
+:::code-group
+```vue [Пример]
+<template>
+    <SButton @click="deleteUser">Удалить пользователя</SButton>
+</template>
 ```
-
-</div>
-
-Полный пример использования:
-
-<div v-pre>
-
-```vue
+```vue [Весь код]
 <template>
     <SButton @click="deleteUser">Удалить пользователя</SButton>
 </template>
 
 <script setup>
-import { SConfirm, SAlert, SButton } from 'startup-ui';
+import { SConfirm,  SAlert, SButton } from 'startup-ui';
 
-function deleteUser() {
-    SConfirm.open('Вы действительно хотите удалить пользователя?', {
-        title: 'Подтверждение удаления',
-        acceptLabel: 'Да, удалить',
-        cancelLabel: 'Отмена',
-        onAccept: () => SAlert.success('Пользователь удален'),
-        onCancel: () => console.log('Отменено')
-    });
+function deleteUser(){
+  SConfirm.open('Вы действительно хотите удалить пользователя?', {
+    title: 'Подтверждение удаления',
+    onAccept: () => SAlert.success('Пользователь удален')
+  });
 }
 </script>
 ```
-
-</div>
+:::
 
 ## Интерфейс компонента
 

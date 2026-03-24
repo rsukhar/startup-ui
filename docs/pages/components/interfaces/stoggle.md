@@ -10,13 +10,26 @@
 </SToggle>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SToggle title="Какие есть гарантии результата?">
         <p><strong>Результат до оплаты.</strong> Результат до оплаты...</p>
     </SToggle>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SToggle title="Какие есть гарантии результата?">
+        <p><strong>Результат до оплаты.</strong> После регистрации и стартовых действий ты получаешь стартовый депозит, на котором сможешь сделать быстрый тест и получить первые результаты.</p>
+    </SToggle>
+</template>
+
+<script setup>
+import { SToggle } from 'startup-ui';
+</script>
+```
+:::
 
 ## Первоначально открытое состояние
 
@@ -27,13 +40,26 @@
 </SToggle>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SToggle title="Какие есть гарантии результата?" opened>
         <p>Блок открыт по умолчанию...</p>
     </SToggle>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SToggle title="Какие есть гарантии результата?" opened>
+        <p><strong>Результат до оплаты.</strong> После регистрации и стартовых действий ты получаешь стартовый депозит, на котором сможешь сделать быстрый тест и получить первые результаты.</p>
+    </SToggle>
+</template>
+
+<script setup>
+import { SToggle } from 'startup-ui';
+</script>
+```
+:::
 
 ## Кастомный заголовок
 
@@ -42,20 +68,32 @@
 <div class="docs-container">
 <SToggle>
     <template #title>Обратите внимание&nbsp;<STag color="primary-darkest">1</STag></template>
-    При пополнении счета банковской картой вы получаете бонус в размере 10 000 рублей.  
+    При пополнении счета банковской картой вы получаете бонус в размере 10 000 рублей.
 </SToggle>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SToggle>
-        <template #title>
-            Обратите внимание&nbsp;<STag color="primary-darkest">1</STag>
-        </template>
+        <template #title>Обратите внимание&nbsp;<STag color="primary-darkest">1</STag></template>
         При пополнении счета банковской картой вы получаете бонус в размере 10 000 рублей.
     </SToggle>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SToggle>
+        <template #title>Обратите внимание&nbsp;<STag color="primary-darkest">1</STag></template>
+        При пополнении счета банковской картой вы получаете бонус в размере 10 000 рублей.
+    </SToggle>
+</template>
+
+<script setup>
+import { SToggle, STag } from 'startup-ui';
+</script>
+```
+:::
 
 ## Несколько блоков (аккордеон)
 
@@ -66,7 +104,8 @@
 </SToggleGroup>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SToggleGroup>
         <SToggle title="Сколько это будет занимать времени">...</SToggle>
@@ -74,6 +113,19 @@
     </SToggleGroup>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SToggleGroup>
+        <SToggle title="Сколько это будет занимать времени">5 минут в день. Базовая настройка и запуск обычно занимает от 5 до 30 минут.</SToggle>
+        <SToggle title="Гарантии результата">Результат до оплаты. После регистрации и стартовых действий ты получаешь стартовый депозит, на котором сможешь сделать быстрый тест и получить первые результаты. И это лучше любых гарантий!</SToggle>
+    </SToggleGroup>
+</template>
+
+<script setup>
+import { SToggleGroup, SToggle } from 'startup-ui';
+</script>
+```
+:::
 
 По умолчанию будет давать открыть не более одного тоггла (остальные будет закрывать). Если нужно открыть несколько, то добавляем multiple:
 
@@ -84,7 +136,8 @@
 </SToggleGroup>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SToggleGroup multiple>
         <SToggle title="Сколько это будет занимать времени">...</SToggle>
@@ -92,6 +145,19 @@
     </SToggleGroup>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SToggleGroup multiple>
+        <SToggle title="Сколько это будет занимать времени">5 минут в день. Базовая настройка и запуск обычно занимает от 5 до 30 минут.</SToggle>
+        <SToggle title="Гарантии результата">Результат до оплаты. После регистрации и стартовых действий ты получаешь стартовый депозит, на котором сможешь сделать быстрый тест и получить первые результаты. И это лучше любых гарантий!</SToggle>
+    </SToggleGroup>
+</template>
+
+<script setup>
+import { SToggleGroup, SToggle } from 'startup-ui';
+</script>
+```
+:::
 
 ## Цвета
 

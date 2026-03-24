@@ -24,7 +24,13 @@
     <SHtmlEditor v-model="content1" upload-url="/image/upload" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" />
 </template>
@@ -33,9 +39,10 @@
 import { ref } from 'vue';
 import { SHtmlEditor } from 'startup-ui';
 
-const content = ref('');
+const content = ref(false);
 </script>
 ```
+:::
 
 ## Плейсхолдер
 
@@ -43,7 +50,13 @@ const content = ref('');
     <SHtmlEditor v-model="content2" upload-url="/image/upload" placeholder="Введите контент" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
+</template>
+```
+```vue [Весь код]
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
 </template>
@@ -52,9 +65,10 @@ const content = ref('');
 import { ref } from 'vue';
 import { SHtmlEditor } from 'startup-ui';
 
-const content = ref('');
+const content = ref(false);
 </script>
 ```
+:::
 
 ## Интерфейс компонента
 

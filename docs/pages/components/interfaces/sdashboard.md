@@ -20,33 +20,43 @@
 </SDashboard>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-<SDashboard>
-  <SDashboardItem title="Продажи">
-    Информация о продажах.
-  </SDashboardItem>
-  <SDashboardItem title="Списания за услуги">
-    Информация о стоимости услуг.
-  </SDashboardItem>
-</SDashboard>
+    <SDashboard>
+      <SDashboardItem title="Продажи">
+        Информация о продажах.
+      </SDashboardItem>
+      <SDashboardItem title="Списания за услуги">
+        Информация о стоимости услуг.
+      </SDashboardItem>
+    </SDashboard>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDashboard>
+      <SDashboardItem title="Продажи">
+        Информация о продажах.
+      </SDashboardItem>
+      <SDashboardItem title="Списания за услуги">
+        Информация о стоимости услуг.
+      </SDashboardItem>
+    </SDashboard>
 </template>
 
 <script setup>
 import { SDashboardItem, SDashboard } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Кастомный заголовок
 
 Если текста не достаточно, то для заголовка можно использовать слот:
 
 <div class="docs-container">
-<SDashboard>  
+<SDashboard>
     <SDashboardItem>
         <template #title>
             Продажи <STooltip>Только с подписанными актами</STooltip>
@@ -56,26 +66,34 @@ import { SDashboardItem, SDashboard } from 'startup-ui';
 </SDashboard>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-<SDashboard>  
     <SDashboardItem>
         <template #title>
             Продажи <STooltip>Только с подписанными актами</STooltip>
         </template>
         Информация о продажах.
-  </SDashboardItem>
-</SDashboard>
+    </SDashboardItem>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDashboard>
+        <SDashboardItem>
+            <template #title>
+                Продажи <STooltip>Только с подписанными актами</STooltip>
+            </template>
+            Информация о продажах.
+        </SDashboardItem>
+    </SDashboard>
 </template>
 
 <script setup>
-import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
+import { SDashboardItem, SDashboard, STooltip} from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Доп.элемент справа от заголовка
 
@@ -92,26 +110,36 @@ import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
 </SDashboard>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-<SDashboard>
-    <SDashboardItem title="Мой тариф">
-        <template #extra>
-            <a href="/docs/plans/">Как работают тарифы?</a>
-        </template>
-        Описание работы тарифов
-    </SDashboardItem>
-</SDashboard>
+    <SDashboard>
+        <SDashboardItem title="Мой тариф">
+            <template #extra>
+            <Link href="/docs/plans/">Как работают тарифы?</Link>
+            </template>
+            Описание работы тарифов
+        </SDashboardItem>
+    </SDashboard>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDashboard>
+        <SDashboardItem title="Мой тариф">
+            <template #extra>
+            <Link href="/docs/plans/">Как работают тарифы?</Link>
+            </template>
+            Описание работы тарифов
+        </SDashboardItem>
+    </SDashboard>
 </template>
 
 <script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
+import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Максимальная высота контента
 
@@ -125,23 +153,28 @@ import { SDashboardItem, SDashboard } from 'startup-ui';
 </SDashboard>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-<SDashboard>
-  <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
+    <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
     ...
-  </SDashboardItem>
-</SDashboard>
+    </SDashboardItem>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDashboard>
+      <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
+        ...
+      </SDashboardItem>
+    </SDashboard>
 </template>
 
 <script setup>
 import { SDashboardItem, SDashboard } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Цвета
 
@@ -156,24 +189,30 @@ import { SDashboardItem, SDashboard } from 'startup-ui';
 </SDashboard>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-<SDashboard>
-  <SDashboardItem title="Обычный блок" />
-  <SDashboardItem gray title="Серый блок" />
-  <SDashboardItem green title="Зеленый блок" />
-  <SDashboardItem red title="Красный блок" />
-</SDashboard>
+    <SDashboardItem title="Обычный блок" />
+    <SDashboardItem gray title="Серый блок" />
+    <SDashboardItem green title="Зеленый блок" />
+    <SDashboardItem red title="Красный блок" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDashboard>
+      <SDashboardItem title="Обычный блок" />
+      <SDashboardItem gray title="Серый блок" />
+      <SDashboardItem green title="Зеленый блок" />
+      <SDashboardItem red title="Красный блок" />
+    </SDashboard>
 </template>
 
 <script setup>
 import { SDashboardItem, SDashboard } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Интерфейс компонента SDashboard
 

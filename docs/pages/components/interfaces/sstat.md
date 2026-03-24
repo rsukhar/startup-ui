@@ -12,9 +12,14 @@
 <SStat title="Сумма платежей">777 000 ₽</SStat>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SStat title="Кол-во платежей">112</SStat>
+    <SStat title="Сумма платежей">777 000 ₽</SStat>
+</template>
+```
+```vue [Весь код]
 <template>
     <SStat title="Кол-во платежей">112</SStat>
     <SStat title="Сумма платежей">777 000 ₽</SStat>
@@ -24,8 +29,7 @@
 import { SStat } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Кастомный заголовок
 
@@ -39,9 +43,18 @@ import { SStat } from 'startup-ui';
 </SStat>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SStat>
+        <template #title>
+            Сумма платежей <STooltip>За выбранный период</STooltip>
+        </template>
+        777 000 ₽
+    </SStat>
+</template>
+```
+```vue [Весь код]
 <template>
     <SStat>
         <template #title>
@@ -55,14 +68,11 @@ import { SStat } from 'startup-ui';
 import { SStat, STooltip } from 'startup-ui';
 </script>
 ```
-
-</div>
+:::
 
 ## Модификаторы
 
 С помощью логических (boolean) свойств можно изменить внешний вид строки:
-
-<div v-pre>
 
 ```vue
 <template>
@@ -76,8 +86,6 @@ import { SStat, STooltip } from 'startup-ui';
     <SStat title="Элементы" wide>10</SStat>
 </template>
 ```
-
-</div>
 
 ## Интерфейс компонента
 

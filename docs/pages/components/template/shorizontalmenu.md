@@ -10,35 +10,22 @@
     </div>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <div class="menu-container">
-        <SHorizontalMenu :links="menuLinks" />
-    </div>
+    <SHorizontalMenu :links="menuLinks" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SHorizontalMenu :links="menuLinks" />
 </template>
 
 <script setup>
 import { SHorizontalMenu } from 'startup-ui';
-
-const menuLinks = [
-    { label: 'Заказы', url: '#' }, 
-    { label: 'Страницы', url: '#' }, 
-    { label: 'Пользователи', url: '#', active: true }
-];
 </script>
-
-<style scoped>
-.menu-container {
-    display: flex;
-    line-height: 60px;
-    background-color: var(--s-bg-gradient-light);
-}
-.menu-container :deep(a.s-horizontalmenu-label) {
-    color: var(--s-white) !important;
-    text-decoration: none;
-}
-</style>
 ```
+:::
 
 Где menuLinks — это массив в формате `[{label, url, active}, ...]`
 
@@ -71,8 +58,8 @@ const menuLinks = [
 import SHorizontalMenu from '../../../../packages/startup-ui/src/components/SHorizontalMenu.vue';
 
 const menuLinks = [
-    { label: 'Заказы', url: '#' }, 
-    { label: 'Страницы', url: '#' }, 
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
     { label: 'Пользователи', url: '#', active: true }
 ];
 </script>

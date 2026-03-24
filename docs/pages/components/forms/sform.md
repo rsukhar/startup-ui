@@ -34,11 +34,23 @@ InertiaJS предлагает [useForm-компонент](https://inertiajs.co
     </SForm>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+    <SForm v-model="form" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SForm v-model="form" method="post" action="/users/login">
         <SFormRow title="Логин" name="login">
             <SInput />
         </SFormRow>
@@ -59,8 +71,7 @@ const form = useForm({
 });
 </script>
 ```
-
-</div>
+:::
 
 Для компонентов внутри `<SFormRow />` не нужно отдельно прописывать модель — она автоматически берется из модели `<SForm />` по имени.
 
@@ -82,9 +93,15 @@ const form = useForm({
     </SForm>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
+<template>
+    <SForm @submit="submit" :errors="errors" :loading="isLoading">
+        ...
+    </SForm>
+</template>
+```
+```vue [Весь код]
 <template>
     <SForm v-model="form" @submit="submit" :errors="errors" :loading="isLoading">
         <SFormRow title="Логин" name="login">
@@ -111,8 +128,7 @@ function submit() {
 }
 </script>
 ```
-
-</div>
+:::
 
 Так как мы используем собственный метод, то для показа состояния загрузки формы может понадобиться задавать свой набор ошибок (errors), а также loading-состояние, которое показывает, находится ли сейчас форма в процессе отправки (чтобы избежать повторной отправки по ошибке)
 
@@ -132,17 +148,38 @@ function submit() {
     </SForm>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
         <SInput />
     </SFormRow>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SForm v-model="form" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login" hint="Имя пользователя или email">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
 
-</div>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const form = useForm({
+    login: '',
+    password: '',
+});
+</script>
+```
+:::
 
 ## Заголовки слева
 
@@ -160,19 +197,38 @@ function submit() {
     </SForm>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SForm v-model="form" titles-at-left titles-width="170">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
+    <SForm titles-at-left titles-width="170">
+        ...
     </SForm>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SForm v-model="form" titles-at-left titles-width="170" method="post" action="/users/login">
+        <SFormRow title="Логин" name="login">
+            <SInput />
+        </SFormRow>
+        <SFormRow title="Пароль" name="password">
+            <SInput type="password" />
+        </SFormRow>
+        <SButton>Войти</SButton>
+    </SForm>
+</template>
 
-</div>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const form = useForm({
+    login: '',
+    password: '',
+});
+</script>
+```
+:::
 
 Дополнительный параметр titles-width позволяет задать ширину заголовков.
 
@@ -189,18 +245,38 @@ function submit() {
     </SForm>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SFormRow>
-        <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
-        <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
-    </SFormRow>
+    <SForm v-model="form">
+        <SFormRow>
+            <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
+            <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
+        </SFormRow>
+    </SForm>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SForm v-model="form">
+        <SFormRow>
+            <SSwitch v-model="form.hasAgreement">Согласен с правилами</SSwitch>
+            <SSwitch v-model="form.hasNotifications">Согласен получать оповещения</SSwitch>
+        </SFormRow>
+    </SForm>
+</template>
 
-</div>
+<script setup>
+import { useForm } from '@inertiajs/vue3';
+import { SForm, SFormRow, SSwitch } from 'startup-ui';
+
+const form = useForm({
+    hasAgreement: false,
+    hasNotifications: false,
+});
+</script>
+```
+:::
 
 ## Вывод ошибок из кастомных ключей
 
@@ -224,17 +300,60 @@ function submit() {
     </SForm>
 </div>
 
-<div v-pre>
-
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SFormRow title="Кол-во заказов" :error-key="['orders.minCount', 'orders.maxCount']">
-        <!-- Инпуты с ручной привязкой v-model -->
+        <div class="order-formrow">
+            <label class="order-formrow-item">
+                <span>Минимум</span>
+                <SInput v-model="form.minCount" type="number" min="0" style="max-width: 80px;"/>
+            </label>
+            <label class="order-formrow-item">
+                <span>Максимум</span>
+                <SInput v-model="form.maxCount" type="number" min="0" style="max-width: 80px;"/>
+            </label>
+        </div>
     </SFormRow>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SForm v-model="form" :errors="errors" @submit.prevent="submit">
+        <SFormRow title="Кол-во заказов" :error-key="['orders.minCount', 'orders.maxCount']">
+            <div class="order-formrow">
+                <label class="order-formrow-item">
+                    <span>Минимум</span>
+                    <SInput v-model="form.minCount" type="number" min="0" style="max-width: 80px;"/>
+                </label>
+                <label class="order-formrow-item">
+                    <span>Максимум</span>
+                    <SInput v-model="form.maxCount" type="number" min="0" style="max-width: 80px;"/>
+                </label>
+            </div>
+        </SFormRow>
+        <SButton>Отправить</SButton>
+    </SForm>
+</template>
 
-</div>
+<script setup>
+import { ref } from 'vue';
+import { SForm, SFormRow, SInput, SButton } from 'startup-ui';
+
+const errors = ref({});
+const form = ref({ minCount: '', maxCount: '' });
+
+function submit() {
+    if (!form.value.minCount) {
+        errors.value['orders.minCount'] = 'Минимальное количество не может быть меньше 1';
+    }
+    if (!form.value.maxCount) {
+        errors.value['orders.maxCount'] = 'Максимальное количество не может быть меньше 1';
+    }
+}
+</script>
+```
+:::
 
 Поддерживаются:
 - Пути через точку: `orders.0`

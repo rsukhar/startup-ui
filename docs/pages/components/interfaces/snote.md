@@ -20,7 +20,8 @@
     <SNote error>Описание ошибки</SNote>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SNote>Стандартный стиль (основной цвет)</SNote>
     <SNote gray>В сером цвете</SNote>
@@ -29,6 +30,20 @@
     <SNote error>Описание ошибки</SNote>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SNote>Стандартный стиль (основной цвет)</SNote>
+    <SNote gray>В сером цвете</SNote>
+    <SNote attention>Привлечение внимания</SNote>
+    <SNote success>Успешное действие</SNote>
+    <SNote error>Описание ошибки</SNote>
+</template>
+
+<script setup>
+import { SNote } from 'startup-ui';
+</script>
+```
+:::
 
 ## С иконкой и заголовком
 
@@ -42,7 +57,8 @@
     </SNote>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SNote icon="circle-info" title="В проекте ещё нет ключевиков">
         <ol>
@@ -52,6 +68,21 @@
     </SNote>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SNote icon="circle-info" title="В проекте ещё нет ключевиков">
+        <ol>
+            <li>Добавьте как можно больше запросов, заходы по которым из поиска приносят вам наибольший доход.</li>
+            <li>Сервис оценит конкуренцию, шанс выхода в топ и бюджет по каждому ключевику.</li>
+        </ol>
+    </SNote>
+</template>
+
+<script setup>
+import SNote from 'startup-ui';
+</script>
+```
+:::
 
 В качестве иконок используются названия иконок font-awesome.
 

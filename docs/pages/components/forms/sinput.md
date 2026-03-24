@@ -15,11 +15,25 @@
     <SInput v-model="value" placeholder="Обычный инпут" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput v-model="value" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 Также поддерживаются стандартные HTML-типы полей:
 
@@ -29,13 +43,31 @@
     <SInput v-model="value3" type="password" placeholder="Пароль"/>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SInput v-model="value1" type="number" placeholder="Номер" />
+    <SInput v-model="value1" type="number" placeholder="Номер"/>
     <SInput v-model="value2" type="email" placeholder="Email"/>
     <SInput v-model="value3" type="password" placeholder="Пароль"/>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value1" type="number" placeholder="Номер"/>
+    <SInput v-model="value2" type="email" placeholder="Email"/>
+    <SInput v-model="value3" type="password" placeholder="Пароль"/>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value1 = ref('');
+const value2 = ref('');
+const value3 = ref('');
+</script>
+```
+:::
 
 ## Многострочное поле ввода
 
@@ -43,11 +75,25 @@
     <SInput v-model="value4" type="textarea" placeholder="Введите длинный текст..." />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
-    <SInput v-model="value" type="textarea" :rows="3" />
+    <SInput v-model="value" type="textarea" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" type="textarea" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 ## Плейсхолдер
 
@@ -55,11 +101,25 @@
     <SInput v-model="value5" placeholder="Введите имя" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput v-model="value" placeholder="Введите имя" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" placeholder="Введите имя" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 ## Префикс
 
@@ -67,11 +127,25 @@
     <SInput v-model="value6" prefix="$" type="number" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput v-model="value" prefix="$" type="number" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" prefix="$" type="number" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 Если нужен кастомный префикс:
 
@@ -83,7 +157,8 @@
     </SInput>
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput v-model="value" type="number">
         <template #prefix>
@@ -92,6 +167,23 @@
     </SInput>
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" type="number">
+        <template #prefix>
+            <SStatus icon="star" />
+        </template>
+    </SInput>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 ## Недоступное состояние
 
@@ -99,11 +191,25 @@
     <SInput v-model="value8" disabled />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput v-model="value" disabled />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" disabled />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 ## Поле ввода с кнопкой очистки
 
@@ -113,11 +219,25 @@
     <SInput v-model="value9" type="search" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput v-model="value" type="search" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput v-model="value" type="search" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 ## События
 
@@ -125,11 +245,22 @@
     <SInput @change="(newValue) => console.log(newValue)" placeholder="Печатаем и смотрим консоль" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput @change="(newValue) => console.log(newValue)" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput @change="(newValue) => console.log(newValue)" />
+</template>
+
+<script setup>
+import { SInput } from 'startup-ui';
+</script>
+```
+:::
 
 ## Кастомные стили для инпута
 
@@ -139,11 +270,25 @@
     <SInput input-style="text-align: center" />
 </div>
 
-```vue
+:::code-group
+```vue [Пример]
 <template>
     <SInput input-style="text-align: center" />
 </template>
 ```
+```vue [Весь код]
+<template>
+    <SInput input-style="text-align: center" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SInput } from 'startup-ui';
+
+const value = ref('');
+</script>
+```
+:::
 
 ## Интерфейс компонента
 
