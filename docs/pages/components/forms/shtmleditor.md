@@ -70,6 +70,31 @@ const content = ref(false);
 ```
 :::
 
+## Высота редактора
+
+По умолчанию высота равна 500px. Можно изменить через проп `height`.
+
+<div class="docs-container">
+    <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="100" />
+</div>
+
+:::code-group
+```vue [Пример]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SHtmlEditor } from 'startup-ui';
+</script>
+```
+:::
+
 ## Интерфейс компонента
 
 ### Свойства (Props)
@@ -94,8 +119,9 @@ import SHtmlEditor from '../../../resources/components/SHtmlEditor.client.vue';
 
 const content1 = ref('');
 const content2 = ref('');
+const content3 = ref('');
+const content = ref('');
 </script>
-
 <style lang="scss">
 .s-htmleditor {
     font-family: var(--s-font-family);
