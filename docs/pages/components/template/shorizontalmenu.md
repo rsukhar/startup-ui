@@ -10,27 +10,60 @@
     </div>
 </div>
 
-<CustomCodeBlock :code="{text: code, lang: 'vue'}" :fullCode="{text: fullCode, lang: 'vue'}"/>
-
-Где menuLinks — это массив в формате `[{label, url, active}, ...]`
-<script setup>
-import SHorizontalMenu from '../../../../packages/startup-ui/src/components/SHorizontalMenu.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const menuLinks = [
-    { label: 'Заказы', url: '#' }, 
-    { label: 'Страницы', url: '#' }, 
-    { label: 'Пользователи', url: '#' }
-];
-
-const code = `<SHorizontalMenu :links="menuLinks" />`;
-const fullCode = `<template>
+:::code-group
+```vue [Пример]
+<template>
     <SHorizontalMenu :links="menuLinks" />
 </template>
+```
+```vue [Весь код]
+<template>
+    <SHorizontalMenu :links="menuLinks" />
+</template>
+
 <script setup>
 import { SHorizontalMenu } from 'startup-ui';
-<\/script>`;
 </script>
+```
+:::
+
+Где menuLinks — это массив в формате `[{label, url, active}, ...]`
+
+## Интерфейс компонента SHorizontalMenu
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| links | `SHorizontalMenuLink[]` | `[]` | Массив навигационных ссылок. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | По умолчанию слоты отсутствуют, меню генерируется автоматически по пропсу `links`. |
+
+## Интерфейс объекта SHorizontalMenuLink
+
+| Свойство | Тип | Описание |
+|----------|-----|----------|
+| label | string | **Обязательное.** Текст пункта меню. |
+| url | string | URL для перехода. Если указан, рендерится как `<Link>` (Inertia). Иначе как `<div>`. |
+| active | boolean | Если `true`, пункт помечается как активный. |
+| className | string | Кастомные CSS классы для обертки пункта. |
+| stat | string \| number | Значение для бейджа со статистикой (требует доп. стилизации). |
+| children | `SHorizontalMenuLink[]` | Массив дочерних ссылок (подменю). |
+
+<script setup>
+import SHorizontalMenu from '../../../../packages/startup-ui/src/components/SHorizontalMenu.vue';
+
+const menuLinks = [
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
+    { label: 'Пользователи', url: '#', active: true }
+];
+</script>
+
 <style lang="scss">
 .menu-container {
     display: flex;

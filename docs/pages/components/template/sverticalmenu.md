@@ -15,7 +15,44 @@
     <SVerticalMenu :links="menuLinks" />
 </div>
 
-<CustomCodeBlock :code="{text: code, lang: 'vue'}" :fullCode="{text: fullCode, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SVerticalMenu :links="menuLinks" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SVerticalMenu :links="menuLinks" />
+</template>
+
+<script setup>
+import { SVerticalMenu } from 'startup-ui';
+
+const menuLinks = [
+    {
+        id: 34,
+        title: "Мануал",
+        label: "Мануал",
+        type: "section",
+        children: [
+            { id: 6, label: "Быстрый запуск", url: "/docs/quick-start/" },
+            { id: 30, label: "Тарифы", url: "/docs/plans/" }
+        ]
+    },
+    {
+        id: 8,
+        title: "Кейсы",
+        label: "Кейсы",
+        type: "section",
+        children: [
+            { id: 9, label: "Кейс №1: Ландшафтный дизайн", url: "/docs/case1/" }
+        ]
+    }
+];
+</script>
+```
+:::
 
 Где menuLinks — это массив в формате `[{label, url, active, ?type, ?className, ?children}, ...]`
 
@@ -27,11 +64,28 @@
     <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
+</template>
+
+<script setup>
+import { SVerticalMenu } from 'startup-ui';
+
+const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true } ] } ]
+</script>
+```
+:::
 
 ## Запоминание раскрытых элементов
 
-Во всякого рода документациях 
+Во всякого рода документациях
 
 Когда мы добавляем атрибут <strong>store-expanded-keys-to</strong>, раскрытые элементы сохраняются в localStorage. Теперь, если обновить страницу, раскрытые элементы сохранятся.
 
@@ -39,45 +93,59 @@
     <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
+</template>
+
+<script setup>
+import { SVerticalMenu } from 'startup-ui';
+
+const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true } ] } ]
+</script>
+```
+:::
+
+## Интерфейс компонента SVerticalMenu
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| links | `SVerticalMenuLink[]` | `[]` | Массив навигационных ссылок с поддержкой вложенности. |
+| expandedKeys | `(string \| number)[]` | `[]` | Массив ID элементов, которые должны быть раскрыты по умолчанию. |
+| storeExpandedKeysTo | string | `undefined` | Ключ в localStorage для сохранения состояния раскрытых элементов. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | По умолчанию слоты отсутствуют, меню генерируется автоматически по пропсу `links`. |
+
+## Интерфейс объекта SVerticalMenuLink
+
+| Свойство | Тип | Описание |
+|----------|-----|----------|
+| id | string \| number | **Обязательное.** Уникальный идентификатор пункта меню (нужен для логики открытия/закрытия). |
+| label | string | **Обязательное.** Текст пункта меню. |
+| url | string | URL для перехода. Если указан, рендерится как `<Link>` (Inertia). Если нет — используется как папка для дочерних элементов. |
+| active | boolean | Если `true`, пункт визуально помечается как активный. |
+| type | string | Может быть `'section'` для заголовка раздела (жирнее и с отступами). |
+| isPublished | boolean | Если `false`, пункт затеняется и появляется иконка перечеркнутого глаза (чтобы показать, что раздел скрыт на сайте). |
+| className | string | Дополнительные CSS классы пункта. |
+| children | `SVerticalMenuLink[]` | Вложенный массив дочерних пунктов. |
 
 <script setup>
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SVerticalMenu from '../../../../packages/startup-ui/src/components/SVerticalMenu.vue';
-import { menuLinks } from '../../../resources/data/pagesTree.js';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
-const code = `<SVerticalMenu :links="menuLinks" />`;
-const fullCode = `<template>
-    <SVerticalMenu :links="menuLinks" />
-</template>
-<script setup>
-import { SVerticalMenu } from 'startup-ui';
-
-const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true }, { "id": 10, "title": "Кейс №2: Продажа париков, Москва и область", "label": "Кейс №2: Продажа париков", "type": "article", "active": false, "url": "/docs/case2/", "isPublished": true }, { "id": 11, "title": "Кейс №3: Медицинская продукция, вся Россия", "label": "Кейс №3: Медицинская продукция", "type": "article", "active": false, "url": "/docs/case3/", "isPublished": true }, { "id": 29, "title": "Кейс №4: Интернет-магазин на 4512 ключей", "label": "Кейс №4: Интернет-магазин", "type": "article", "active": false, "url": "/docs/case4/", "isPublished": true }, { "id": 33, "title": "Кейс №5: Юридический портал, Москва и область", "label": "Кейс №5: Юридический портал", "type": "article", "active": false, "url": "/docs/case5/", "isPublished": true } ] } ]
-<\/script>`;
-
-const code2 = `<SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />`;
-const fullCode2 = `<template>
-    <SVerticalMenu :links="menuLinks" :expanded-keys="[34]" />
-</template>
-<script setup>
-import { SVerticalMenu } from 'startup-ui';
-
-const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true }, { "id": 10, "title": "Кейс №2: Продажа париков, Москва и область", "label": "Кейс №2: Продажа париков", "type": "article", "active": false, "url": "/docs/case2/", "isPublished": true }, { "id": 11, "title": "Кейс №3: Медицинская продукция, вся Россия", "label": "Кейс №3: Медицинская продукция", "type": "article", "active": false, "url": "/docs/case3/", "isPublished": true }, { "id": 29, "title": "Кейс №4: Интернет-магазин на 4512 ключей", "label": "Кейс №4: Интернет-магазин", "type": "article", "active": false, "url": "/docs/case4/", "isPublished": true }, { "id": 33, "title": "Кейс №5: Юридический портал, Москва и область", "label": "Кейс №5: Юридический портал", "type": "article", "active": false, "url": "/docs/case5/", "isPublished": true } ] } ]
-<\/script>`;
-
-const code3 = `<SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />`;
-const fullCode3 = `<template>
-    <SVerticalMenu :links="menuLinks" store-expanded-keys-to="opened-pages" />
-</template>
-<script setup>
-import { SVerticalMenu } from 'startup-ui';
-
-const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true }, { "id": 31, "title": "Как подключить вебмастер", "label": "Как подключить вебмастер", "type": "article", "active": false, "url": "/docs/webmaster-integration/", "isPublished": true }, { "id": 32, "title": "Как получать лидов", "label": "Как получать лидов", "type": "article", "active": false, "url": "/docs/get-leads/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true }, { "id": 10, "title": "Кейс №2: Продажа париков, Москва и область", "label": "Кейс №2: Продажа париков", "type": "article", "active": false, "url": "/docs/case2/", "isPublished": true }, { "id": 11, "title": "Кейс №3: Медицинская продукция, вся Россия", "label": "Кейс №3: Медицинская продукция", "type": "article", "active": false, "url": "/docs/case3/", "isPublished": true }, { "id": 29, "title": "Кейс №4: Интернет-магазин на 4512 ключей", "label": "Кейс №4: Интернет-магазин", "type": "article", "active": false, "url": "/docs/case4/", "isPublished": true }, { "id": 33, "title": "Кейс №5: Юридический портал, Москва и область", "label": "Кейс №5: Юридический портал", "type": "article", "active": false, "url": "/docs/case5/", "isPublished": true } ] } ]
-<\/script>`;
-
-
+const menuLinks = [ { "id": 34, "title": "Мануал", "label": "Мануал", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 6, "title": "Быстрый запуск проекта в ПфПульте", "label": "Быстрый запуск", "type": "article", "active": false, "url": "/docs/quick-start/", "isPublished": true }, { "id": 30, "title": "Тарифы ПфПульта", "label": "Тарифы", "type": "article", "active": false, "url": "/docs/plans/", "isPublished": true } ] }, { "id": 8, "title": "Кейсы", "label": "Кейсы", "type": "section", "active": false, "isPublished": true, "children": [ { "id": 9, "title": "Кейс №1: Ландшафтный дизайн, Москва и область", "label": "Кейс №1: Ландшафтный дизайн", "type": "article", "active": false, "url": "/docs/case1/", "isPublished": true } ] } ];
 </script>
 
 <style lang="scss">

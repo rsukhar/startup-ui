@@ -24,89 +24,125 @@
     <SButton @click="SAlert.info('Информация')">Информация</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton @click="SAlert.info('Информация')">Информация</SButton>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SButton @click="SAlert.info('Информация')">Информация</SButton>
+</template>
+
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+</script>
+```
+:::
 
 Оповещение об успешном действии:
+
 <div class="docs-container">
     <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
+</template>
+
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+</script>
+```
+:::
 
 Оповещение об ошибке:
+
 <div class="docs-container">
     <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
+</template>
+
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+</script>
+```
+:::
 
 ## Увеличенное время до закрытия
 
 По умолчанию оповещения закрываются через 5 секунд. Другое время закрытия можно задать параметром closeAfter:
+
 <div class="docs-container">
     <SButton @click="closeWithDelay">Информация</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'js'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SButton @click="closeWithDelay">Информация</SButton>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SButton @click="closeWithDelay">Информация</SButton>
+</template>
+
+<script setup>
+import { SButton, SAlert} from 'startup-ui';
+
+function closeWithDelay() {
+    SAlert.info('Закроется через 5 секунд', {
+        closeAfter: 5000,
+    });
+}
+</script>
+```
+:::
+
+## Интерфейс компонента
+
+### Методы
+
+- `SAlert.info(text: string, options?: AlertOptions)` — информационное оповещение
+- `SAlert.success(text: string, options?: AlertOptions)` — оповещение об успехе
+- `SAlert.error(text: string, options?: AlertOptions)` — оповещение об ошибке
+- `SAlert.open(text: string, options?: AlertOptions)` — базовый метод (тип задаётся в `options`)
+
+### AlertOptions
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| type | `'success'` \| `'info'` \| `'error'` | `'info'` | Визуальный стиль оповещения. |
+| closeAfter | number | `3000` | Время в миллисекундах до автозакрытия. |
 
 <script setup>
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 function closeWithDelay() {
     SAlert.info('Закроется через 5 секунд', {
         closeAfter: 5000,
     });
 }
-
-const code1 = `<SButton @click="SAlert.info('Информация')">Информация</SButton>
-`;
-const fullCode1 = `<template>
-<SButton @click="SAlert.info('Информация')">Информация</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-<\/script>
-`;
-
-const code2 = `<SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
-`;
-const fullCode2 = `<template>
-<SButton color="green" @click="SAlert.success('Успех')">Успех</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-<\/script>
-`;
-
-const code3 = `<SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
-`;
-const fullCode3 = `<template>
-<SButton color="red" @click="SAlert.error('Ошибка')">Ошибка</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-<\/script>
-`;
-
-const code4 = `SAlert.info('Закроется через 5 секунд', {
-    closeAfter: 5000,
-});
-`;
-const fullCode4 = `<template>
-    <SButton @click="closeWithDelay">Информация</SButton>
-</template>
-<script setup>
-import { SButton, SAlert} from 'startup-ui';
-
-function closeWithDelay() {
-    SAlert.info('Закроется через 5 секунд', {
-        closeAfter: 5000,
-    });
-}
-<\/script>
-`;
 </script>

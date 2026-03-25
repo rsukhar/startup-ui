@@ -4,6 +4,7 @@
 
 ## Базовый пример
 
+
 <div class="docs-container">
 <SDialog v-model="isShownFirst" title="Войти в личный кабинет">
     <SForm v-model="form1" method="post" action="/users/login" @submit.prevent="form1.post('/users/login')">
@@ -20,9 +21,42 @@
 <SButton @click="isShownFirst = true">Открыть окно</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет">
+        ...
+    </SDialog>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет">
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
+
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
 
 ## Фиксированная ширина
+
 
 <div class="docs-container">
 <SDialog v-model="isShownSecond" title="Войти в личный кабинет" width="500px">
@@ -40,7 +74,38 @@
 <SButton @click="isShownSecond = true">Открыть окно</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" width="500px">
+        ...
+    </SDialog>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" width="500px">
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
 
 ## Не-модальное окно
 
@@ -62,7 +127,39 @@
 <SButton @click="isShownThird = true">Открыть окно</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'js'}" :fullCode="{text: fullCode3, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" not-modal>
+        ...
+    </SDialog>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" not-modal>
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
+
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
 
 ## Не закрывать по клику на оверлей
 
@@ -84,17 +181,72 @@
 <SButton @click="isShownFourth = true">Открыть окно</SButton>
 </div>
 
-<CustomCodeBlock :code="{text: code4, lang: 'vue'}" :fullCode="{text: fullCode4, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" @overlay-click.stop.prevent>
+        ...
+    </SDialog>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SDialog v-model="isShown" title="Войти в личный кабинет" @overlay-click.stop.prevent>
+        <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
+            <SFormRow title="Логин" name="login">
+                <SInput />
+            </SFormRow>
+            <SFormRow title="Пароль" name="password">
+                <SInput type="password" />
+            </SFormRow>
+            <SButton>Войти</SButton>
+        </SForm>
+    </SDialog>
+
+    <SButton @click="isShown = true">Открыть окно</SButton>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SDialog, SButton } from 'startup-ui';
+
+const isShown = ref(false);
+</script>
+```
+:::
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| modelValue (v-model) | boolean | false | Управляет видимостью диалога. |
+| title | string | undefined | Текст заголовка в шапке окна. |
+| width | string | undefined | Кастомная ширина окна (например, `'500px'`, `'80vw'`). |
+| notModal | boolean | false | Если `true`, убирает фоновый оверлей (не-модальное окно). |
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| update:modelValue | boolean | Срабатывает при изменении v-model. |
+| overlay-click | — | Срабатывает при клике на фоновый оверлей. Окно закрывается, если не предотвращено (`.stop.prevent`). |
+| hide | — | Срабатывает при закрытии окна (крестиком или кликом на оверлей). |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Основное содержимое диалогового окна. |
 
 <script setup>
 import { ref, reactive } from 'vue';
 import SDialog from '../../../../packages/startup-ui/src/components/SDialog.vue';
 import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 import SForm from '../../../../packages/startup-ui/src/components/SForm.vue';
 import SFormRow from '../../../../packages/startup-ui/src/components/SFormRow.vue';
 import SInput from '../../../../packages/startup-ui/src/components/SInput.vue';
-import SSwitch from '../../../../packages/startup-ui/src/components/SSwitch.vue';
 
 const useForm = (initialValues) => {
     const original = JSON.parse(JSON.stringify(initialValues));
@@ -120,125 +272,12 @@ const isShownSecond = ref(false);
 const isShownThird = ref(false);
 const isShownFourth = ref(false);
 
-const form1 = useForm({
-    login: '',
-    password: '',
-});
-
-const form2 = useForm({
-    login: '',
-    password: '',
-});
-
-const form3 = useForm({
-    login: '',
-    password: '',
-});
-
-const form4 = useForm({
-    login: '',
-    password: '',
-});
-
-const code1 = `<SDialog v-model="isShown" title="Войти в личный кабинет">
-    ...
-</SDialog>`;
-const fullCode1 = `<template>
-<SDialog v-model="isShown" title="Войти в личный кабинет">
-    <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</SDialog>
-
-<SButton @click="isShown = true">Открыть окно</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDialog, SButton } from 'startup-ui';
-
-const isShown = ref(false);
-<\/script>`;
-
-const code2 = `<SDialog v-model="isShown" title="Войти в личный кабинет" width="500px">
-    ...
-</SDialog>`;
-const fullCode2 = `<template>
-<SDialog v-model="isShown" title="Войти в личный кабинет" width="500px">
-    <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</SDialog>
-<SButton @click="isShown = true">Открыть окно</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDialog, SButton } from 'startup-ui';
-
-const isShown = ref(false);
-<\/script>`;
-
-const code3 = `<SDialog v-model="isShown" title="Войти в личный кабинет" not-modal>
-    ...
-</SDialog>`;
-const fullCode3 = `<template>
-<SDialog v-model="isShown" title="Войти в личный кабинет" not-modal>
-    <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</SDialog>
-
-<SButton @click="isShown = true">Открыть окно</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDialog, SButton } from 'startup-ui';
-
-const isShown = ref(false);
-<\/script>`;
-
-const code4 = `<SDialog v-model="isShown" title="Войти в личный кабинет" @overlay-click.stop.prevent>
-    ...
-</SDialog>`;
-const fullCode4 = `<template>
-<SDialog v-model="isShown" title="Войти в личный кабинет" @overlay-click.stop.prevent>
-    <SForm v-model="form" method="post" action="/users/login" @submit.prevent="form.post('/users/login')">
-        <SFormRow title="Логин" name="login">
-            <SInput />
-        </SFormRow>
-        <SFormRow title="Пароль" name="password">
-            <SInput type="password" />
-        </SFormRow>
-        <SButton>Войти</SButton>
-    </SForm>
-</SDialog>
-
-<SButton @click="isShown = true">Открыть окно</SButton>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SDialog, SButton } from 'startup-ui';
-
-const isShown = ref(false);
-<\/script>`;
+const form1 = useForm({ login: '', password: '' });
+const form2 = useForm({ login: '', password: '' });
+const form3 = useForm({ login: '', password: '' });
+const form4 = useForm({ login: '', password: '' });
 </script>
+
 <style lang="scss">
 .s-dialog {
     color: var(--s-text);

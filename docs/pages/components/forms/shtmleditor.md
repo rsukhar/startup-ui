@@ -24,7 +24,25 @@
     <SHtmlEditor v-model="content1" upload-url="/image/upload" />
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SHtmlEditor } from 'startup-ui';
+
+const content = ref(false);
+</script>
+```
+:::
 
 ## Плейсхолдер
 
@@ -32,7 +50,25 @@
     <SHtmlEditor v-model="content2" upload-url="/image/upload" placeholder="Введите контент" />
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SHtmlEditor } from 'startup-ui';
+
+const content = ref(false);
+</script>
+```
+:::
 
 ## Высота редактора
 
@@ -42,55 +78,52 @@
     <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="300" />
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+</template>
+```
+```vue [Весь код]
+<template>
+    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+</template>
+<script setup>
+import { ref } from 'vue';
+import { SHtmlEditor } from 'startup-ui';
+</script>
+```
+:::
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `string` | `undefined` | HTML-содержимое редактора. |
+| upload-url | `string` | `undefined` | URL для загрузки изображений на сервер. |
+| placeholder | `string` | `''` | Текст-заполнитель, когда редактор пуст. |
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| changeContent | - | Вызывается при любом изменении содержимого редактора. |
 
 <script setup>
 import { ref } from 'vue';
 import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import SHtmlEditor from '../../../resources/components/SHtmlEditor.client.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
 
 const content1 = ref('');
 const content2 = ref('');
 const content3 = ref('');
-
-const code1 = `<SHtmlEditor v-model="content" upload-url="/image/upload" />
-`;
-const fullCode1 = `<template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SHtmlEditor } from 'startup-ui';
-
-const content = ref(false);
-<\/script>
-`;
-
-const code2 = `<SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
-`;
-const fullCode2 = `<template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SHtmlEditor } from 'startup-ui';
-
-const content = ref(false);
-<\/script>
-`;
-
-const code3 = `<SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
-`;
-const fullCode3 = `<template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SHtmlEditor } from 'startup-ui';
-
 const content = ref('');
-<\/script>
-`;
 </script>
+<style lang="scss">
+.s-htmleditor {
+    font-family: var(--s-font-family);
+}
+</style>

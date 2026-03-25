@@ -15,7 +15,22 @@
 <STag>Новый</STag>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'js'}" :fullCode="{text: fullCode1, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <STag>Новый</STag>
+</template>
+```
+```vue [Весь код]
+<template>
+    <STag>Новый</STag>
+</template>
+
+<script setup>
+import { STag } from 'startup-ui';
+</script>
+```
+:::
 
 ## Различные цвета
 
@@ -45,70 +60,78 @@
 <STag color="green-lightest">green-lightest</STag>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'js'}" :fullCode="{text: fullCode2, lang: 'vue'}"/>
+:::code-group
+```vue [Пример]
+<template>
+    <STag color="gray">gray</STag>
+    <STag color="primary">primary</STag>
+    <STag color="primary-dark">primary-dark</STag>
+    <STag color="primary-darkest">primary-darkest</STag>
+    <STag color="primary-light">primary-light</STag>
+    <STag color="primary-lightest">primary-lightest</STag>
+
+    <STag color="red">red</STag>
+    <STag color="red-dark">red-dark</STag>
+    <STag color="red-light">red-light</STag>
+    <STag color="red-lightest">red-lightest</STag>
+
+    <STag color="yellow">yellow</STag>
+    <STag color="yellow-dark">yellow-dark</STag>
+    <STag color="yellow-light">yellow-light</STag>
+    <STag color="yellow-lightest">yellow-lightest</STag>
+
+    <STag color="green">green</STag>
+    <STag color="green-dark">green-dark</STag>
+    <STag color="green-light">green-light</STag>
+    <STag color="green-lightest">green-lightest</STag>
+</template>
+```
+```vue [Весь код]
+<template>
+    <STag color="gray">gray</STag>
+    <STag color="primary">primary</STag>
+    <STag color="primary-dark">primary-dark</STag>
+    <STag color="primary-darkest">primary-darkest</STag>
+    <STag color="primary-light">primary-light</STag>
+    <STag color="primary-lightest">primary-lightest</STag>
+
+    <STag color="red">red</STag>
+    <STag color="red-dark">red-dark</STag>
+    <STag color="red-light">red-light</STag>
+    <STag color="red-lightest">red-lightest</STag>
+
+    <STag color="yellow">yellow</STag>
+    <STag color="yellow-dark">yellow-dark</STag>
+    <STag color="yellow-light">yellow-light</STag>
+    <STag color="yellow-lightest">yellow-lightest</STag>
+
+    <STag color="green">green</STag>
+    <STag color="green-dark">green-dark</STag>
+    <STag color="green-light">green-light</STag>
+    <STag color="green-lightest">green-lightest</STag>
+</template>
+
+<script setup>
+import { STag } from 'startup-ui';
+</script>
+```
+:::
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| color | string | `'gray'` | Цвет фона и текста. Поддерживает значения из палитры: `gray`, `primary`, `primary-dark`, `primary-darkest`, `primary-light`, `primary-lightest`, `red`, `red-dark`, `red-light`, `red-lightest`, `yellow`, `yellow-dark`, `yellow-light`, `yellow-lightest`, `green`, `green-dark`, `green-light`, `green-lightest`. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Текстовое содержимое или HTML внутри тега. |
 
 <script setup>
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
 import STag from '../../../../packages/startup-ui/src/components/STag.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const code1 = `<STag>Новый</STag>
-`;
-const fullCode1 = `<template>
-<STag>Новый</STag>
-</template>
-<script setup>
-import { STag } from 'startup-ui';
-<\/script>
-`;
-
-const code2 = `<STag color="gray">gray</STag>
-<STag color="primary">primary</STag>
-<STag color="primary-dark">primary-dark</STag>
-<STag color="primary-darkest">primary-darkest</STag>
-<STag color="primary-light">primary-light</STag>
-<STag color="primary-lightest">primary-lightest</STag>
-
-<STag color="red">red</STag>
-<STag color="red-dark">red-dark</STag>
-<STag color="red-light">red-light</STag>
-<STag color="red-lightest">red-lightest</STag>
-
-<STag color="yellow">yellow</STag>
-<STag color="yellow-dark">yellow-dark</STag>
-<STag color="yellow-light">yellow-light</STag>
-<STag color="yellow-lightest">yellow-lightest</STag>
-
-<STag color="green">green</STag>
-<STag color="green-dark">green-dark</STag>
-<STag color="green-light">green-light</STag>
-<STag color="green-lightest">green-lightest</STag>
-`;
-const fullCode2 = `<template>
-<STag color="gray">gray</STag>
-<STag color="primary">primary</STag>
-<STag color="primary-dark">primary-dark</STag>
-<STag color="primary-darkest">primary-darkest</STag>
-<STag color="primary-light">primary-light</STag>
-<STag color="primary-lightest">primary-lightest</STag>
-
-<STag color="red">red</STag>
-<STag color="red-dark">red-dark</STag>
-<STag color="red-light">red-light</STag>
-<STag color="red-lightest">red-lightest</STag>
-
-<STag color="yellow">yellow</STag>
-<STag color="yellow-dark">yellow-dark</STag>
-<STag color="yellow-light">yellow-light</STag>
-<STag color="yellow-lightest">yellow-lightest</STag>
-
-<STag color="green">green</STag>
-<STag color="green-dark">green-dark</STag>
-<STag color="green-light">green-light</STag>
-<STag color="green-lightest">green-lightest</STag>
-</template>
-<script setup>
-import { STag } from 'startup-ui';
-<\/script>
-`;
 </script>

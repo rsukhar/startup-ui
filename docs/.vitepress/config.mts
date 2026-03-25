@@ -1,5 +1,9 @@
 import { defineConfig } from 'vitepress'
-import path from 'path'
+import path from 'node:path'
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -7,6 +11,7 @@ export default defineConfig({
     description: "Библиотека компонентов для Vue3",
     lang: 'ru',
     appearance: false,
+    cleanUrls: true,
     themeConfig: {
         nav: [
             { text: 'Знакомство', link: '/pages/welcome/basics/about', activeMatch: '/pages/welcome' },
@@ -88,7 +93,8 @@ export default defineConfig({
                     items: [
                         { text: 'Вайб-кодинг', link: '/pages/welcome/extras/vibe-coding' },
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
-                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' }
+                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' },
+                        { text: 'Документация для LLM', link: '/pages/welcome/extras/llms' }
                     ]
                 }
             ]
@@ -108,31 +114,70 @@ export default defineConfig({
         }
     },
     markdown: {
-        theme: {
-            name: 'my-custom-theme',
-            settings: [
-                {
-                    scope: ['entity.name.tag'],
-                    settings: { foreground: 'var(--vp-code-tag)', fontStyle: '' }
-                },
-                {
-                    scope: ['entity.other.attribute-name', 'meta.directive.vue'],
-                    settings: { foreground: 'var(--vp-code-attr)', fontStyle: '' }
+        theme: 'github-dark-default',
+        codeTransformers: [
+            {
+                postprocess(html) {
+                    return html.replace(/#ffa198/gi, '#7EE787');
                 }
-            ],
-            bg: 'var(--vp-code-bg)',
-            fg: 'var(--vp-code-fg)'
-        }
+            }
+        ]
     },
     vite: {
+        resolve: {
+            alias: {
+                'tinymce': path.resolve(__dirname, '../node_modules/tinymce'),
+                '@tinymce/tinymce-vue': path.resolve(__dirname, '../node_modules/@tinymce/tinymce-vue'),
+            }
+        },
+        plugins: [
+            {
+                name: 'middleware',
+                configureServer(server) {
+                    server.middlewares.use((req, res, next) => {
+                        if (req.url?.endsWith('.html')) {
+                            const newUrl = req.url.slice(0, -5);
+                            res.statusCode = 301;
+                            res.setHeader('Location', newUrl);
+                            res.end();
+                            return;
+                        }
+                        next();
+                    });
+                }
+            },
+            {
+                name: 'llm-md-proxy',
+                configureServer(server) {
+                    server.middlewares.use((req, res, next) => {
+                        const url = req.url || '';
+                        if (url.endsWith('.md')) {
+                            // Путь к компонентам: docs/pages/components/...
+                            // Запрос обычно вида /pages/components/...
+                            const cleanPath = url.split('?')[0];
+                            const fullPath = path.join(server.config.root, cleanPath);
+
+                            if (fs.existsSync(fullPath)) {
+                                res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+                                res.end(fs.readFileSync(fullPath));
+                                return;
+                            }
+                        }
+                        next();
+                    });
+                }
+            }
+        ],
         css: {
             preprocessorOptions: {
                 scss: {
                         // Этот код подключает SCSS-миксины, переменные и т.д. во все <style lang="scss">
-                        additionalData: `                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
+                        additionalData: `
+                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
                         @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/variables.scss')}" as *;
-                        `                    }
+                        `
+                }
             }
         }
-    },
+    }
 })

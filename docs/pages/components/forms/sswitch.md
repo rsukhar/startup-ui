@@ -15,7 +15,25 @@
     <SSwitch v-model="checked">Включить</SSwitch>
 </div>
 
-<CustomCodeBlock :code="{text: code1, lang: 'vue'}" :fullCode="{text: fullCode1, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SSwitch v-model="checked">Включить</SSwitch>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SSwitch v-model="checked">Включить</SSwitch>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SSwitch } from 'startup-ui';
+
+const checked = ref(false);
+</script>
+```
+:::
 
 Модель принимает значение true/false.
 
@@ -25,7 +43,25 @@
     <SSwitch v-model="checkedSecond" disabled>Не работает</SSwitch>
 </div>
 
-<CustomCodeBlock :code="{text: code2, lang: 'vue'}" :fullCode="{text: fullCode2, lang: 'vue'}" />
+:::code-group
+```vue [Пример]
+<template>
+    <SSwitch v-model="checked" disabled>Не работает</SSwitch>
+</template>
+```
+```vue [Весь код]
+<template>
+    <SSwitch v-model="checked" disabled>Не работает</SSwitch>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { SSwitch } from 'startup-ui';
+
+const checked = ref(false);
+</script>
+```
+:::
 
 ## Кастомные да/нет-значения
 
@@ -35,54 +71,53 @@
     <SSwitch v-model="checkedThird" true-value="yes" false-value="no">Значение: {{ checkedThird }}</SSwitch>
 </div>
 
-<CustomCodeBlock :code="{text: code3, lang: 'vue'}" :fullCode="{text: fullCode3, lang: 'vue'}" />
-
-<script setup>
-import { ref } from 'vue';
-import SSwitch from '../../../../packages/startup-ui/src/components/SSwitch.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import CustomCodeBlock from '../../../resources/components/CustomCodeBlock.vue';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-
-const checked = ref(null);
-const checkedSecond = ref(null);
-const checkedThird = ref(null);
-
-const code1 = `<SSwitch v-model="checked">Включить</SSwitch>`;
-const fullCode1 = `<template>
-    <SSwitch v-model="checked">Включить</SSwitch>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SSwitch } from 'startup-ui';
-
-const checked = ref(false);
-<\/script>`;
-
-const code2 = `<SSwitch v-model="checked" disabled>Не работает</SSwitch>`;
-const fullCode2 = `<template>
-    <SSwitch v-model="checked" disabled>Не работает</SSwitch>
-</template>
-<script setup>
-import { ref } from 'vue';
-import { SSwitch } from 'startup-ui';
-
-const checked = ref(false);
-<\/script>`;
-
-const code3 = `<SSwitch v-model="value" true-value="yes" false-value="no">
-    Значение: {{ value }}
-</SSwitch>`;
-const fullCode3 = `<template>
+:::code-group
+```vue [Пример]
+<template>
     <SSwitch v-model="value" true-value="yes" false-value="no">
         Значение: {{ value }}
     </SSwitch>
 </template>
+```
+```vue [Весь код]
+<template>
+    <SSwitch v-model="value" true-value="yes" false-value="no">
+        Значение: {{ value }}
+    </SSwitch>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { SSwitch } from 'startup-ui';
 
 const value = ref(false);
-<\/script>`;
+</script>
+```
+:::
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `any` | `null` | Состояние переключателя. |
+| disabled | `boolean` | `false` | Отключает возможность переключения. |
+| true-value | `any` | `true` | Значение для «включенного» состояния. |
+| false-value | `any` | `false` | Значение для «выключенного» состояния. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Текст лейбла (описания) рядом с переключателем. |
+
+<script setup>
+import { ref } from 'vue';
+import SSwitch from '../../../../packages/startup-ui/src/components/SSwitch.vue';
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
+
+const checked = ref(false);
+const checkedSecond = ref(false);
+const checkedThird = ref('no');
 </script>

@@ -1,18 +1,54 @@
 <template>
     <div class="s-htmleditor">
-        <Editor :init="initOptions" v-model="model" @update:modelValue="onEditorChange" />
+        <component v-if="Editor" :is="Editor" :init="initOptions" v-model="model" @update:modelValue="onEditorChange" />
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-// @ts-ignore
-import Editor from '@tinymce/tinymce-vue';
-// Следующая строчка нужна для отключения запроса API-ключая, не удалять!
-// @ts-ignore
-import tinymce from 'tinymce/tinymce';
-import 'tinymce/skins/ui/oxide/skin.min.css'
-import 'tinymce/skins/ui/oxide/content.min.css'
+import { ref, shallowRef, onMounted } from 'vue';
 import axios from "axios";
+
+const Editor = shallowRef<any>(null);
+
+onMounted(async () => {
+    // tinymce — peer dependency потребителя, @ts-ignore подавляет ошибки отсутствия типов
+    // Следующая строчка нужна для отключения запроса API-ключа, не удалять!
+    // @ts-ignore
+    await import('tinymce/tinymce');
+    // @ts-ignore
+    await import('tinymce/icons/default');
+    // @ts-ignore
+    await import('tinymce/themes/silver/theme');
+    // @ts-ignore
+    await import('tinymce/models/dom/model');
+    // @ts-ignore
+    await import('tinymce/plugins/advlist');
+    // @ts-ignore
+    await import('tinymce/plugins/lists');
+    // @ts-ignore
+    await import('tinymce/plugins/link');
+    // @ts-ignore
+    await import('tinymce/plugins/image');
+    // @ts-ignore
+    await import('tinymce/plugins/charmap');
+    // @ts-ignore
+    await import('tinymce/plugins/fullscreen');
+    // @ts-ignore
+    await import('tinymce/plugins/insertdatetime');
+    // @ts-ignore
+    await import('tinymce/plugins/table');
+    // @ts-ignore
+    await import('tinymce/plugins/autolink');
+    // @ts-ignore
+    await import('tinymce/plugins/code');
+    // @ts-ignore
+    if (props.media) await import('tinymce/plugins/media');
+    // @ts-ignore
+    await import('tinymce/skins/ui/oxide/skin.min.css');
+    // @ts-ignore
+    await import('tinymce/skins/ui/oxide/content.min.css');
+    // @ts-ignore
+    Editor.value = (await import('@tinymce/tinymce-vue')).default;
+});
 
 export interface SHtmlEditorProps {
     uploadUrl?: string;
