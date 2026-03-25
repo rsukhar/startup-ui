@@ -124,6 +124,12 @@ export default defineConfig({
         ]
     },
     vite: {
+        resolve: {
+            alias: {
+                'tinymce': path.resolve(__dirname, '../node_modules/tinymce'),
+                '@tinymce/tinymce-vue': path.resolve(__dirname, '../node_modules/@tinymce/tinymce-vue'),
+            }
+        },
         plugins: [
             {
                 name: 'middleware',

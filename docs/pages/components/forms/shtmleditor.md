@@ -75,7 +75,7 @@ const content = ref(false);
 По умолчанию высота равна 500px. Можно изменить через проп `height`.
 
 <div class="docs-container">
-    <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="100" />
+    <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="300" />
 </div>
 
 :::code-group
