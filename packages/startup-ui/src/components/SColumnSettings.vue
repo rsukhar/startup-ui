@@ -43,7 +43,7 @@
 import { ref, watch, useTemplateRef, nextTick } from "vue";
 import { useSortable } from "@vueuse/integrations/useSortable";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, defaultDocument, defaultWindow } from "@vueuse/core";
 import SCheckbox from "./SCheckbox.vue";
 
 export interface SColumnSettingsPreset {
@@ -156,7 +156,7 @@ useSortable($list, list, {
 });
 
 // Закрытие по клику вне компонента
-useEventListener(document, 'click', (event: Event) => {
+useEventListener(defaultDocument, 'click', (event: Event) => {
     const target = event.target as Node;
     if (
         $dropdown.value && $portal.value  
@@ -169,11 +169,11 @@ useEventListener(document, 'click', (event: Event) => {
 
 
 // Подстройка позиции при скролле и изменении размера экрана
-useEventListener(window, 'scroll', () => {
+useEventListener(defaultWindow, 'scroll', () => {
     if (isOpen.value) updatePosition();
 });
 
-useEventListener(window, 'resize', () => {
+useEventListener(defaultWindow, 'resize', () => {
     if (isOpen.value) updatePosition();
 });
 
