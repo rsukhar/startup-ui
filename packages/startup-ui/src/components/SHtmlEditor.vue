@@ -169,7 +169,8 @@ const initOptions = ref({
         .s-img-bg.s-img-border img {
             border: 1px solid #d1d1d1;
         }`,
-    skin_url: '/tinymce/skins/ui/oxide',
+    skin: false,
+    content_css: false,
     plugins: [
         'advlist', 'lists', 'link', 'image', 'charmap',
         'fullscreen', 'insertdatetime', 'table', 'autolink', 'code',
@@ -178,9 +179,6 @@ const initOptions = ref({
     toolbar: `blocks | bullist numlist | link image | ${props.media ? 'media | ' : ''}fullscreen code `,
     branding: false, // Убираем брендинг
     promotion: false, // Убираем рекламные предложения
-    // Отключаем все облачные функции
-    base_url: '/tinymce', // Указываем базовый путь к локальным файлам
-    suffix: '.min',
     // Блокируем любые обращения к внешним серверам
     service_worker: false,
     external_plugins: {},

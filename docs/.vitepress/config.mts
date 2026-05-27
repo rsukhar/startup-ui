@@ -130,6 +130,9 @@ export default defineConfig({
                 '@tinymce/tinymce-vue': path.resolve(__dirname, '../node_modules/@tinymce/tinymce-vue'),
             }
         },
+        ssr: {
+            noExternal: ['@vueuse/integrations'],
+        },
         plugins: [
             {
                 name: 'middleware',
