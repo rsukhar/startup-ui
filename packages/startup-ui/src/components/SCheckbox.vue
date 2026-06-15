@@ -40,15 +40,14 @@ const isChecked = computed({
     },
     set(val: boolean) {
         if (groupValue && props.value != null) {
+            // Присваиваем новый массив (а не мутируем по ссылке через push/splice),
+            // иначе defineModel в SCheckboxGroup не эмитит update:modelValue
             if (val) {
                 if (!groupValue.value.includes(props.value)) {
-                    groupValue.value.push(props.value);
+                    groupValue.value = [...groupValue.value, props.value];
                 }
             } else {
-                const index = groupValue.value.indexOf(props.value);
-                if (index > -1) {
-                    groupValue.value.splice(index, 1);
-                }
+                groupValue.value = groupValue.value.filter(v => v !== props.value);
             }
         }
         model.value = val;
