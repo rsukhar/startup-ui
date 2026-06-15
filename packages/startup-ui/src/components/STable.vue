@@ -11,7 +11,7 @@
                 <template v-if="$slots.row">
                     <tr class="s-table-nodata" v-if="showNoDataMessage">
                         <td colspan="100">
-                            <slot name="nodata">{{ nodata }}</slot>
+                            <slot name="nodata">{{ nodataText }}</slot>
                         </td>
                     </tr>
                     <tr v-for="(row, index) in data" :key="`${index}-stable`">
@@ -31,8 +31,9 @@
 </template>
 <script setup lang="ts" generic="T">
 import { computed } from "vue";
+import { t } from '../locale';
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
     data?: T[] | Record<string | number, T>;
     hoverable?: boolean;
     striped?: boolean;
@@ -41,9 +42,10 @@ const props = withDefaults(defineProps<{
     fixedHeader?: boolean;
     height?: string;
     topScroll?: boolean;
-}>(), {
-    nodata: 'Ничего не найдено'
-});
+}>();
+
+// Текст пустого состояния: проп имеет приоритет над локализованным дефолтом
+const nodataText = computed(() => props.nodata ?? t('table.noData'));
 
 // Нужно ли показывать сообщение о том, что нет данных?
 const showNoDataMessage = computed(() => {
