@@ -13,3 +13,6 @@ dist/
 # логи
 npm-debug.log
 yarn-error.log
+
+# артефакты npm pack
+*.tgz
