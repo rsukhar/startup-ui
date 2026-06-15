@@ -12,7 +12,8 @@
             "import": "./dist/startup-ui.es.js",
             "require": "./dist/startup-ui.cjs.js"
         },
-        "./dist/index.css": "./dist/index.css"
+        "./dist/index.css": "./dist/index.css",
+        "./defaults.css": "./dist/defaults.css"
     },
     "files": [
         "dist"

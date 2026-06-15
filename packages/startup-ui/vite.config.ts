@@ -3,6 +3,21 @@ import vue from '@vitejs/plugin-vue';
 import dts from 'vite-plugin-dts';
 import { resolve } from 'node:path';
 import path from 'path';
+import fs from 'node:fs';
+
+// Кладём опциональную палитру отдельным файлом dist/defaults.css,
+// чтобы библиотека не везла дефолты --s-* в основном бандле.
+function emitDefaultsCss() {
+    return {
+        name: 'startup-ui-emit-defaults-css',
+        closeBundle() {
+            fs.copyFileSync(
+                resolve(__dirname, 'src/styles/defaults.css'),
+                resolve(__dirname, 'dist/defaults.css'),
+            );
+        },
+    };
+}
 
 export default defineConfig({
     plugins: [vue(), dts({
@@ -11,7 +26,7 @@ export default defineConfig({
         insertTypesEntry: true,
         cleanVueFileName: true,
         tsconfigPath: './tsconfig.json'
-    })],
+    }), emitDefaultsCss()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
@@ -21,8 +36,9 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
+                // Только определения (SCSS-переменные и миксины), без эмита CSS.
+                // Дефолты --s-* НЕ инжектим — иначе :root попадал бы в каждый CSS-чанк.
                 additionalData: `
-                    @use "@/styles/variables.scss" as *;
                     @use "@/styles/mixins.scss" as *;
                 `
             }

@@ -112,9 +112,6 @@ function calculatePosition() {
 }
 </script>
 <style lang="scss">
-:root {
-    --s-tooltip-background: rgba(26, 49, 88, 0.9);
-}
 .s-tooltip {
     display: inline-block;
     position: relative;
@@ -145,7 +142,7 @@ function calculatePosition() {
         padding: 6px 10px;
         color: var(--s-white);
         border-radius: var(--s-border-radius);
-        background-color: var(--s-tooltip-background);
+        background-color: var(--s-tooltip-background, rgba(26, 49, 88, 0.9));
         text-align: start;
         font-family: var(--s-font-family);
         
@@ -191,7 +188,7 @@ function calculatePosition() {
                 transform: translateX(-50%);
                 border-left: 6px solid transparent;
                 border-right: 6px solid transparent;
-                border-bottom: 6px solid var(--s-tooltip-background);
+                border-bottom: 6px solid var(--s-tooltip-background, rgba(26, 49, 88, 0.9));
             }
             &:after {
                 top: -20px;
@@ -210,7 +207,7 @@ function calculatePosition() {
                 transform: translateY(-50%);
                 border-top: 6px solid transparent;
                 border-bottom: 6px solid transparent;
-                border-right: 6px solid var(--s-tooltip-background);
+                border-right: 6px solid var(--s-tooltip-background, rgba(26, 49, 88, 0.9));
             }
             &:after {
                 left: -20px;
@@ -229,7 +226,7 @@ function calculatePosition() {
                 transform: translateX(-50%);
                 border-left: 6px solid transparent;
                 border-right: 6px solid transparent;
-                border-top: 6px solid var(--s-tooltip-background);
+                border-top: 6px solid var(--s-tooltip-background, rgba(26, 49, 88, 0.9));
             }
             &:after {
                 bottom: -20px;
@@ -248,7 +245,7 @@ function calculatePosition() {
                 transform: translateY(-50%);
                 border-top: 6px solid transparent;
                 border-bottom: 6px solid transparent;
-                border-left: 6px solid var(--s-tooltip-background);
+                border-left: 6px solid var(--s-tooltip-background, rgba(26, 49, 88, 0.9));
             }
             &:after {
                 right: -20px;
