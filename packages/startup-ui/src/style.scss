@@ -1,2 +1,3 @@
-@use './styles/variables.scss' as *;
+// Дефолтные значения --s-* библиотека НЕ включает в свой CSS — только использует var(--s-*).
+// Палитру задаёт проект (свой :root) либо опциональный импорт 'startup-ui/defaults.css'.
 @use './styles/mixins.scss' as *;

@@ -1,70 +1,83 @@
+/**
+ * Опциональная палитра по умолчанию для Startup UI.
+ *
+ * Библиотека сама НЕ включает эти значения в свой CSS — компоненты только используют var(--s-*).
+ * Подключите этот файл, если не задаёте собственную палитру в проекте:
+ *   import 'startup-ui/defaults.css';
+ */
 :root {
-    // Черный, белый и серый
+    /* Черный, белый и серый */
     --s-white: #fff;
     --s-black: #000;
     --s-gray: #f2f2f2;
 
-    // Цвет шапки
+    /* Цвет шапки */
     --s-bg-header: #081935;
 
-    // Дополнительные цвета фона
+    /* Дополнительные цвета фона */
     --s-bg: #f2f3f4;
     --s-bg-subheader: #c63a06;
     --s-bg-gradient-dark: #802703;
     --s-bg-gradient-light: #ec6227;
 
-    // Цвета бордюров
+    /* Цвета бордюров */
     --s-border: #d1d1d1;
     --s-border-light: #666;
 
-    // Цвета текста
+    /* Цвета текста */
     --s-text: #000;
     --s-text-light: #999;
     --s-text-lightest: #ccc;
 
-    // Главный акцент
+    /* Главный акцент */
     --s-primary: #f04f0a;
     --s-primary-dark: #c63a06;
     --s-primary-darkest: #802703;
     --s-primary-light: #f1905f;
     --s-primary-lightest: #f8eeea;
 
-    // Red color for error messages, alerts, danger actions
+    /* Red color for error messages, alerts, danger actions */
     --s-red: #ea524a;
     --s-red-dark: #d33229;
     --s-red-light: #ffbfbf;
     --s-red-lightest: #ffece8;
 
-    // Yellow color for error messages, alerts, danger actions
+    /* Yellow color for error messages, alerts, danger actions */
     --s-yellow: #e6a23c;
     --s-yellow-dark: #b88230;
     --s-yellow-light: #eebe77;
     --s-yellow-lightest: #faecd8;
 
-    // Green color for complete messages, prefer actions
+    /* Green color for complete messages, prefer actions */
     --s-green: #53b753;
     --s-green-dark: #3f983f;
     --s-green-light: #65bf65;
     --s-green-lightest: #b8e5b8;
 
-    // Shadows
+    /* Shadows */
     --s-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 
-    // UI sizes
+    /* UI sizes */
     --s-field-height: 32px;
 
-    // Типографика
+    /* Высота шапки (для fullscreen SHtmlEditor и т.п.) */
+    --s-header-height: 0px;
+
+    /* Типографика */
     --s-font-family: 'Open Sans', sans-serif;
     --s-h1-font-size: 2.2rem;
     --s-h2-font-size: 1.7rem;
     --s-h3-font-size: 1.4rem;
     --s-h4-font-size: 1.2rem;
 
-    // Разметка
+    /* Разметка */
     --s-base-width: 1200px;
     --s-base-margin: 20px;
     --s-base-padding: 20px;
 
-    // Основной стиль скруглений
+    /* Основной стиль скруглений */
     --s-border-radius: 6px;
+
+    /* Токены отдельных компонентов */
+    --s-tooltip-background: rgba(26, 49, 88, 0.9);
 }
