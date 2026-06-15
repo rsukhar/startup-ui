@@ -6,6 +6,10 @@
 
 Все переменные Startup UI начинаются с вендорного префикса `--s-`
 
+<SNote icon="lightbulb" attention>
+Библиотека <strong>не везёт</strong> дефолтные значения этих переменных в своём CSS — она их только использует. Значения задаёт проект (свой <code>:root</code>) либо опциональный импорт <code>import 'startup-ui/defaults.css'</code>. Значения ниже — это и есть содержимое <code>defaults.css</code>.
+</SNote>
+
 ## Цвета
 
 ### Черный, белый и серый
@@ -90,6 +94,10 @@
 ### Скругления
 
 * `--s-border-radius` (напр. `6px`) — базовые скругления
+
+<script setup>
+import SNote from '../../../../packages/startup-ui/src/components/SNote.vue';
+</script>
 
 <style lang="scss">
 .color-example {
