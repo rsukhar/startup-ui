@@ -95,6 +95,36 @@ import { SHtmlEditor } from 'startup-ui';
 ```
 :::
 
+## Расширяемость
+
+Конфигурацию TinyMCE можно глубоко переопределить пропом `init` (глубокий merge в дефолты). Поле `setup` композируется с библиотечным (вызывается после него и не затирает обёртку картинок), а `plugins` объединяются с базовыми.
+
+```vue
+<template>
+    <SHtmlEditor
+        v-model="content"
+        upload-url="/image/upload"
+        :plugins="['wordcount']"
+        toolbar="blocks | bold italic | link image | fullscreen code"
+        :header-offset="60"
+        :init="{
+            setup(editor) {
+                // напр. кастомная кнопка «вставить шаблон ответа техподдержки»
+                editor.ui.registry.addButton('reply', {
+                    text: 'Шаблон',
+                    onAction: () => editor.insertContent('<p>Здравствуйте! </p>'),
+                });
+            },
+        }"
+        @init="onEditorInit"
+    />
+</template>
+```
+
+- `header-offset` (или CSS-переменная `--s-header-height`) задаёт смещение шапки для корректного fullscreen.
+- `content-style` добавляется к базовым стилям контента, `content-css` подключает внешние стили.
+- Локаль интерфейса берётся из словаря (`htmlEditor.language`); язык можно задать и явно через `:init="{ language, language_url }"`.
+
 ## Интерфейс компонента
 
 ### Свойства (Props)
@@ -104,12 +134,22 @@ import { SHtmlEditor } from 'startup-ui';
 | v-model | `string` | `undefined` | HTML-содержимое редактора. |
 | upload-url | `string` | `undefined` | URL для загрузки изображений на сервер. |
 | placeholder | `string` | `''` | Текст-заполнитель, когда редактор пуст. |
+| height | `number` | `500` | Высота редактора, px. |
+| media | `boolean` | `false` | Включить плагин медиа (видео-эмбеды). |
+| plugins | `string[]` | `[]` | Доп. плагины TinyMCE (объединяются с базовыми). |
+| toolbar | `string` | (дефолтный) | Переопределение тулбара. |
+| menubar | `string \| boolean` | `false` | Меню-бар TinyMCE. |
+| content-style | `string` | `undefined` | Доп. CSS контента (добавляется к базовому). |
+| content-css | `string \| string[]` | `undefined` | Внешние CSS контента (`content_css`). |
+| header-offset | `number` | `undefined` | Смещение шапки для fullscreen, px. |
+| init | `object` | `undefined` | Глубокий merge в конфигурацию TinyMCE (наивысший приоритет). |
 
 ### События (Events)
 
 | Название | Параметры | Описание |
 |----------|-----------|----------|
 | changeContent | - | Вызывается при любом изменении содержимого редактора. |
+| init | `editor` | Инстанс TinyMCE готов — для регистрации кастомных плагинов/кнопок. |
 
 <script setup>
 import { ref } from 'vue';
