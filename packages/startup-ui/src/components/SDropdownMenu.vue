@@ -18,6 +18,7 @@
 import { ref, useTemplateRef, computed, nextTick } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { t } from '../locale';
 
 export interface SDropdownMenuLink {
     label: string;
@@ -38,7 +39,6 @@ export interface SDropdownMenuProps {
 
 const props = withDefaults(defineProps<SDropdownMenuProps>(), {
     links: () => [],
-    placeholder: 'Перейти к',
 });
 
 // Активная выбранная ссылка из числа переданных ссылок
@@ -49,8 +49,8 @@ const activeLink = computed(() => {
     return null;
 });
 
-// Какой текст выводим на лейбле
-const labelText = computed(() => props.label ?? (activeLink.value ? activeLink.value.label : props.placeholder));
+// Какой текст выводим на лейбле (placeholder имеет приоритет над локализованным дефолтом)
+const labelText = computed(() => props.label ?? (activeLink.value ? activeLink.value.label : (props.placeholder ?? t('dropdownMenu.placeholder'))));
 
 // Какой URL выводим на лейбле
 const labelUrl = computed(() => props.labelLink ?? activeLink.value?.url);

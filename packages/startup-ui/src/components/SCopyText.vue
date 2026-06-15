@@ -1,5 +1,5 @@
 <template>
-    <div v-if="layout === 'inline'" class="s-copytext layout_inline" title="Скопировать"
+    <div v-if="layout === 'inline'" class="s-copytext layout_inline" :title="t('copyText.copy')"
          @click="copy(copytext ?? innerText)" :class="{success: copied}">
         <div class="s-copytext-text">
             <slot />
@@ -11,7 +11,7 @@
             <slot />
         </div>
         <FontAwesomeIcon :icon="copied ? 'check' : 'copy'" v-if="isSupported"
-                         :class="{success: copied}" title="Скопировать" @click="copy(copytext ?? innerText)" />
+                         :class="{success: copied}" :title="t('copyText.copy')" @click="copy(copytext ?? innerText)" />
     </div>
 </template>
 
@@ -19,6 +19,7 @@
 import { computed, useSlots } from 'vue';
 import { useClipboard } from '@vueuse/core';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { t } from '../locale';
 
 const props = withDefaults(defineProps<{
     href?: string;

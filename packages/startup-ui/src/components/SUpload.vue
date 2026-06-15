@@ -28,6 +28,7 @@
 import { ref, computed, useTemplateRef } from 'vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SButton from './SButton.vue';
+import { t } from '../locale';
 
 export interface SUploadProps {
     url?: string;
@@ -47,7 +48,7 @@ const emit = defineEmits<{
 const fileInput = useTemplateRef<HTMLInputElement>('fileInput');
 
 // Текст, который выводится на кнопке выбора. Если явно не задан, зависит от того, выбираем один файл или несколько
-const finalUploadButtonTitle = computed(() => props.uploadButtonTitle ?? (props.multiple ? 'Выбрать файлы' : 'Выбрать файл'));
+const finalUploadButtonTitle = computed(() => props.uploadButtonTitle ?? (props.multiple ? t('upload.selectFiles') : t('upload.selectFile')));
 
 const openFileDialog = () => {
     if (fileInput.value) {

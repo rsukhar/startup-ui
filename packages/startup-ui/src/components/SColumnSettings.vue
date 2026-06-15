@@ -6,7 +6,7 @@
                     <slot v-if="$slots.label" name="label" />
                     <template v-else>
                         <FontAwesomeIcon icon="table-columns" />
-                        <span>Настроить колонки</span>
+                        <span>{{ t('columnSettings.configure') }}</span>
                         <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
                     </template>
                 </div>
@@ -27,8 +27,8 @@
                             <a v-for="preset in columnPresets" :key="preset.title" @click="resetValue(preset.columns)">
                                 <slot name="setpreset" :preset="preset">
                                     <FontAwesomeIcon icon="rotate-left" />
-                                    Сбросить
-                                    {{ columnPresets.length > 1 ? `на ${preset.title}` : 'изменения' }}
+                                    {{ t('columnSettings.reset') }}
+                                    {{ columnPresets.length > 1 ? t('columnSettings.resetTo', { title: preset.title }) : t('columnSettings.resetChanges') }}
                                 </slot>
                             </a>
                         </div>
@@ -45,6 +45,7 @@ import { useSortable } from "@vueuse/integrations/useSortable";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useEventListener } from "@vueuse/core";
 import SCheckbox from "./SCheckbox.vue";
+import { t } from '../locale';
 
 export interface SColumnSettingsPreset {
     title: string;

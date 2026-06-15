@@ -10,7 +10,7 @@
                     <p v-html="confirmationText" />
                     <div class="s-confirm-buttons">
                         <SButton outlined @click="handleCancel">{{ dialogData.cancelLabel }}</SButton>
-                        <SButton color="red" @click="handleAccept">{{ dialogData.acceptLabel }}</SButton>
+                        <SButton :color="dialogData.variant === 'danger' ? 'red' : undefined" @click="handleAccept">{{ dialogData.acceptLabel }}</SButton>
                     </div>
                 </div>
             </div>
@@ -23,24 +23,20 @@ import { ref, useTemplateRef, nextTick } from 'vue';
 import { useDraggable } from '@vueuse/core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SButton from '../SButton.vue';
+import { t } from '../../locale';
 
 interface TemplateData {
     title?: string;
     cancelLabel?: string;
     acceptLabel?: string;
+    /** Цвет accept-кнопки: 'danger' (красная, по умолчанию) для разрушающих действий, 'primary' для неразрушающих */
+    variant?: 'primary' | 'danger';
     onAccept?: () => void;
     onCancel?: () => void;
 }
 
 const isOpened = ref(false);
 const confirmationText = ref('');
-const initialDialogData: TemplateData = {
-    title: 'Необходимо подтверждение',
-    cancelLabel: 'Нет',
-    acceptLabel: 'Да',
-    onAccept: () => {},
-    onCancel: () => {}
-};
 
 const dialogData = ref<TemplateData>({});
 // Элемент, позиция которого будет вычисляться во время ondrag
@@ -52,7 +48,15 @@ const { x, y, style } = useDraggable($dialog, { handle: $header })
 
 function open(msg: string, templateData: TemplateData = {}) {
     confirmationText.value = msg;
-    dialogData.value = {...initialDialogData, ...templateData}
+    dialogData.value = {
+        title: t('confirm.title'),
+        cancelLabel: t('confirm.cancel'),
+        acceptLabel: t('confirm.accept'),
+        variant: 'danger',
+        onAccept: () => {},
+        onCancel: () => {},
+        ...templateData,
+    };
     isOpened.value = true;
     // Ждём, пока смонтируется DOM
     nextTick(() => {

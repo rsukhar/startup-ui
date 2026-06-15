@@ -21,14 +21,14 @@
                                     <div v-if="index===0" class="s-datepicker-calendar-header-controls" @click="prevMonth">
                                         <FontAwesomeIcon icon="chevron-left" />
                                     </div>
-                                    <div class="s-datepicker-calendar-header-data">{{ monthNames[month - 1] }}&nbsp;{{ year }}</div>
+                                    <div class="s-datepicker-calendar-header-data">{{ months[month - 1] }}&nbsp;{{ year }}</div>
                                     <div v-if="index===(calendarPages.length - 1)" class="s-datepicker-calendar-header-controls"
                                         @click="nextMonth">
                                         <FontAwesomeIcon icon="chevron-right" />
                                     </div>
                                 </div>
                                 <div class="calendar-grid">
-                                    <span v-for="(d, index) in weekDayNames" :key="index" class="day-name">{{ d }}</span>
+                                    <span v-for="(d, index) in weekDays" :key="index" class="day-name">{{ d }}</span>
                                     <div v-for="day in previousMonthDaysTail" :key="dateToString(year, month, day)" class="day blocked">
                                         {{ day + daysInPreviousMonth - previousMonthDaysTail }}
                                     </div>
@@ -76,6 +76,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { useEventListener } from "@vueuse/core";
 import SRadioGroup from "./SRadioGroup.vue";
+import { t, tRaw } from '../locale';
 
 export interface SDatePickerProps {
     range?: boolean;
@@ -97,9 +98,11 @@ export interface SDatePickerProps {
 const props = withDefaults(defineProps<SDatePickerProps>(), {
     range: false,
     withTime: false,
-    weekDayNames: () => ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-    monthNames: () => ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
 });
+
+// Названия дней недели и месяцев: пропы имеют приоритет над локализованными дефолтами
+const weekDays = computed(() => props.weekDayNames ?? tRaw<string[]>('datePicker.weekDays'));
+const months = computed(() => props.monthNames ?? tRaw<string[]>('datePicker.months'));
 
 // Внешнее значение в нужном формате props.valueFormat
 const externalValue = defineModel<string | string[] | null>();
@@ -153,7 +156,7 @@ const displayValue = computed(() => {
     if (props.range && Array.isArray(value.value)) {
         return value.value.filter(Boolean).map(item => dayjs(item, internalFormat).format(inputFormat)).join(' — ');
     }
-    return value.value && !Array.isArray(value.value) ? (dayjs(value.value, internalFormat, true).format(inputFormat)) : 'Дата не выбрана';
+    return value.value && !Array.isArray(value.value) ? (dayjs(value.value, internalFormat, true).format(inputFormat)) : t('datePicker.notSelected');
 })
 
 /**
