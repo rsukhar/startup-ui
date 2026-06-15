@@ -22,6 +22,9 @@
                 <template v-else>
                     {{ node.label }}
                 </template>
+                <div v-if="$slots['node-actions']" class="s-tree-actions" @click.stop @dragstart.stop.prevent>
+                    <slot name="node-actions" :node="node" />
+                </div>
             </div>
             <STree v-if="node.children && sharedExpandedKeys.includes(node.id)" v-model="model"
                    :draggable="draggable" :data="node.children" :selectable="selectable"
@@ -32,6 +35,9 @@
                    @change="(node) => emit('change', node)">
                 <template #node="{ node: childNode }" v-if="$slots.node">
                     <slot name="node" :node="childNode" />
+                </template>
+                <template #node-actions="{ node: childNode }" v-if="$slots['node-actions']">
+                    <slot name="node-actions" :node="childNode" />
                 </template>
             </STree>
         </template>
@@ -84,7 +90,8 @@ const emit = defineEmits<{
 }>();
 
 defineSlots<{
-    node?(props: { node: STreeNode }): any
+    node?(props: { node: STreeNode }): any;
+    'node-actions'?(props: { node: STreeNode }): any;
 }>();
 
 const model = defineModel<any>();
@@ -366,6 +373,18 @@ function isSelected(id: string | number): boolean {
 
     & > &-cell {
         padding: 2px 2px 2px 24px;
+    }
+
+    // Действия над узлом: показываются по наведению, прижаты вправо
+    &-actions {
+        margin-left: auto;
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding-left: 10px;
+    }
+    &-cell:hover .s-tree-actions {
+        display: flex;
     }
 
     &-toggle {

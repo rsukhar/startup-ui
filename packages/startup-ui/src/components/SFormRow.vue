@@ -1,9 +1,9 @@
 <template>
     <div class="s-formrow" :class="{error: error !== ''}">
-        <div v-if="$slots.title" class="s-formrow-title" :style="{width: titlesWidth ? titlesWidth + 'px' : undefined}">
+        <div v-if="$slots.title" class="s-formrow-title" :style="titleStyle">
             <slot name="title" />
         </div>
-        <div v-else class="s-formrow-title" @click="focus" :style="{width: titlesWidth ? titlesWidth + 'px' : undefined}">
+        <div v-else class="s-formrow-title" @click="focus" :style="titleStyle">
             {{ title ?? '' }}
         </div>
 
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef, computed, inject, cloneVNode, useSlots } from 'vue';
+import { useTemplateRef, computed, inject, cloneVNode, h, useSlots } from 'vue';
 import type { Ref } from 'vue';
 
 export interface SFormRowProps {
@@ -82,30 +82,49 @@ const error = computed(() => {
     }).join('\n') || null;
 });
 
-const titlesWidth = inject<Ref<number | string> | number | string>('titlesWidth');
+const titlesWidth = inject<number | string | undefined>('titlesWidth', undefined);
+const titlesAtLeft = inject<boolean>('titlesAtLeft', false);
+
+// Ширину заголовка навязываем только при титулах слева — при титулах сверху она вызывает переносы
+const titleStyle = computed(() => {
+    if (!titlesAtLeft || !titlesWidth) return undefined;
+    return { width: typeof titlesWidth === 'number' ? `${titlesWidth}px` : String(titlesWidth) };
+});
 
 const slots = useSlots();
 
-const nestedNodes = computed(() => {
-    const vnodes = (slots as any).default?.() || [];
+// Привязывает modelValue к полю-компоненту на любой глубине вложенности
+// (поле может быть обёрнуто в <div> и т.п. — привязка по name не теряется)
+function bindFieldNodes(vnodes: any[]): any[] {
     return vnodes.map((vnode: any) => {
-        // Текстовые узлы и div'ы выводим как есть
-        if (typeof vnode.type !== 'object') return vnode;
-        const inputType = vnode.props?.type;
+        if (!vnode || typeof vnode !== 'object') return vnode;
+        const type = vnode.type;
 
-        // Копируем vnodes с инпутами и добавляем к ним modelValue
-        return cloneVNode(vnode, {
-            modelValue: modelValue.value,
-            'onUpdate:modelValue': (val: any) => {
-                if (inputType === 'number') {
-                    modelValue.value = val === '' ? null : Number(val);
-                } else {
-                    modelValue.value = val;
+        // Компонент (поле формы) — добавляем modelValue/onUpdate
+        if (typeof type === 'object' || typeof type === 'function') {
+            const inputType = vnode.props?.type;
+            return cloneVNode(vnode, {
+                modelValue: modelValue.value,
+                'onUpdate:modelValue': (val: any) => {
+                    if (inputType === 'number') {
+                        modelValue.value = val === '' ? null : Number(val);
+                    } else {
+                        modelValue.value = val;
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        // HTML-элемент-обёртка (div и т.п.) — рекурсивно обрабатываем потомков
+        if (typeof type === 'string' && Array.isArray(vnode.children) && vnode.children.length) {
+            return h(type, { ...(vnode.props || {}), key: vnode.key }, bindFieldNodes(vnode.children));
+        }
+
+        return vnode;
     });
-});
+}
+
+const nestedNodes = computed(() => bindFieldNodes((slots as any).default?.() || []));
 
 const input = useTemplateRef<HTMLElement>('input');
 

@@ -81,6 +81,7 @@ const formatErrors = function(errors: Record<string, any>) {
 provide('formModel', model.value);
 provide('formErrors', localErrors);
 provide('titlesWidth', props.titlesWidth);
+provide('titlesAtLeft', props.titlesAtLeft);
 </script>
 <style lang="scss">
 .s-form {

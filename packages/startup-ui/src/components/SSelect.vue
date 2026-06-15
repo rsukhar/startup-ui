@@ -62,9 +62,10 @@ import { templateRef } from '@vueuse/core';
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { t } from '../locale';
+import { normalizeOptions } from '../utils/options';
 
 export interface SSelectProps {
-    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    // Карта {value: label}, массив пар [[value, label]] или массив объектов [{value, label}]
     options: Record<string | number, any> | any[];
     placeholder?: string;
     filterable?: boolean;
@@ -73,6 +74,10 @@ export interface SSelectProps {
     inline?: boolean;
     virtual?: boolean;
     virtualScrollSize?: number;
+    /** Ключ значения для массива объектов (по умолчанию 'value') */
+    optionValue?: string;
+    /** Ключ подписи для массива объектов (по умолчанию 'label') */
+    optionLabel?: string;
 }
 
 const props = withDefaults(defineProps<SSelectProps>(), {
@@ -90,7 +95,8 @@ const $selectRef = templateRef<HTMLElement>('selectRef');
 
 const attrs = useAttrs();
 
-const toInternalOptions = (propValue: any): [any, any][] => (propValue instanceof Array) ? JSON.parse(JSON.stringify(propValue)) : Object.entries(propValue);
+const toInternalOptions = (propValue: any): [any, any][] =>
+    normalizeOptions(propValue, { optionLabel: props.optionLabel, optionValue: props.optionValue }).map(o => [o.value, o.label]);
 const internalOptions = ref<[any, any][]>(toInternalOptions(props.options ?? {}));
 watch(() => props.options, (newOptions) => {
     internalOptions.value = toInternalOptions(newOptions ?? {})
