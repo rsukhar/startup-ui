@@ -14,13 +14,18 @@
 <script setup lang="ts">
 import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
+import { normalizeOptions } from '../utils/options';
 
 export interface SRadioGroupProps {
-    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    // Карта {value: label}, массив пар [[value, label]] или массив объектов [{value, label}]
     options?: Record<string | number, any> | any[];
     buttons?: boolean;
     vertical?: boolean;
     placeholder?: string;
+    /** Ключ значения для массива объектов (по умолчанию 'value') */
+    optionValue?: string;
+    /** Ключ подписи для массива объектов (по умолчанию 'label') */
+    optionLabel?: string;
 }
 
 const props = defineProps<SRadioGroupProps>();
@@ -31,26 +36,15 @@ const emits = defineEmits<{
 
 const model = defineModel<any>();
 
-// Нормализуем options в единый формат
-const normalizedOptions = computed(() => {
-    // Если передано массивом
-    if (props.options instanceof Array){
-        return props.options.map(item => ({ value: item[0], title: item[1] }));
-    }
-    if (!props.options || Object.keys(props.options).length === 0) {
-        return [];
-    }
-
-    return Object.entries(props.options).map(([value, title]) => {
-        // Преобразуем строковые boolean, т.к. при «распаковке» занчения становятся строковыми
-        let parsedValue: any = value;
-        if (value === 'true') parsedValue = true;
-        if (value === 'false') parsedValue = false;
-        if (!isNaN(Number(value)) && value !== '') parsedValue = Number(value);
-        
-        return { value: parsedValue, title };
-    });
-});
+// Нормализуем options в единый формат [{ value, title }]
+const normalizedOptions = computed(() =>
+    normalizeOptions(props.options, {
+        optionLabel: props.optionLabel,
+        optionValue: props.optionValue,
+        // Ключи объекта-карты приводим к boolean/number (как было исторически)
+        coerceKeys: true,
+    }).map(o => ({ value: o.value, title: o.label }))
+);
 
 provide('sRadioGroupModel', model);
 
