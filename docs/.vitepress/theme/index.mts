@@ -11,7 +11,7 @@ export default {
     ...DefaultTheme,
     Layout,
     enhanceApp({ app }: { app: App }) {
-        configureStartupUi({ locale: 'en-US' })
+        configureStartupUi({ locale: 'ru' })
         app.component('Link', Link)
     }
 }

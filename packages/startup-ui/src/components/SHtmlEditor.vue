@@ -1,14 +1,55 @@
 <template>
-    <div class="s-htmleditor">
+    <div class="s-htmleditor" :style="rootStyle">
         <component v-if="Editor" :is="Editor" :init="initOptions" v-model="model" @update:modelValue="onEditorChange" />
     </div>
 </template>
 <script setup lang="ts">
-import { ref, shallowRef, onMounted } from 'vue';
+import { ref, shallowRef, computed, onMounted } from 'vue';
 import axios from "axios";
 import { tRaw } from '../locale';
+import { deepMerge } from '../utils/deepMerge';
+import { htmlEditorContentStyle, HTML_EDITOR_BLOCK_ORDER } from './htmlEditor/contentStyle';
 
 const Editor = shallowRef<any>(null);
+
+export interface SHtmlEditorProps {
+    uploadUrl?: string;
+    placeholder?: string;
+    media?: boolean;
+    height?: number;
+    /** Доп. плагины TinyMCE (объединяются с базовыми) */
+    plugins?: string[];
+    /** Переопределение тулбара */
+    toolbar?: string;
+    /** Меню-бар TinyMCE (по умолчанию выключен) */
+    menubar?: string | boolean;
+    /** Доп. CSS контента — добавляется к базовому content_style */
+    contentStyle?: string;
+    /** Внешние CSS контента (content_css) */
+    contentCss?: string | string[];
+    /** Смещение шапки для fullscreen, px. Альтернатива — CSS-переменная --s-header-height */
+    headerOffset?: number;
+    /**
+     * Глубокий merge в дефолтную конфигурацию TinyMCE (наивысший приоритет).
+     * Поле `setup` композируется с библиотечным (вызывается после него),
+     * `plugins` объединяются с базовыми.
+     */
+    init?: Record<string, any>;
+}
+
+const props = defineProps<SHtmlEditorProps>();
+
+const emits = defineEmits<{
+    (e: 'changeContent'): void;
+    (e: 'init', editor: any): void;
+}>();
+
+const model = defineModel<string>();
+
+// Смещение шапки для корректного fullscreen
+const rootStyle = computed(() =>
+    props.headerOffset != null ? { '--s-header-height': `${props.headerOffset}px` } as Record<string, string> : undefined
+);
 
 onMounted(async () => {
     // tinymce — peer dependency потребителя, @ts-ignore подавляет ошибки отсутствия типов
@@ -51,240 +92,54 @@ onMounted(async () => {
     Editor.value = (await import('@tinymce/tinymce-vue')).default;
 });
 
-export interface SHtmlEditorProps {
-    uploadUrl?: string;
-    placeholder?: string;
-    media?: boolean;
-    height?: number;
-}
-
-const props = defineProps<SHtmlEditorProps>();
-
-const emits = defineEmits<{
-    (e: 'changeContent'): void;
-}>();
-
-const model = defineModel<string>();
-
 // Локализованные подписи блоков → строка block_formats TinyMCE
-const HTML_EDITOR_BLOCK_ORDER: [string, string][] = [
-    ['paragraph', 'p'], ['h1', 'h1'], ['h2', 'h2'], ['h3', 'h3'], ['h4', 'h4'],
-    ['blockquote', 'blockquote'], ['code', 'code'], ['note', 'note'],
-    ['attention', 'attention'], ['success', 'success'], ['error', 'error'],
-];
 function buildBlockFormats(): string {
     const blocks = tRaw<Record<string, string>>('htmlEditor.blocks');
     return HTML_EDITOR_BLOCK_ORDER.map(([key, tag]) => `${blocks[key]}=${tag}`).join('; ');
 }
 
-const initOptions = ref({
-    license_key: 'mit',
-    selector: 'textarea',
-    height: props.height ?? 500,
-    placeholder: props.placeholder || '',
-    menubar: false,
-    body_class: 'g-html',
-    block_formats: buildBlockFormats(),
-    // TODO Вынести в отдельный файл
-    content_style: `        .g-html {
-            line-height: 1.8;
-        }
-        .g-html img,
-        .g-html > div,
-        .g-html iframe {
-            max-width: 100%;
-        }
-        .g-html iframe {
-            max-width: 100%;
-            height: auto !important;
-            aspect-ratio: attr(width) / attr(height);
-        }
-        .g-html {
-            font-weight: normal;
-        }
-        .g-html h2:not(:first-child) {
-            margin-top: 30px;
-        }
-        .g-html li {
-            margin-bottom: 10px;
-        }
-        .g-html ul, ol li > p:last-child {
-            margin-bottom: 0;
-        }
-        .g-html blockquote {
-            margin-top: 0;
-            margin-left: 0;
-            margin-right: 0;
-            padding-left: 2rem;
-            border-left: 10px #d1d1d1 solid;
-        }
-        .g-html .s-note {
-            display: flex;
-            align-items: center;
-            border-radius: 6px;
-            margin-bottom: 2rem;
-            padding: 1rem 1.5rem;
-            gap: 1rem;
-            background-color: #d7ddf3;
-            color: #000;
-        }
-        .g-html .s-note p {
-            margin: 0;
-        }
-        .g-html .s-note > svg {
-            align-self: flex-start;
-            font-size: 24px;
-            color: #143B74;
-        }
-        .g-html .s-note.attention {
-            background-color: #faecd8;
-        }
-        .g-html .s-note.attention > svg {
-            color: #e6a23c;
-        }
-        .g-html .s-note.success {
-            background-color: #b8e5b8;
-            color: #3f983f;
-        }
-        .g-html .s-note.error {
-            background-color: #ffece8;
-            border-color: #ea524a;
-            color: #ea524a;
-        }
-        .s-img-bg {
-            padding: 15px;
-            display: flex;
-            background-color: #f2f3f4;
-            border-radius: 20px;
-            margin-bottom: 6px;
-        }
-        .s-img-bg img {
-            height: auto;
-            max-width: 50%;
-            margin: 0 auto;
-            border-radius: 6px;
-        }
+// Библиотечная setup-логика: оборачивание картинок в div + эмит инстанса редактора
+function librarySetup(editor: any) {
+    // Отдаём наружу инстанс редактора для кастомной логики (регистрация плагинов/кнопок и т.п.)
+    editor.on('init', () => emits('init', editor));
 
-        .s-img-bg.s-img-fullwidth img {
-            max-width: 100%;
-        }
+    // Была ли картинка ранее завернута в div
+    const isImgAlreadyWrapped = (img: any) => {
+        const parent = img.parentNode;
+        return !!(parent && parent.tagName && parent.tagName.toLowerCase() === 'div' && parent.firstElementChild === img && parent.children.length === 1);
+    };
 
-        .s-img-bg.s-img-border img {
-            border: 1px solid #d1d1d1;
-        }`,
-    skin: false,
-    content_css: false,
-    plugins: [
-        'advlist', 'lists', 'link', 'image', 'charmap',
-        'fullscreen', 'insertdatetime', 'table', 'autolink', 'code',
-        ...(props.media ? ['media'] : []),
-    ],
-    toolbar: `blocks | bullist numlist | link image | ${props.media ? 'media | ' : ''}fullscreen code `,
-    branding: false, // Убираем брендинг
-    promotion: false, // Убираем рекламные предложения
-    // Блокируем любые обращения к внешним серверам
-    service_worker: false,
-    external_plugins: {},
-    // Отключаем проверку лицензии
-    license_validator: () => true,
-    
-    // Включаем возможность загрузки файлов
-    images_upload_handler: function (blobInfo: any, progress: any) {
-        return uploadImageToServer(blobInfo, progress);
-    },
-    convert_urls: false,
-    // Настройки загрузки изображений
-    images_reuse_filename: true,
-    images_upload_url: props.uploadUrl, // Путь временного сохранения картинки
-    automatic_uploads: true,
-    resize_img_proportional: true, // Сохранять пропорции при изменении размера
-    image_dimensions: true,
-    image_class_list: [
-        {title: 'None', value: ''},
-        {title: 'Background', value: 's-img-bg'},
-        {title: 'Border', value: 's-img-bg s-img-border'},
-        {title: 'Stretched', value: 's-img-bg s-img-fullwidth'},
-    ],
-    
-    // Настройка для медиа-плагина
-    media_live_embeds: true, // Показывать превью сразу
-    media_filter_html: false, // Не фильтровать iframe и другие теги
-    // Добавляем Kinescope в список провайдеров
-    media_url_resolver: function (data: any, resolve: any, reject: any) {
-        const kinescopeRegex = /https:\/\/kinescope\.io\/embed\/([a-zA-Z0-9]+)/;
-        const match = data.url.match(kinescopeRegex);
-        if (match) {
-            const videoId = match[1];
-            const embedHtml = `<iframe 
-                src="https://kinescope.io/embed/${videoId}" 
-                width="1280" 
-                height="720" 
-                frameborder="0" 
-                allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer" 
-                allowfullscreen>
-                </iframe>`;
-            resolve({html: embedHtml});
-        } else {
-            // Для других URL используем стандартную обработку
-            resolve({html: ''});
-        }
-    },
-    formats: {
-        note: {
-            block: 'div',
-            classes: ['s-note', 'note'],
-        },
-        attention: {
-            block: 'div',
-            classes: ['s-note', 'attention'],
-        },
-        success: {
-            block: 'div',
-            classes: ['s-note', 'success'],
-        },
-        error: {
-            block: 'div',
-            classes: ['s-note', 'error'],
-        }
-    },  
-    setup(editor: any) {
-        // Была ли картинка ранее завернута в div
-        const isImgAlreadyWrapped = (img: any) => {
-            const parent = img.parentNode;
-            return !!(parent && parent.tagName && parent.tagName.toLowerCase() === 'div' && parent.firstElementChild === img && parent.children.length === 1);
-        };
+    // Обернуть img в div, переставив кастомные классы на обертку
+    const wrapImageNode = (img: any) => {
+        if (!img || !img.parentNode) return;
+        if (isImgAlreadyWrapped(img)) return;
 
-        // Обернуть img в div, переставив кастомные классы на обертку
-        const wrapImageNode = (img: any) => {
-            if (!img || !img.parentNode) return;
-            if (isImgAlreadyWrapped(img)) return;
+        const doc = editor.getDoc();
+        const parent = img.parentNode;
+        const classes = img.getAttribute ? (img.getAttribute('class') || '') : '';
 
-            const doc = editor.getDoc();
-            const parent = img.parentNode;
-            const classes = img.getAttribute ? (img.getAttribute('class') || '') : '';
+        editor.undoManager.transact(() => {
+            const wrapper = doc.createElement('div');
+            if (classes) {
+                wrapper.className = classes;
+                img.removeAttribute('class');
+            }
 
-            editor.undoManager.transact(() => {
-                const wrapper = doc.createElement('div');
-                if (classes) {
-                    wrapper.className = classes;
-                    img.removeAttribute('class');
-                }
+            parent.insertBefore(wrapper, img);
+            wrapper.appendChild(img);
+        });
 
-                parent.insertBefore(wrapper, img);
-                wrapper.appendChild(img);
-            });
+        // Обновляем состояние редактора (toolbar, selection и т.д.), иначе обертка появится только после сохранения
+        try { editor.nodeChanged(); } catch (err) {}
+    };
 
-            // Обновляем состояние редактора (toolbar, selection и т.д.), иначе обертка появится только после сохранения
-            try { editor.nodeChanged(); } catch (err) {}
-        };
-
-        const wrapImagesInRoot = (root: any) => {
-            if (!root || !root.querySelectorAll) return;
-                const imgs = root.querySelectorAll('img');
-                imgs.forEach((img: any) => {
-                try { wrapImageNode(img); } catch (err) {}
-            });
-        };
+    const wrapImagesInRoot = (root: any) => {
+        if (!root || !root.querySelectorAll) return;
+            const imgs = root.querySelectorAll('img');
+            imgs.forEach((img: any) => {
+            try { wrapImageNode(img); } catch (err) {}
+        });
+    };
 
   // Всё в init, чтобы doc/body уже были доступны
   editor.on('init', () => {
@@ -358,8 +213,126 @@ const initOptions = ref({
     // Отключаем observer при уничтожении редактора
     editor.on('remove', () => observer.disconnect());
   });
- }
-});
+}
+
+// Деструктурируем пользовательскую конфигурацию: setup и plugins обрабатываем особо
+const userInit = props.init ?? {};
+const { setup: userSetup, plugins: userPlugins, ...restInit } = userInit;
+
+// Композиция setup: сначала библиотечный, потом пользовательский
+function composedSetup(editor: any) {
+    librarySetup(editor);
+    if (typeof userSetup === 'function') userSetup(editor);
+}
+
+// Базовые плагины + доп. плагины потребителя (через проп и через init.plugins)
+const basePlugins = [
+    'advlist', 'lists', 'link', 'image', 'charmap',
+    'fullscreen', 'insertdatetime', 'table', 'autolink', 'code',
+    ...(props.media ? ['media'] : []),
+];
+const allPlugins = Array.from(new Set([
+    ...basePlugins,
+    ...(props.plugins ?? []),
+    ...(Array.isArray(userPlugins) ? userPlugins : []),
+]));
+
+function buildInitOptions(): Record<string, any> {
+    const baseConfig: Record<string, any> = {
+        license_key: 'mit',
+        selector: 'textarea',
+        height: props.height ?? 500,
+        placeholder: props.placeholder || '',
+        menubar: props.menubar ?? false,
+        body_class: 'g-html',
+        block_formats: buildBlockFormats(),
+        content_style: props.contentStyle ? `${htmlEditorContentStyle}\n${props.contentStyle}` : htmlEditorContentStyle,
+        // Инлайн-скины (skin.min.css/content.min.css импортируются выше) — без зависимости от файлов /tinymce на хосте
+        skin: false,
+        content_css: props.contentCss ?? false,
+        toolbar: props.toolbar ?? `blocks | bullist numlist | link image | ${props.media ? 'media | ' : ''}fullscreen code `,
+        branding: false, // Убираем брендинг
+        promotion: false, // Убираем рекламные предложения
+        // Блокируем любые обращения к внешним серверам
+        service_worker: false,
+        external_plugins: {},
+        // Отключаем проверку лицензии
+        license_validator: () => true,
+
+        // Включаем возможность загрузки файлов
+        images_upload_handler: function (blobInfo: any, progress: any) {
+            return uploadImageToServer(blobInfo, progress);
+        },
+        convert_urls: false,
+        // Настройки загрузки изображений
+        images_reuse_filename: true,
+        images_upload_url: props.uploadUrl, // Путь временного сохранения картинки
+        automatic_uploads: true,
+        resize_img_proportional: true, // Сохранять пропорции при изменении размера
+        image_dimensions: true,
+        image_class_list: [
+            {title: 'None', value: ''},
+            {title: 'Background', value: 's-img-bg'},
+            {title: 'Border', value: 's-img-bg s-img-border'},
+            {title: 'Stretched', value: 's-img-bg s-img-fullwidth'},
+        ],
+
+        // Настройка для медиа-плагина
+        media_live_embeds: true, // Показывать превью сразу
+        media_filter_html: false, // Не фильтровать iframe и другие теги
+        // Добавляем Kinescope в список провайдеров
+        media_url_resolver: function (data: any, resolve: any, reject: any) {
+            const kinescopeRegex = /https:\/\/kinescope\.io\/embed\/([a-zA-Z0-9]+)/;
+            const match = data.url.match(kinescopeRegex);
+            if (match) {
+                const videoId = match[1];
+                const embedHtml = `<iframe
+                    src="https://kinescope.io/embed/${videoId}"
+                    width="1280"
+                    height="720"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer"
+                    allowfullscreen>
+                    </iframe>`;
+                resolve({html: embedHtml});
+            } else {
+                // Для других URL используем стандартную обработку
+                resolve({html: ''});
+            }
+        },
+        formats: {
+            note: {
+                block: 'div',
+                classes: ['s-note', 'note'],
+            },
+            attention: {
+                block: 'div',
+                classes: ['s-note', 'attention'],
+            },
+            success: {
+                block: 'div',
+                classes: ['s-note', 'success'],
+            },
+            error: {
+                block: 'div',
+                classes: ['s-note', 'error'],
+            }
+        },
+    };
+
+    // Глубокий merge пользовательской конфигурации (без setup/plugins — их ставим явно)
+    const config = deepMerge(baseConfig, restInit);
+    config.plugins = allPlugins;
+    config.setup = composedSetup;
+
+    // Локаль интерфейса: из словаря, если не задана явно через init
+    const i18nLanguage = tRaw<string | null>('htmlEditor.language');
+    if (config.language == null && i18nLanguage) config.language = i18nLanguage;
+
+    return config;
+}
+
+const initOptions = ref(buildInitOptions());
 
 // Загрузка картинки на сервер
 async function uploadImageToServer(blobInfo: any, progress: any) {
@@ -380,8 +353,9 @@ function onEditorChange() {
 <style lang="scss">
 .s-htmleditor {
     font-family: var(--s-font-family);
-    .tox-fullscreen {
-        top: 60px !important;
+    .tox.tox-fullscreen {
+        top: var(--s-header-height, 0) !important;
+        height: calc(100vh - var(--s-header-height, 0)) !important;
     }
 }
 </style>
