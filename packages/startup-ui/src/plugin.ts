@@ -1,4 +1,5 @@
 import type { App, Component } from 'vue';
+import { configureStartupUi, type StartupUiOptions } from './locale';
 
 const components: Array<Component & { __name?: string }> = [];
 
@@ -105,7 +106,8 @@ components.push(SVerticalMenu);
 import './style.scss';
 
 export default {
-    install(app: App) {
+    install(app: App, options: StartupUiOptions = {}) {
+        configureStartupUi(options);
         components.forEach(c => {
             const compName = (c as any).name ?? (c as any).__name ?? 'Unnamed';
             app.component(compName, c);

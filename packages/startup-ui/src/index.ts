@@ -5,6 +5,19 @@ import './style.scss';
 export * from './components/SAlert';
 export * from './components/SConfirm';
 
+/**
+ * Локализация
+ */
+export {
+    configureStartupUi,
+    setLocale,
+    getLocale,
+    useI18n,
+    t,
+    tRaw,
+} from './locale';
+export type { StartupUiOptions, StartupUiMessages, StartupUiLocaleMessages, DeepPartial } from './locale';
+
 // Экспорт плагина по умолчанию
 export default plugin;
 
