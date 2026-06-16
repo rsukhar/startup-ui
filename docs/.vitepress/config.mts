@@ -85,6 +85,7 @@ export default defineConfig({
                         { text: 'Что такое Startup UI', link: '/pages/welcome/basics/about' },
                         { text: 'Установка', link: '/pages/welcome/basics/installing' },
                         { text: 'Цвета и настройки', link: '/pages/welcome/basics/colors' },
+                        { text: 'Локализация', link: '/pages/welcome/basics/localization' },
                         { text: 'Иконки', link: '/pages/welcome/basics/icons' }
                     ]
                 },
@@ -93,6 +94,7 @@ export default defineConfig({
                     items: [
                         { text: 'Вайб-кодинг', link: '/pages/welcome/extras/vibe-coding' },
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
+                        { text: 'Миграция на мажор', link: '/pages/welcome/extras/migration' },
                         { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' },
                         { text: 'Документация для LLM', link: '/pages/welcome/extras/llms' }
                     ]
