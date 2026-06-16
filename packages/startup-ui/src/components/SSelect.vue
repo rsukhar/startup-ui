@@ -51,7 +51,7 @@
                             </li>
                         </ul>
                     </template>
-                    <div v-else class="s-select-options-nodata">Нет данных</div>
+                    <div v-else class="s-select-options-nodata">{{ t('select.noData') }}</div>
                 </div>
             </div>
         </Teleport>
@@ -61,6 +61,7 @@
 import { templateRef } from '@vueuse/core';
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { t } from '../locale';
 
 export interface SSelectProps {
     // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]

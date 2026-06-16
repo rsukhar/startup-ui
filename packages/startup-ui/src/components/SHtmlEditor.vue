@@ -6,6 +6,7 @@
 <script setup lang="ts">
 import { ref, shallowRef, onMounted } from 'vue';
 import axios from "axios";
+import { tRaw } from '../locale';
 
 const Editor = shallowRef<any>(null);
 
@@ -64,6 +65,18 @@ const emits = defineEmits<{
 }>();
 
 const model = defineModel<string>();
+
+// Локализованные подписи блоков → строка block_formats TinyMCE
+const HTML_EDITOR_BLOCK_ORDER: [string, string][] = [
+    ['paragraph', 'p'], ['h1', 'h1'], ['h2', 'h2'], ['h3', 'h3'], ['h4', 'h4'],
+    ['blockquote', 'blockquote'], ['code', 'code'], ['note', 'note'],
+    ['attention', 'attention'], ['success', 'success'], ['error', 'error'],
+];
+function buildBlockFormats(): string {
+    const blocks = tRaw<Record<string, string>>('htmlEditor.blocks');
+    return HTML_EDITOR_BLOCK_ORDER.map(([key, tag]) => `${blocks[key]}=${tag}`).join('; ');
+}
+
 const initOptions = ref({
     license_key: 'mit',
     selector: 'textarea',
@@ -71,17 +84,7 @@ const initOptions = ref({
     placeholder: props.placeholder || '',
     menubar: false,
     body_class: 'g-html',
-    block_formats: `        Обычный текст=p;
-        Заголовок 1=h1;
-        Заголовок 2=h2;
-        Заголовок 3=h3;
-        Заголовок 4=h4;
-        Цитата=blockquote;
-        Код=code;
-        Заметка=note;
-        Внимание=attention;
-        Успех=success;
-        Ошибка=error;`,
+    block_formats: buildBlockFormats(),
     // TODO Вынести в отдельный файл
     content_style: `        .g-html {
             line-height: 1.8;

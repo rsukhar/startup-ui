@@ -40,6 +40,8 @@ export interface StartupUiMessages {
         weekDays: string[];
         months: string[];
         notSelected: string;
+        /** Первый день недели: 0 — воскресенье, 1 — понедельник */
+        firstDay: number;
     };
     htmlEditor: {
         /** Код языка интерфейса TinyMCE (требует наличия языкового пака). null — не задавать (UI остаётся английским) */

@@ -13,12 +13,13 @@ export interface SActionIconProps {
     danger?: boolean;
     confirm?: string;
     confirmTitle?: string;
+    /** Доп. опции, пробрасываемые в SConfirm.open (acceptLabel, cancelLabel, variant, ...) */
+    confirmOptions?: Record<string, any>;
     is?: string | Component;
 }
 
 const props = withDefaults(defineProps<SActionIconProps>(), {
     danger: false,
-    confirmTitle: 'Необходимо подтверждение',
 });
 
 const emit = defineEmits<{
@@ -36,10 +37,11 @@ const componentType = computed(() => {
 
 function handleClick() {
     if (props.confirm) {
-        SConfirm.open(props.confirm, {
-            title: props.confirmTitle,
-            onAccept: () => emit('click'),
-        });
+        const options: Record<string, any> = { ...props.confirmOptions };
+        // confirmTitle прокидываем, только если задан — иначе SConfirm подставит локализованный дефолт
+        if (props.confirmTitle) options.title = props.confirmTitle;
+        options.onAccept = () => emit('click');
+        SConfirm.open(props.confirm, options);
     } else {
         emit('click');
     }

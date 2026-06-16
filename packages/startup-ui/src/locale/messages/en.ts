@@ -40,6 +40,7 @@ const en: StartupUiMessages = {
         weekDays: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         notSelected: 'No date selected',
+        firstDay: 1,
     },
     htmlEditor: {
         language: null,

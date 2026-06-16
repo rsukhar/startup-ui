@@ -13,7 +13,7 @@
                     <div v-if="$slots.sidebar" class="s-canvas-subheader-mobile" :class="{'opened' : isSidebarMenuOpened}">
                         <div class="s-canvas-subheader-mobile-burger" @click="isSidebarMenuOpened = ! isSidebarMenuOpened">
                             <FontAwesomeIcon icon="bars" />
-                            {{ sidebarMobileTitle }}
+                            {{ sidebarTitle }}
                         </div>
                     </div>
                     <aside class="s-canvas-sidebar" v-if="$slots.sidebar" :class="{'mobile-opened': isSidebarMenuOpened}">
@@ -31,8 +31,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { t } from '../locale';
 
 export interface SCanvasProps {
     hasStickySidebar?: boolean;
@@ -41,8 +42,10 @@ export interface SCanvasProps {
 
 const props = withDefaults(defineProps<SCanvasProps>(), {
     hasStickySidebar: false,
-    sidebarMobileTitle: 'Содержание',
 });
+
+// Заголовок мобильного сайдбара: проп имеет приоритет над локализованным дефолтом
+const sidebarTitle = computed(() => props.sidebarMobileTitle ?? t('canvas.sidebarMobileTitle'));
 
 const isSidebarMenuOpened = ref(false);
 

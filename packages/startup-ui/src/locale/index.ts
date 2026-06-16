@@ -1,6 +1,7 @@
 import { reactive, computed } from 'vue';
 import en from './messages/en';
 import ru from './messages/ru';
+import enUS from './messages/en-US';
 import { deepMerge } from '../utils/deepMerge';
 import type { StartupUiMessages, StartupUiLocaleMessages } from './types';
 
@@ -13,7 +14,7 @@ export interface StartupUiOptions {
 
 const state = reactive({
     locale: 'en',
-    messages: { en, ru } as Record<string, any>,
+    messages: { en, ru, 'en-US': enUS } as Record<string, any>,
 });
 
 /**
@@ -34,14 +35,27 @@ function resolve(key: string, locale: string): any {
 }
 
 /**
+ * Список локалей-кандидатов с фолбэком по базовому языку и итоговым en.
+ * Напр. 'en-US' → ['en-US', 'en']; 'ru-RU' → ['ru-RU', 'ru', 'en'].
+ */
+function candidateLocales(locale: string): string[] {
+    const result = [locale];
+    const dash = locale.indexOf('-');
+    if (dash > 0) result.push(locale.slice(0, dash));
+    if (!result.includes('en')) result.push('en');
+    return result;
+}
+
+/**
  * Вернуть «сырое» значение по ключу (для массивов/объектов: дни недели, месяцы, блоки редактора).
- * Фолбэк: текущая локаль → en → сам ключ.
+ * Фолбэк: точная локаль → базовый язык → en → сам ключ.
  */
 export function tRaw<T = any>(key: string): T {
-    const value = resolve(key, state.locale);
-    if (value !== undefined) return value as T;
-    const fallback = resolve(key, 'en');
-    return (fallback !== undefined ? fallback : key) as T;
+    for (const locale of candidateLocales(state.locale)) {
+        const value = resolve(key, locale);
+        if (value !== undefined) return value as T;
+    }
+    return key as unknown as T;
 }
 
 /**

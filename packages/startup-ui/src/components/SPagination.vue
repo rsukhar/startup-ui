@@ -14,7 +14,7 @@
                 <SSelect v-model="currentPerPage" :options="perPageOptionsFormatted" @change="handleSelectedChange"/>
             </div>
             <div class="s-options-pagination-shown-counter" v-if="from && to && total">
-                Показаны: <span class="s-pagination-options-shown-counter-range">{{ from }} - {{ to }}</span> из {{ total }}
+                {{ t('pagination.shown') }}: <span class="s-pagination-options-shown-counter-range">{{ from }} - {{ to }}</span> {{ t('pagination.of') }} {{ total }}
             </div>
         </div>
     </div>
@@ -24,6 +24,7 @@
 import { ref } from 'vue';
 import { router } from "@inertiajs/vue3";
 import SSelect from './SSelect.vue';
+import { t } from '../locale';
 
 interface PaginationLink {
     url: string | null;
@@ -66,7 +67,7 @@ function handleSelectedChange() {
 }
 
 const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perPageOptions).reduce((acc: Record<string | number, string>, [key, value]) => {
-    acc[parseInt(String(value))] = `По ${value}`;
+    acc[parseInt(String(value))] = t('pagination.perPage', { n: value });
     return acc;
 }, {}) : {};
 </script>
