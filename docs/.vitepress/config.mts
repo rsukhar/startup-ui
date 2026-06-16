@@ -174,10 +174,9 @@ export default defineConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                        // Этот код подключает SCSS-миксины, переменные и т.д. во все <style lang="scss">
+                        // Подключает SCSS-миксины во все <style lang="scss">. Значения --s-* приходят из defaults.css (импорт в теме).
                         additionalData: `
                         @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/mixins.scss')}" as *;
-                        @use "${path.resolve(__dirname, '../../packages/startup-ui/src/styles/variables.scss')}" as *;
                         `
                 }
             }

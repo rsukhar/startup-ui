@@ -98,6 +98,13 @@ function buildBlockFormats(): string {
     return HTML_EDITOR_BLOCK_ORDER.map(([key, tag]) => `${blocks[key]}=${tag}`).join('; ');
 }
 
+// Шрифт контента берём из хоста (--s-font-family) — iframe редактора отдельный документ,
+// CSS-переменные туда не каскадируются, поэтому подставляем значение явно.
+function hostFontFamily(): string {
+    if (typeof document === 'undefined') return '';
+    return getComputedStyle(document.documentElement).getPropertyValue('--s-font-family').trim();
+}
+
 // Библиотечная setup-логика: оборачивание картинок в div + эмит инстанса редактора
 function librarySetup(editor: any) {
     // Отдаём наружу инстанс редактора для кастомной логики (регистрация плагинов/кнопок и т.п.)
@@ -238,6 +245,7 @@ const allPlugins = Array.from(new Set([
 ]));
 
 function buildInitOptions(): Record<string, any> {
+    const contentFont = hostFontFamily();
     const baseConfig: Record<string, any> = {
         license_key: 'mit',
         selector: 'textarea',
@@ -246,7 +254,11 @@ function buildInitOptions(): Record<string, any> {
         menubar: props.menubar ?? false,
         body_class: 'g-html',
         block_formats: buildBlockFormats(),
-        content_style: props.contentStyle ? `${htmlEditorContentStyle}\n${props.contentStyle}` : htmlEditorContentStyle,
+        content_style: [
+            contentFont ? `body { font-family: ${contentFont}; }` : '',
+            htmlEditorContentStyle,
+            props.contentStyle || '',
+        ].filter(Boolean).join('\n'),
         // Инлайн-скины (skin.min.css/content.min.css импортируются выше) — без зависимости от файлов /tinymce на хосте
         skin: false,
         content_css: props.contentCss ?? false,

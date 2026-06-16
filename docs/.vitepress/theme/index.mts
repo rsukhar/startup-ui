@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import '../../../packages/startup-ui/src/style.scss'
+import '../../../packages/startup-ui/src/styles/defaults.css'
 import './normalize.css'
 import './custom.css'
 import '../../resources/js/font-awesome.js'
