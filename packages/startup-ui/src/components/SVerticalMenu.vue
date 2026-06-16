@@ -52,11 +52,11 @@ export interface SVerticalMenuLink {
 }
 
 export interface SVerticalMenuProps {
-    // В формате [{label: '', url: '', active: ''}]
+    // In the format [{label: '', url: '', active: ''}]
     links?: SVerticalMenuLink[];
-    // Узлы, открытые на старте
+    // Nodes opened on start
     expandedKeys?: (string | number)[];
-    // Сохранять раскрытые узлы в localStorage?
+    // Store expanded nodes in localStorage?
     storeExpandedKeysTo?: string;
 }
 
@@ -69,21 +69,21 @@ const getExpandedKeys = function(links: SVerticalMenuLink[]): (string | number)[
     let result: (string | number)[] = [];
     for (let link of links) {
         const expandedChildren = link.children ? getExpandedKeys(link.children) : [];
-        // Собираем активные вложенные элементы и рекурсией передаём наверх
+        // Collect active nested items and pass them upward recursively
         if (expandedChildren.length) result = result.concat(expandedChildren);
-        // Если есть раскрыте вложенные элменты, то текущий элемент тоже считаем раскрытым
+        // If there are expanded nested items, consider the current item expanded too
         if (link.active || expandedChildren.length) result.push(link.id);
     }
     return result;
 };
 
-// На старте открыты все предки активной страницы и те, чьи ключи передали в expandedKeys
+// On start, all ancestors of the active page are open, along with those whose keys were passed in expandedKeys
 const initialOpened = computed(() => [
     ...getExpandedKeys(props.links),
     ...props.expandedKeys
 ]);
 
-// Хранить состояние в localStorage или нет 
+// Whether to store the state in localStorage or not
 const openedItems = props.storeExpandedKeysTo
     ? useStorage<(string | number)[]>(props.storeExpandedKeysTo, initialOpened.value)
     : ref<(string | number)[]>(initialOpened.value);

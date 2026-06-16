@@ -6,9 +6,9 @@ import { deepMerge } from '../utils/deepMerge';
 import type { StartupUiMessages, StartupUiLocaleMessages } from './types';
 
 export interface StartupUiOptions {
-    /** Активная локаль. По умолчанию 'en'. */
+    /** Active locale. Defaults to 'en'. */
     locale?: string;
-    /** Словари сообщений для слияния поверх встроенных (по локалям). */
+    /** Message dictionaries to merge on top of the built-in ones (by locale). */
     messages?: StartupUiLocaleMessages;
 }
 
@@ -18,8 +18,8 @@ const state = reactive({
 });
 
 /**
- * Настройка локализации. Вызывается из plugin.install(app, options)
- * или напрямую для рантайм-конфигурации/смены локали.
+ * Localization setup. Called from plugin.install(app, options)
+ * or directly for runtime configuration / locale switching.
  */
 export function configureStartupUi(options: StartupUiOptions = {}): void {
     if (options.locale) state.locale = options.locale;
@@ -35,8 +35,8 @@ function resolve(key: string, locale: string): any {
 }
 
 /**
- * Список локалей-кандидатов с фолбэком по базовому языку и итоговым en.
- * Напр. 'en-US' → ['en-US', 'en']; 'ru-RU' → ['ru-RU', 'ru', 'en'].
+ * List of candidate locales with a fallback to the base language and a final en.
+ * E.g. 'en-US' → ['en-US', 'en']; 'ru-RU' → ['ru-RU', 'ru', 'en'].
  */
 function candidateLocales(locale: string): string[] {
     const result = [locale];
@@ -47,8 +47,8 @@ function candidateLocales(locale: string): string[] {
 }
 
 /**
- * Вернуть «сырое» значение по ключу (для массивов/объектов: дни недели, месяцы, блоки редактора).
- * Фолбэк: точная локаль → базовый язык → en → сам ключ.
+ * Return the "raw" value by key (for arrays/objects: weekdays, months, editor blocks).
+ * Fallback: exact locale → base language → en → the key itself.
  */
 export function tRaw<T = any>(key: string): T {
     for (const locale of candidateLocales(state.locale)) {
@@ -59,7 +59,7 @@ export function tRaw<T = any>(key: string): T {
 }
 
 /**
- * Перевести строковый ключ с подстановкой плейсхолдеров {name}.
+ * Translate a string key with substitution of {name} placeholders.
  */
 export function t(key: string, params?: Record<string, any>): string {
     const value = tRaw<any>(key);
@@ -78,7 +78,7 @@ export function getLocale(): string {
     return state.locale;
 }
 
-/** Композабл для использования внутри компонентов. */
+/** Composable for use inside components. */
 export function useI18n() {
     return {
         t,

@@ -5,8 +5,8 @@ export function isPlainObject(value: any): value is Dict {
 }
 
 /**
- * Глубокое слияние простых объектов. Массивы и скаляры из source заменяют значения target.
- * Возвращает новый объект, исходные не мутируются.
+ * Deep merge of plain objects. Arrays and scalars from source replace target values.
+ * Returns a new object, the originals are not mutated.
  */
 export function deepMerge<T extends Dict>(target: T, source: Dict): T {
     const output: Dict = { ...target };

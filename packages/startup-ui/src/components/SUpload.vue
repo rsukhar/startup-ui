@@ -47,7 +47,7 @@ const emit = defineEmits<{
 }>();
 const fileInput = useTemplateRef<HTMLInputElement>('fileInput');
 
-// Текст, который выводится на кнопке выбора. Если явно не задан, зависит от того, выбираем один файл или несколько
+// Text shown on the select button. If not explicitly set, depends on whether we select a single file or multiple
 const finalUploadButtonTitle = computed(() => props.uploadButtonTitle ?? (props.multiple ? t('upload.selectFiles') : t('upload.selectFile')));
 
 const openFileDialog = () => {
@@ -63,9 +63,9 @@ const fileTitles = computed(() => {
 });
 
 /**
- * Обработчик события выбора файла
- * 
- * @param event 
+ * File selection event handler
+ *
+ * @param event
  */
 function select(event: Event | DragEvent) {
     const target = event.target as HTMLInputElement;
@@ -100,9 +100,9 @@ function isFileTypeValid(file: File) {
 }
 
 /**
- * Удаление файла по имени (т.к. могут храниться и строки, и файлы)
- * 
- * @param title 
+ * Remove a file by name (since both strings and files can be stored)
+ *
+ * @param title
  */
 function remove(title: string) {
     if (Array.isArray(model.value)) {

@@ -14,13 +14,18 @@
 <script setup lang="ts">
 import { provide, watch, computed } from 'vue';
 import SRadio from './SRadio.vue';
+import { normalizeOptions } from '../utils/options';
 
 export interface SRadioGroupProps {
-    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    // Map {value: label}, array of pairs [[value, label]], or array of objects [{value, label}]
     options?: Record<string | number, any> | any[];
     buttons?: boolean;
     vertical?: boolean;
     placeholder?: string;
+    /** Value key for an array of objects (default 'value') */
+    optionValue?: string;
+    /** Label key for an array of objects (default 'label') */
+    optionLabel?: string;
 }
 
 const props = defineProps<SRadioGroupProps>();
@@ -31,26 +36,15 @@ const emits = defineEmits<{
 
 const model = defineModel<any>();
 
-// Нормализуем options в единый формат
-const normalizedOptions = computed(() => {
-    // Если передано массивом
-    if (props.options instanceof Array){
-        return props.options.map(item => ({ value: item[0], title: item[1] }));
-    }
-    if (!props.options || Object.keys(props.options).length === 0) {
-        return [];
-    }
-
-    return Object.entries(props.options).map(([value, title]) => {
-        // Преобразуем строковые boolean, т.к. при «распаковке» занчения становятся строковыми
-        let parsedValue: any = value;
-        if (value === 'true') parsedValue = true;
-        if (value === 'false') parsedValue = false;
-        if (!isNaN(Number(value)) && value !== '') parsedValue = Number(value);
-        
-        return { value: parsedValue, title };
-    });
-});
+// Normalize options to a single format [{ value, title }]
+const normalizedOptions = computed(() =>
+    normalizeOptions(props.options, {
+        optionLabel: props.optionLabel,
+        optionValue: props.optionValue,
+        // Coerce the map object keys to boolean/number (as it was historically)
+        coerceKeys: true,
+    }).map(o => ({ value: o.value, title: o.label }))
+);
 
 provide('sRadioGroupModel', model);
 
@@ -82,7 +76,7 @@ watch(model, newValue => {
             padding: 1px 0 0 1px;
 
             input[type="radio"] {
-                display: none; /* Прячем радиокнопки */
+                display: none; /* Hide the radio buttons */
             }
 
             label {
@@ -98,7 +92,7 @@ watch(model, newValue => {
                 transition: background-color 0.2s, color 0.2s;
                 margin: -1px 0 0 -1px;
                 box-sizing: border-box;
-                flex: 1; /* Занимаем равное пространство */
+                flex: 1; /* Take up equal space */
                 white-space: nowrap;
                 border: 1px var(--s-border) solid;
                 border-right: 1px solid var(--s-border);

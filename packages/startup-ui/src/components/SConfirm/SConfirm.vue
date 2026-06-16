@@ -29,7 +29,7 @@ interface TemplateData {
     title?: string;
     cancelLabel?: string;
     acceptLabel?: string;
-    /** Цвет accept-кнопки: 'danger' (красная, по умолчанию) для разрушающих действий, 'primary' для неразрушающих */
+    /** Color of the accept button: 'danger' (red, default) for destructive actions, 'primary' for non-destructive ones */
     variant?: 'primary' | 'danger';
     onAccept?: () => void;
     onCancel?: () => void;
@@ -39,9 +39,9 @@ const isOpened = ref(false);
 const confirmationText = ref('');
 
 const dialogData = ref<TemplateData>({});
-// Элемент, позиция которого будет вычисляться во время ondrag
+// The element whose position will be computed during ondrag
 const $dialog = useTemplateRef<HTMLElement>('$dialog');
-// Элемент, на котором будет тригериться событие dragstart
+// The element on which the dragstart event will be triggered
 const $header = useTemplateRef<HTMLElement>('$header')
 
 const { x, y, style } = useDraggable($dialog, { handle: $header })
@@ -58,7 +58,7 @@ function open(msg: string, templateData: TemplateData = {}) {
         ...templateData,
     };
     isOpened.value = true;
-    // Ждём, пока смонтируется DOM
+    // Wait until the DOM is mounted
     nextTick(() => {
         const rect = $dialog.value?.getBoundingClientRect()
         if (!rect) return

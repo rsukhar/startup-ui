@@ -14,7 +14,7 @@ function getInstance(): SConfirmInstance {
     const vnode = createVNode(SConfirmVue);
     render(vnode, container);
 
-    // vnode.component может быть null сразу после render()
+    // vnode.component may be null right after render()
     const component = vnode.component?.exposed as SConfirmInstance | undefined;
 
     if (!component) {

@@ -54,19 +54,19 @@ export interface SColumnSettingsPreset {
 
 export interface SColumnSettingsProps {
     /**
-     * Набор показанных колонок в формате: ['id1', 'id2', ...]
+     * Set of shown columns in the format: ['id1', 'id2', ...]
      */
     modelValue?: string[];
     /**
-     * Набор доступных колонок: {id1: 'Название колонки 1', ...}
+     * Set of available columns: {id1: 'Column title 1', ...}
      */
     options?: Record<string, string>;
     /**
-     * Значение по умолчанию для сброса
+     * Default value for reset
      */
     columnPresets?: SColumnSettingsPreset[];
     /**
-     * Эти колонки нельзя отключить
+     * These columns cannot be disabled
      */
     permanentColumns?: string[];
 }
@@ -95,7 +95,7 @@ interface ColumnItem {
     isActive: boolean;
 }
 
-// Собирает список для отображения из известных колонок и текущего значения модели
+// Builds the display list from the known columns and the current model value
 const buildList = (modelValue: string[]): ColumnItem[] => {
     const result: ColumnItem[] = [];
     const used = new Set<string>();
@@ -116,7 +116,7 @@ const buildList = (modelValue: string[]): ColumnItem[] => {
 
 const list = ref<ColumnItem[]>(buildList(props.modelValue));
 
-// Позионирование выпадающего списка
+// Positioning of the dropdown list
 const updatePosition = () => {
     if (!$dropdown.value) return;
     const rect = $dropdown.value.getBoundingClientRect();
@@ -139,11 +139,11 @@ const toggleDropdown = async () => {
     }
 };
 
-// При обновлении списка доступных вариантов — пересобираем список
+// When the list of available options updates — rebuild the list
 watch(() => props.options, (newValue, oldValue) => {
     list.value = buildList(props.modelValue);
 });
-// При обновлении списка, если нужно, обновляем модель
+// When the list updates, update the model if needed
 watch(list, (newValue) => {
     const newModelValue = newValue.filter(item => item.isActive).map(item => item.id);
     if (JSON.stringify(newModelValue) !== JSON.stringify(props.modelValue)) {
@@ -156,7 +156,7 @@ useSortable($list, list, {
     animation: 150,
 });
 
-// Закрытие по клику вне компонента
+// Close on click outside the component
 useEventListener(defaultDocument, 'click', (event: Event) => {
     const target = event.target as Node;
     if (
@@ -169,7 +169,7 @@ useEventListener(defaultDocument, 'click', (event: Event) => {
 });
 
 
-// Подстройка позиции при скролле и изменении размера экрана
+// Adjust the position on scroll and screen resize
 useEventListener(defaultWindow, 'scroll', () => {
     if (isOpen.value) updatePosition();
 });
@@ -178,7 +178,7 @@ useEventListener(defaultWindow, 'resize', () => {
     if (isOpen.value) updatePosition();
 });
 
-// Сброс изменений
+// Reset changes
 const resetValue = (columns: string[]) => {
     list.value = buildList(columns);
 };

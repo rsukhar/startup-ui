@@ -65,7 +65,7 @@ function handleSubmit(event: Event) {
 }
 
 /**
- * Приводит ключи ошибок в порядок, обеспечивая значения без вложенных индексов
+ * Normalizes error keys, ensuring values without nested indexes
  */
 const formatErrors = function(errors: Record<string, any>) {
     const result = JSON.parse(JSON.stringify(errors));
@@ -81,6 +81,7 @@ const formatErrors = function(errors: Record<string, any>) {
 provide('formModel', model.value);
 provide('formErrors', localErrors);
 provide('titlesWidth', props.titlesWidth);
+provide('titlesAtLeft', props.titlesAtLeft);
 </script>
 <style lang="scss">
 .s-form {

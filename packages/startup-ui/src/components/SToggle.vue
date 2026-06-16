@@ -53,7 +53,7 @@ onMounted(() => {
     }
 });
 
-// Запускаем watcher только если inject найден
+// Start the watcher only if inject was found
 if (openedItem) {
     watch(openedItem, (newVal, oldVal) => {
         isOpened.value = (newVal === uid) && (newVal !== oldVal)

@@ -17,22 +17,22 @@ export interface SHtmlEditorProps {
     placeholder?: string;
     media?: boolean;
     height?: number;
-    /** Доп. плагины TinyMCE (объединяются с базовыми) */
+    /** Additional TinyMCE plugins (merged with the base ones) */
     plugins?: string[];
-    /** Переопределение тулбара */
+    /** Toolbar override */
     toolbar?: string;
-    /** Меню-бар TinyMCE (по умолчанию выключен) */
+    /** TinyMCE menu bar (disabled by default) */
     menubar?: string | boolean;
-    /** Доп. CSS контента — добавляется к базовому content_style */
+    /** Additional content CSS — appended to the base content_style */
     contentStyle?: string;
-    /** Внешние CSS контента (content_css) */
+    /** External content CSS (content_css) */
     contentCss?: string | string[];
-    /** Смещение шапки для fullscreen, px. Альтернатива — CSS-переменная --s-header-height */
+    /** Header offset for fullscreen, px. Alternative — the --s-header-height CSS variable */
     headerOffset?: number;
     /**
-     * Глубокий merge в дефолтную конфигурацию TinyMCE (наивысший приоритет).
-     * Поле `setup` композируется с библиотечным (вызывается после него),
-     * `plugins` объединяются с базовыми.
+     * Deep merge into the default TinyMCE configuration (highest priority).
+     * The `setup` field is composed with the library one (called after it),
+     * `plugins` are merged with the base ones.
      */
     init?: Record<string, any>;
 }
@@ -46,14 +46,14 @@ const emits = defineEmits<{
 
 const model = defineModel<string>();
 
-// Смещение шапки для корректного fullscreen
+// Header offset for correct fullscreen
 const rootStyle = computed(() =>
     props.headerOffset != null ? { '--s-header-height': `${props.headerOffset}px` } as Record<string, string> : undefined
 );
 
 onMounted(async () => {
-    // tinymce — peer dependency потребителя, @ts-ignore подавляет ошибки отсутствия типов
-    // Следующая строчка нужна для отключения запроса API-ключа, не удалять!
+    // tinymce — a consumer's peer dependency, @ts-ignore suppresses missing-types errors
+    // The next line is needed to disable the API-key request, do not remove!
     // @ts-ignore
     await import('tinymce/tinymce');
     // @ts-ignore
@@ -92,31 +92,31 @@ onMounted(async () => {
     Editor.value = (await import('@tinymce/tinymce-vue')).default;
 });
 
-// Локализованные подписи блоков → строка block_formats TinyMCE
+// Localized block labels → TinyMCE block_formats string
 function buildBlockFormats(): string {
     const blocks = tRaw<Record<string, string>>('htmlEditor.blocks');
     return HTML_EDITOR_BLOCK_ORDER.map(([key, tag]) => `${blocks[key]}=${tag}`).join('; ');
 }
 
-// Шрифт контента берём из хоста (--s-font-family) — iframe редактора отдельный документ,
-// CSS-переменные туда не каскадируются, поэтому подставляем значение явно.
+// Content font is taken from the host (--s-font-family) — the editor's iframe is a separate document,
+// CSS variables do not cascade there, so we set the value explicitly.
 function hostFontFamily(): string {
     if (typeof document === 'undefined') return '';
     return getComputedStyle(document.documentElement).getPropertyValue('--s-font-family').trim();
 }
 
-// Библиотечная setup-логика: оборачивание картинок в div + эмит инстанса редактора
+// Library setup logic: wrapping images in a div + emitting the editor instance
 function librarySetup(editor: any) {
-    // Отдаём наружу инстанс редактора для кастомной логики (регистрация плагинов/кнопок и т.п.)
+    // Expose the editor instance for custom logic (registering plugins/buttons, etc.)
     editor.on('init', () => emits('init', editor));
 
-    // Была ли картинка ранее завернута в div
+    // Whether the image was previously wrapped in a div
     const isImgAlreadyWrapped = (img: any) => {
         const parent = img.parentNode;
         return !!(parent && parent.tagName && parent.tagName.toLowerCase() === 'div' && parent.firstElementChild === img && parent.children.length === 1);
     };
 
-    // Обернуть img в div, переставив кастомные классы на обертку
+    // Wrap img in a div, moving custom classes onto the wrapper
     const wrapImageNode = (img: any) => {
         if (!img || !img.parentNode) return;
         if (isImgAlreadyWrapped(img)) return;
@@ -136,7 +136,7 @@ function librarySetup(editor: any) {
             wrapper.appendChild(img);
         });
 
-        // Обновляем состояние редактора (toolbar, selection и т.д.), иначе обертка появится только после сохранения
+        // Update the editor state (toolbar, selection, etc.), otherwise the wrapper appears only after saving
         try { editor.nodeChanged(); } catch (err) {}
     };
 
@@ -148,12 +148,12 @@ function librarySetup(editor: any) {
         });
     };
 
-  // Всё в init, чтобы doc/body уже были доступны
+  // Everything inside init so that doc/body are already available
   editor.on('init', () => {
     const doc = editor.getDoc();
     if (!doc) return;
 
-    // 1) Monkey-patch insertContent: перехватываем html перед вставкой
+    // 1) Monkey-patch insertContent: intercept the html before insertion
     const origInsertContent = editor.insertContent.bind(editor);
     editor.insertContent = (content: any, args: any) => {
       if (typeof content === 'string' && content.includes('<img')) {
@@ -165,15 +165,15 @@ function librarySetup(editor: any) {
       return origInsertContent(content, args);
     };
 
-    // 3) Модифицируем DOM-фрагмент перед вставкой для paste/drag&drop
+    // 3) Modify the DOM fragment before insertion for paste/drag&drop
     editor.on('PastePostProcess', (e: any) => {
-      // e.node — это DocumentFragment / элемент уже в документе редактора
+      // e.node — a DocumentFragment / element already in the editor's document
       wrapImagesInRoot(e.node);
     });
 
-    // 4) Ловим добавления узлов и изменения class
+    // 4) Catch node additions and class changes
     const observer = new MutationObserver((mutations) => {
-      // Оборачиваем в транзакцию, чтобы правки шеллились в undo как один шаг
+      // Wrap in a transaction so the edits collapse into undo as a single step
       editor.undoManager.transact(() => {
         for (const m of mutations) {
           if (m.type === 'childList') {
@@ -183,18 +183,18 @@ function librarySetup(editor: any) {
               if (tag === 'img') {
                 wrapImageNode(node);
               } else {
-                // если вставлен контейнер, ищем вложенные img
+                // if a container was inserted, look for nested img
                 wrapImagesInRoot(node);
               }
             });
           } else if (m.type === 'attributes' && m.attributeName === 'class') {
             const target = m.target as HTMLElement;
-            // если класс поменяли у img — переместим класс в wrapper
+            // if the class was changed on an img — move the class to the wrapper
             if (target && target.tagName && target.tagName.toLowerCase() === 'img') {
               if (!isImgAlreadyWrapped(target) && (target.getAttribute('class') || '').trim()) {
                 wrapImageNode(target);
               } else if ((target.getAttribute('class') || '').trim()) {
-                // Если картинка уже обернута в div, добавляем класс к обертке
+                // If the image is already wrapped in a div, add the class to the wrapper
                 const wrapper = target.parentNode as HTMLElement;
                 const classes = target.getAttribute ? (target.getAttribute('class') || '') : '';
                 if (classes && wrapper) {
@@ -213,26 +213,26 @@ function librarySetup(editor: any) {
     observer.observe(editor.getBody(), {
       childList: true,
       subtree: true,
-      attributes: true,        // нужно чтобы ловить присвоение class плагином
+      attributes: true,        // needed to catch class assignment by a plugin
       attributeFilter: ['class']
     });
 
-    // Отключаем observer при уничтожении редактора
+    // Disconnect the observer when the editor is destroyed
     editor.on('remove', () => observer.disconnect());
   });
 }
 
-// Деструктурируем пользовательскую конфигурацию: setup и plugins обрабатываем особо
+// Destructure the user configuration: setup and plugins are handled specially
 const userInit = props.init ?? {};
 const { setup: userSetup, plugins: userPlugins, ...restInit } = userInit;
 
-// Композиция setup: сначала библиотечный, потом пользовательский
+// Setup composition: first the library one, then the user one
 function composedSetup(editor: any) {
     librarySetup(editor);
     if (typeof userSetup === 'function') userSetup(editor);
 }
 
-// Базовые плагины + доп. плагины потребителя (через проп и через init.plugins)
+// Base plugins + the consumer's additional plugins (via the prop and via init.plugins)
 const basePlugins = [
     'advlist', 'lists', 'link', 'image', 'charmap',
     'fullscreen', 'insertdatetime', 'table', 'autolink', 'code',
@@ -259,28 +259,28 @@ function buildInitOptions(): Record<string, any> {
             htmlEditorContentStyle,
             props.contentStyle || '',
         ].filter(Boolean).join('\n'),
-        // Инлайн-скины (skin.min.css/content.min.css импортируются выше) — без зависимости от файлов /tinymce на хосте
+        // Inline skins (skin.min.css/content.min.css are imported above) — without depending on /tinymce files on the host
         skin: false,
         content_css: props.contentCss ?? false,
         toolbar: props.toolbar ?? `blocks | bullist numlist | link image | ${props.media ? 'media | ' : ''}fullscreen code `,
-        branding: false, // Убираем брендинг
-        promotion: false, // Убираем рекламные предложения
-        // Блокируем любые обращения к внешним серверам
+        branding: false, // Remove branding
+        promotion: false, // Remove promotional offers
+        // Block any requests to external servers
         service_worker: false,
         external_plugins: {},
-        // Отключаем проверку лицензии
+        // Disable the license check
         license_validator: () => true,
 
-        // Включаем возможность загрузки файлов
+        // Enable file upload capability
         images_upload_handler: function (blobInfo: any, progress: any) {
             return uploadImageToServer(blobInfo, progress);
         },
         convert_urls: false,
-        // Настройки загрузки изображений
+        // Image upload settings
         images_reuse_filename: true,
-        images_upload_url: props.uploadUrl, // Путь временного сохранения картинки
+        images_upload_url: props.uploadUrl, // Path for temporary image storage
         automatic_uploads: true,
-        resize_img_proportional: true, // Сохранять пропорции при изменении размера
+        resize_img_proportional: true, // Keep aspect ratio when resizing
         image_dimensions: true,
         image_class_list: [
             {title: 'None', value: ''},
@@ -289,10 +289,10 @@ function buildInitOptions(): Record<string, any> {
             {title: 'Stretched', value: 's-img-bg s-img-fullwidth'},
         ],
 
-        // Настройка для медиа-плагина
-        media_live_embeds: true, // Показывать превью сразу
-        media_filter_html: false, // Не фильтровать iframe и другие теги
-        // Добавляем Kinescope в список провайдеров
+        // Configuration for the media plugin
+        media_live_embeds: true, // Show the preview immediately
+        media_filter_html: false, // Do not filter iframe and other tags
+        // Add Kinescope to the list of providers
         media_url_resolver: function (data: any, resolve: any, reject: any) {
             const kinescopeRegex = /https:\/\/kinescope\.io\/embed\/([a-zA-Z0-9]+)/;
             const match = data.url.match(kinescopeRegex);
@@ -308,7 +308,7 @@ function buildInitOptions(): Record<string, any> {
                     </iframe>`;
                 resolve({html: embedHtml});
             } else {
-                // Для других URL используем стандартную обработку
+                // For other URLs use the standard handling
                 resolve({html: ''});
             }
         },
@@ -332,12 +332,12 @@ function buildInitOptions(): Record<string, any> {
         },
     };
 
-    // Глубокий merge пользовательской конфигурации (без setup/plugins — их ставим явно)
+    // Deep merge of the user configuration (without setup/plugins — we set them explicitly)
     const config = deepMerge(baseConfig, restInit);
     config.plugins = allPlugins;
     config.setup = composedSetup;
 
-    // Локаль интерфейса: из словаря, если не задана явно через init
+    // Interface locale: from the dictionary, unless set explicitly via init
     const i18nLanguage = tRaw<string | null>('htmlEditor.language');
     if (config.language == null && i18nLanguage) config.language = i18nLanguage;
 
@@ -346,7 +346,7 @@ function buildInitOptions(): Record<string, any> {
 
 const initOptions = ref(buildInitOptions());
 
-// Загрузка картинки на сервер
+// Upload the image to the server
 async function uploadImageToServer(blobInfo: any, progress: any) {
     const formData = new FormData();
     formData.append('file', blobInfo.blob(), blobInfo.filename());

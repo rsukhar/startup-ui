@@ -1,20 +1,25 @@
 <template>
     <div class="s-checkboxgroup" :class="{'vertical': vertical}">
         <slot />
-        <SCheckbox v-for="[value, title] in Object.entries(internalOptions)" :key="value" :value="value">
-            {{ title }}
+        <SCheckbox v-for="option in normalizedOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
         </SCheckbox>
     </div>
 </template>
 <script setup lang="ts">
 import { provide, computed } from 'vue';
 import SCheckbox from './SCheckbox.vue';
+import { normalizeOptions } from '../utils/options';
 
 export interface SCheckboxGroupProps {
     modelValue?: any[];
-    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    // Map {value: label}, array of pairs [[value, label]] or array of objects [{value, label}]
     options?: Record<string | number, any> | any[];
     vertical?: boolean;
+    /** Value key for an array of objects (default 'value') */
+    optionValue?: string;
+    /** Label key for an array of objects (default 'label') */
+    optionLabel?: string;
 }
 
 const props = defineProps<SCheckboxGroupProps>();
@@ -22,7 +27,10 @@ const model = defineModel<any[]>({ default: () => [] });
 
 provide('groupValue', model);
 
-const internalOptions = computed(() => props.options ?? {});
+const normalizedOptions = computed(() => normalizeOptions(props.options, {
+    optionLabel: props.optionLabel,
+    optionValue: props.optionValue,
+}));
 </script>
 <style lang="scss">
 .s-checkboxgroup {

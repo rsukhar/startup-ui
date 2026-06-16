@@ -13,7 +13,7 @@ export interface SActionIconProps {
     danger?: boolean;
     confirm?: string;
     confirmTitle?: string;
-    /** Доп. опции, пробрасываемые в SConfirm.open (acceptLabel, cancelLabel, variant, ...) */
+    /** Additional options passed through to SConfirm.open (acceptLabel, cancelLabel, variant, ...) */
     confirmOptions?: Record<string, any>;
     is?: string | Component;
 }
@@ -28,9 +28,9 @@ const emit = defineEmits<{
 const attrs = useAttrs();
 
 const componentType = computed(() => {
-    // Элемент задан явно, используем его
+    // The element is set explicitly, use it
     if (props.is) return props.is;
-    // Нативный анкор
+    // Native anchor
     if (attrs.href) return 'a';
     return 'div';
 });
@@ -38,7 +38,7 @@ const componentType = computed(() => {
 function handleClick() {
     if (props.confirm) {
         const options: Record<string, any> = { ...props.confirmOptions };
-        // confirmTitle прокидываем, только если задан — иначе SConfirm подставит локализованный дефолт
+        // pass confirmTitle through only if set — otherwise SConfirm substitutes the localized default
         if (props.confirmTitle) options.title = props.confirmTitle;
         options.onAccept = () => emit('click');
         SConfirm.open(props.confirm, options);

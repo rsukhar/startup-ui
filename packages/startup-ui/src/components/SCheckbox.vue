@@ -28,10 +28,10 @@ const emits = defineEmits<{
     (e: 'change', value: boolean | any): void;
 }>();
 
-// Устанавливаем значение как computed-свойство, чтобы связать чекбосы, переданные через слоты, с внутренней моделью
+// Set the value as a computed property to bind checkboxes passed via slots to the internal model
 const isChecked = computed({
     get() {
-        // Если передана группа галочек, берем оттуда
+        // If a checkbox group is provided, take the value from there
         if (groupValue != null && props.value != null) {
             return groupValue.value.includes(props.value) ?? false;
         } else {
@@ -40,8 +40,8 @@ const isChecked = computed({
     },
     set(val: boolean) {
         if (groupValue && props.value != null) {
-            // Присваиваем новый массив (а не мутируем по ссылке через push/splice),
-            // иначе defineModel в SCheckboxGroup не эмитит update:modelValue
+            // Assign a new array (instead of mutating by reference via push/splice),
+            // otherwise defineModel in SCheckboxGroup does not emit update:modelValue
             if (val) {
                 if (!groupValue.value.includes(props.value)) {
                     groupValue.value = [...groupValue.value, props.value];

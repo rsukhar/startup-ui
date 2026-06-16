@@ -52,13 +52,13 @@ const props = withDefaults(defineProps<{
 const currentPerPage = ref(props.per_page);
 
 /**
- * Обновление страницы после выбора пагинации
+ * Update the page after selecting pagination
  */
 function handleSelectedChange() {
-    // Преобразуем GET-параметры в объект
+    // Convert the GET parameters into an object
     const search = location.search.substring(1);
     const query: Record<string, any> = search ? JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}') : {};
-    // удаляем параметр page, чтобы при переключении пагинации страница сбрасывалась на первую
+    // remove the page parameter so that switching pagination resets the page to the first one
     delete query['page'];
     query.perpage = currentPerPage.value;
     router.get(props.url, query, {
@@ -73,7 +73,7 @@ const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perP
 </script>
 
 <style lang="scss">
-/* Постраничная навигация */
+/* Pagination navigation */
 .s-pagination {
     display: flex;
     flex-wrap: wrap;

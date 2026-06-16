@@ -1,7 +1,7 @@
 /**
- * Базовые стили контента редактора (content_style TinyMCE).
- * Должны совпадать с тем, как контент рендерится на сайте (класс .g-html).
- * Потребитель может дополнить их пропом `contentStyle` у SHtmlEditor.
+ * Base editor content styles (content_style TinyMCE).
+ * Must match how content is rendered on the site (the .g-html class).
+ * The consumer can extend them via the `contentStyle` prop of SHtmlEditor.
  */
 export const htmlEditorContentStyle = `        .g-html {
             line-height: 1.8;
@@ -90,7 +90,7 @@ export const htmlEditorContentStyle = `        .g-html {
             border: 1px solid #d1d1d1;
         }`;
 
-/** Порядок и соответствие подписей блоков форматам TinyMCE (block_formats) */
+/** Order and mapping of block labels to TinyMCE formats (block_formats) */
 export const HTML_EDITOR_BLOCK_ORDER: Array<[string, string]> = [
     ['paragraph', 'p'],
     ['h1', 'h1'],

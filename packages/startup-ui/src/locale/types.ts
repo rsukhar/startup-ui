@@ -7,7 +7,7 @@ export interface StartupUiMessages {
     pagination: {
         shown: string;
         of: string;
-        /** Поддерживает плейсхолдер {n} */
+        /** Supports the {n} placeholder */
         perPage: string;
     };
     select: {
@@ -29,7 +29,7 @@ export interface StartupUiMessages {
     columnSettings: {
         configure: string;
         reset: string;
-        /** Поддерживает плейсхолдер {title} */
+        /** Supports the {title} placeholder */
         resetTo: string;
         resetChanges: string;
     };
@@ -40,13 +40,13 @@ export interface StartupUiMessages {
         weekDays: string[];
         months: string[];
         notSelected: string;
-        /** Первый день недели: 0 — воскресенье, 1 — понедельник */
+        /** First day of the week: 0 — Sunday, 1 — Monday */
         firstDay: number;
     };
     htmlEditor: {
-        /** Код языка интерфейса TinyMCE (требует наличия языкового пака). null — не задавать (UI остаётся английским) */
+        /** TinyMCE interface language code (requires a language pack). null — do not set (UI stays English) */
         language: string | null;
-        /** Локализованные подписи блоков: ключ — формат, значение — подпись */
+        /** Localized block labels: key — format, value — label */
         blocks: {
             paragraph: string;
             h1: string;

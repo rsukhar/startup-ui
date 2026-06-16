@@ -23,8 +23,8 @@ const emits = defineEmits<{
 const radioGroupModel = inject<Ref<any> | null>('sRadioGroupModel', null);
 
 const model = computed({
-    // Значение находится в состоянии «выбрано», если radioGroupModel.value === props.value
-    // Или если значение кнопки — пустота и model пустой ('', null или undefined)
+    // The value is in the "selected" state if radioGroupModel.value === props.value
+    // Or if the button value is empty and model is empty ('', null or undefined)
     get: () => {
         if (!radioGroupModel) return props.value;
 

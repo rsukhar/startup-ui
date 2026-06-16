@@ -27,13 +27,13 @@ export interface SDropdownMenuLink {
 }
 
 export interface SDropdownMenuProps {
-    // В формате [{label: '', url: '', active: ''}]
+    // In the format [{label: '', url: '', active: ''}]
     links?: SDropdownMenuLink[];
-    // Используется, когда ни один элемент не выбран, и нет заданного лейбла
+    // Used when no item is selected and no label is set
     placeholder?: string;
-    // Если задан, выводится всегда, не зависимо от выбранного элемента
+    // If set, always displayed regardless of the selected item
     label?: string;
-    // Если задана, используется всегда, независимо от выбранного элемента
+    // If set, always used regardless of the selected item
     labelLink?: string;
 }
 
@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<SDropdownMenuProps>(), {
     links: () => [],
 });
 
-// Активная выбранная ссылка из числа переданных ссылок
+// The active selected link among the provided links
 const activeLink = computed(() => {
     for (let link of props.links) {
         if (link.active) return JSON.parse(JSON.stringify(link)) as SDropdownMenuLink;
@@ -49,13 +49,13 @@ const activeLink = computed(() => {
     return null;
 });
 
-// Какой текст выводим на лейбле (placeholder имеет приоритет над локализованным дефолтом)
+// Which text to show on the label (placeholder takes priority over the localized default)
 const labelText = computed(() => props.label ?? (activeLink.value ? activeLink.value.label : (props.placeholder ?? t('dropdownMenu.placeholder'))));
 
-// Какой URL выводим на лейбле
+// Which URL to show on the label
 const labelUrl = computed(() => props.labelLink ?? activeLink.value?.url);
 
-// Каким компонентом выводим
+// Which component to render with
 const labelComponent = computed(() => labelUrl.value ? Link : 'span');
 
 const $container = useTemplateRef<HTMLElement>('$container');

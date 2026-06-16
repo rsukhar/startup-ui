@@ -35,9 +35,9 @@ const emit = defineEmits<{
 }>();
 
 const model = defineModel<boolean>();
-// Элемент, позиция которого будет вычисляться во время ondrag
+// Element whose position will be calculated during ondrag
 const $window = useTemplateRef<HTMLElement>('$window');
-// Элемент, на котором будет тригериться событие dragstart
+// Element on which the dragstart event will be triggered
 const $header = useTemplateRef<HTMLElement>('$header');
 
 const { x, y, style } = useDraggable($window, { handle: $header });
@@ -68,7 +68,7 @@ watch(model, handleNewModelState);
 
 function handleOverlayClick() {
     emit('overlay-click');
-    //Если никто не обработал событие, то закрываем диалог
+    //If no one handled the event, close the dialog
     handleHide();
 }
 

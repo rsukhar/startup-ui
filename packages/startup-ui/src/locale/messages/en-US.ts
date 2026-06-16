@@ -1,7 +1,7 @@
 import type { DeepPartial, StartupUiMessages } from '../types';
 
-// Американский английский: отличается от 'en' только первым днём недели (воскресенье).
-// Остальные строки наследуются от 'en' через фолбэк по базовому языку.
+// American English: differs from 'en' only in the first day of the week (Sunday).
+// Other strings are inherited from 'en' via base-language fallback.
 const enUS: DeepPartial<StartupUiMessages> = {
     datePicker: {
         firstDay: 0,

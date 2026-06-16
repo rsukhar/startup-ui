@@ -6,7 +6,7 @@ export * from './components/SAlert';
 export * from './components/SConfirm';
 
 /**
- * Локализация
+ * Localization
  */
 export {
     configureStartupUi,
@@ -18,7 +18,7 @@ export {
 } from './locale';
 export type { StartupUiOptions, StartupUiMessages, StartupUiLocaleMessages, DeepPartial } from './locale';
 
-// Экспорт плагина по умолчанию
+// Default plugin export
 export default plugin;
 
 /**

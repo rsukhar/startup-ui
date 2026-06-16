@@ -15,7 +15,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
+import { computed, useSlots, watch } from "vue";
 import type { StyleValue } from "vue";
 
 export interface SInputProps {
@@ -27,6 +27,12 @@ export interface SInputProps {
     disabled?: boolean;
     rows?: number;
     inputStyle?: StyleValue;
+    /**
+     * What to represent an empty value with: '' or null.
+     * By default (undefined) the behavior is unchanged. For example, emptyValue="" guarantees
+     * an empty string instead of null (useful for NOT NULL fields).
+     */
+    emptyValue?: '' | null;
 }
 
 const props = withDefaults(defineProps<SInputProps>(), {
@@ -36,6 +42,14 @@ const props = withDefaults(defineProps<SInputProps>(), {
 });
 
 const model = defineModel<number | string | null>();
+
+// Normalize an empty value to emptyValue, if it is set
+watch(model, (val) => {
+    if (props.emptyValue === undefined) return;
+    if ((val === '' || val === null || val === undefined) && val !== props.emptyValue) {
+        model.value = props.emptyValue;
+    }
+}, { immediate: true });
 const emits = defineEmits<{
     (e: 'change', value: string): void;
 }>();

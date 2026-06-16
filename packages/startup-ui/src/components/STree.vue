@@ -22,6 +22,9 @@
                 <template v-else>
                     {{ node.label }}
                 </template>
+                <div v-if="$slots['node-actions']" class="s-tree-actions" @click.stop @dragstart.stop.prevent>
+                    <slot name="node-actions" :node="node" />
+                </div>
             </div>
             <STree v-if="node.children && sharedExpandedKeys.includes(node.id)" v-model="model"
                    :draggable="draggable" :data="node.children" :selectable="selectable"
@@ -32,6 +35,9 @@
                    @change="(node) => emit('change', node)">
                 <template #node="{ node: childNode }" v-if="$slots.node">
                     <slot name="node" :node="childNode" />
+                </template>
+                <template #node-actions="{ node: childNode }" v-if="$slots['node-actions']">
+                    <slot name="node-actions" :node="childNode" />
                 </template>
             </STree>
         </template>
@@ -51,26 +57,26 @@ export interface STreeNode {
 
 const props = withDefaults(defineProps<{
     /**
-     * Массив вида [{id, label, children: [...]}, ...]
+     * Array of the form [{id, label, children: [...]}, ...]
      */
     data: STreeNode[];
     expandedKeys?: (string | number)[];
     draggable?: boolean;
     selectable?: boolean;
     /**
-     * Включить чекбоксы
+     * Enable checkboxes
      */
     checkboxes?: boolean;
     /**
-     * При нажатии на чекбокс в родительском узле, состояние чекбоксов в потомках не меняется
+     * When clicking a checkbox in a parent node, the checkbox state of descendants does not change
      */
     selectWithChildren?: boolean;
     /**
-     * Ключ, по которому раскрыте узлы хранятся в localStorage
+     * Key under which expanded nodes are stored in localStorage
      */
     storeExpandedKeysTo?: string;
     /**
-     * Границы
+     * Borders
      */
     bordered?: boolean;
 }>(), {
@@ -84,7 +90,8 @@ const emit = defineEmits<{
 }>();
 
 defineSlots<{
-    node?(props: { node: STreeNode }): any
+    node?(props: { node: STreeNode }): any;
+    'node-actions'?(props: { node: STreeNode }): any;
 }>();
 
 const model = defineModel<any>();
@@ -99,10 +106,10 @@ if (level === null) {
 
 provide('level', level);
 
-// Список раскрытых узлов
+// List of expanded nodes
 let sharedExpandedKeysRef = inject<import('vue').Ref<(string | number)[]> | null>('sharedExpandedKeys', null);
 if (sharedExpandedKeysRef === null) {
-    // Первый уровень: Создаем общие раскрытые ключи и делимся с вложенными уровнями
+    // First level: create the shared expanded keys and share them with nested levels
     const storedExpandedKeys = props.storeExpandedKeysTo ? JSON.parse(localStorage.getItem(props.storeExpandedKeysTo) || 'null') : null;
     sharedExpandedKeysRef = ref(storedExpandedKeys ?? [...props.expandedKeys]);
     provide('sharedExpandedKeys', sharedExpandedKeysRef);
@@ -115,7 +122,7 @@ watch(sharedExpandedKeys, (val) => {
     }
 }, { deep: true });
 
-// Объект с информацией об узле, на который перетягивают другой узел
+// Object with information about the node onto which another node is being dragged
 // { nodeId, position, relation }
 interface DropTarget {
     id: string | number;
@@ -129,7 +136,7 @@ if (sharedDropTargetRef === null) {
 }
 const sharedDropTarget = sharedDropTargetRef as import('vue').Ref<DropTarget | null>;
 
-// Перетаскиваемый элемент
+// Dragged element
 let draggingNodeRef = inject<import('vue').Ref<STreeNode | null> | null>('draggingNode', null);
 if (draggingNodeRef === null) {
     draggingNodeRef = ref(null);
@@ -147,42 +154,42 @@ function clickNode(node: STreeNode) {
 }
 
 /**
- * Раскрыть/скрыть узел
+ * Expand/collapse a node
  *
  * @param node
  */
 function toggleNode(node: STreeNode){
-    // Закрываем
+    // Collapse
     if (sharedExpandedKeys.value.includes(node.id)) {
         const nodeDescendants = getDescendants(node);
         sharedExpandedKeys.value = sharedExpandedKeys.value.filter((item: string | number) => !nodeDescendants.includes(item) && item !== node.id);
     } else {
-        // Раскрываем
+        // Expand
         sharedExpandedKeys.value.push(node.id);
     }
 }
 
 /**
- * Обработчик события dragstart
- * 
- * @param node 
- * @param event 
+ * dragstart event handler
+ *
+ * @param node
+ * @param event
  */
 function onDrag(node: STreeNode, event: DragEvent) {
     draggingNode.value = node;
-    // Закрываем передвигаемый узел
+    // Collapse the node being moved
     sharedExpandedKeys.value = sharedExpandedKeys.value.filter((item: string | number) => item !== node.id);
     emit('dragstart', node, event);
 }
 
 /**
- * Обработчик события dragover
- * 
- * @param node 
- * @param event 
+ * dragover event handler
+ *
+ * @param node
+ * @param event
  */
 function onDragOver(node: STreeNode, event: DragEvent) {
-    // Навели на самого себя — не обрабатываем
+    // Hovering over itself — do not handle
     if (draggingNode.value?.id === node.id) {
         sharedDropTarget.value = null;
         return;
@@ -191,8 +198,8 @@ function onDragOver(node: STreeNode, event: DragEvent) {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const offset = event.clientY - rect.top;
 
-    // Подсвечиваем узел, на который навели курсор
-    // Три варианта: верхняя, нижняя граница, вся строка
+    // Highlight the node under the cursor
+    // Three options: top border, bottom border, the whole row
     if (offset >= rect.height * 0.35 && offset <= rect.height * 0.65) {
         sharedDropTarget.value = { id: node.id, position: 'center', relation: 'inner'};
     } else if (offset < rect.height * 0.35) {
@@ -203,13 +210,13 @@ function onDragOver(node: STreeNode, event: DragEvent) {
 }
 
 /**
- * Обработчик события dragleave (перетягивание за пределы компонента)
- * 
- * @param event 
+ * dragleave event handler (dragging outside the component)
+ *
+ * @param event
  */
 function onDragLeave(event: DragEvent) {
     const treeRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    // курсор выше верхней границы
+    // cursor above the top border
     if (event.clientY < treeRect.top) {
         if (props.data.length > 0) {
             const firstNode = props.data[0];
@@ -218,7 +225,7 @@ function onDragLeave(event: DragEvent) {
         return;
     }
 
-    // курсор ниже нижней границы
+    // cursor below the bottom border
     if (event.clientY > treeRect.bottom) {
         if (props.data.length > 0) {
             const lastNode = props.data[props.data.length - 1];
@@ -227,15 +234,15 @@ function onDragLeave(event: DragEvent) {
         return;
     }
 
-    // курсор ушёл вбок или вообще вне компонента
+    // cursor moved to the side or outside the component entirely
     sharedDropTarget.value = null;
 }
 
 /**
- * Обработчик события drop
- * 
- * @param targetNode Узел, на который навели курсор
- * @param event 
+ * drop event handler
+ *
+ * @param targetNode The node under the cursor
+ * @param event
  */
 function onDrop(targetNode: STreeNode, event: DragEvent) {
     if (draggingNode.value && draggingNode.value.id === targetNode.id) {
@@ -249,8 +256,8 @@ function onDrop(targetNode: STreeNode, event: DragEvent) {
 }
 
 /**
- * Получить плоский массив id потомков узла
- * 
+ * Get a flat array of the node's descendant ids
+ *
  * @return array
  */
 function getDescendants(node: STreeNode): (string | number)[] {
@@ -265,10 +272,10 @@ function getDescendants(node: STreeNode): (string | number)[] {
 }
 
 /**
- * Получить id узлов, которые нужно переключить
- * 
- * @param node 
- * @param newValue 
+ * Get the ids of nodes that need to be toggled
+ *
+ * @param node
+ * @param newValue
  */
 function getNodesToToggle(node: STreeNode, newValue: boolean, nodesToToggle: (string | number)[] = []): (string | number)[] {
     nodesToToggle.push(node.id);
@@ -283,7 +290,7 @@ function getNodesToToggle(node: STreeNode, newValue: boolean, nodesToToggle: (st
 }
 
 function toggle(interest: STreeNode, newValue: boolean | string | string[]) {
-    // Собираем все узлы, чтобы переключить их разом
+    // Collect all nodes to toggle them at once
     const nodesToToggle = getNodesToToggle(interest, !!newValue);
 
     model.value = newValue
@@ -292,8 +299,8 @@ function toggle(interest: STreeNode, newValue: boolean | string | string[]) {
 }
 
 /**
- * Словарь предков: узел — все потомки
- * Строим в корневом узле и делимся ссылкой с потомками
+ * Ancestor map: node — all descendants
+ * Built in the root node and the reference is shared with descendants
  */
 function buildParentMap(nodes: STreeNode[], parentId: string | number | null = null, map = new Map<string | number, string | number>()): Map<string | number, string | number> {
     for (const node of nodes) {
@@ -366,6 +373,18 @@ function isSelected(id: string | number): boolean {
 
     & > &-cell {
         padding: 2px 2px 2px 24px;
+    }
+
+    // Node actions: shown on hover, aligned to the right
+    &-actions {
+        margin-left: auto;
+        display: none;
+        align-items: center;
+        gap: 5px;
+        padding-left: 10px;
+    }
+    &-cell:hover .s-tree-actions {
+        display: flex;
     }
 
     &-toggle {

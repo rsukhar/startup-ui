@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<SCanvasProps>(), {
     hasStickySidebar: false,
 });
 
-// Заголовок мобильного сайдбара: проп имеет приоритет над локализованным дефолтом
+// Mobile sidebar title: the prop takes priority over the localized default
 const sidebarTitle = computed(() => props.sidebarMobileTitle ?? t('canvas.sidebarMobileTitle'));
 
 const isSidebarMenuOpened = ref(false);
@@ -123,7 +123,7 @@ const isSidebarMenuOpened = ref(false);
         padding: 0 2rem;
         box-sizing: border-box;
 
-        // блок с кнопкой содержание
+        // block with the table-of-contents button
         &-mobile {
             position: relative;
             display: none;
@@ -171,7 +171,7 @@ const isSidebarMenuOpened = ref(false);
             margin: 0 -2rem;
             padding: 0 0.5rem;
             overflow-x: auto;
-            // прибить меню к низу, когда меню становится flex-элементом
+            // pin the menu to the bottom when the menu becomes a flex item
             align-self: end;
         }
     }

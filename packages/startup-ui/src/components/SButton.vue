@@ -31,11 +31,11 @@ const form = inject('formModel', null);
 const attrs = useAttrs();
 
 const componentType = computed(() => {
-    // Элемент задан явно, используем его
+    // The element is set explicitly, use it
     if (props.is) return props.is;
-    // Нативный анкор
+    // Native anchor
     if (attrs.href) return 'a';
-    // Кнопка, которая также засабмитит форму
+    // A button that also submits the form
     if (form) return 'button';
     return 'div';
 });
@@ -68,8 +68,8 @@ const classes = computed(() => [
     background-color: var(--s-primary);
     color: var(--s-white);
     border: 1px var(--s-primary) solid;
-    max-width: fit-content;
-    
+    /* display:inline-block already shrinks the button to its content; width can be set via style/class or the fullwidth prop */
+
     &:hover {
         background-color: var(--s-primary-light);
         border-color: var(--s-primary-light);

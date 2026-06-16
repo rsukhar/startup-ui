@@ -1,9 +1,9 @@
 <template>
     <div class="s-formrow" :class="{error: error !== ''}">
-        <div v-if="$slots.title" class="s-formrow-title" :style="{width: titlesWidth ? titlesWidth + 'px' : undefined}">
+        <div v-if="$slots.title" class="s-formrow-title" :style="titleStyle">
             <slot name="title" />
         </div>
-        <div v-else class="s-formrow-title" @click="focus" :style="{width: titlesWidth ? titlesWidth + 'px' : undefined}">
+        <div v-else class="s-formrow-title" @click="focus" :style="titleStyle">
             {{ title ?? '' }}
         </div>
 
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef, computed, inject, cloneVNode, useSlots } from 'vue';
+import { useTemplateRef, computed, inject, cloneVNode, h, useSlots } from 'vue';
 import type { Ref } from 'vue';
 
 export interface SFormRowProps {
@@ -48,27 +48,27 @@ const modelValue = computed({
 const errors = inject<Ref<Record<string, any>>>('formErrors');
 
 /**
- * Конвертируем ключ в regexp-шаблон
- * 
- * @param pattern 
+ * Convert the key into a regexp pattern
+ *
+ * @param pattern
  */
 function wildcardToRegExp(pattern: string) {
     const escaped = pattern
-        .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // экранируем спецсимволы
-        .replace(/\*/g, '[^.]+'); // * = один сегмент между точками
+        .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // escape special characters
+        .replace(/\*/g, '[^.]+'); // * = a single segment between dots
 
     return new RegExp(`^${escaped}$`);
 }
 
 const error = computed(() => {
     const allErrors = errors?.value;
-    // Нет ошибок
+    // No errors
     if (!allErrors || Object.keys(allErrors).length === 0) return null;
-    // Не заданы кастомные ключи
+    // No custom keys specified
     if (!props.errorKey) return props.name ? (allErrors[props.name] ?? null) : null;
 
-    const keys = Array.isArray(props.errorKey) ? [...props.errorKey] : [props.errorKey]; 
-    // перебираем ключи
+    const keys = Array.isArray(props.errorKey) ? [...props.errorKey] : [props.errorKey];
+    // iterate over the keys
     return keys
         .flatMap(key => {
         if (key.includes('*')) {
@@ -82,30 +82,49 @@ const error = computed(() => {
     }).join('\n') || null;
 });
 
-const titlesWidth = inject<Ref<number | string> | number | string>('titlesWidth');
+const titlesWidth = inject<number | string | undefined>('titlesWidth', undefined);
+const titlesAtLeft = inject<boolean>('titlesAtLeft', false);
+
+// Enforce the title width only when titles are on the left — with titles on top it causes line breaks
+const titleStyle = computed(() => {
+    if (!titlesAtLeft || !titlesWidth) return undefined;
+    return { width: typeof titlesWidth === 'number' ? `${titlesWidth}px` : String(titlesWidth) };
+});
 
 const slots = useSlots();
 
-const nestedNodes = computed(() => {
-    const vnodes = (slots as any).default?.() || [];
+// Binds modelValue to the field component at any nesting depth
+// (the field may be wrapped in a <div> etc. — binding by name is not lost)
+function bindFieldNodes(vnodes: any[]): any[] {
     return vnodes.map((vnode: any) => {
-        // Текстовые узлы и div'ы выводим как есть
-        if (typeof vnode.type !== 'object') return vnode;
-        const inputType = vnode.props?.type;
+        if (!vnode || typeof vnode !== 'object') return vnode;
+        const type = vnode.type;
 
-        // Копируем vnodes с инпутами и добавляем к ним modelValue
-        return cloneVNode(vnode, {
-            modelValue: modelValue.value,
-            'onUpdate:modelValue': (val: any) => {
-                if (inputType === 'number') {
-                    modelValue.value = val === '' ? null : Number(val);
-                } else {
-                    modelValue.value = val;
+        // Component (form field) — add modelValue/onUpdate
+        if (typeof type === 'object' || typeof type === 'function') {
+            const inputType = vnode.props?.type;
+            return cloneVNode(vnode, {
+                modelValue: modelValue.value,
+                'onUpdate:modelValue': (val: any) => {
+                    if (inputType === 'number') {
+                        modelValue.value = val === '' ? null : Number(val);
+                    } else {
+                        modelValue.value = val;
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        // HTML wrapper element (div etc.) — recursively process children
+        if (typeof type === 'string' && Array.isArray(vnode.children) && vnode.children.length) {
+            return h(type, { ...(vnode.props || {}), key: vnode.key }, bindFieldNodes(vnode.children));
+        }
+
+        return vnode;
     });
-});
+}
+
+const nestedNodes = computed(() => bindFieldNodes((slots as any).default?.() || []));
 
 const input = useTemplateRef<HTMLElement>('input');
 
@@ -162,14 +181,14 @@ defineExpose({ focus });
             font-size: 0;
         }
     }
-    // Лейблы сверху
+    // Labels on top
     .s-form:not(.titles_at_left) & {
         flex-direction: column;
         .s-formrow-input .s-button {
             width: 100%;
         }
     }
-    // Если лейблы слева
+    // If labels are on the left
     .s-form.titles_at_left & {
         flex-direction: row;
         justify-content: space-between;

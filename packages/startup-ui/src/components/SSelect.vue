@@ -62,9 +62,10 @@ import { templateRef } from '@vueuse/core';
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { t } from '../locale';
+import { normalizeOptions } from '../utils/options';
 
 export interface SSelectProps {
-    // В формате {value1: title1, value2: title2, ...} или [[value1, title1], [value2, title2], ...]
+    // Map {value: label}, array of pairs [[value, label]] or array of objects [{value, label}]
     options: Record<string | number, any> | any[];
     placeholder?: string;
     filterable?: boolean;
@@ -73,6 +74,10 @@ export interface SSelectProps {
     inline?: boolean;
     virtual?: boolean;
     virtualScrollSize?: number;
+    /** Value key for an array of objects (default 'value') */
+    optionValue?: string;
+    /** Label key for an array of objects (default 'label') */
+    optionLabel?: string;
 }
 
 const props = withDefaults(defineProps<SSelectProps>(), {
@@ -90,13 +95,14 @@ const $selectRef = templateRef<HTMLElement>('selectRef');
 
 const attrs = useAttrs();
 
-const toInternalOptions = (propValue: any): [any, any][] => (propValue instanceof Array) ? JSON.parse(JSON.stringify(propValue)) : Object.entries(propValue);
+const toInternalOptions = (propValue: any): [any, any][] =>
+    normalizeOptions(propValue, { optionLabel: props.optionLabel, optionValue: props.optionValue }).map(o => [o.value, o.label]);
 const internalOptions = ref<[any, any][]>(toInternalOptions(props.options ?? {}));
 watch(() => props.options, (newOptions) => {
     internalOptions.value = toInternalOptions(newOptions ?? {})
 }, { deep: true });
 
-const itemHeight = ref(35); // высота одной опции в px
+const itemHeight = ref(35); // height of a single option in px
 const startIndex = ref(0);
 const totalHeight = computed(() => `${internalOptions.value.length * itemHeight.value}px`);
 
@@ -125,7 +131,7 @@ const selectLabel = computed(() => {
 });
 
 /**
- * Обработка виртуального скролла
+ * Handle virtual scrolling
  */
 function handleScroll(e: Event) {
     const target = e.target as HTMLElement;
@@ -139,7 +145,7 @@ watch(textFilter, (newTextFilter) => {
 });
 
 /**
- * Отфильтровать опции
+ * Filter the options
  */
 function filterOptions() {
     if (textFilter.value == '') {
@@ -166,9 +172,9 @@ function selectOption(optionValue: any) {
 }
 
 /**
- * Определить направление раскрытия выпадающего списка
+ * Determine the opening direction of the dropdown list
  *
- * @param rect Объект с координатами прямоугольника
+ * @param rect Object with the rectangle coordinates
  */
 function determineListDirection(rect: DOMRect) {
     const minOffset = Math.max(20, Math.min(6, internalOptions.value.length) * itemHeight.value);
@@ -176,15 +182,15 @@ function determineListDirection(rect: DOMRect) {
     const spaceBelow = document.documentElement.clientHeight - rect.bottom;
 
     if (spaceBelow >= listHeight) {
-        // Снизу умещается
+        // Fits below
         return 'drop-down';
     } else {
-        // Снизу не умещается
+        // Does not fit below
         if (rect.top > listHeight) {
-            // Сверху умещается
+            // Fits above
             return 'drop-up';
         } else {
-            // Сверху тоже не умещается, размещаем там, где больше места
+            // Does not fit above either, place it where there is more room
             return (rect.top > spaceBelow) ? 'drop-up' : 'drop-down';
         }
     }
@@ -192,7 +198,7 @@ function determineListDirection(rect: DOMRect) {
 
 const optionsStyles = ref<Record<string, string | number>>({});
 
-// Найти предка с position:fixed
+// Find an ancestor with position:fixed
 function hasFixedParent() {
     if (!$selectRef.value) return false;
     let parent = $selectRef.value.parentElement;
@@ -219,13 +225,13 @@ function updateOptionsPosition() {
     let left = rect.left + scrollX;
     const width = rect.width;
 
-    // Предотвращение горизонтального скролла
+    // Prevent horizontal scrolling
     if (left + width > window.innerWidth) {
         left = window.innerWidth - width - 10;
     }
 
     optionsStyles.value = {
-        // Если есть предок с position:fixed, то ставим fixed, иначе absolute
+        // If there is an ancestor with position:fixed, use fixed, otherwise absolute
         position: fixedPosition ? 'fixed' : 'absolute',
         left: `${left}px`,
         zIndex: 9999,
@@ -233,10 +239,10 @@ function updateOptionsPosition() {
     };
 
     if (openDirection.value === 'drop-up') {
-        // Для drop-up
+        // For drop-up
         optionsStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - scrollY}px`;
     } else {
-        // Для drop-down
+        // For drop-down
         optionsStyles.value['top'] = `${rect.bottom + scrollY}px`;
     }
 }
@@ -351,7 +357,7 @@ onBeforeUnmount(() => {
         }
     }
 
-    // Обертка для кастомного класса
+    // Wrapper for the custom class
     &-stylewrapper {
         position: absolute;
 

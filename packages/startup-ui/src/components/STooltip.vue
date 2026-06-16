@@ -88,21 +88,21 @@ function calculatePosition() {
     }
 
     const isEnoughPlaceAround = ((window.innerWidth - iconRect.right) > tooltipRect.width / 2) && (iconRect.left > tooltipRect.width / 2);
-    // Автоматический рассчет позиции подскази
-    // Снизу (есть место снизу и width/2 слева и справа)
+    // Automatic calculation of the tooltip position
+    // Below (there is room below and width/2 on the left and right)
     if (((window.innerHeight - iconRect.top) > tooltipRect.height + 10) && isEnoughPlaceAround) {
         positionStyle.value = tooltipPositions.bottom();
         positionClass.value = 'bottom';
     } else if ((iconRect.top > tooltipRect.height + 10) && isEnoughPlaceAround) {
-        // Сверху (есть место сверху и width/2 слева и справа)
+        // Above (there is room above and width/2 on the left and right)
         positionStyle.value = tooltipPositions.top();
         positionClass.value = 'top';
     } else if ((window.innerWidth - iconRect.right) > (tooltipRect.width + 10)) {
-        // Справа
+        // Right
         positionStyle.value = tooltipPositions.right();
         positionClass.value = 'right';
     } else if (iconRect.left > (tooltipRect.width + 10)) {
-        // Слева
+        // Left
         positionStyle.value = tooltipPositions.left();
         positionClass.value = 'left';
     } else {
@@ -150,7 +150,7 @@ function calculatePosition() {
             color: var(--s-primary-lightest);
         }
 
-        /* Позиционирование хвостика подсказки */
+        /* Positioning of the tooltip tail */
         &::before {
             content: "";
             position: absolute;
@@ -160,7 +160,7 @@ function calculatePosition() {
             z-index: -1;
         }
 
-        /* Позиционирование невидимой hover-области */
+        /* Positioning of the invisible hover area */
         &::after {
             content: "";
             position: absolute;
@@ -180,7 +180,7 @@ function calculatePosition() {
             margin-bottom: 0;
         }
 
-        // Подсказка снизу, стрелка наверх
+        // Tooltip below, arrow pointing up
         &.bottom {
             &:before {
                 top: -6px;
@@ -199,7 +199,7 @@ function calculatePosition() {
             }
         }
 
-        // Подсказка справа, стрелка слева
+        // Tooltip on the right, arrow on the left
         &.right {
             &:before {
                 left: -6px;
@@ -218,7 +218,7 @@ function calculatePosition() {
             }
         }
 
-        // Подсказка сверху, стрелка снизу
+        // Tooltip above, arrow below
         &.top {
             &:before {
                 bottom: -6px;
@@ -237,7 +237,7 @@ function calculatePosition() {
             }
         }
 
-        // Подсказка слева, стрелка справа
+        // Tooltip on the left, arrow on the right
         &.left {
             &:before {
                 right: -6px;

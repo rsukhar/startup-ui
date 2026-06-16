@@ -11,14 +11,14 @@ defineOptions({
 </script>
 
 <style lang="scss">
-// Острова дешборда
+// Dashboard islands
 .s-dashboard {
     column-gap: 30px;
     margin-top: 0.5rem;
     margin-bottom: 30px;
     font-family: var(--s-font-family);
     
-    // Может иметь от 1 до 5 колонок в зависимости от ширины экрана
+    // Can have from 1 to 5 columns depending on the screen width
     $minColumnWidth: 380px;
     $gap: 30px;
     @for $n from 1 through 5 {

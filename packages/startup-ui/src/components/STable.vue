@@ -44,12 +44,12 @@ const props = defineProps<{
     topScroll?: boolean;
 }>();
 
-// Текст пустого состояния: проп имеет приоритет над локализованным дефолтом
+// Empty state text: the prop takes priority over the localized default
 const nodataText = computed(() => props.nodata ?? t('table.noData'));
 
-// Нужно ли показывать сообщение о том, что нет данных?
+// Should the "no data" message be shown?
 const showNoDataMessage = computed(() => {
-    // Когда данные вообще не переданы, не показываем — значит данные подставляются напрямую в слот
+    // When no data is passed at all, don't show it — means data is inserted directly into the slot
     if ( ! props.data) return false;
     if (props.data instanceof Array) return props.data.length === 0;
     return Object.values(props.data).length === 0;

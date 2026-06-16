@@ -19,7 +19,7 @@ const groupUpdateValue = inject<(name: string, value: any) => void>('sFilterGrou
 const updateParam = ref<(val: any) => void>(() => {});
 
 /**
- * Пересоздаем функцию обновления url-параметров при изменении debounce или name
+ * Recreate the url-parameter update function when debounce or name changes
  */
 watch(
     () => [props.debounce, props.name],
@@ -31,7 +31,7 @@ watch(
     { immediate: true }
 );
 
-// Для генерируемого поля делаем отдельную переменную, чтобы гибче управлять состоянием фильтра
+// For the generated field we use a separate variable to manage the filter state more flexibly
 const nestedModel = ref<any>(null);
 
 const nestedNodes = computed(() => {
@@ -39,11 +39,11 @@ const nestedNodes = computed(() => {
     return vnodes.map((vnode: any) => {
         if (typeof vnode.type !== 'object') return vnode;
         nestedModel.value = (groupModel && groupModel.value && props.name) ? groupModel.value[props.name] : null;
-        // Если элемент SDatePicker с атрибутом range — превращаем в массив
+        // If the element is SDatePicker with the range attribute, turn it into an array
         if (nestedModel.value && vnode.type.__name === 'SDatePicker' && vnode.props?.range !== null) {
             nestedModel.value = String(nestedModel.value).split('-');
         }
-        // Копируем vnodes с инпутами и добавляем к ним modelValue
+        // Copy the vnodes with inputs and add modelValue to them
         return cloneVNode(vnode, {
             modelValue: nestedModel.value,
             'onUpdate:modelValue': (val: any) => {

@@ -37,10 +37,10 @@ function handleCloseImage() {
     modalHeight.value = 0;
 }
 
-// Элемент, позиция которого будет вычисляться во время ondrag
+// Element whose position will be calculated during ondrag
 const $window = useTemplateRef<HTMLElement>('$window');
 
-// Загрузилась картинка => изменился размер окна => вычисляем позицию
+// Image loaded => window size changed => calculate the position
 const modalHeight = ref(0);
 useResizeObserver($window, (entries) => {
     const { height } = entries[0].contentRect;

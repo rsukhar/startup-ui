@@ -80,18 +80,18 @@ import { t, tRaw } from '../locale';
 
 export interface SDatePickerProps {
     range?: boolean;
-    // Формат значения модели
+    // Model value format
     valueFormat?: string;
-    // Формат, в котором выводим в инпуте
+    // Format displayed in the input
     inputFormat?: string;
     min?: string;
     max?: string;
     numberOfMonths?: number;
-    // Название дней недели
+    // Weekday names
     weekDayNames?: string[];
-    // Название месяцев
+    // Month names
     monthNames?: string[];
-    // Первый день недели: 0 — воскресенье, 1 — понедельник. По умолчанию — из локали.
+    // First day of the week: 0 — Sunday, 1 — Monday. Defaults to the locale value.
     firstDay?: number;
     buttons?: Record<string, string>;
     withTime?: boolean;
@@ -102,20 +102,20 @@ const props = withDefaults(defineProps<SDatePickerProps>(), {
     withTime: false,
 });
 
-// Названия дней недели и месяцев: пропы имеют приоритет над локализованными дефолтами
+// Weekday and month names: props take priority over the localized defaults
 const weekDays = computed(() => props.weekDayNames ?? tRaw<string[]>('datePicker.weekDays'));
 const months = computed(() => props.monthNames ?? tRaw<string[]>('datePicker.months'));
 
-// Первый день недели: проп → локаль (datePicker.firstDay) → понедельник
+// First day of the week: prop → locale (datePicker.firstDay) → Monday
 const firstWeekDay = computed(() => props.firstDay ?? Number(tRaw<number>('datePicker.firstDay') ?? 1));
-// weekDays хранятся с понедельника; разворачиваем под выбранный первый день недели (Вс/Пн)
+// weekDays are stored starting from Monday; rotate them for the selected first day of the week (Sun/Mon)
 const displayWeekDays = computed(() => {
     const names = weekDays.value;
-    const mondayOffset = (firstWeekDay.value + 6) % 7; // Вс(0)→6, Пн(1)→0
+    const mondayOffset = (firstWeekDay.value + 6) % 7; // Sun(0)→6, Mon(1)→0
     return [...names.slice(mondayOffset), ...names.slice(0, mondayOffset)];
 });
 
-// Внешнее значение в нужном формате props.valueFormat
+// External value in the required props.valueFormat format
 const externalValue = defineModel<string | string[] | null>();
 dayjs.extend(customParseFormat)
 
@@ -127,29 +127,29 @@ const valueFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `Y
 const inputFormat = props.inputFormat ? props.inputFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
 const internalFormat = (props.withTime && !props.range) ? 'YYYYMMDDHHmm' : 'YYYYMMDD';
 
-// Внутреннее нормированное значение всегда в формате 'YYYYMMDD' или ['YYYYMMDD', 'YYYYMMDD']
+// The internal normalized value is always in the format 'YYYYMMDD' or ['YYYYMMDD', 'YYYYMMDD']
 const value = computed(() => {
     let val = externalValue.value;
-    // Если нет значения, но есть кнопки — берём первую кнопку
+    // If there is no value but there are buttons — take the first button
     if (!val && props.buttons && Object.keys(props.buttons).length > 0) {
         const [from, to] = Object.values(props.buttons)[0].split('-');
         val = [from, to];
     }
-    // Если пусто
+    // If empty
     if (!val) {
         return null;
     }
-    // Если формат уже правильный
+    // If the format is already correct
     if (valueFormat === internalFormat) {
         return JSON.parse(JSON.stringify((val)));
     }
-    // Приводим к нужному формату
+    // Convert to the required format
     return Array.isArray(val)
         ? val.map(date => dayjs(date as string, valueFormat).format(internalFormat))
         : dayjs(val as string, valueFormat, true).format(internalFormat);
 });
 
-// Значение для выбиралки с кнопками
+// Value for the button picker
 const radioValue = computed({
     get: () => {
         if (!value.value) return '';
@@ -159,10 +159,10 @@ const radioValue = computed({
         externalValue.value = newValue.split('-')
     }
 });
-// Количество месяцев, которое показываем в выбиралке дат. По умолчанию для выбора одиночной даты — 1; для выбора периода — 2
+// Number of months shown in the date picker. Defaults to 1 for single-date selection; 2 for range selection
 const numOfMonths = computed(() => props.numberOfMonths ?? (props.range ? 2 : 1));
 
-// Значение, которое показывается в инпуте
+// Value shown in the input
 const displayValue = computed(() => {
     if (props.range && Array.isArray(value.value)) {
         return value.value.filter(Boolean).map(item => dayjs(item, internalFormat).format(inputFormat)).join(' — ');
@@ -171,26 +171,26 @@ const displayValue = computed(() => {
 })
 
 /**
- * Месяц на первой странице календаря: 1-12
+ * Month on the first calendar page: 1-12
  */
 const firstYear = ref(Number(dayjs().format('YYYY')));
 const firstMonth = ref(Number(dayjs().format('MM')));
 
 /**
- * Страницы календаря в формате: [{year, month, daysInMonth}, ...]
+ * Calendar pages in the format: [{year, month, daysInMonth}, ...]
  */
 const calendarPages = computed(() => {
     const result = [];
     for (let index = 0; index < numOfMonths.value; index++) {
         let year = firstYear.value + Math.floor((firstMonth.value - 1 + index) / 12),
             month = (firstMonth.value - 1 + index) % 12 + 1,
-            // Кол-во дней с прошлого месяца, которые попадут на текущую страницу календаря (хвост)
+            // Number of days from the previous month that fall on the current calendar page (tail)
             previousMonthDaysTail = (dayjs().year(year).month(month - 1).startOf('month').day() - firstWeekDay.value + 7) % 7,
-            // Кол-во всех дней в прошлом месяце
+            // Total number of days in the previous month
             daysInPreviousMonth = dayjs().year(year).month(month - 2).daysInMonth(),
-            // Кол-во дней в текущем месяце
+            // Number of days in the current month
             daysInMonth = dayjs().year(year).month(month - 1).daysInMonth(),
-            // Кол-во дней следующего месяца, которые попадут на текующую страницу календаря
+            // Number of days from the next month that fall on the current calendar page
             leadingNextMonthDays = (7 - (daysInMonth + previousMonthDaysTail) % 7) % 7;
         result.push({ year, month, daysInMonth, daysInPreviousMonth, previousMonthDaysTail, leadingNextMonthDays });
     }
@@ -198,7 +198,7 @@ const calendarPages = computed(() => {
     return result;
 });
 
-// Навигация
+// Navigation
 function prevMonth() {
     firstYear.value = firstMonth.value === 1 ? firstYear.value - 1 : firstYear.value;
     firstMonth.value = (firstMonth.value === 1) ? 12 : (firstMonth.value - 1)
@@ -209,7 +209,7 @@ function nextMonth() {
     firstMonth.value = (firstMonth.value === 12) ? 1 : (firstMonth.value + 1);
 }
 
-// Если время не задано, то по умолчанию показываем текущее время
+// If the time is not set, show the current time by default
 function getTimePart(part: 'hour' | 'minute') {
     const source = Array.isArray(value.value)
         ? (value.value.length === 2 ? value.value[1] : null)
@@ -223,7 +223,7 @@ function getTimePart(part: 'hour' | 'minute') {
 const hours = ref(getTimePart('hour'));
 const minutes = ref(getTimePart('minute'));
 
-// Прибавить/убавить часы/минуты
+// Increment/decrement hours/minutes
 const hoursUp = () => hours.value = hours.value === 23 ? 0 : hours.value + 1;
 const hoursDown = () => hours.value = hours.value === 0 ? 23 : hours.value - 1;
 const minutesUp = () => minutes.value = minutes.value === 59 ? 0 : minutes.value + 1;
@@ -236,11 +236,11 @@ watch(() => [hours.value, minutes.value], () => {
     if (props.range) return;
     if (!externalValue.value || Array.isArray(externalValue.value)) return;
 
-    // Выбор одиночной даты
+    // Single-date selection
     externalValue.value = dayjs(externalValue.value, valueFormat, true).hour(hours.value).minute(minutes.value).format(valueFormat);
 });
 
-// Форматирует дату в 'YYYYMMDD'
+// Formats the date into 'YYYYMMDD'
 const dateToString = (year: number, month: number, day: number) => year + ((month < 10) ? '0' : '') + month.toString() + ((day < 10) ? '0' : '') + day.toString();
 
 const isOpened = ref(false);
@@ -258,9 +258,9 @@ watch(isOpened, (newValue) => {
 
 
 /**
- * Определить направление раскрытия календаря списка
+ * Determine the direction in which the list calendar opens
  *
- * @param rect Объект с координатами прямоугольника
+ * @param rect Object with the rectangle coordinates
  */
 function determineCalendarDirection(rect: DOMRect) {
     if (!$calendar.value) return 'drop-down';
@@ -268,15 +268,15 @@ function determineCalendarDirection(rect: DOMRect) {
     const spaceBelow = document.documentElement.clientHeight - rect.bottom;
 
     if (spaceBelow >= calendarHeight) {
-        // Снизу умещается
+        // Fits below
         return 'drop-down';
     } else {
-        // Снизу не умещается
+        // Does not fit below
         if (rect.top > calendarHeight) {
-            // Сверху умещается
+            // Fits above
             return 'drop-up';
         } else {
-            // Сверху тоже не умещается, размещаем там, где больше места
+            // Does not fit above either, place it where there is more space
             return (rect.top > spaceBelow) ? 'drop-up' : 'drop-down';
         }
     }
@@ -297,10 +297,10 @@ async function updateCalendarPosition() {
         };
 
         if (openDirection.value === 'drop-up') {
-            // Для drop-up
+            // For drop-up
             calendarStyles.value['bottom'] = `${document.documentElement.clientHeight - rect.top - window.scrollY + 5}px`;
         } else {
-            // Для drop-down
+            // For drop-down
             calendarStyles.value['top'] = `${rect.bottom + window.scrollY + 5}px`;
         }
     }
@@ -315,7 +315,7 @@ const isSelected = (year: number, month: number, day: number) => {
     if (!value.value) return false;
 
     if (value.value instanceof Array) {
-        // Если выбраны обе даты
+        // If both dates are selected
         return value.value.reduce((acc, item) => {
             if (item.startsWith(dateToString(year, month, day))) return true;
             return acc;
@@ -326,18 +326,18 @@ const isSelected = (year: number, month: number, day: number) => {
 };
 
 /**
- * Наведенная дата в формате 'YYYYMMDD'
+ * Hovered date in the format 'YYYYMMDD'
  */
 const hoveredDate = ref<string | null>(null);
 const hover = (year: number, month: number, day: number) => hoveredDate.value = dateToString(year, month, day);
 const blur = () => hoveredDate.value = null;
 
 /**
- * Подсвеченные даты в формате ['YYYYMMDD', 'YYYYMMDD']
+ * Highlighted dates in the format ['YYYYMMDD', 'YYYYMMDD']
  */
 const highlights = computed(() => {
     if (!props.range) return null;
-    // Только для диапазона при условии выбранной ранее даты
+    // Only for a range, provided a date was previously selected
     if (prevClickedDate.value) {
         if ( ! hoveredDate.value) return null;
         const start = (prevClickedDate.value < hoveredDate.value) ? prevClickedDate.value : hoveredDate.value;
@@ -354,7 +354,7 @@ const isHighlighted = function(year: number, month: number, day: number) {
 }
 
 /**
- * Выходит ли выбранная дата за рамки min- и max-значений
+ * Whether the selected date falls outside the min and max values
  *
  * @param y
  * @param m
@@ -370,37 +370,37 @@ function isBlocked(y: number, m: number, d: number) {
     return false;
 }
 
-// Совпадает ли дата с сегодняшним числом
+// Whether the date matches today's date
 function isToday(y: number, m: number, d: number) {
     return dayjs().year(y).month(m - 1).date(d).isSame(dayjs(), 'day');
 }
 
 /**
- * Предыдущая выбранная в периоде дата в формате 'YYYYMMDD'
+ * The previously selected date within the range, in the format 'YYYYMMDD'
  */
 const prevClickedDate = ref<string | null>(null);
 
 function onDateClick(year: number, month: number, day: number) {
     if (isBlocked(year, month, day)) return;
     if (!props.range) {
-        // Выбор одиночной даты
+        // Single-date selection
         let tempValue = dayjs().year(year).month(month - 1).date(day)
         if (hours.value !== undefined && minutes.value !== undefined) {
             tempValue = tempValue.hour(hours.value).minute(minutes.value);
         }
         externalValue.value = tempValue.format(valueFormat);
 
-        // Если без времени, закрываем сразу после выбора дня
+        // If without time, close immediately after selecting the day
         if (!props.withTime) isOpened.value = false;
     } else if (!prevClickedDate.value) {
-        // Выбор первой даты в диапазоне
+        // Selecting the first date in the range
         prevClickedDate.value = dateToString(year, month, day);
     } else {
         const clickedDate = dateToString(year, month, day);
         let start = (prevClickedDate.value < clickedDate) ? prevClickedDate.value : clickedDate;
         let end = (prevClickedDate.value < clickedDate) ? clickedDate : prevClickedDate.value;
         if (valueFormat !== internalFormat) {
-            // Кастомный формат
+            // Custom format
             start = dayjs(start, internalFormat).format(valueFormat);
             end = dayjs(end, internalFormat).format(valueFormat);
         }
@@ -410,7 +410,7 @@ function onDateClick(year: number, month: number, day: number) {
     }
 }
 
-// Закрытие по клику вне
+// Close on click outside
 if (typeof document !== 'undefined') {
     useEventListener(document, 'mousedown', (e) => {
         isOpened.value = false;
@@ -418,7 +418,7 @@ if (typeof document !== 'undefined') {
     });
 }
 
-// Значения кнопок (из DateInterval приходят в формате Лейбл -> Значение, потому что значение может повторяться для разных лейблов
+// Button values (they come from DateInterval in the Label -> Value format, because the value may repeat for different labels
 const buttonOptions = computed(() => {
     if ( ! props.buttons) return [];
     return Object.fromEntries(Object.entries(props.buttons).map(([key, value]) => [value, key]));

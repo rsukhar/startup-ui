@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
     href?: string;
     size?: 'small' | 'normal' | 'large';
     layout?: 'input' | 'inline'; // input / inline
-    // Текст, который на самом деле будет копироваться
+    // The text that will actually be copied
     copytext?: string;
 }>(), {
     size: 'normal',

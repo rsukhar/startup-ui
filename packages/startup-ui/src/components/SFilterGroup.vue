@@ -9,15 +9,15 @@ import { router } from '@inertiajs/vue3';
 
 const props = withDefaults(defineProps<{
     /**
-     * Если установлено, то получает значение модели из query-параметров при загрузке и изменяет их при изменении значений фильтров
+     * If set, reads the model value from query parameters on load and updates them when filter values change
      */
     bindToQuery?: boolean;
     /**
-     * Query-параметры, которые не учитываем в модели
+     * Query parameters that are not included in the model
      */
     ignoreQueryNames?: string[];
     /**
-     * Значения модели, которые не проставляем в query-параметры (пропускаем такие параметры)
+     * Model values that are not written to query parameters (such parameters are skipped)
      */
     ignoreQueryValues?: any[];
 }>(), {
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<{
 });
 
 /**
- * Определяем наличие debounce на дочернем компоненте (чтобы подставить reserveState)
+ * Detect whether a child component has debounce (in order to set reserveState)
  */
 const slots = useSlots();
 const hasDebouncedFilter = ref(false);
@@ -72,7 +72,7 @@ const setQueryParams = (params: Record<string, any>) => {
     });
 }
 
-// Следим за изменением query и синхронизируемся
+// Watch for query changes and synchronize
 const handleUrlChange = () => {
     if (props.bindToQuery) model.value = getQueryParams();
 };

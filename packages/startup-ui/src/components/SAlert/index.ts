@@ -16,7 +16,7 @@ function getInstance(): SAlertInstance {
     const vnode = createVNode(SAlertVue);
     render(vnode, container);
 
-    // vnode.component может быть null сразу после render()
+    // vnode.component may be null right after render()
     const component = vnode.component?.exposed as SAlertInstance | undefined;
 
     if (!component) {
