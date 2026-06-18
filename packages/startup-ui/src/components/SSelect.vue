@@ -1,7 +1,7 @@
 <template>
     <div class="s-select" :class="[{disabled, inline}]" ref="selectRef" @keydown="handleKeydown">
         <div class="s-select-field" ref="fieldRef" :class="{selecting: areOptionsShown}" :tabindex="!filterable && !disabled ? 0 : undefined" @click="showOptions">
-            <input v-model="textFilter" v-if="filterable" class="s-select-field-filter" :placeholder="selectLabel" />
+            <input v-model="textFilter" v-if="filterable" class="s-select-field-filter" :placeholder="selectLabel" @blur="onFilterBlur" />
             <div v-else class="s-select-field-label">
                 <slot v-if="$slots.value && modelValue" name="value" :value="modelValue" />
                 <template v-else>{{ selectLabel }}</template>
@@ -182,6 +182,28 @@ function selectOption(optionValue: any) {
     emits('change', optionValue);
     areOptionsShown.value = false;
     activeIndex.value = -1;
+}
+
+// On focus loss the raw typed filter must never stay in the field (it looks like a value
+// that isn't applied). Resolve it: (a) if an option label exactly matches the typed text —
+// apply that option; (b) otherwise — drop the filter so the already-applied value shows.
+// Deferred: clicking an option blurs the input first, then selects on click; selectOption
+// clears textFilter, so by the time this runs there is nothing to resolve in that case.
+function onFilterBlur(event: FocusEvent) {
+    const input = event.target as HTMLInputElement;
+    window.setTimeout(() => {
+        // Regained focus within the delay — the user is still editing, leave it alone
+        if (document.activeElement === input) return;
+        const query = textFilter.value.trim();
+        if (query === '') return;
+        const match = internalOptions.value.find(([_, label]) => String(label).trim().toLowerCase() === query.toLowerCase());
+        if (match && match[0] !== model.value) {
+            selectOption(match[0]);
+        } else {
+            textFilter.value = '';
+            areOptionsShown.value = false;
+        }
+    }, 150);
 }
 
 /**
