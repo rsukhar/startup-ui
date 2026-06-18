@@ -6,7 +6,9 @@
                 <slot name="header" :choose="openFileDialog" :clear="clear" :files="model" :isDragging="isDragging" />
             </div>
             <SButton v-else class="s-upload-button" outlined @click.prevent="openFileDialog">
-                <FontAwesomeIcon class="s-upload-button-icon" icon="plus" />{{ finalUploadButtonTitle }}
+                <svg class="s-upload-button-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M8 3 V13 M3 8 H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>{{ finalUploadButtonTitle }}
             </SButton>
         </div>
 
@@ -17,7 +19,9 @@
             <slot v-if="$slots.preview" name="preview" :files="fileTitles" :remove="remove"/>
             <div v-else v-for="(title, key) in fileTitles" :key="`${title}-${key}`" class="s-upload-content-item">
                 <span>{{ title }}</span>
-                <FontAwesomeIcon icon="xmark" class="delete" @click="remove(title)" />
+                <svg class="delete" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" @click="remove(title)">
+                    <path d="M4 4 12 12 M12 4 4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
             </div>
         </div>
         <slot />
@@ -26,7 +30,6 @@
 
 <script setup lang="ts">
 import { ref, computed, useTemplateRef } from 'vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import SButton from './SButton.vue';
 import { t } from '../locale';
 
@@ -178,6 +181,10 @@ defineExpose({ clear, remove });
         & > svg:first-child {
             margin-left: -10px;
         }
+        .s-upload-button-icon {
+            width: 14px;
+            height: 14px;
+        }
     }
 
     &-content {
@@ -191,7 +198,14 @@ defineExpose({ clear, remove });
             align-items: center;
 
             .delete {
+                width: 13px;
+                height: 13px;
+                color: var(--s-text-light);
                 cursor: pointer;
+
+                &:hover {
+                    color: var(--s-primary);
+                }
             }
         }
 
