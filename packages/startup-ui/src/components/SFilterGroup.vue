@@ -67,7 +67,7 @@ const setQueryParams = (params: Record<string, any>) => {
     );
 
     const router = getStartupUiRouter();
-    if (router) {
+    if (router?.get) {
         // A router was registered (e.g. Inertia via app.use(StartupUI, { router })) — do a full
         // visit so the server re-queries with the new params
         router.get(window.location.pathname, filteredParams, {

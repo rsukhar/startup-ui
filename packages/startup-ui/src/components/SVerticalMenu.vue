@@ -10,11 +10,11 @@
                      :class="{'is-opened' : openedItems.includes(link.id)}">
                     <FontAwesomeIcon icon="fa-angle-right" />
                 </div>
-                <Link class="s-verticalmenu-label"
+                <component :is="linkComponent" class="s-verticalmenu-label"
                       :class="{'not-published': link.isPublished !== undefined && !link.isPublished}" :href="link.url">
                     {{ link.label }}
                     <FontAwesomeIcon icon="eye-slash" v-if="link.isPublished !== undefined && !link.isPublished" />
-                </Link>
+                </component>
             </template>
             <div class="s-verticalmenu-label"
                  :class="{'not-published': link.isPublished !== undefined && !link.isPublished}"
@@ -35,10 +35,10 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from "@inertiajs/vue3";
 import { ref, computed } from 'vue';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { useStorage } from "@vueuse/core";
+import { getStartupUiLink } from '../config';
 
 export interface SVerticalMenuLink {
     id: string | number;
@@ -64,6 +64,9 @@ const props = withDefaults(defineProps<SVerticalMenuProps>(), {
     links: () => [],
     expandedKeys: () => [],
 });
+
+// SPA link component (e.g. Inertia's Link) if registered, otherwise a plain <a>
+const linkComponent = computed(() => getStartupUiLink() ?? 'a');
 
 const getExpandedKeys = function(links: SVerticalMenuLink[]): (string | number)[] {
     let result: (string | number)[] = [];

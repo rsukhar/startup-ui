@@ -3,7 +3,7 @@
         <template v-for="link in links" :key="link.label">
             <slot v-if="$slots['items']" name="items" :link="link" />
             <div v-else class="s-horizontalmenu-item" :class="[link.className, link.active ? 'active' : '']">
-                <Link class="s-horizontalmenu-label" v-if="link.url" :href="link.url">{{ link.label }}</Link>
+                <component :is="linkComponent" class="s-horizontalmenu-label" v-if="link.url" :href="link.url">{{ link.label }}</component>
                 <div class="s-horizontalmenu-label" v-else>{{ link.label }}</div>
 
                 <div class="s-horizontalmenu-children" v-if="link.children">
@@ -15,7 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import { getStartupUiLink } from '../config';
 
 export interface SHorizontalMenuLink {
     label: string;
@@ -34,6 +35,9 @@ export interface SHorizontalMenuProps {
 withDefaults(defineProps<SHorizontalMenuProps>(), {
     links: () => [],
 });
+
+// SPA link component (e.g. Inertia's Link) if registered, otherwise a plain <a>
+const linkComponent = computed(() => getStartupUiLink() ?? 'a');
 
 function slotKey(label: string): string {
     return label.toLowerCase().replace(/\s+/g, '-');

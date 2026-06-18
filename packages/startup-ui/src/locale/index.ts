@@ -3,7 +3,7 @@ import en from './messages/en';
 import ru from './messages/ru';
 import enUS from './messages/en-US';
 import { deepMerge } from '../utils/deepMerge';
-import { setStartupUiRouter, type StartupUiRouter } from '../config';
+import { setStartupUiRouter, setStartupUiLink, type StartupUiRouter, type StartupUiLink } from '../config';
 import type { StartupUiMessages, StartupUiLocaleMessages } from './types';
 
 export interface StartupUiOptions {
@@ -12,11 +12,16 @@ export interface StartupUiOptions {
     /** Message dictionaries to merge on top of the built-in ones (by locale). */
     messages?: StartupUiLocaleMessages;
     /**
-     * Optional router for navigation-driving components (e.g. SFilterGroup with `bind-to-query`).
-     * Pass Inertia's `router`, or any object with a compatible `get(url, data, options)`.
-     * When omitted, those components fall back to the History API (URL sync without SPA refetch).
+     * Optional router for navigation-driving components (SForm submit, SPagination, SFilterGroup
+     * `bind-to-query`). Pass Inertia's `router`, or any object with compatible `get`/`visit`.
+     * When omitted, those components fall back to the History API / native navigation.
      */
     router?: StartupUiRouter | null;
+    /**
+     * Optional link component for SPA navigation links (SDropdownMenu / SHorizontalMenu /
+     * SVerticalMenu / SPagination). Pass Inertia's `Link`. When omitted, a plain `<a>` is used.
+     */
+    link?: StartupUiLink | null;
 }
 
 const state = reactive({
@@ -34,6 +39,7 @@ export function configureStartupUi(options: StartupUiOptions = {}): void {
         state.messages = deepMerge(state.messages, options.messages);
     }
     if (options.router !== undefined) setStartupUiRouter(options.router);
+    if (options.link !== undefined) setStartupUiLink(options.link);
 }
 
 function resolve(key: string, locale: string): any {

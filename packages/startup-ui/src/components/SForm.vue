@@ -5,8 +5,8 @@
     </form>
 </template>
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
 import { ref, provide, watch, computed, getCurrentInstance } from 'vue'
+import { getStartupUiRouter } from '../config';
 
 export interface SFormProps {
     method?: string;
@@ -51,16 +51,26 @@ const isLoading = ref(props.loading);
 function handleSubmit(event: Event) {
     if (hasSubmitListener.value) {
         emit('submit', event);
-    } else if (props.action) {
+        return;
+    }
+    if (!props.action) return;
+
+    const router = getStartupUiRouter();
+    if (router?.visit) {
+        // A router was registered (e.g. Inertia via app.use(StartupUI, { router })) — submit via it
         isLoading.value = true;
         router.visit(props.action, {
             method: (props.method as any) ?? 'post',
             data: model.value,
             preserveScroll: true,
             preserveState: true,
-            onError: response => localErrors.value = formatErrors(response),
+            onError: (response: any) => localErrors.value = formatErrors(response),
             onFinish: () => isLoading.value = false
         });
+    } else {
+        // No router registered — declarative submit isn't possible (the data lives in the JS model,
+        // not native form fields). Use the @submit event to handle submission without a router.
+        console.warn('[StartupUI] SForm: submit via `action`/`method` requires a registered router (app.use(StartupUI, { router })) or an @submit handler.');
     }
 }
 

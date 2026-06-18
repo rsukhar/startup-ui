@@ -27,6 +27,11 @@
         "@vueuse/core": "^14.0.0",
         "vue": "^3.5.0"
     },
+    "peerDependenciesMeta": {
+        "@inertiajs/vue3": {
+            "optional": true
+        }
+    },
     "devDependencies": {
         "@fortawesome/vue-fontawesome": "^3.2.0",
         "@inertiajs/vue3": "^3.2.0",

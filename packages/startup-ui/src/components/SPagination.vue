@@ -2,10 +2,9 @@
     <div class="s-pagination" :class="{ 's-pagination-right' : links.length <= 3 }">
         <div class="s-pagination-links" v-if="links.length > 3">
             <template v-for="(link, index) in links" :key="index">
-                <Link v-if="link.url && !link.active" :class="{ active: link.active }" v-html="link.label"
+                <component :is="linkComponent" v-if="link.url && !link.active" :class="{ active: link.active }" v-html="link.label"
                         :href="link.url ? link.url.replace(/[\?\&]page\=1$/, '') : ''"
-                        :preserve-scroll="preserveScroll"
-                        :preserve-state="preserveState" />
+                        v-bind="linkExtraProps" />
                 <span v-else :class="{ active: link.active }" v-html="link.label" />
             </template>
         </div>
@@ -21,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { router } from "@inertiajs/vue3";
+import { ref, computed } from 'vue';
+import { getStartupUiRouter, getStartupUiLink } from '../config';
 import SSelect from './SSelect.vue';
 import { t } from '../locale';
 
@@ -51,6 +50,13 @@ const props = withDefaults(defineProps<{
 });
 const currentPerPage = ref(props.per_page);
 
+// SPA link component (e.g. Inertia's Link) if registered, otherwise a plain <a>.
+// The SPA-only props (preserve-scroll/state) are passed only when a real link is registered.
+const linkComponent = computed(() => getStartupUiLink() ?? 'a');
+const linkExtraProps = computed(() => getStartupUiLink()
+    ? { 'preserve-scroll': props.preserveScroll, 'preserve-state': props.preserveState }
+    : {});
+
 /**
  * Update the page after selecting pagination
  */
@@ -61,9 +67,15 @@ function handleSelectedChange() {
     // remove the page parameter so that switching pagination resets the page to the first one
     delete query['page'];
     query.perpage = currentPerPage.value;
-    router.get(props.url, query, {
-        preserveScroll: props.preserveScroll
-    });
+
+    const router = getStartupUiRouter();
+    if (router?.get) {
+        router.get(props.url, query, { preserveScroll: props.preserveScroll });
+    } else {
+        // No router registered — full navigation to the page URL with the new query
+        const queryString = new URLSearchParams(query as Record<string, string>).toString();
+        window.location.assign(props.url + (queryString ? `?${queryString}` : ''));
+    }
 }
 
 const perPageOptionsFormatted = props.perPageOptions ? Object.entries(props.perPageOptions).reduce((acc: Record<string | number, string>, [key, value]) => {

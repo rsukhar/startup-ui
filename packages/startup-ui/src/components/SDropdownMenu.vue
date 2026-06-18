@@ -6,9 +6,9 @@
             <FontAwesomeIcon icon="caret-down" />
         </component>
         <div class="s-dropdownmenu-list" ref="$list" :class="[direction]">
-            <Link v-if="links" v-for="link in links" :key="link.label" :href="link.url ?? ''" :class="{ active: link.active }">
+            <component :is="linkComponent" v-if="links" v-for="link in links" :key="link.label" :href="link.url ?? ''" :class="{ active: link.active }">
                 {{ link.label }}
-            </Link>
+            </component>
             <slot />
         </div>
     </div>
@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, useTemplateRef, computed, nextTick } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { getStartupUiLink } from '../config';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { t } from '../locale';
 
@@ -55,8 +55,11 @@ const labelText = computed(() => props.label ?? (activeLink.value ? activeLink.v
 // Which URL to show on the label
 const labelUrl = computed(() => props.labelLink ?? activeLink.value?.url);
 
-// Which component to render with
-const labelComponent = computed(() => labelUrl.value ? Link : 'span');
+// SPA link component (e.g. Inertia's Link) if registered, otherwise a plain <a>
+const linkComponent = computed(() => getStartupUiLink() ?? 'a');
+
+// Which component to render the label with
+const labelComponent = computed(() => labelUrl.value ? linkComponent.value : 'span');
 
 const $container = useTemplateRef<HTMLElement>('$container');
 const $list = useTemplateRef<HTMLElement>('$list');

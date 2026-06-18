@@ -9,11 +9,6 @@
             <li>Принимает атрибуты ровно в том формате, в котором его отдает пагинатор Laravel, что позволяет сразу пробросить исходный пагинатор без дополнительных прописываний атрибутов через v-bind.</li>
         </ol>
     </SToggle>
-    <SToggle title="Что будет ценно улучшить">
-        <ol>
-            <li>Отвязать от InertiaJS и роутера в чистом виде, сделать это опциональным.</li>
-        </ol>
-    </SToggle>
 </SToggleGroup>
 
 ## Базовый пример
@@ -100,8 +95,8 @@ const users = ref({
 | links | `PaginationLink[]` | `[]` | Массив ссылок `[{ url, label, active }]`. Обычно генерируется бекэндом Laravel. |
 | perPageOptions | `number[] \| string[]` \ `Record` | `undefined` | Опции для выпадающего списка кол-ва элементов на странице (например, `[10, 20, 50]`). |
 | url | string | `location.pathname` | Базовый URL, используемый при смене кол-ва элементов на странице. |
-| preserveScroll | boolean | `true` | Пробрасывается в `Link` Inertia. Сохраняет позицию скролла. |
-| preserveState | boolean | `false` | Пробрасывается в `Link` Inertia. Сохраняет локальный стейт страницы. |
+| preserveScroll | boolean | `true` | Пробрасывается в зарегистрированный `Link` (Inertia). Сохраняет позицию скролла. |
+| preserveState | boolean | `false` | Пробрасывается в зарегистрированный `Link` (Inertia). Сохраняет локальный стейт страницы. |
 | per_page | number | `undefined` | Выбранное кол-во элементов на странице. |
 | from | number | `undefined` | Начальный индекс (для надписи «Показано X-Y из Z»). |
 | to | number | `undefined` | Конечный индекс. |

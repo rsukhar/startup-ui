@@ -8,7 +8,7 @@
 
 - **Vue** ≥ 3.5
 - **@vueuse/core** ≥ 14
-- **@inertiajs/vue3** 2.x или 3.x (нужен для `SForm`, `SUpload` и Inertia-ссылок)
+- **@inertiajs/vue3** 2.x или 3.x — теперь **опционально** (см. [п.6](#_6-inertiajs-стала-опциональной)): нужен, только если регистрируете его `router`/`Link`
 
 ## 1. Локаль по умолчанию — английская
 
@@ -53,20 +53,32 @@ import 'startup-ui/defaults.css';
 
 Группа чекбоксов теперь отдаёт новый массив через `update:modelValue` (раньше мутировала по ссылке). Если использовали обходные deep-watch или ручную кнопку Save из-за «неловящегося» изменения — это больше не нужно.
 
-## 6. SFilterGroup `bind-to-query`: Inertia больше не используется автоматически
+## 6. InertiaJS стала опциональной
 
-`SFilterGroup` отвязан от InertiaJS — в «чистом» виде он не требует роутера и синхронизирует URL через History API. Раньше `bind-to-query` всегда делал Inertia-визит (`router.get`) для серверного рефетча; теперь это поведение **опционально** и включается регистрацией роутера.
+Библиотека больше не импортирует InertiaJS статически. Компоненты, которым нужна SPA-навигация, берут роутер и компонент-ссылку из конфигурации плагина; если они не переданы — работают на нативных `<a>` / History API / `window.location`.
 
-**Что сделать:** если используете `bind-to-query` и нужен серверный рефетч (Inertia-визит), зарегистрируйте роутер один раз при подключении плагина:
+Затронуты:
+- **SForm** — декларативный сабмит (`action`/`method`) через `router.visit`;
+- **SPagination** — смена perPage (`router.get`) и ссылки страниц (`Link`);
+- **SFilterGroup** — `bind-to-query` (`router.get`);
+- **SDropdownMenu / SHorizontalMenu / SVerticalMenu** — ссылки пунктов меню (`Link`).
+
+**Что сделать:** если используете Inertia, зарегистрируйте `router` и `Link` один раз при подключении плагина:
 
 ```js
 import StartupUI from 'startup-ui';
-import { router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 
-app.use(StartupUI, { router });
+app.use(StartupUI, {
+    router,        // SForm-сабмит, SPagination, SFilterGroup (bind-to-query)
+    link: Link,    // ссылки в меню и пагинации
+});
 ```
 
-Без регистрации `bind-to-query` продолжит работать, но только синхронизирует GET-параметры в URL (без обращения к серверу).
+Без регистрации:
+- ссылки меню/пагинации рендерятся как обычные `<a>` (полная навигация);
+- `bind-to-query` синхронизирует URL через History API (без серверного рефетча);
+- декларативный сабмит `SForm` (`action`/`method`) недоступен — используйте событие `@submit`.
 
 ## Изменения API (обратносовместимые)
 
