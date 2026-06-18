@@ -10,11 +10,6 @@
             <li>SUpload сразу работает в связке с SForm, что позволяет использовать его так же просто, как простые текстовые SInput, не задумываясь о том, как связывать данные с формой.</li>
         </ol>
     </SToggle>
-    <SToggle title="Что будет ценно улучшить">
-        <ol>
-            <li>В max-file-size добавить возможность поддержки человекочитаемых форматов типа 2M, а не в байтах.</li>
-        </ol>
-    </SToggle>
 </SToggleGroup>
 
 ## Базовый пример
@@ -160,12 +155,12 @@ const screenshot = ref(null)
 ```
 :::
 
-Для ограничения выбора по размеру файла добавляем атрибут <strong>max-file-size</strong> (в байтах):
+Для ограничения выбора по размеру файла добавляем атрибут <strong>max-file-size</strong>. Можно указывать человекочитаемо (`2M`, `512K`, `1.5GB` — единицы 1024-кратные, как в php.ini) или числом в байтах:
 
 :::demo
 ```vue
 <template>
-    <SUpload v-model="screenshot" :max-file-size="512000" />
+    <SUpload v-model="screenshot" max-file-size="500K" />
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -173,7 +168,7 @@ const screenshot = ref(null)
 </script>
 ```
 ```vue
-<SUpload v-model="screenshot" :max-file-size="512000" />
+<SUpload v-model="screenshot" max-file-size="500K" />
 ```
 :::
 
@@ -202,7 +197,7 @@ const screenshots = ref([])
 |----------|-----|--------------|----------|
 | v-model | `any \| any[]` | `null` | Выбранный файл (объект File или строка) или массив файлов. |
 | accept | `string` | `undefined` | Допустимые типы файлов (напр. `.jpg,.png`). |
-| max-file-size | `number` | `undefined` | Максимальный размер файла в байтах. |
+| max-file-size | `number \| string` | `undefined` | Максимальный размер файла: в байтах (число) или человекочитаемо (`2M`, `512K`, `1.5GB`). |
 | multiple | `boolean` | `false` | Позволяет выбирать несколько файлов. |
 | upload-button-title | `string` | `'Выбрать файл(ы)'` | Текст на кнопке выбора (если не используется слот `header`). |
 

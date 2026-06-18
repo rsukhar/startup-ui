@@ -36,7 +36,8 @@ import { t } from '../locale';
 export interface SUploadProps {
     url?: string;
     accept?: string;
-    maxFileSize?: number;
+    /** Maximum file size: bytes (number) or a human-readable string like '2M', '512K', '1.5GB' */
+    maxFileSize?: number | string;
     multiple?: boolean;
     uploadButtonTitle?: string;
 }
@@ -52,6 +53,19 @@ const fileInput = useTemplateRef<HTMLInputElement>('fileInput');
 
 // Text shown on the select button. If not explicitly set, depends on whether we select a single file or multiple
 const finalUploadButtonTitle = computed(() => props.uploadButtonTitle ?? (props.multiple ? t('upload.selectFiles') : t('upload.selectFile')));
+
+// Parse the max file size into bytes. A number is taken as-is (bytes); a string supports
+// human-readable units K/M/G/T (1024-based, like PHP ini), with an optional trailing 'B' —
+// e.g. '2M', '512K', '1.5GB', '2 MB'. Unrecognized strings disable the limit.
+function parseFileSize(size: number | string | undefined): number | undefined {
+    if (size == null || size === '') return undefined;
+    if (typeof size === 'number') return size;
+    const match = String(size).trim().match(/^([\d.]+)\s*([KMGT]?)B?$/i);
+    if (!match) return undefined;
+    const factor: Record<string, number> = { '': 1, K: 1024, M: 1024 ** 2, G: 1024 ** 3, T: 1024 ** 4 };
+    return parseFloat(match[1]) * (factor[match[2].toUpperCase()] ?? 1);
+}
+const maxFileSizeBytes = computed(() => parseFileSize(props.maxFileSize));
 
 const openFileDialog = () => {
     if (fileInput.value) {
@@ -91,7 +105,7 @@ function select(event: Event | DragEvent) {
 
 function isFileValid(file: File) {
     if (props.accept && !isFileTypeValid(file)) return false;
-    if (props.maxFileSize && file.size > props.maxFileSize) return false;
+    if (maxFileSizeBytes.value && file.size > maxFileSizeBytes.value) return false;
     return true;
 }
 
