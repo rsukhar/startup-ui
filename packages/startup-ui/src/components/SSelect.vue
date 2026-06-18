@@ -390,6 +390,9 @@ onBeforeUnmount(() => {
 .s-select {
     position: relative;
     display: flex;
+    box-sizing: border-box;
+    // Total outer height (incl. border + padding) is bound to --s-field-height
+    height: var(--s-field-height);
     gap: 5px;
     align-items: center;
     color: var(--s-text);
@@ -415,7 +418,9 @@ onBeforeUnmount(() => {
 
     &-field {
         display: flex;
-        padding: 6px 3px 6px 10px;
+        align-items: center;
+        // No vertical padding: the wrapper's fixed height + flex centering position the content
+        padding: 0 3px 0 10px;
         width: 100%;
 
         .selecting > &-filter {
@@ -582,6 +587,8 @@ onBeforeUnmount(() => {
 
     &.inline {
         border: 0;
+        // Inline mode is a borderless trigger (menus/tables) — let it size to content
+        height: auto;
 
         .s-select-field {
             padding: 0;

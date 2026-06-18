@@ -1,5 +1,5 @@
 <template>
-    <div class="s-input" :class="{'has-prefix': hasPrefix, 'has-suffix': hasSuffix, 'clearable': clearable}">
+    <div class="s-input" :class="{'has-prefix': hasPrefix, 'has-suffix': hasSuffix, 'clearable': clearable, 'is-textarea': type === 'textarea'}">
         <span v-if="hasPrefix" class="s-input-prefix">
             <template v-if="prefix">{{ prefix }}</template>
             <slot v-else name="prefix" />
@@ -75,6 +75,8 @@ function handleClear() {
     position: relative;
     display: flex;
     box-sizing: border-box;
+    // Total outer height (incl. border + padding) is bound to --s-field-height for single-line inputs
+    height: var(--s-field-height);
     border: 1px solid var(--s-border);
     border-radius: var(--s-border-radius);
     background-color: var(--s-white);
@@ -85,10 +87,19 @@ function handleClear() {
         border-color: var(--s-primary);
         box-shadow: none;
     }
+    // Textarea is multi-line: keep its natural (rows-driven) height
+    &.is-textarea {
+        height: auto;
+        align-items: stretch;
+    }
+    &.is-textarea &-field {
+        padding: 0.5rem 0.75rem;
+    }
     &-field {
         width: 100%;
         outline: none;
-        padding: 0.5rem 0.75rem;
+        // No vertical padding: the wrapper's fixed height + flex centering position the text
+        padding: 0 0.75rem;
         border: 0;
         background-color: transparent;
         &::placeholder {
@@ -102,10 +113,10 @@ function handleClear() {
         resize: vertical;
     }
     &.has-prefix .s-input-field {
-        padding: 0.5rem 0.5rem 0.5rem 0.1rem;
+        padding: 0 0.5rem 0 0.1rem;
     }
     &.has-suffix .s-input-field {
-        padding: 0.5rem 0.1rem 0.5rem 0.5rem;
+        padding: 0 0.1rem 0 0.5rem;
     }
     .s-input-prefix {
         display: flex;

@@ -439,11 +439,15 @@ const buttonOptions = computed(() => {
     }
 
     &-input {
-        padding: 6px 30px 6px 10px;
+        box-sizing: border-box;
+        // Total outer height (incl. border + padding) is bound to --s-field-height
+        height: var(--s-field-height);
+        align-items: center;
+        // No vertical padding: the fixed height + flex centering position the text
+        padding: 0 30px 0 10px;
         border: 1px solid #ccc;
         border-radius: var(--s-border-radius);
         cursor: pointer;
-        padding-right: 30px;
         position: relative;
 
         input {
