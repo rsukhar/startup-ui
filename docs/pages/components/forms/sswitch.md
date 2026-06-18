@@ -14,7 +14,7 @@
 :::demo
 ```vue
 <template>
-    <SSwitch v-model="checked">Включить</SSwitch>
+    <SSwitch v-model="checked">Значение: {{ checked }}</SSwitch>
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -22,7 +22,7 @@ const checked = ref(false)
 </script>
 ```
 ```vue
-<SSwitch v-model="checked">Включить</SSwitch>
+<SSwitch v-model="checked">Значение: {{ checked }}</SSwitch>
 ```
 :::
 

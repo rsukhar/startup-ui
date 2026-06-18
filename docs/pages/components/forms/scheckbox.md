@@ -17,11 +17,6 @@
             <li>Взаимозаменяемость формата опций с другими выбиралками из вариантов. Это позволяет легко заменять SCheckboxGroup на <a href="/pages/components/forms/sselect.html">SSelect</a> или <a href="/pages/components/forms/sradio.html">SRadioGroup</a>, не трогая бэкенд код.</li>
         </ol>
     </SToggle>
-    <SToggle title="Что будет ценно улучшить">
-        <ol>
-            <li>Отвязаться от Font Awesome, добавляя галочку простейшим SVG.</li>
-        </ol>
-    </SToggle>
 </SToggleGroup>
 
 ## Одиночная галочка

@@ -1,16 +1,20 @@
 <template>
-    <div class="s-select" :class="[{disabled, inline}]" ref="selectRef">
-        <div class="s-select-field" :class="{selecting: areOptionsShown}" @click="showOptions">
+    <div class="s-select" :class="[{disabled, inline}]" ref="selectRef" @keydown="handleKeydown">
+        <div class="s-select-field" ref="fieldRef" :class="{selecting: areOptionsShown}" :tabindex="!filterable && !disabled ? 0 : undefined" @click="showOptions">
             <input v-model="textFilter" v-if="filterable" class="s-select-field-filter" :placeholder="selectLabel" />
             <div v-else class="s-select-field-label">
                 <slot v-if="$slots.value && modelValue" name="value" :value="modelValue" />
                 <template v-else>{{ selectLabel }}</template>
             </div>
             <div v-if="clearable && model" class="s-select-clear" @click.stop.prevent="handleClear">
-                <FontAwesomeIcon icon="xmark" />
+                <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 4 12 12 M12 4 4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
             </div>
             <div class="s-select-dropdown" :class="{rotated: areOptionsShown}">
-                <FontAwesomeIcon class="s-select-dropdown-chevron" icon="chevron-down" />
+                <svg class="s-select-dropdown-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 6 8 10 12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
             </div>
         </div>
         <Teleport to="body">
@@ -20,7 +24,7 @@
                     @scroll="handleScroll">
                     <ul v-if="$slots.option" class="s-select-options-list" :style="{height: totalHeight}">
                         <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
-                            :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
+                            :class="{selected: value === model || !(value || model), active: value === activeValue}" class="s-select-options-item">
                             <slot name="option" :option="{label, value}" />
                         </li>
                     </ul>
@@ -37,7 +41,7 @@
                                     height: itemHeight + 'px'
                                 }"
                                 class="s-select-options-item"
-                                :class="{ selected: value == model }"
+                                :class="{ selected: value == model, active: value === activeValue }"
                                 @click.stop="selectOption(value)"
                             >
                                 <slot v-if="$slots.option" name="option" :option="{label, value}" />
@@ -46,7 +50,7 @@
                         </div>
                         <ul v-else class="s-select-options-list">
                             <li v-for="[value, label] in visibleOptions" :key="value" @click.stop="selectOption(value)"
-                                :class="{selected: value === model || !(value || model)}" class="s-select-options-item">
+                                :class="{selected: value === model || !(value || model), active: value === activeValue}" class="s-select-options-item">
                                 {{ label }}
                             </li>
                         </ul>
@@ -60,7 +64,6 @@
 <script setup lang="ts">
 import { templateRef } from '@vueuse/core';
 import { ref, computed, onMounted, onBeforeUnmount, nextTick, watch, useAttrs } from 'vue';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { t } from '../locale';
 import { normalizeOptions } from '../utils/options';
 
@@ -119,8 +122,14 @@ const visibleOptions = computed(() => {
 
 const areOptionsShown = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
+const scrollContainer = ref<HTMLElement | null>(null);
+const fieldRef = ref<HTMLElement | null>(null);
 const openDirection = ref<string | null>(null);
 const textFilter = ref<string>('');
+
+// Index of the keyboard-highlighted option (into internalOptions)
+const activeIndex = ref(-1);
+const activeValue = computed(() => internalOptions.value[activeIndex.value]?.[0]);
 
 const selectLabel = computed(() => {
     if (model.value === null || model.value === undefined) {
@@ -142,6 +151,9 @@ function handleScroll(e: Event) {
 watch(textFilter, (newTextFilter) => {
     filterOptions();
     emits('filter', newTextFilter);
+    // Reset the keyboard highlight to the first match and reveal the list while typing
+    activeIndex.value = internalOptions.value.length ? 0 : -1;
+    if (newTextFilter && !areOptionsShown.value) openOptions();
 });
 
 /**
@@ -169,6 +181,7 @@ function selectOption(optionValue: any) {
     model.value = optionValue;
     emits('change', optionValue);
     areOptionsShown.value = false;
+    activeIndex.value = -1;
 }
 
 /**
@@ -254,13 +267,109 @@ watch(areOptionsShown, async (shown) => {
     }
 });
 
+function openOptions() {
+    if (props.disabled || areOptionsShown.value) return;
+    areOptionsShown.value = true;
+    // The dropdown is re-created on each open with scrollTop:0, so reset the virtual
+    // window to match — otherwise a stale startIndex renders rows below the viewport
+    // (blank space on top). scrollActiveIntoView() then scrolls to the active row.
+    startIndex.value = 0;
+    // Focus the control so keyboard navigation works even when opened via the chevron
+    focusControl();
+    // Highlight the currently-selected option (or the first one)
+    const selIdx = internalOptions.value.findIndex(([value]) => value == model.value);
+    activeIndex.value = selIdx >= 0 ? selIdx : (internalOptions.value.length ? 0 : -1);
+    scrollActiveIntoView();
+}
+
+// Move focus to the filter input (filterable) or the field itself, so the keydown
+// handler on the root receives arrow/Enter events regardless of where the user clicked.
+function focusControl() {
+    nextTick(() => {
+        const input = fieldRef.value?.querySelector('.s-select-field-filter') as HTMLInputElement | null;
+        (input ?? fieldRef.value)?.focus();
+    });
+}
+
 function showOptions() {
-    areOptionsShown.value = !areOptionsShown.value;
+    if (areOptionsShown.value) {
+        areOptionsShown.value = false;
+    } else {
+        openOptions();
+    }
+}
+
+function moveActive(delta: number) {
+    const len = internalOptions.value.length;
+    if (len === 0) return;
+    activeIndex.value = Math.min(Math.max(activeIndex.value + delta, 0), len - 1);
+    scrollActiveIntoView();
+}
+
+function scrollActiveIntoView() {
+    nextTick(() => {
+        if (props.virtual) {
+            // The actual scroller is the outer .s-select-options (the inner container has
+            // overflow:visible). Scroll it so the highlighted row stays in the visible
+            // window — setting scrollTop also fires handleScroll, which slides the window.
+            const c = dropdownRef.value?.querySelector('.s-select-options') as HTMLElement | null;
+            if (!c) return;
+            // Rough scroll first, to bring the highlighted index into the rendered window
+            const top = activeIndex.value * itemHeight.value;
+            const bottom = top + itemHeight.value;
+            if (top < c.scrollTop) c.scrollTop = top;
+            else if (bottom > c.scrollTop + c.clientHeight) c.scrollTop = bottom - c.clientHeight;
+            // Then fine-adjust against the real rendered row (accounts for padding/borders)
+            nextTick(() => {
+                const el = c.querySelector('.s-select-options-item.active') as HTMLElement | null;
+                if (!el) return;
+                const viewTop = c.getBoundingClientRect().top;
+                const er = el.getBoundingClientRect();
+                if (er.top < viewTop) c.scrollTop -= viewTop - er.top;
+                else if (er.bottom > viewTop + c.clientHeight) c.scrollTop += er.bottom - (viewTop + c.clientHeight);
+            });
+            return;
+        }
+        const el = dropdownRef.value?.querySelector('.s-select-options-item.active') as HTMLElement | null;
+        if (!el) return;
+        // Scroll ONLY the dropdown's own scrollable area — never the page. (Using
+        // el.scrollIntoView() would scroll the window to the teleported list, which
+        // before positioning sits at the end of <body> → the viewport jumps down.)
+        const container = (el.closest('.s-select-options') ?? dropdownRef.value) as HTMLElement;
+        const cRect = container.getBoundingClientRect();
+        const eRect = el.getBoundingClientRect();
+        if (eRect.top < cRect.top) container.scrollTop -= cRect.top - eRect.top;
+        else if (eRect.bottom > cRect.bottom) container.scrollTop += eRect.bottom - cRect.bottom;
+    });
+}
+
+// Keyboard control: ↓ opens / moves down, ↑ moves up, Enter selects, Esc closes
+function handleKeydown(e: KeyboardEvent) {
+    if (props.disabled) return;
+    switch (e.key) {
+        case 'ArrowDown':
+            e.preventDefault();
+            areOptionsShown.value ? moveActive(1) : openOptions();
+            break;
+        case 'ArrowUp':
+            if (areOptionsShown.value) { e.preventDefault(); moveActive(-1); }
+            break;
+        case 'Enter': {
+            if (!areOptionsShown.value) return;
+            const opt = internalOptions.value[activeIndex.value];
+            if (opt) { e.preventDefault(); selectOption(opt[0]); }
+            break;
+        }
+        case 'Escape':
+            areOptionsShown.value = false;
+            break;
+    }
 }
 
 function handleClear() {
     model.value = null;
     emits('change', null);
+    activeIndex.value = -1;
 }
 
 onMounted(() => {
@@ -289,6 +398,14 @@ onBeforeUnmount(() => {
     background-color: var(--s-white);
     cursor: pointer;
     font-family: var(--s-font-family);
+
+    &:focus-within {
+        border-color: var(--s-primary);
+    }
+
+    &-field:focus {
+        outline: none;
+    }
 
     &.disabled {
         cursor: not-allowed;
@@ -338,6 +455,8 @@ onBeforeUnmount(() => {
         transition: transform 0.3s ease;
 
         &-chevron {
+            width: 18px;
+            height: 18px;
             pointer-events: none;
         }
 
@@ -347,10 +466,17 @@ onBeforeUnmount(() => {
     }
 
     &-clear {
-        cursor: pointer;
-        font-weight: 300;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 30px;
-        text-align: center;
+        cursor: pointer;
+        color: var(--s-text-light);
+
+        svg {
+            width: 13px;
+            height: 13px;
+        }
 
         &:hover {
             color: var(--s-primary);
@@ -434,7 +560,8 @@ onBeforeUnmount(() => {
             text-overflow: ellipsis;
             overflow: hidden;
 
-            &:hover {
+            &:hover,
+            &.active {
                 background-color: var(--s-gray);
             }
 
