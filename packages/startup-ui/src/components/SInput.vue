@@ -13,14 +13,15 @@
             <slot v-else name="suffix" />
         </span>
         <span v-if="clearable && hasValue && !disabled" class="s-input-clear" @click="handleClear">
-            <FontAwesomeIcon icon="xmark" />
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 4 12 12 M12 4 4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
         </span>
     </div>
 </template>
 <script setup lang="ts">
 import { computed, useSlots, watch } from "vue";
 import type { StyleValue } from "vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export interface SInputProps {
     modelValue?: number | string | null;
@@ -147,6 +148,10 @@ function handleClear() {
         align-items: center;
         color: var(--s-text-light);
         cursor: pointer;
+        svg {
+            width: 13px;
+            height: 13px;
+        }
         &:hover {
             color: var(--s-primary);
         }

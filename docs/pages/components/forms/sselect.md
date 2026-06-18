@@ -16,12 +16,6 @@
             <li>Взаимозаменяемость формата опций с другими выбиралками из вариантов. Это позволяет легко заменять SSelect на <a href="/pages/components/forms/scheckbox.html">SCheckboxGroup</a> или <a href="/pages/components/forms/sradio.html">SRadioGroup</a>, не трогая бэкенд код.</li>
         </ol>
     </SToggle>
-    <SToggle title="Что будет ценно улучшить">
-        <ol>
-            <li>Добавить управление с клавиатуры: стрелка вниз открывает выпадающий список, стрелки позволяют перемещаться по значениям, а enter позволяет его выбрать. Особенно ценно будет сделать в связке с фильтрацией.</li>
-            <li>Добавить живой реальный пример для блока «Получение значений по API»</li>
-        </ol>
-    </SToggle>
 </SToggleGroup>
 
 ## Классический вариант
@@ -63,37 +57,42 @@ const value = ref(null)
 
 ## Получение значений по API
 
-Список значений можно получать и по API. Этот пример требует бэкенда, поэтому показан кодом (вживую не запускается):
+Список значений можно подгружать по API — в том числе на каждый ввод. Ниже живой пример: варианты приходят с публичного тестового API [DummyJSON](https://dummyjson.com), запрос уходит в обработчике события `@filter`. Начните вводить имя (например, «jo»):
 
-:::example
+:::demo
 ```vue
 <template>
-    <SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
+    <SSelect v-model="value" :options="options" filterable @filter="onFilter" placeholder="Начните вводить имя" />
 </template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-import axios from "axios";
+import { ref, onMounted } from 'vue'
 
-const isLoading = ref(false);
-const selectOptions = ref({});
-const value = ref('');
+const value = ref(null)
+const options = ref([])
 
-function onFilter(query) {
-    isLoading.value = true;
-    axios.post(`/select_options/search`, { query })
-        .then((response) => selectOptions.value = response.data)
-        .finally(() => isLoading.value = false);
+// Подгружаем варианты с публичного тестового API (DummyJSON):
+// при пустом запросе — первые 10, иначе — поиск по введённой строке
+async function load(query = '') {
+    const url = query
+        ? `https://dummyjson.com/users/search?q=${encodeURIComponent(query)}&select=firstName,lastName`
+        : 'https://dummyjson.com/users?limit=10&select=firstName,lastName'
+    const { users } = await (await fetch(url)).json()
+    options.value = users.map(u => [u.id, `${u.firstName} ${u.lastName}`])
 }
+
+// Запрашиваем только непустую строку: при выборе значения фильтр сбрасывается в '',
+// и перезагружать список не нужно — иначе выбранный вариант пропал бы из опций
+const onFilter = (query) => { if (query) load(query) }
+
+onMounted(() => load())
 </script>
 ```
 ```vue
-<SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
+<SSelect v-model="value" :options="options" filterable @filter="onFilter" placeholder="Начните вводить имя" />
 ```
 :::
 
-В данном примере API должно возвращать в data-поле массив {value: title} значений.
+Обработчик `@filter` получает введённую строку; ответ API мы приводим к формату опций (`[[value, title]]` или `{value: title}`) и кладём в `:options`. В реальном проекте запрос обычно стоит дебаунсить.
 
 ## Возможность сброса значения
 

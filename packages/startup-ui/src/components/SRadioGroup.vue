@@ -71,7 +71,7 @@ watch(model, newValue => {
             gap: 0;
             display: inline-flex;
             overflow: hidden;
-            min-height: 32px;
+            min-height: var(--s-field-height);
             flex-wrap: wrap;
             padding: 1px 0 0 1px;
 
@@ -81,7 +81,10 @@ watch(model, newValue => {
 
             label {
                 display: flex;
-                padding: 5px 16px;
+                // No vertical padding: each button's outer height is bound to --s-field-height
+                // and the text is centered via align-items
+                padding: 0 16px;
+                height: var(--s-field-height);
                 text-align: center;
                 align-content: center;
                 justify-content: center;

@@ -249,7 +249,7 @@ function buildInitOptions(): Record<string, any> {
     const baseConfig: Record<string, any> = {
         license_key: 'mit',
         selector: 'textarea',
-        height: props.height ?? 500,
+        height: props.height ?? 300,
         placeholder: props.placeholder || '',
         menubar: props.menubar ?? false,
         body_class: 'g-html',

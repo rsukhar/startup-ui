@@ -66,23 +66,6 @@ const value = ref('')
 ```
 :::
 
-## Плейсхолдер
-
-:::demo
-```vue
-<template>
-    <SInput v-model="value" placeholder="Введите имя" />
-</template>
-<script setup>
-import { ref } from 'vue'
-const value = ref('')
-</script>
-```
-```vue
-<SInput v-model="value" placeholder="Введите имя" />
-```
-:::
-
 ## Префикс / суффикс
 
 Простой текст задаём пропами `prefix` / `suffix`, а для произвольного контента (иконки и т.п.) — одноимёнными слотами:

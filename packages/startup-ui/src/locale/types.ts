@@ -42,6 +42,11 @@ export interface StartupUiMessages {
         notSelected: string;
         /** First day of the week: 0 — Sunday, 1 — Monday */
         firstDay: number;
+        /** 12-hour clock with AM/PM (e.g. en-US). false → 24-hour time */
+        hour12: boolean;
+        /** AM / PM labels (used only on a 12-hour clock) */
+        am: string;
+        pm: string;
     };
     htmlEditor: {
         /** TinyMCE interface language code (requires a language pack). null — do not set (UI stays English) */

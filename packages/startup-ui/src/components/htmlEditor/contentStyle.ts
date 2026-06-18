@@ -88,6 +88,17 @@ export const htmlEditorContentStyle = `        .g-html {
 
         .s-img-bg.s-img-border img {
             border: 1px solid #d1d1d1;
+        }
+
+        /* Placeholder for the empty editor: TinyMCE sets data-mce-placeholder on the body,
+           but the Oxide content CSS that renders it isn't injected into the iframe (content_css
+           is disabled), so the rule is provided here, inside the injected content_style.
+           The ::before inherits the body font/line-height, so it lines up with the first row. */
+        .mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {
+            content: attr(data-mce-placeholder);
+            color: #ccc;
+            position: absolute;
+            cursor: text;
         }`;
 
 /** Order and mapping of block labels to TinyMCE formats (block_formats) */

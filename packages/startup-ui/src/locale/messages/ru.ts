@@ -41,6 +41,9 @@ const ru: StartupUiMessages = {
         months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
         notSelected: 'Дата не выбрана',
         firstDay: 1,
+        hour12: false,
+        am: 'AM',
+        pm: 'PM',
     },
     htmlEditor: {
         language: null,

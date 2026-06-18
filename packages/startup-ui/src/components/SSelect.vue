@@ -422,6 +422,9 @@ onBeforeUnmount(() => {
         // No vertical padding: the wrapper's fixed height + flex centering position the content
         padding: 0 3px 0 10px;
         width: 100%;
+        // Allow the field to shrink inside a narrow container (e.g. the time selects in
+        // SDatePicker) so the chevron stays inside the box instead of overflowing
+        min-width: 0;
 
         .selecting > &-filter {
             &::placeholder {
@@ -436,6 +439,9 @@ onBeforeUnmount(() => {
             cursor: text;
             border-radius: var(--s-border-radius);
             flex-grow: 1;
+            // Override the input's intrinsic min-width so it shrinks to fit a narrow select
+            min-width: 0;
+            width: 0;
 
             &::placeholder {
                 color: var(--s-text);

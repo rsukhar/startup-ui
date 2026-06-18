@@ -18,6 +18,7 @@
     <SHtmlEditor v-model="content1" upload-url="/image/upload" />
 </div>
 
+:::example
 ```vue
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" />
@@ -30,6 +31,10 @@ import { SHtmlEditor } from 'startup-ui';
 const content = ref('');
 </script>
 ```
+```vue
+<SHtmlEditor v-model="content" upload-url="/image/upload" />
+```
+:::
 
 ## Плейсхолдер
 
@@ -37,6 +42,7 @@ const content = ref('');
     <SHtmlEditor v-model="content2" upload-url="/image/upload" placeholder="Введите контент" />
 </div>
 
+:::example
 ```vue
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
@@ -49,18 +55,23 @@ import { SHtmlEditor } from 'startup-ui';
 const content = ref('');
 </script>
 ```
+```vue
+<SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
+```
+:::
 
 ## Высота редактора
 
-По умолчанию высота равна 500px. Можно изменить через проп `height`.
+По умолчанию высота равна 300px. Изменить её можно пропом `height` — например, увеличить до 500px:
 
 <div class="docs-container">
-    <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="300" />
+    <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="500" />
 </div>
 
+:::example
 ```vue
 <template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
+    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="500" />
 </template>
 
 <script setup>
@@ -70,32 +81,36 @@ import { SHtmlEditor } from 'startup-ui';
 const content = ref('');
 </script>
 ```
+```vue
+<SHtmlEditor v-model="content" upload-url="/image/upload" :height="500" />
+```
+:::
 
 ## Расширяемость
 
 Конфигурацию TinyMCE можно глубоко переопределить пропом `init` (глубокий merge в дефолты). Поле `setup` композируется с библиотечным (вызывается после него и не затирает обёртку картинок), а `plugins` объединяются с базовыми.
 
+:::example
 ```vue
-<template>
-    <SHtmlEditor
-        v-model="content"
-        upload-url="/image/upload"
-        :plugins="['wordcount']"
-        toolbar="blocks | bold italic | link image | fullscreen code"
-        :header-offset="60"
-        :init="{
-            setup(editor) {
-                // напр. кастомная кнопка «вставить шаблон ответа техподдержки»
-                editor.ui.registry.addButton('reply', {
-                    text: 'Шаблон',
-                    onAction: () => editor.insertContent('<p>Здравствуйте! </p>'),
-                });
-            },
-        }"
-        @init="onEditorInit"
-    />
-</template>
+<SHtmlEditor
+    v-model="content"
+    upload-url="/image/upload"
+    :plugins="['wordcount']"
+    toolbar="blocks | bold italic | link image | fullscreen code"
+    :header-offset="60"
+    :init="{
+        setup(editor) {
+            // напр. кастомная кнопка «вставить шаблон ответа техподдержки»
+            editor.ui.registry.addButton('reply', {
+                text: 'Шаблон',
+                onAction: () => editor.insertContent('<p>Здравствуйте! </p>'),
+            });
+        },
+    }"
+    @init="onEditorInit"
+/>
 ```
+:::
 
 - `header-offset` (или CSS-переменная `--s-header-height`) задаёт смещение шапки для корректного fullscreen.
 - `content-style` добавляется к базовым стилям контента, `content-css` подключает внешние стили.
@@ -110,7 +125,7 @@ const content = ref('');
 | v-model | `string` | `undefined` | HTML-содержимое редактора. |
 | upload-url | `string` | `undefined` | URL для загрузки изображений на сервер. |
 | placeholder | `string` | `''` | Текст-заполнитель, когда редактор пуст. |
-| height | `number` | `500` | Высота редактора, px. |
+| height | `number` | `300` | Высота редактора, px. |
 | media | `boolean` | `false` | Включить плагин медиа (видео-эмбеды). |
 | plugins | `string[]` | `[]` | Доп. плагины TinyMCE (объединяются с базовыми). |
 | toolbar | `string` | (дефолтный) | Переопределение тулбара. |

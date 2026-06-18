@@ -41,6 +41,9 @@ const en: StartupUiMessages = {
         months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         notSelected: 'No date selected',
         firstDay: 1,
+        hour12: false,
+        am: 'AM',
+        pm: 'PM',
     },
     htmlEditor: {
         language: null,
