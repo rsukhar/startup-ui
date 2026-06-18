@@ -12,31 +12,25 @@
 ## Базовый пример
 
 
-<div class="docs-container">
-<SButton @click="deleteUser">Удалить пользователя</SButton>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SButton @click="deleteUser">Удалить пользователя</SButton>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SButton @click="deleteUser">Удалить пользователя</SButton>
 </template>
 
 <script setup>
-import { SConfirm,  SAlert, SButton } from 'startup-ui';
+import { SConfirm, SAlert } from 'startup-ui'
 
-function deleteUser(){
-  SConfirm.open('Вы действительно хотите удалить пользователя?', {
-    title: 'Подтверждение удаления',
-    onAccept: () => SAlert.success('Пользователь удален')
-  });
+function deleteUser() {
+    SConfirm.open('Вы действительно хотите удалить пользователя?', {
+        title: 'Подтверждение удаления',
+        onAccept: () => SAlert.success('Пользователь удален')
+    })
 }
 </script>
+```
+```vue
+<SButton @click="deleteUser">Удалить пользователя</SButton>
 ```
 :::
 
@@ -60,20 +54,6 @@ function deleteUser(){
 | cancelLabel | string | `'Нет'` | Текст кнопки отмены. |
 | onAccept | function | `() => {}` | Коллбэк при нажатии кнопки подтверждения. |
 | onCancel | function | `() => {}` | Коллбэк при нажатии кнопки отмены или фонового оверлея. |
-
-<script setup>
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import { SConfirm } from '../../../../packages/startup-ui/src/components/SConfirm';
-import { SAlert } from '../../../../packages/startup-ui/src/components/SAlert';
-import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
-
-function deleteUser(){
-  SConfirm.open('Вы действительно хотите удалить пользователя?', {
-    title: 'Подтверждение удаления',
-    onAccept: () => SAlert.success('Пользователь удален'),
-  });
-}
-</script>
 
 <style lang="scss">
 .s-confirm {

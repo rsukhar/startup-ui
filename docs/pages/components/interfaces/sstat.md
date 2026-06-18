@@ -7,66 +7,34 @@
 ## Базовый пример
 
 
-<div class="docs-container">
-<SStat title="Кол-во платежей">112</SStat>
-<SStat title="Сумма платежей">777 000 ₽</SStat>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SStat title="Кол-во платежей">112</SStat>
-    <SStat title="Сумма платежей">777 000 ₽</SStat>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SStat title="Кол-во платежей">112</SStat>
     <SStat title="Сумма платежей">777 000 ₽</SStat>
 </template>
 
 <script setup>
-import { SStat } from 'startup-ui';
+import { SStat } from 'startup-ui'
 </script>
+```
+```vue
+<SStat title="Кол-во платежей">112</SStat>
+<SStat title="Сумма платежей">777 000 ₽</SStat>
 ```
 :::
 
 ## Кастомный заголовок
 
 
-<div class="docs-container">
+:::demo
+```vue
 <SStat>
     <template #title>
         Сумма платежей <STooltip>За выбранный период</STooltip>
     </template>
     777 000 ₽
 </SStat>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SStat>
-        <template #title>
-            Сумма платежей <STooltip>За выбранный период</STooltip>
-        </template>
-        777 000 ₽
-    </SStat>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SStat>
-        <template #title>
-            Сумма платежей <STooltip>За выбранный период</STooltip>
-        </template>
-        777 000 ₽
-    </SStat>
-</template>
-
-<script setup>
-import { SStat, STooltip } from 'startup-ui';
-</script>
 ```
 :::
 
@@ -74,9 +42,10 @@ import { SStat, STooltip } from 'startup-ui';
 
 С помощью логических (boolean) свойств можно изменить внешний вид строки:
 
+:::demo
 ```vue
 <template>
-    <!-- Крупный текст значения -->
+    <!-- large — крупный текст значения -->
     <SStat title="Выручка" large>777 000 ₽</SStat>
 
     <!-- nowrap запрещает перенос текста, обрезая его многоточием -->
@@ -85,7 +54,22 @@ import { SStat, STooltip } from 'startup-ui';
     <!-- wide выравнивает заголовок и значение по краям (space-between) -->
     <SStat title="Элементы" wide>10</SStat>
 </template>
+
+<script setup>
+import { SStat } from 'startup-ui'
+</script>
 ```
+```vue
+<!-- large — крупный текст значения -->
+<SStat title="Выручка" large>777 000 ₽</SStat>
+
+<!-- nowrap запрещает перенос текста, обрезая его многоточием -->
+<SStat title="Описание" nowrap>Очень длинное описание, которое может не поместиться...</SStat>
+
+<!-- wide выравнивает заголовок и значение по краям (space-between) -->
+<SStat title="Элементы" wide>10</SStat>
+```
+:::
 
 ## Интерфейс компонента
 
@@ -106,10 +90,8 @@ import { SStat, STooltip } from 'startup-ui';
 | default | Основное содержимое для значения статистики. Имеет приоритет над атрибутом `value`. |
 | title | Для кастомного заголовка (например, с иконками или тултипами). Имеет приоритет над атрибутом `title`. |
 
-<script setup>
+<script setup lang="ts">
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SStat from '../../../../packages/startup-ui/src/components/SStat.vue';
-import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';
 </script>
 
 <style lang="scss" scoped>

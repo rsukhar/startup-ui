@@ -7,72 +7,54 @@
 ## Базовый пример
 
 
-<div class="docs-container block">
-<SCopyText>ABCD-EFGH-1234-5678</SCopyText>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SCopyText>ABCD-EFGH-1234-5678</SCopyText>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 </template>
 
 <script setup>
-import { SCopyText } from 'startup-ui';
+import { SCopyText } from 'startup-ui'
 </script>
+```
+```vue
+<SCopyText>ABCD-EFGH-1234-5678</SCopyText>
 ```
 :::
 
 ## Внутристрочный пример
 
 
-<div class="docs-container" style="display:block;">
-<SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
 </template>
 
 <script setup>
-import SCopyText from 'startup-ui';
+import { SCopyText } from 'startup-ui'
 </script>
+```
+```vue
+<SCopyText layout="inline">Секретный код для копирования</SCopyText> в обычном тексте.
 ```
 :::
 
 ## Копируем не то, что выводим
 
 
-<div class="docs-container block">
-    <SCopyText copytext="777">Секретный код: 777</SCopyText>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SCopyText copytext="777">Секретный код: 777</SCopyText>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SCopyText copytext="777">Секретный код: 777</SCopyText>
 </template>
 
 <script setup>
-import SCopyText from 'startup-ui';
+import { SCopyText } from 'startup-ui'
 </script>
+```
+```vue
+<SCopyText copytext="777">Секретный код: 777</SCopyText>
 ```
 :::
 
@@ -92,9 +74,8 @@ import SCopyText from 'startup-ui';
 |----------|----------|
 | default | Текстовое содержимое, отображаемое пользователю. |
 
-<script setup>
+<script setup lang="ts">
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SCopyText from '../../../../packages/startup-ui/src/components/SCopyText.vue';
 </script>
 
 <style lang="scss">

@@ -4,26 +4,22 @@
 
 ## Базовый пример
 
-<div class="docs-container">
-    <div class="menu-container">
-        <SHorizontalMenu :links="menuLinks" />
-    </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SHorizontalMenu :links="menuLinks" />
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SHorizontalMenu :links="menuLinks" />
 </template>
 
 <script setup>
-import { SHorizontalMenu } from 'startup-ui';
+const menuLinks = [
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
+    { label: 'Пользователи', url: '#', active: true }
+]
 </script>
+```
+```vue
+<SHorizontalMenu :links="menuLinks" />
 ```
 :::
 
@@ -53,26 +49,3 @@ import { SHorizontalMenu } from 'startup-ui';
 | className | string | Кастомные CSS классы для обертки пункта. |
 | stat | string \| number | Значение для бейджа со статистикой (требует доп. стилизации). |
 | children | `SHorizontalMenuLink[]` | Массив дочерних ссылок (подменю). |
-
-<script setup>
-import SHorizontalMenu from '../../../../packages/startup-ui/src/components/SHorizontalMenu.vue';
-
-const menuLinks = [
-    { label: 'Заказы', url: '#' },
-    { label: 'Страницы', url: '#' },
-    { label: 'Пользователи', url: '#', active: true }
-];
-</script>
-
-<style lang="scss">
-.menu-container {
-    display: flex;
-    line-height: 60px;
-    background-color: var(--s-bg-gradient-light);
-}
-
-a.s-horizontalmenu-label {
-    color: var(--s-white) !important;
-    text-decoration: none;
-}
-</style>

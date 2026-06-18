@@ -124,4 +124,10 @@ provide('titlesAtLeft', props.titlesAtLeft);
         }
     }
 }
+
+@keyframes button-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
 </style>

@@ -24,13 +24,7 @@
     <SHtmlEditor v-model="content1" upload-url="/image/upload" />
 </div>
 
-:::code-group
-```vue [Пример]
-<template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" />
-</template>
-```
-```vue [Весь код]
+```vue
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" />
 </template>
@@ -39,10 +33,9 @@
 import { ref } from 'vue';
 import { SHtmlEditor } from 'startup-ui';
 
-const content = ref(false);
+const content = ref('');
 </script>
 ```
-:::
 
 ## Плейсхолдер
 
@@ -50,13 +43,7 @@ const content = ref(false);
     <SHtmlEditor v-model="content2" upload-url="/image/upload" placeholder="Введите контент" />
 </div>
 
-:::code-group
-```vue [Пример]
-<template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
-</template>
-```
-```vue [Весь код]
+```vue
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" placeholder="Введите контент" />
 </template>
@@ -65,10 +52,9 @@ const content = ref(false);
 import { ref } from 'vue';
 import { SHtmlEditor } from 'startup-ui';
 
-const content = ref(false);
+const content = ref('');
 </script>
 ```
-:::
 
 ## Высота редактора
 
@@ -78,22 +64,18 @@ const content = ref(false);
     <SHtmlEditor v-model="content3" upload-url="/image/upload" :height="300" />
 </div>
 
-:::code-group
-```vue [Пример]
+```vue
 <template>
     <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SHtmlEditor v-model="content" upload-url="/image/upload" :height="300" />
-</template>
+
 <script setup>
 import { ref } from 'vue';
 import { SHtmlEditor } from 'startup-ui';
+
+const content = ref('');
 </script>
 ```
-:::
 
 ## Расширяемость
 

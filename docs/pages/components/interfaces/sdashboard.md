@@ -9,45 +9,32 @@
 ## Базовый пример
 
 
-<div class="docs-container">
-<SDashboard>
-  <SDashboardItem title="Продажи">
-    Информация о продажах.
-  </SDashboardItem>
-  <SDashboardItem title="Списания за услуги">
-    Информация о стоимости услуг.
-  </SDashboardItem>
-</SDashboard>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SDashboard>
-      <SDashboardItem title="Продажи">
-        Информация о продажах.
-      </SDashboardItem>
-      <SDashboardItem title="Списания за услуги">
-        Информация о стоимости услуг.
-      </SDashboardItem>
-    </SDashboard>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SDashboard>
-      <SDashboardItem title="Продажи">
-        Информация о продажах.
-      </SDashboardItem>
-      <SDashboardItem title="Списания за услуги">
-        Информация о стоимости услуг.
-      </SDashboardItem>
+        <SDashboardItem title="Продажи">
+            Информация о продажах.
+        </SDashboardItem>
+        <SDashboardItem title="Списания за услуги">
+            Информация о стоимости услуг.
+        </SDashboardItem>
     </SDashboard>
 </template>
 
 <script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
+import { SDashboard, SDashboardItem } from 'startup-ui'
 </script>
+```
+```vue
+<SDashboard>
+    <SDashboardItem title="Продажи">
+        Информация о продажах.
+    </SDashboardItem>
+    <SDashboardItem title="Списания за услуги">
+        Информация о стоимости услуг.
+    </SDashboardItem>
+</SDashboard>
 ```
 :::
 
@@ -55,43 +42,16 @@ import { SDashboardItem, SDashboard } from 'startup-ui';
 
 Если текста не достаточно, то для заголовка можно использовать слот:
 
-<div class="docs-container">
+:::demo
+```vue
 <SDashboard>
     <SDashboardItem>
         <template #title>
             Продажи <STooltip>Только с подписанными актами</STooltip>
         </template>
         Информация о продажах.
-  </SDashboardItem>
-</SDashboard>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDashboardItem>
-        <template #title>
-            Продажи <STooltip>Только с подписанными актами</STooltip>
-        </template>
-        Информация о продажах.
     </SDashboardItem>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SDashboard>
-        <SDashboardItem>
-            <template #title>
-                Продажи <STooltip>Только с подписанными актами</STooltip>
-            </template>
-            Информация о продажах.
-        </SDashboardItem>
-    </SDashboard>
-</template>
-
-<script setup>
-import { SDashboardItem, SDashboard, STooltip} from 'startup-ui';
-</script>
+</SDashboard>
 ```
 :::
 
@@ -99,45 +59,16 @@ import { SDashboardItem, SDashboard, STooltip} from 'startup-ui';
 
 Справа от заголовка часто бывает сподручно разместить дополнительную ссылку или что-то ещё. Сделать это можно в слоте #extra:
 
-<div class="docs-container">
+:::demo
+```vue
 <SDashboard>
-  <SDashboardItem title="Мой тариф">
-    <template #extra>
-      <a href="/docs/plans/">Как работают тарифы?</a>
-    </template>
-    Описание работы тарифов
-  </SDashboardItem>
+    <SDashboardItem title="Мой тариф">
+        <template #extra>
+            <a href="/docs/plans/">Как работают тарифы?</a>
+        </template>
+        Описание работы тарифов
+    </SDashboardItem>
 </SDashboard>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDashboard>
-        <SDashboardItem title="Мой тариф">
-            <template #extra>
-            <Link href="/docs/plans/">Как работают тарифы?</Link>
-            </template>
-            Описание работы тарифов
-        </SDashboardItem>
-    </SDashboard>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SDashboard>
-        <SDashboardItem title="Мой тариф">
-            <template #extra>
-            <Link href="/docs/plans/">Как работают тарифы?</Link>
-            </template>
-            Описание работы тарифов
-        </SDashboardItem>
-    </SDashboard>
-</template>
-
-<script setup>
-import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
-</script>
 ```
 :::
 
@@ -145,34 +76,26 @@ import { SDashboardItem, SDashboard, STooltip } from 'startup-ui';
 
 Иногда динамически генерируемый контент внутри SDashboardItem может превращаться в длинную простыню. Чтобы не занимать большое пространство подобным блоком, такой контент можно ограничить по высоте, и в случае превышения в блоке появится свой внутренний горизонтальный скролл.
 
-<div class="docs-container">
-<SDashboard>
-  <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
-    ...
-  </SDashboardItem>
-</SDashboard>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
-    ...
-    </SDashboardItem>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SDashboard>
-      <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
-        ...
-      </SDashboardItem>
+        <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
+            ...
+        </SDashboardItem>
     </SDashboard>
 </template>
 
 <script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
+import { SDashboard, SDashboardItem } from 'startup-ui'
 </script>
+```
+```vue
+<SDashboard>
+    <SDashboardItem title="Регистрации пользователей" :max-content-height="300">
+        ...
+    </SDashboardItem>
+</SDashboard>
 ```
 :::
 
@@ -180,37 +103,28 @@ import { SDashboardItem, SDashboard } from 'startup-ui';
 
 По умолчанию блоки идут в самом светлом цвете акцента, но при необходимости можно использовать кастомные выделения цветом:
 
-<div class="docs-container">
-<SDashboard>
-  <SDashboardItem title="Обычный блок" />
-  <SDashboardItem gray title="Серый блок" />
-  <SDashboardItem green title="Зеленый блок" />
-  <SDashboardItem red title="Красный блок" />
-</SDashboard>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDashboardItem title="Обычный блок" />
-    <SDashboardItem gray title="Серый блок" />
-    <SDashboardItem green title="Зеленый блок" />
-    <SDashboardItem red title="Красный блок" />
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SDashboard>
-      <SDashboardItem title="Обычный блок" />
-      <SDashboardItem gray title="Серый блок" />
-      <SDashboardItem green title="Зеленый блок" />
-      <SDashboardItem red title="Красный блок" />
+        <SDashboardItem title="Обычный блок" />
+        <SDashboardItem gray title="Серый блок" />
+        <SDashboardItem green title="Зеленый блок" />
+        <SDashboardItem red title="Красный блок" />
     </SDashboard>
 </template>
 
 <script setup>
-import { SDashboardItem, SDashboard } from 'startup-ui';
+import { SDashboard, SDashboardItem } from 'startup-ui'
 </script>
+```
+```vue
+<SDashboard>
+    <SDashboardItem title="Обычный блок" />
+    <SDashboardItem gray title="Серый блок" />
+    <SDashboardItem green title="Зеленый блок" />
+    <SDashboardItem red title="Красный блок" />
+</SDashboard>
 ```
 :::
 
@@ -240,11 +154,8 @@ _Нет свойств. Это просто контейнер для оберт
 | title | Заменяет строковый заголовок (`title`) на кастомный HTML/компоненты. |
 | extra | Контейнер с правой стороны заголовка, полезен для ссылок или кнопок действий. |
 
-<script setup>
+<script setup lang="ts">
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SDashboard from '../../../../packages/startup-ui/src/components/SDashboard.vue';
-import SDashboardItem from '../../../../packages/startup-ui/src/components/SDashboardItem.vue';
-import STooltip from '../../../../packages/startup-ui/src/components/STooltip.vue';
 </script>
 
 <style lang="scss">

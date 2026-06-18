@@ -12,21 +12,8 @@
 
 ## Базовый пример
 
-<div class="docs-container" style="flex-direction: row; gap: 20px; flex-wrap: wrap; align-items: center">
-    <SStatus color="green" icon="check">Работает</SStatus>
-    <SStatus color="red-dark" icon="triangle-exclamation">Остановлен</SStatus>
-    <SStatus color="text-light" icon="pause">Не запущен</SStatus>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SStatus color="green" icon="check">Работает</SStatus>
-    <SStatus color="red-dark" icon="triangle-exclamation">Остановлен</SStatus>
-    <SStatus color="text-light" icon="pause">Не запущен</SStatus>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SStatus color="green" icon="check">Работает</SStatus>
     <SStatus color="red-dark" icon="triangle-exclamation">Остановлен</SStatus>
@@ -34,8 +21,13 @@
 </template>
 
 <script setup>
-import { SStatus } from 'startup-ui';
+import { SStatus } from 'startup-ui'
 </script>
+```
+```vue
+<SStatus color="green" icon="check">Работает</SStatus>
+<SStatus color="red-dark" icon="triangle-exclamation">Остановлен</SStatus>
+<SStatus color="text-light" icon="pause">Не запущен</SStatus>
 ```
 :::
 
@@ -43,37 +35,8 @@ import { SStatus } from 'startup-ui';
 
 Помимо иконок можно кастомизировать цвет статуса по стандартной палитре цветов:
 
-<div class="docs-container" style="flex-direction: row; gap: 20px; flex-wrap: wrap; align-items: center">
-    <SStatus color="text" icon="check">text</SStatus>
-    <SStatus color="text-light" icon="check">text-light</SStatus>
-    <SStatus color="primary" icon="check">primary</SStatus>
-    <SStatus color="primary-dark" icon="check">primary-dark</SStatus>
-    <SStatus color="primary-darkest" icon="check">primary-darkest</SStatus>
-    <SStatus color="red" icon="check">red</SStatus>
-    <SStatus color="red-dark" icon="check">red-dark</SStatus>
-    <SStatus color="yellow" icon="check">yellow</SStatus>
-    <SStatus color="yellow-dark" icon="check">yellow-dark</SStatus>
-    <SStatus color="green" icon="check">green</SStatus>
-    <SStatus color="green-dark" icon="check">green-dark</SStatus>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SStatus color="text" icon="check">text</SStatus>
-    <SStatus color="text-light" icon="check">text-light</SStatus>
-    <SStatus color="primary" icon="check">primary</SStatus>
-    <SStatus color="primary-dark" icon="check">primary-dark</SStatus>
-    <SStatus color="primary-darkest" icon="check">primary-darkest</SStatus>
-    <SStatus color="red" icon="check">red</SStatus>
-    <SStatus color="red-dark" icon="check">red-dark</SStatus>
-    <SStatus color="yellow" icon="check">yellow</SStatus>
-    <SStatus color="yellow-dark" icon="check">yellow-dark</SStatus>
-    <SStatus color="green" icon="check">green</SStatus>
-    <SStatus color="green-dark" icon="check">green-dark</SStatus>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SStatus color="text" icon="check">text</SStatus>
     <SStatus color="text-light" icon="check">text-light</SStatus>
@@ -89,8 +52,21 @@ import { SStatus } from 'startup-ui';
 </template>
 
 <script setup>
-import { SStatus } from 'startup-ui';
+import { SStatus } from 'startup-ui'
 </script>
+```
+```vue
+<SStatus color="text" icon="check">text</SStatus>
+<SStatus color="text-light" icon="check">text-light</SStatus>
+<SStatus color="primary" icon="check">primary</SStatus>
+<SStatus color="primary-dark" icon="check">primary-dark</SStatus>
+<SStatus color="primary-darkest" icon="check">primary-darkest</SStatus>
+<SStatus color="red" icon="check">red</SStatus>
+<SStatus color="red-dark" icon="check">red-dark</SStatus>
+<SStatus color="yellow" icon="check">yellow</SStatus>
+<SStatus color="yellow-dark" icon="check">yellow-dark</SStatus>
+<SStatus color="green" icon="check">green</SStatus>
+<SStatus color="green-dark" icon="check">green-dark</SStatus>
 ```
 :::
 
@@ -109,10 +85,6 @@ import { SStatus } from 'startup-ui';
 |----------|----------|
 | default | Текстовое содержимое, отображаемое рядом с иконкой. |
 
-<script setup>
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SStatus from '../../../../packages/startup-ui/src/components/SStatus.vue';
-</script>
 <style lang="scss">
 .row {
     display: flex;

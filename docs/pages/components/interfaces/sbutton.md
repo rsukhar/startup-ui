@@ -16,163 +16,108 @@
 
 ### Основной цвет
 
-<div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
+:::demo
+```vue
+<template>
     <SButton>Основное действие</SButton>
     <SButton outlined>Дополнительное действие</SButton>
     <SButton transparent>Прозрачная кнопка</SButton>
     <SButton disabled>Недоступная кнопка</SButton>
     <SButton small>Маленькая кнопка</SButton>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SButton>Основное действие</SButton>
-    <SButton outlined>Дополнительное действие</SButton>
-    <SButton transparent>Прозрачная кнопка</SButton>
-    <SButton disabled>Заблокированная кнопка</SButton>
-    <SButton small>Маленькая кнопка</SButton>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SButton>Основное действие</SButton>
-    <SButton outlined>Дополнительное действие</SButton>
-    <SButton transparent>Прозрачная кнопка</SButton>
-    <SButton disabled>Заблокированная кнопка</SButton>
-    <SButton small>Маленькая кнопка</SButton>
 </template>
 
 <script setup>
-import { SButton } from 'startup-ui';
+import { SButton } from 'startup-ui'
 </script>
+```
+```vue
+<SButton>Основное действие</SButton>
+<SButton outlined>Дополнительное действие</SButton>
+<SButton transparent>Прозрачная кнопка</SButton>
+<SButton disabled>Недоступная кнопка</SButton>
+<SButton small>Маленькая кнопка</SButton>
 ```
 :::
 
 ### Красная кнопка
 
-<div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
+:::demo
+```vue
+<template>
     <SButton color="red">Основное действие</SButton>
     <SButton outlined color="red">Дополнительное действие</SButton>
     <SButton transparent color="red">Прозрачная кнопка</SButton>
     <SButton disabled color="red">Недоступная кнопка</SButton>
     <SButton small color="red">Маленькая кнопка</SButton>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SButton color="red">Основное действие</SButton>
-    <SButton outlined color="red">Дополнительное действие</SButton>
-    <SButton transparent color="red">Прозрачная кнопка</SButton>
-    <SButton disabled color="red">Заблокированная кнопка</SButton>
-    <SButton small color="red">Маленькая кнопка</SButton>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SButton color="red">Основное действие</SButton>
-    <SButton outlined color="red">Дополнительное действие</SButton>
-    <SButton transparent color="red">Прозрачная кнопка</SButton>
-    <SButton disabled color="red">Заблокированная кнопка</SButton>
-    <SButton small color="red">Маленькая кнопка</SButton>
 </template>
 
 <script setup>
-import { SButton } from 'startup-ui';
+import { SButton } from 'startup-ui'
 </script>
+```
+```vue
+<SButton color="red">Основное действие</SButton>
+<SButton outlined color="red">Дополнительное действие</SButton>
+<SButton transparent color="red">Прозрачная кнопка</SButton>
+<SButton disabled color="red">Недоступная кнопка</SButton>
+<SButton small color="red">Маленькая кнопка</SButton>
 ```
 :::
 
 ### Зеленая кнопка
 
-<div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
+:::demo
+```vue
+<template>
     <SButton color="green">Основное действие</SButton>
     <SButton outlined color="green">Дополнительное действие</SButton>
     <SButton transparent color="green">Прозрачная кнопка</SButton>
     <SButton disabled color="green">Недоступная кнопка</SButton>
     <SButton small color="green">Маленькая кнопка</SButton>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SButton color="green">Основное действие</SButton>
-    <SButton outlined color="green">Дополнительное действие</SButton>
-    <SButton transparent color="green">Прозрачная кнопка</SButton>
-    <SButton disabled color="green">Заблокированная кнопка</SButton>
-    <SButton small color="green">Маленькая кнопка</SButton>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SButton color="green">Основное действие</SButton>
-    <SButton outlined color="green">Дополнительное действие</SButton>
-    <SButton transparent color="green">Прозрачная кнопка</SButton>
-    <SButton disabled color="green">Заблокированная кнопка</SButton>
-    <SButton small color="green">Маленькая кнопка</SButton>
 </template>
 
 <script setup>
-import { SButton } from 'startup-ui';
+import { SButton } from 'startup-ui'
 </script>
+```
+```vue
+<SButton color="green">Основное действие</SButton>
+<SButton outlined color="green">Дополнительное действие</SButton>
+<SButton transparent color="green">Прозрачная кнопка</SButton>
+<SButton disabled color="green">Недоступная кнопка</SButton>
+<SButton small color="green">Маленькая кнопка</SButton>
 ```
 :::
 
 ### Жёлтая кнопка
 
-<div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
+:::demo
+```vue
+<template>
     <SButton color="yellow">Основное действие</SButton>
     <SButton outlined color="yellow">Дополнительное действие</SButton>
     <SButton transparent color="yellow">Прозрачная кнопка</SButton>
     <SButton disabled color="yellow">Недоступная кнопка</SButton>
     <SButton small color="yellow">Маленькая кнопка</SButton>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SButton color="yellow">Основное действие</SButton>
-    <SButton outlined color="yellow">Дополнительное действие</SButton>
-    <SButton transparent color="yellow">Прозрачная кнопка</SButton>
-    <SButton disabled color="yellow">Заблокированная кнопка</SButton>
-    <SButton small color="yellow">Маленькая кнопка</SButton>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SButton color="yellow">Основное действие</SButton>
-    <SButton outlined color="yellow">Дополнительное действие</SButton>
-    <SButton transparent color="yellow">Прозрачная кнопка</SButton>
-    <SButton disabled color="yellow">Заблокированная кнопка</SButton>
-    <SButton small color="yellow">Маленькая кнопка</SButton>
 </template>
 
 <script setup>
-import { SButton } from 'startup-ui';
+import { SButton } from 'startup-ui'
 </script>
+```
+```vue
+<SButton color="yellow">Основное действие</SButton>
+<SButton outlined color="yellow">Дополнительное действие</SButton>
+<SButton transparent color="yellow">Прозрачная кнопка</SButton>
+<SButton disabled color="yellow">Недоступная кнопка</SButton>
+<SButton small color="yellow">Маленькая кнопка</SButton>
 ```
 :::
 
 ### Кнопка на всю ширину формы
 
-<div class="docs-container" style="flex-direction: row; gap: 10px; flex-wrap: wrap; align-items: center">
-    <SButton fullwidth>Основное действие</SButton>
-    <SButton fullwidth color="red">Основное действие</SButton>
-    <SButton fullwidth color="green">Основное действие</SButton>
-    <SButton fullwidth color="yellow">Основное действие</SButton>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SButton fullwidth>Основное действие</SButton>
-    <SButton fullwidth color="red">Основное действие</SButton>
-    <SButton fullwidth color="green">Основное действие</SButton>
-    <SButton fullwidth color="yellow">Основное действие</SButton>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SButton fullwidth>Основное действие</SButton>
     <SButton fullwidth color="red">Основное действие</SButton>
@@ -181,8 +126,14 @@ import { SButton } from 'startup-ui';
 </template>
 
 <script setup>
-import { SButton } from 'startup-ui';
+import { SButton } from 'startup-ui'
 </script>
+```
+```vue
+<SButton fullwidth>Основное действие</SButton>
+<SButton fullwidth color="red">Основное действие</SButton>
+<SButton fullwidth color="green">Основное действие</SButton>
+<SButton fullwidth color="yellow">Основное действие</SButton>
 ```
 :::
 
@@ -203,17 +154,41 @@ import { SButton } from 'startup-ui';
 
 ### Кастомное действие
 
+:::demo
+```vue
+<template>
+    <SButton @click="createUser">Создать пользователя</SButton>
+</template>
+<script setup>
+import { SAlert } from 'startup-ui'
+function createUser() {
+    SAlert.success('Пользователь создан')
+}
+</script>
+```
 ```vue
 <SButton @click="createUser">Создать пользователя</SButton>
 ```
+:::
 
 ### Переход по ссылке
 
 Если добавляем href, то кнопка по умолчанию становится семантически правильным анкором:
 
+:::demo
+```vue
+<template>
+    <SButton href="https://startup-ui.suhar.ru">Документация</SButton>
+</template>
+
+<script setup>
+import { SButton } from 'startup-ui'
+</script>
+```
 ```vue
 <SButton href="https://startup-ui.suhar.ru">Документация</SButton>
 ```
+:::
 
 ### Переход по внутренней ссылке InertiaJs
 
@@ -244,17 +219,3 @@ import { SButton } from 'startup-ui';
 | Название | Описание |
 |----------|----------|
 | default | Содержимое кнопки (текст, иконка и т.д.) |
-
-<script setup>
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SButton from '../../../../packages/startup-ui/src/components/SButton.vue';
-import { Link } from '@inertiajs/vue3';
-</script>
-
-<style scoped>
-.docs-container {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-</style>

@@ -25,27 +25,19 @@
 </SToggleGroup>
 
 ## Классический вариант
-<div class="docs-container">
-    <SSelect v-model="value1" :options="options" placeholder="Выберите" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SSelect v-model="value" :options="options" placeholder="Выберите" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSelect v-model="value" :options="options" placeholder="Выберите" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const value = ref('');
+import { ref } from 'vue'
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' }
+const value = ref(null)
 </script>
+```
+```vue
+<SSelect v-model="value" :options="options" placeholder="Выберите" />
 ```
 :::
 
@@ -53,41 +45,28 @@ const value = ref('');
 
 ## Фильтрация при вводе
 
-<div class="docs-container">
-    <SSelect v-model="value2" :options="options" filterable placeholder="Выберите" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const value = ref('');
+import { ref } from 'vue'
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' }
+const value = ref(null)
 </script>
+```
+```vue
+<SSelect v-model="value" :options="options" filterable placeholder="Выберите" />
 ```
 :::
 
 ## Получение значений по API
 
-Список значений можно получать и по API.
+Список значений можно получать и по API. Этот пример требует бэкенда, поэтому показан кодом (вживую не запускается):
 
-:::code-group
-```vue [Пример]
-<template>
-    <SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
-</template>
-```
-```vue [Весь код]
+:::example
+```vue
 <template>
     <SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
 </template>
@@ -101,13 +80,16 @@ const isLoading = ref(false);
 const selectOptions = ref({});
 const value = ref('');
 
-function onFilter(query){
-  isLoading.value = true;
-  axios.post(`/select_options/search`, { query: query })
+function onFilter(query) {
+    isLoading.value = true;
+    axios.post(`/select_options/search`, { query })
         .then((response) => selectOptions.value = response.data)
         .finally(() => isLoading.value = false);
 }
 </script>
+```
+```vue
+<SSelect v-model="value" :options="selectOptions" filterable @filter="onFilter" />
 ```
 :::
 
@@ -117,27 +99,19 @@ function onFilter(query){
 
 Иногда бывает нужно сделать возможность сбрасывать значение в невыбранное (null). Для этого используется атрибут <strong>clearable</strong>:
 
-<div class="docs-container">
-    <SSelect v-model="value6" :options="options" clearable placeholder="Не выбрано" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SSelect v-model="user" :options="users" clearable placeholder="Не выбрано" />
+    <SSelect v-model="user" :options="options" clearable placeholder="Не выбрано" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSelect v-model="user" :options="users" clearable placeholder="Не выбрано" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-const options = {1: 'Иванов', 2: 'Петров', 3: 'Сидоров'};
-const user = ref('');
+import { ref } from 'vue'
+const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' }
+const user = ref(null)
 </script>
+```
+```vue
+<SSelect v-model="user" :options="options" clearable placeholder="Не выбрано" />
 ```
 :::
 
@@ -145,31 +119,22 @@ const user = ref('');
 
 Когда доступно очень много вариантов выбора, можно применить виртуальный скролл для более быстрой загрузки, добавив атрибут <strong>virtual</strong>:
 
-<div class="docs-container">
-    <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSelect } from 'startup-ui';
-
-const props = defineProps({
-    regions: Object
-});
-
-const region = ref('');
+import { ref } from 'vue'
+// 1000 options — virtual scroll keeps it fast by rendering only the visible window
+const regions = Object.fromEntries(
+    Array.from({ length: 1000 }, (_, i) => [i + 1, `Регион ${i + 1}`])
+)
+const region = ref(null)
 </script>
+```
+```vue
+<SSelect v-model="region" :options="regions" virtual placeholder="Выберите регион" />
 ```
 :::
 
@@ -203,29 +168,7 @@ const region = ref('');
 | change | `(value: any)` | Вызывается при изменении значения. |
 | filter | `(query: string)` | Вызывается при вводе текста в режиме поиска. |
 
-<script setup>
-import { ref } from 'vue';
-import SSelect from '../../../../packages/startup-ui/src/components/SSelect.vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import { regions } from '../../../resources/data/regions.js';
-
-const options = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-
-const value1 = ref(null);
-const value2 = ref(null);
-const value6 = ref(null);
-const region = ref(null);
-</script>
-
 <style lang="scss">
-.docs-container {
-    padding: 20px;
-    border: 1px solid var(--s-border);
-    border-radius: var(--s-border-radius);
-    background: var(--s-bg-light);
-}
-
 .s-select {
     min-width: 200px;
 }

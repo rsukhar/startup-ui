@@ -26,27 +26,18 @@
 
 ## Одиночная галочка
 
-<div class="docs-container">
-    <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SCheckbox } from 'startup-ui';
-
-const isAccepted = ref('');
+import { ref } from 'vue'
+const isAccepted = ref(false)
 </script>
+```
+```vue
+<SCheckbox v-model="isAccepted">Я согласен</SCheckbox>
 ```
 :::
 
@@ -54,70 +45,48 @@ const isAccepted = ref('');
 
 ## Группа галочек
 
-<div class="docs-container">
-    <SCheckboxGroup v-model="types">
-        <SCheckbox value="bug">Ошибка</SCheckbox>
-        <SCheckbox value="question">Вопрос</SCheckbox>
-        <SCheckbox value="idea">Идея</SCheckbox>
-    </SCheckboxGroup>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SCheckboxGroup v-model="types">
         <SCheckbox value="bug">Ошибка</SCheckbox>
         <SCheckbox value="question">Вопрос</SCheckbox>
         <SCheckbox value="idea">Идея</SCheckbox>
     </SCheckboxGroup>
+    <p>В модели будет храниться массив выбранных значений: <code>{{ types }}</code></p>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SCheckboxGroup v-model="types">
-        <SCheckbox value="bug">Ошибка</SCheckbox>
-        <SCheckbox value="question">Вопрос</SCheckbox>
-        <SCheckbox value="idea">Идея</SCheckbox>
-    </SCheckboxGroup>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SCheckbox, SCheckboxGroup } from 'startup-ui';
-
-const types = ref([]);
+import { ref } from 'vue'
+const types = ref([])
 </script>
 ```
+```vue
+<SCheckboxGroup v-model="types">
+    <SCheckbox value="bug">Ошибка</SCheckbox>
+    <SCheckbox value="question">Вопрос</SCheckbox>
+    <SCheckbox value="idea">Идея</SCheckbox>
+</SCheckboxGroup>
+<p>В модели будет храниться массив выбранных значений: <code>{{ types }}</code></p>
+```
 :::
-
-В данном случае в модели будет храниться массив выбранных значений: <code>{{ types }}</code>
 
 ## Динамический набор значений
 
 В предыдущем примере набор вариантов хардкодился в шаблоне, что удобно, когда набор значений относится к логическому уровню интерфейса. Но когда набор вариантов идет из базы данных или конфига, очень неудобно каждый раз формировать набор элементов через v-for, и вместо этого используем атрибут <strong>options</strong>.
 
-<div class="docs-container">
-    <SCheckboxGroup v-model="users" :options="userOptions" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SCheckboxGroup v-model="users" :options="userOptions" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SCheckboxGroup v-model="users" :options="userOptions" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SCheckboxGroup } from 'startup-ui';
-
-const users = ref([]);
-const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+import { ref } from 'vue'
+const users = ref([])
+const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' }
 </script>
+```
+```vue
+<SCheckboxGroup v-model="users" :options="userOptions" />
 ```
 :::
 
@@ -127,28 +96,19 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
 
 Чтобы выводить группу галочек вертикальным списком, добавляем атрибут <strong>vertical</strong>:
 
-<div class="docs-container">
-    <SCheckboxGroup v-model="usersSecond" :options="userOptions" vertical />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SCheckboxGroup v-model="users" :options="userOptions" vertical />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SCheckboxGroup v-model="users" :options="userOptions" vertical />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SCheckbox } from 'startup-ui';
-
-const users = ref([]);
-const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
+import { ref } from 'vue'
+const users = ref([])
+const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' }
 </script>
+```
+```vue
+<SCheckboxGroup v-model="users" :options="userOptions" vertical />
 ```
 :::
 
@@ -156,16 +116,8 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
 
 Добавляем атрибут <strong>disabled</strong> значению, которое должно быть недоступно для переключения.
 
-<div class="docs-container">
-    <SCheckboxGroup v-model="typesDisabled">
-        <SCheckbox value="bug" disabled>Ошибка</SCheckbox>
-        <SCheckbox value="question">Вопрос</SCheckbox>
-        <SCheckbox value="idea">Идея</SCheckbox>
-    </SCheckboxGroup>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SCheckboxGroup v-model="types">
         <SCheckbox value="bug" disabled>Ошибка</SCheckbox>
@@ -173,22 +125,17 @@ const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' 
         <SCheckbox value="idea">Идея</SCheckbox>
     </SCheckboxGroup>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SCheckboxGroup v-model="types">
-        <SCheckbox value="bug" disabled>Ошибка</SCheckbox>
-        <SCheckbox value="question">Вопрос</SCheckbox>
-        <SCheckbox value="idea">Идея</SCheckbox>
-    </SCheckboxGroup>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SCheckbox, SCheckboxGroup } from 'startup-ui';
-
-const types = ref([]);
+import { ref } from 'vue'
+const types = ref([])
 </script>
+```
+```vue
+<SCheckboxGroup v-model="types">
+    <SCheckbox value="bug" disabled>Ошибка</SCheckbox>
+    <SCheckbox value="question">Вопрос</SCheckbox>
+    <SCheckbox value="idea">Идея</SCheckbox>
+</SCheckboxGroup>
 ```
 :::
 
@@ -229,31 +176,3 @@ const types = ref([]);
 | Название | Параметры | Описание |
 |----------|-----------|----------|
 | change | `(value: any)` | Вызывается при изменении состояния. |
-
-<script setup>
-import { ref } from 'vue';
-import SCheckboxGroup from '../../../../packages/startup-ui/src/components/SCheckboxGroup.vue';
-import SCheckbox from '../../../../packages/startup-ui/src/components/SCheckbox.vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-
-const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-
-const isAccepted = ref(false);
-const types = ref([]);
-const typesDisabled = ref([]);
-const users = ref([]);
-const usersSecond = ref([]);
-</script>
-
-<style lang="scss">
-.docs-container {
-    padding: 20px;
-    border: 1px solid var(--s-border);
-    border-radius: var(--s-border-radius);
-    background: var(--s-bg-light);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-</style>

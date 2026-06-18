@@ -28,7 +28,9 @@
 
 ## Базовый пример
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <STable :data="users">
         <template #header>
             <td>Пользователь</td>
@@ -58,93 +60,29 @@
             <td></td>
         </template>
     </STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users">
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
 </template>
-```
-```vue [Весь код]
-<template>
-    <STable :data="users">
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
-</template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable, SActionIcon } from 'startup-ui';
+import { ref, computed } from 'vue'
 
 const users = ref([
-    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" },
-    { "username": "Stepanov", "role": "customer", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" },
-    { "username": "Petrov", "role": "customer", "plan": "Базовый", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" },
-    { "username": "Sidorov", "role": "customer", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" },
-    { "username": "Alexeev", "role": "customer", "plan": "Базовый", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }
-]);
+    { username: 'Ivanov', role: 'customer', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', role: 'customer', plan: 'Базовый', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', role: 'customer', plan: 'Базовый', balance: 1716, created_at: '2025-11-05' },
+])
 
 function deleteUser(username) {
-    ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<STable :data="users">
+    <template #header>…</template>
+    <template #row="{ row }">…</template>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
@@ -152,47 +90,8 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 Для подсветки при наведении добавляем атрибут <strong>hoverable</strong>
 
-<div class="docs-container">
-    <STable :data="users" hoverable>
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.created_at }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users" hoverable>
-        ...
-    </STable>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <STable :data="users" hoverable>
         <template #header>
@@ -224,25 +123,28 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
         </template>
     </STable>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref, computed } from 'vue'
 
 const users = ref([
-    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" },
-    { "username": "Stepanov", "role": "customer", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" },
-    { "username": "Petrov", "role": "customer", "plan": "Базовый", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" },
-    { "username": "Sidorov", "role": "customer", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" },
-    { "username": "Alexeev", "role": "customer", "plan": "Базовый", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }
-]);
+    { username: 'Ivanov', role: 'customer', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', role: 'customer', plan: 'Базовый', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', role: 'customer', plan: 'Базовый', balance: 1716, created_at: '2025-11-05' },
+])
 
 function deleteUser(username) {
-    ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<STable :data="users" hoverable>
+    <template #header>…</template>
+    <template #row="{ row }">…</template>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
@@ -250,47 +152,8 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 Для отрисовки границ добавляем атрибут <strong>bordered</strong>
 
-<div class="docs-container">
-    <STable :data="users" bordered>
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.created_at }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users" bordered>
-        ...
-    </STable>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <STable :data="users" bordered>
         <template #header>
@@ -322,25 +185,28 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
         </template>
     </STable>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref, computed } from 'vue'
 
 const users = ref([
-    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" },
-    { "username": "Stepanov", "role": "customer", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" },
-    { "username": "Petrov", "role": "customer", "plan": "Базовый", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" },
-    { "username": "Sidorov", "role": "customer", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" },
-    { "username": "Alexeev", "role": "customer", "plan": "Базовый", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }
-]);
+    { username: 'Ivanov', role: 'customer', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', role: 'customer', plan: 'Базовый', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', role: 'customer', plan: 'Базовый', balance: 1716, created_at: '2025-11-05' },
+])
 
 function deleteUser(username) {
-    ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<STable :data="users" bordered>
+    <template #header>…</template>
+    <template #row="{ row }">…</template>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
@@ -348,47 +214,8 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 Для выделения четных строк добавляем атрибут <strong>striped</strong>
 
-<div class="docs-container">
-    <STable :data="users" striped>
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.created_at }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users" striped>
-       ...
-    </STable>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <STable :data="users" striped>
         <template #header>
@@ -420,17 +247,29 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
         </template>
     </STable>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref, computed } from 'vue'
+
+const users = ref([
+    { username: 'Ivanov', role: 'customer', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', role: 'customer', plan: 'Базовый', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', role: 'customer', plan: 'Базовый', balance: 1716, created_at: '2025-11-05' },
+    { username: 'Sidorov', role: 'customer', plan: 'Базовый', balance: 6000, created_at: '2025-11-06' },
+])
 
 function deleteUser(username) {
-    ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<STable :data="users" striped>
+    <template #header>…</template>
+    <template #row="{ row }">…</template>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
@@ -438,9 +277,11 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 Чтобы зафиксировать шапку, устанавливаем высоту таблицы в атрибуте `height`.
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="table-container">
-        <STable :data="users10" height="300px">
+        <STable :data="users" height="300px">
             <template #header>
                 <td>Пользователь</td>
                 <td class="center">Имя</td>
@@ -485,76 +326,34 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
             </template>
         </STable>
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users" height="300px">
-        ...
-    </STable>
 </template>
-```
-```vue [Весь код]
-<template>
-    <STable :data="users" height="300px">
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Имя</td>
-            <td class="center">Фамилия</td>
-            <td class="center">Дата рождения</td>
-            <td class="center">Рост</td>
-            <td class="center">Вес</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.name }}</td>
-            <td class="center">{{ row.secondname }}</td>
-            <td class="center">{{ row.birthdate }}</td>
-            <td class="center">{{ row.height }}</td>
-            <td class="center">{{ row.weight }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.created_at }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser2(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance2 }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
-</template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref, computed } from 'vue'
+
+const base = [
+    { username: 'Ivanov', name: 'Иван', secondname: 'Иванов', birthdate: '1995.06.06', height: '175', weight: '80', role: 'Пользователь', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', name: 'Степан', secondname: 'Степанов', birthdate: '1990.02.14', height: '182', weight: '88', role: 'Админ', plan: '-', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', name: 'Петр', secondname: 'Петров', birthdate: '1988.09.21', height: '178', weight: '76', role: 'Пользователь', plan: 'Премиум', balance: 1716, created_at: '2025-11-05' },
+    { username: 'Sidorov', name: 'Сергей', secondname: 'Сидоров', birthdate: '1993.12.01', height: '170', weight: '72', role: 'Пользователь', plan: 'Базовый', balance: 6000, created_at: '2025-11-06' },
+    { username: 'Alexeev', name: 'Алексей', secondname: 'Алексеев', birthdate: '1996.03.30', height: '185', weight: '90', role: 'Редактор', plan: '-', balance: 2000, created_at: '2025-11-09' },
+]
+const users = ref([...base, ...base.map(u => ({ ...u, username: u.username + '2' }))])
 
 function deleteUser(username) {
-    // ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<div class="table-container">
+    <STable :data="users" height="300px">
+        <template #header>…</template>
+        <template #row="{ row }">…</template>
+        <template #footer>…</template>
+    </STable>
+</div>
 ```
 :::
 
@@ -564,9 +363,11 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 ## Горизонтальный скролл сверху
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="table-container">
-        <STable :data="users2" top-scroll>
+        <STable :data="users" top-scroll>
             <template #header>
                 <td>Пользователь</td>
                 <td class="center">Имя</td>
@@ -611,76 +412,33 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
             </template>
         </STable>
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users" top-scroll>
-        ...
-    </STable>
 </template>
-```
-```vue [Весь код]
-<template>
-    <STable :data="users" top-scroll>
-        <template #header>
-            <td>Пользователь</td>
-            <td class="center">Имя</td>
-            <td class="center">Фамилия</td>
-            <td class="center">Дата рождения</td>
-            <td class="center">Рост</td>
-            <td class="center">Вес</td>
-            <td class="center">Тариф</td>
-            <td class="center">Баланс</td>
-            <td class="center">Роль</td>
-            <td class="center">Дата регистрации</td>
-            <td></td>
-        </template>
-        <template #row="{ row }">
-            <td>{{ row.username }}</td>
-            <td class="center">{{ row.name }}</td>
-            <td class="center">{{ row.secondname }}</td>
-            <td class="center">{{ row.birthdate }}</td>
-            <td class="center">{{ row.height }}</td>
-            <td class="center">{{ row.weight }}</td>
-            <td class="center">{{ row.plan }}</td>
-            <td class="center">{{ row.balance }}</td>
-            <td class="center">{{ row.role }}</td>
-            <td class="center">{{ row.created_at }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser2(row.username)" icon="trash" danger />
-            </td>
-        </template>
-        <template #footer>
-            <td>ИТОГО</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center">{{ totalBalance2 }}</td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td class="center"></td>
-            <td></td>
-        </template>
-    </STable>
-</template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref, computed } from 'vue'
+
+const users = ref([
+    { username: 'Ivanov', name: 'Иван', secondname: 'Иванов', birthdate: '1995.06.06', height: '175', weight: '80', role: 'Пользователь', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', name: 'Степан', secondname: 'Степанов', birthdate: '1990.02.14', height: '182', weight: '88', role: 'Админ', plan: '-', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', name: 'Петр', secondname: 'Петров', birthdate: '1988.09.21', height: '178', weight: '76', role: 'Пользователь', plan: 'Премиум', balance: 1716, created_at: '2025-11-05' },
+    { username: 'Sidorov', name: 'Сергей', secondname: 'Сидоров', birthdate: '1993.12.01', height: '170', weight: '72', role: 'Пользователь', plan: 'Базовый', balance: 6000, created_at: '2025-11-06' },
+    { username: 'Alexeev', name: 'Алексей', secondname: 'Алексеев', birthdate: '1996.03.30', height: '185', weight: '90', role: 'Редактор', plan: '-', balance: 2000, created_at: '2025-11-09' },
+])
 
 function deleteUser(username) {
-    // ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<div class="table-container">
+    <STable :data="users" top-scroll>
+        <template #header>…</template>
+        <template #row="{ row }">…</template>
+        <template #footer>…</template>
+    </STable>
+</div>
 ```
 :::
 
@@ -688,97 +446,71 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 Если нужно задать явные строки в tbody вместо перебора #row, то используем дефолтный слот (в нем для отдельных строк нужно явно указать `<tr>`).
 
-<div class="docs-container">
-<STable>
-    <template #header>
-        <td>Пользователь</td>
-        <td class="center">Тариф</td>
-        <td class="center">Баланс</td>
-        <td class="center">Роль</td>
-        <td class="center">Дата регистрации</td>
-        <td></td>
-    </template>
-        <tr v-for="user_item in users" :key="user_item.username">
-            <td>{{ user_item.username }}</td>
-            <td class="center">{{ user_item.plan }}</td>
-            <td class="center">{{ user_item.balance }}</td>
-            <td class="center">{{ user_item.role }}</td>
-            <td class="center">{{ user_item.created_at }}</td>
-            <td class="right">
-                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${user_item.username}»?`"
-                    @click="deleteUser(user_item.username)" icon="trash" danger />
-            </td>
-        </tr>
-    <template #footer>
-        <td>ИТОГО</td>
-        <td class="center"></td>
-        <td class="center">{{ totalBalance }}</td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td></td>
-    </template>
-</STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable>
-        <template #header>
-            <td>...</td>
-        </template>
-        <template>
-            <tr><td>...</td></tr>
-        </template>
-        <template #footer>
-            <td>...</td>
-        </template>
-    </STable>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <STable>
         <template #header>
             <td>Пользователь</td>
-            <td>Тариф</td>
-            <td>Баланс</td>
-            <td>Роль</td>
-            <td>Дата регистрации</td>
+            <td class="center">Тариф</td>
+            <td class="center">Баланс</td>
+            <td class="center">Роль</td>
+            <td class="center">Дата регистрации</td>
             <td></td>
         </template>
-            <tr v-for="user in users" :key="user.username">
-                <td>{{ user.username }}</td>
-                <td>{{ user.plan }}</td>
-                <td>{{ user.balance }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.created_at }}</td>
-                <td class="right">
-                    <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${user.username}»?`"
-                        @click="deleteUser(user.username)" icon="trash" danger />
-                </td>
-            </tr>
+        <tr v-for="user in users" :key="user.username">
+            <td>{{ user.username }}</td>
+            <td class="center">{{ user.plan }}</td>
+            <td class="center">{{ user.balance }}</td>
+            <td class="center">{{ user.role }}</td>
+            <td class="center">{{ user.created_at }}</td>
+            <td class="right">
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${user.username}»?`"
+                    @click="deleteUser(user.username)" icon="trash" danger />
+            </td>
+        </tr>
         <template #footer>
             <td>ИТОГО</td>
-            <td></td>
-            <td>{{ totalBalance }}</td>
-            <td></td>
-            <td></td>
+            <td class="center"></td>
+            <td class="center">{{ totalBalance }}</td>
+            <td class="center"></td>
+            <td class="center"></td>
             <td></td>
         </template>
     </STable>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref, computed } from 'vue'
+
+const users = ref([
+    { username: 'Ivanov', role: 'customer', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', role: 'customer', plan: 'Базовый', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', role: 'customer', plan: 'Базовый', balance: 1716, created_at: '2025-11-05' },
+])
 
 function deleteUser(username) {
-    // ...
+    users.value = users.value.filter(user => user.username !== username)
 }
 
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
 </script>
+```
+```vue
+<STable>
+    <template #header>…</template>
+    <tr v-for="user in users" :key="user.username">
+        <td>{{ user.username }}</td>
+        <td class="center">{{ user.plan }}</td>
+        <td class="center">{{ user.balance }}</td>
+        <td class="center">{{ user.role }}</td>
+        <td class="center">{{ user.created_at }}</td>
+        <td class="right">
+            <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${user.username}»?`"
+                @click="deleteUser(user.username)" icon="trash" danger />
+        </td>
+    </tr>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
@@ -806,143 +538,62 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 
 Когда задаем data и перебираем его через `<template #row>`, то часто (например, когда есть фильтры страницы) бывает нужно показать состояние «Ничего не найдено», когда в data ноль строк. По умолчанию в таком случае выводится сообщение «Ничего не найдено», которое можно заменить на кастомное через пропс/слот nodata:
 
-<div class="docs-container">
-<STable :data="users3" nodata="Пользователи не найдены">
-    <template #header>
-        <td>Пользователь</td>
-        <td class="center">Тариф</td>
-        <td class="center">Баланс</td>
-        <td class="center">Роль</td>
-        <td class="center">Дата регистрации</td>
-        <td></td>
-    </template>
-    <template #row="{ row }">
-        <td>{{ row.username }}</td>
-        <td class="center">{{ row.plan }}</td>
-        <td class="center">{{ row.balance }}</td>
-        <td class="center">{{ row.role }}</td>
-        <td class="center">{{ row.created_at }}</td>
-        <td class="right">
-            <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                @click="deleteUser(row.username)" icon="trash" danger />
-        </td>
-    </template>
-    <template #footer>
-        <td>ИТОГО</td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td></td>
-    </template>
-</STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users" nodata="Пользователи не найдены">
-        ...
-    </STable>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <STable :data="users" nodata="Пользователи не найдены">
         <template #header>
             <td>Пользователь</td>
-            <td>Тариф</td>
-            <td>Баланс</td>
-            <td>Роль</td>
-            <td>Дата регистрации</td>
+            <td class="center">Тариф</td>
+            <td class="center">Баланс</td>
+            <td class="center">Роль</td>
+            <td class="center">Дата регистрации</td>
             <td></td>
         </template>
         <template #row="{ row }">
             <td>{{ row.username }}</td>
-            <td>{{ row.plan }}</td>
-            <td>{{ row.balance }}</td>
-            <td>{{ row.role }}</td>
-            <td>{{ row.created_at }}</td>
+            <td class="center">{{ row.plan }}</td>
+            <td class="center">{{ row.balance }}</td>
+            <td class="center">{{ row.role }}</td>
+            <td class="center">{{ row.created_at }}</td>
             <td class="right">
                 <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser2(row.username)" icon="trash" danger />
+                    @click="deleteUser(row.username)" icon="trash" danger />
             </td>
         </template>
         <template #footer>
             <td>ИТОГО</td>
-            <td></td>
-            <td>{{ totalBalance2 }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
             <td></td>
         </template>
     </STable>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable } from 'startup-ui';
+import { ref } from 'vue'
+
+const users = ref([])
 
 function deleteUser(username) {
-    ...
+    users.value = users.value.filter(user => user.username !== username)
 }
-
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
 </script>
+```
+```vue
+<STable :data="users" nodata="Пользователи не найдены">
+    <template #header>…</template>
+    <template #row="{ row }">…</template>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
 или
 
-<div class="docs-container">
-<STable :data="users3">
-    <template #header>
-        <td>Пользователь</td>
-        <td class="center">Тариф</td>
-        <td class="center">Баланс</td>
-        <td class="center">Роль</td>
-        <td class="center">Дата регистрации</td>
-        <td></td>
-    </template>
-    <template #nodata>
-        <SNote>По заданным критериям поиска ничего не нашлось</SNote>
-    </template>
-    <template #row="{ row }">
-        <td>{{ row.username }}</td>
-        <td class="center">{{ row.plan }}</td>
-        <td class="center">{{ row.balance }}</td>
-        <td class="center">{{ row.role }}</td>
-        <td class="center">{{ row.created_at }}</td>
-        <td class="right">
-            <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                @click="deleteUser(row.username)" icon="trash" danger />
-        </td>
-    </template>
-    <template #footer>
-        <td>ИТОГО</td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td></td>
-    </template>
-</STable>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <STable :data="users">
-        <template #nodata>
-            <SNote>По заданным критериям поиска ничего не нашлось</SNote>
-        </template>
-        ...
-    </STable>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <STable :data="users">
         <template #nodata>
@@ -950,46 +601,50 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
         </template>
         <template #header>
             <td>Пользователь</td>
-            <td>Тариф</td>
-            <td>Баланс</td>
-            <td>Роль</td>
-            <td>Дата регистрации</td>
+            <td class="center">Тариф</td>
+            <td class="center">Баланс</td>
+            <td class="center">Роль</td>
+            <td class="center">Дата регистрации</td>
             <td></td>
         </template>
         <template #row="{ row }">
             <td>{{ row.username }}</td>
-            <td>{{ row.plan }}</td>
-            <td>{{ row.balance }}</td>
-            <td>{{ row.role }}</td>
-            <td>{{ row.created_at }}</td>
+            <td class="center">{{ row.plan }}</td>
+            <td class="center">{{ row.balance }}</td>
+            <td class="center">{{ row.role }}</td>
+            <td class="center">{{ row.created_at }}</td>
             <td class="right">
                 <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
-                    @click="deleteUser2(row.username)" icon="trash" danger />
+                    @click="deleteUser(row.username)" icon="trash" danger />
             </td>
         </template>
         <template #footer>
             <td>ИТОГО</td>
-            <td></td>
-            <td>{{ totalBalance2 }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
+            <td class="center"></td>
             <td></td>
         </template>
     </STable>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue';
-import { STable, SNote } from 'startup-ui';
+import { ref } from 'vue'
+
+const users = ref([])
 
 function deleteUser(username) {
-    ...
+    users.value = users.value.filter(user => user.username !== username)
 }
-
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
 </script>
+```
+```vue
+<STable :data="users">
+    <template #nodata>…</template>
+    <template #header>…</template>
+    <template #row="{ row }">…</template>
+    <template #footer>…</template>
+</STable>
 ```
 :::
 
@@ -1020,46 +675,6 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 | footers | Полный контроль над `<tfoot>` (содержит теги `<tr>`). |
 | nodata | Кастомный HTML для пустого состояния, заменяет пропс `nodata`. |
 
-<script setup>
-import { ref, computed } from 'vue';
-import SNote from '../../../../packages/startup-ui/src/components/SNote.vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import STable from '../../../../packages/startup-ui/src/components/STable.vue';
-import SActionIcon from '../../../../packages/startup-ui/src/components/SActionIcon.vue';
-
-const users =  ref([
-    { "username": "Ivanov", "role": "customer", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" }, { "username": "Stepanov", "role": "customer", "plan": "Базовый", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" },
-    { "username": "Petrov", "role": "customer", "plan": "Базовый", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" }, { "username": "Sidorov", "role": "customer", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" }, { "username": "Alexeev", "role": "customer", "plan": "Базовый", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }]);
-
-function deleteUser(username) {
-    users.value = users.value.filter(user => user.username !== username);
-}
-
-const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0));
-
-const users2 =  ref([
-    { "username": "Ivanov", 'name': 'Иван', 'secondname': 'Иванов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 3000, "projects_count": 1, "created_at": "2025-11-04" },
-    { "username": "Stepanov", 'name': 'Степан', 'secondname': 'Степанов', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Админ", "plan": "-", "balance": 4500, "projects_count": 0, "created_at": "2025-11-05" },
-    { "username": "Petrov", 'name': 'Петр', 'secondname': 'Петров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Премиум", "balance": 1716, "projects_count": 2, "created_at": "2025-11-05" },
-    { "username": "Sidorov", 'name': 'Сергей', 'secondname': 'Сидоров', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Пользователь", "plan": "Базовый", "balance": 6000, "projects_count": 1, "created_at": "2025-11-06" },
-    { "username": "Alexeev", 'name': 'Алексей', 'secondname': 'Алексеев', 'birthdate': '1995.06.06', 'height': '175', 'weight': '80', "role": "Редактор", "plan": "-", "balance": 2000, "projects_count": 1, "created_at": "2025-11-09" }]);
-
-const totalBalance2 = computed(() => users2.value.reduce((acc, user) => acc + user.balance, 0));
-
-function deleteUser2(username) {
-    users2.value = users2.value.filter(user => user.username !== username);
-}
-
-const users3 = ref([]);
-
-const users10 =  ref([
-    ...users2.value,
-    ...users2.value,
-    ...users2.value
-]);
-</script>
-
 <style lang="scss">
 .vp-doc table {
     overflow-x: visible;
@@ -1077,17 +692,15 @@ const users10 =  ref([
     margin: 0;
 }
 
-.docs-container .s-table,
-.docs-container .s-table table {
+.s-demo-preview .s-table,
+.s-demo-preview .s-table table {
     margin: 0 !important;
 }
-.docs-container .s-table tr {
+.s-demo-preview .s-table tr {
     border-top: 0 !important;
-}
-.docs-container .s-table tr {
     background-color: transparent;
 }
-.docs-container .s-table td {
+.s-demo-preview .s-table td {
     border-bottom: 1px solid var(--s-border) !important;
 }
 

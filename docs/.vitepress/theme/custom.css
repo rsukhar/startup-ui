@@ -55,6 +55,9 @@ body {
     margin-bottom: var(--s-base-margin);
     padding-top: 0;
 }
+.vp-doc .s-demo-preview p {
+    margin-bottom: 0;
+}
 
 .vp-doc h1,
 .vp-doc h2,

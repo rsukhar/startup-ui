@@ -12,25 +12,8 @@
 ## Базовый пример
 
 
-<div class="docs-container">
-    <SNote>Стандартный стиль (основной цвет)</SNote>
-    <SNote gray>В сером цвете</SNote>
-    <SNote attention>Привлечение внимания</SNote>
-    <SNote success>Успешное действие</SNote>
-    <SNote error>Описание ошибки</SNote>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SNote>Стандартный стиль (основной цвет)</SNote>
-    <SNote gray>В сером цвете</SNote>
-    <SNote attention>Привлечение внимания</SNote>
-    <SNote success>Успешное действие</SNote>
-    <SNote error>Описание ошибки</SNote>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SNote>Стандартный стиль (основной цвет)</SNote>
     <SNote gray>В сером цвете</SNote>
@@ -40,35 +23,23 @@
 </template>
 
 <script setup>
-import { SNote } from 'startup-ui';
+import { SNote } from 'startup-ui'
 </script>
+```
+```vue
+<SNote>Стандартный стиль (основной цвет)</SNote>
+<SNote gray>В сером цвете</SNote>
+<SNote attention>Привлечение внимания</SNote>
+<SNote success>Успешное действие</SNote>
+<SNote error>Описание ошибки</SNote>
 ```
 :::
 
 ## С иконкой и заголовком
 
 
-<div class="docs-container">
-    <SNote icon="circle-info" title="В проекте ещё нет ключевиков">
-        <ol>
-            <li>Добавьте как можно больше запросов, заходы по которым из поиска приносят вам наибольший доход.</li>
-            <li>Сервис оценит конкуренцию, шанс выхода в топ и бюджет по каждому ключевику.</li>
-        </ol>
-    </SNote>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SNote icon="circle-info" title="В проекте ещё нет ключевиков">
-        <ol>
-            <li>Добавьте как можно больше запросов, заходы по которым из поиска приносят вам наибольший доход.</li>
-            <li>Сервис оценит конкуренцию, шанс выхода в топ и бюджет по каждому ключевику.</li>
-        </ol>
-    </SNote>
-</template>
-```
-```vue [Весь код]
+:::demo
+```vue
 <template>
     <SNote icon="circle-info" title="В проекте ещё нет ключевиков">
         <ol>
@@ -79,8 +50,16 @@ import { SNote } from 'startup-ui';
 </template>
 
 <script setup>
-import SNote from 'startup-ui';
+import { SNote } from 'startup-ui'
 </script>
+```
+```vue
+<SNote icon="circle-info" title="В проекте ещё нет ключевиков">
+    <ol>
+        <li>Добавьте как можно больше запросов, заходы по которым из поиска приносят вам наибольший доход.</li>
+        <li>Сервис оценит конкуренцию, шанс выхода в топ и бюджет по каждому ключевику.</li>
+    </ol>
+</SNote>
 ```
 :::
 
@@ -104,11 +83,6 @@ import SNote from 'startup-ui';
 | Название | Описание |
 |----------|----------|
 | default | Основное содержимое заметки. Поддерживает текст или HTML (абзацы, списки и т.д.) |
-
-<script setup>
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SNote from '../../../../packages/startup-ui/src/components/SNote.vue';
-</script>
 
 <style scoped lang="scss">
 .s-note {

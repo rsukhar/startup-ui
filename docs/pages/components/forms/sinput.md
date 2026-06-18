@@ -11,282 +11,191 @@
 
 ## Стандартные поля ввода
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <SInput v-model="value" placeholder="Обычный инпут" />
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SInput v-model="value" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value = ref('')
 </script>
+```
+```vue
+<SInput v-model="value" placeholder="Обычный инпут" />
 ```
 :::
 
 Также поддерживаются стандартные HTML-типы полей:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <SInput v-model="value1" type="number" placeholder="Номер" />
-    <SInput v-model="value2" type="email" placeholder="Email"/>
-    <SInput v-model="value3" type="password" placeholder="Пароль"/>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SInput v-model="value1" type="number" placeholder="Номер"/>
-    <SInput v-model="value2" type="email" placeholder="Email"/>
-    <SInput v-model="value3" type="password" placeholder="Пароль"/>
+    <SInput v-model="value2" type="email" placeholder="Email" />
+    <SInput v-model="value3" type="password" placeholder="Пароль" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value1" type="number" placeholder="Номер"/>
-    <SInput v-model="value2" type="email" placeholder="Email"/>
-    <SInput v-model="value3" type="password" placeholder="Пароль"/>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value1 = ref('');
-const value2 = ref('');
-const value3 = ref('');
+import { ref } from 'vue'
+const value1 = ref('')
+const value2 = ref('')
+const value3 = ref('')
 </script>
+```
+```vue
+<SInput v-model="value1" type="number" placeholder="Номер" />
+<SInput v-model="value2" type="email" placeholder="Email" />
+<SInput v-model="value3" type="password" placeholder="Пароль" />
 ```
 :::
 
 ## Многострочное поле ввода
 
-<div class="docs-container">
-    <SInput v-model="value4" type="textarea" placeholder="Введите длинный текст..." />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SInput v-model="value" type="textarea" />
+    <SInput v-model="value" type="textarea" placeholder="Введите длинный текст..." />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" type="textarea" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value = ref('')
 </script>
+```
+```vue
+<SInput v-model="value" type="textarea" placeholder="Введите длинный текст..." />
 ```
 :::
 
 ## Плейсхолдер
 
-<div class="docs-container">
-    <SInput v-model="value5" placeholder="Введите имя" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SInput v-model="value" placeholder="Введите имя" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" placeholder="Введите имя" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value = ref('')
 </script>
+```
+```vue
+<SInput v-model="value" placeholder="Введите имя" />
 ```
 :::
 
-## Префикс
+## Префикс / суффикс
 
-<div class="docs-container">
-    <SInput v-model="value6" prefix="$" type="number" />
-</div>
+Простой текст задаём пропами `prefix` / `suffix`, а для произвольного контента (иконки и т.п.) — одноимёнными слотами:
 
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SInput v-model="value" prefix="$" type="number" />
+    <SInput v-model="value1" prefix="$" type="number" placeholder="Префикс" />
+    <SInput v-model="value2" type="number" placeholder="Кастомный префикс">
+        <template #prefix>
+            <FontAwesomeIcon icon="star" />
+        </template>
+    </SInput>
+    <SInput v-model="value3" suffix="₽" type="number" placeholder="Суффикс" />
+    <SInput v-model="value4" type="number" placeholder="Кастомный суффикс">
+        <template #suffix>
+            <STooltip>Подсказка к полю</STooltip>
+        </template>
+    </SInput>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" prefix="$" type="number" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value1 = ref('')
+const value2 = ref('')
+const value3 = ref('')
+const value4 = ref('')
 </script>
 ```
-:::
-
-Если нужен кастомный префикс:
-
-<div class="docs-container">
-    <SInput v-model="value7" type="number">
-        <template #prefix>
-            <SStatus icon="star" />
-        </template>
-    </SInput>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SInput v-model="value" type="number">
-        <template #prefix>
-            <SStatus icon="star" />
-        </template>
-    </SInput>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" type="number">
-        <template #prefix>
-            <SStatus icon="star" />
-        </template>
-    </SInput>
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
-</script>
+```vue
+<SInput v-model="value1" prefix="$" type="number" placeholder="Префикс" />
+<SInput v-model="value2" type="number" placeholder="Кастомный префикс">
+    <template #prefix>
+        <FontAwesomeIcon icon="star" />
+    </template>
+</SInput>
+<SInput v-model="value3" suffix="₽" type="number" placeholder="Суффикс" />
+<SInput v-model="value4" type="number" placeholder="Кастомный суффикс">
+    <template #suffix>
+        <STooltip>Подсказка к полю</STooltip>
+    </template>
+</SInput>
 ```
 :::
 
 ## Недоступное состояние
 
-<div class="docs-container">
-    <SInput v-model="value8" disabled />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SInput v-model="value" disabled />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" disabled />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value = ref('Иван Иванов')
 </script>
+```
+```vue
+<SInput v-model="value" disabled />
 ```
 :::
 
 ## Поле ввода с кнопкой очистки
 
-Просто используем стандартный HTML5-тип search:
+Добавляем атрибут `clearable` — кнопка очистки появляется, когда в поле есть значение:
 
-<div class="docs-container">
-    <SInput v-model="value9" type="search" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SInput v-model="value" type="search" />
+    <SInput v-model="value" clearable placeholder="Введите текст" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput v-model="value" type="search" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value = ref('Очисти меня')
 </script>
+```
+```vue
+<SInput v-model="value" clearable placeholder="Введите текст" />
 ```
 :::
 
 ## События
 
-<div class="docs-container">
-    <SInput @change="(newValue) => console.log(newValue)" placeholder="Печатаем и смотрим консоль" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SInput @change="(newValue) => console.log(newValue)" />
-</template>
-```
-```vue [Весь код]
-<template>
-    <SInput @change="(newValue) => console.log(newValue)" />
+    <SInput @change="(newValue) => console.log(newValue)" placeholder="Печатаем и смотрим консоль" style="width: 100%" />
 </template>
 
 <script setup>
-import { SInput } from 'startup-ui';
+import { SInput } from 'startup-ui'
 </script>
+```
+```vue
+<SInput @change="(newValue) => console.log(newValue)" placeholder="Печатаем и смотрим консоль" style="width: 100%" />
 ```
 :::
 
 ## Кастомные стили для инпута
 
-Если нужно задать кастомные стили именно для вложенного инпута, то задаем их через input-style:
+Если нужно задать кастомные стили именно для вложенного инпута, то задаем их через `input-style`:
 
-<div class="docs-container">
-    <SInput input-style="text-align: center" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SInput input-style="text-align: center" />
+    <SInput v-model="value" input-style="text-align: center" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SInput input-style="text-align: center" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SInput } from 'startup-ui';
-
-const value = ref('');
+import { ref } from 'vue'
+const value = ref('По центру')
 </script>
+```
+```vue
+<SInput v-model="value" input-style="text-align: center" />
 ```
 :::
 
@@ -297,10 +206,11 @@ const value = ref('');
 | Название | Тип | По умолчанию | Описание |
 |----------|-----|--------------|----------|
 | modelValue / v-model | `number \| string \| null` | `undefined` | Связанное значение поля ввода. |
-| type | `'text' \| 'string' \| 'number' \| 'email' \| 'password' \| 'textarea' \| 'search'` | `'text'` | Внутренний тип поля. При значении `textarea` отрисовывается многострочное поле. |
+| type | `'text' \| 'string' \| 'number' \| 'email' \| 'password' \| 'textarea'` | `'text'` | Внутренний тип поля. При значении `textarea` отрисовывается многострочное поле. |
 | placeholder | string | `undefined` | Текст-заполнитель, отображаемый, когда поле пустое. |
 | prefix | string | `undefined` | Простой текст для отображения в начале поля. Добавляет класс `.has-prefix` обертке. |
 | suffix | string | `undefined` | Простой текст для отображения в конце поля. Добавляет класс `.has-suffix` обертке. |
+| clearable | boolean | `false` | Показывает кнопку очистки, когда в поле есть значение. |
 | disabled | boolean | `false` | Флаг, отключающий интерактивность поля. |
 | rows | number | `3` | Количество видимых строк текста (применяется только при `type="textarea"`). |
 | inputStyle | `StyleValue` | `undefined` | CSS-стили, передаваемые напрямую внутреннему элементу (`input` или `textarea`). |
@@ -318,26 +228,19 @@ const value = ref('');
 |----------|-----------|----------|
 | change | `(value: string)` | Срабатывает на нативное событие `@input`. Передает текущее строковое значение. |
 
-<script setup>
-import { ref } from 'vue';
-import SInput from '../../../../packages/startup-ui/src/components/SInput.vue';
-import SStatus from '../../../../packages/startup-ui/src/components/SStatus.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-
-const value = ref('');
-const value1 = ref('');
-const value2 = ref('');
-const value3 = ref('');
-const value4 = ref('');
-const value5 = ref('');
-const value6 = ref('');
-const value7 = ref('');
-const value8 = ref('');
-const value9 = ref('');
-</script>
-
 <style lang="scss">
 .s-input {
     color: var(--s-text);
+}
+/* Демо «Префикс / суффикс» (единственное с STooltip): раскладываем поля в столбец —
+   презентация демо, поэтому держим вне кода примера. */
+.s-demo:has(.s-tooltip) .s-demo-preview {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+.s-demo:has(.s-tooltip) .s-input {
+    width: 100%;
+    max-width: 360px;
 }
 </style>

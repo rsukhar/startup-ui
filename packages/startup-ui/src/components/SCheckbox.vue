@@ -2,7 +2,9 @@
     <div class="s-checkbox" @click="handleCheck" :class="{'disabled': disabled}">
         <div class="s-checkbox-box" :class="{'checked': isChecked}">
             <input class="s-checkbox-box-input" type="checkbox" :value="isChecked" :disabled="disabled"/>
-            <FontAwesomeIcon icon="check" class="checked-icon"/>
+            <svg class="checked-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M3.5 8.5 6.5 11.5 12.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
         </div>
         <div class="s-checkbox-label">
             <slot />
@@ -10,7 +12,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { inject, computed } from "vue";
 import type { Ref } from "vue";
 
@@ -101,10 +102,11 @@ function handleCheck() {
 
         &.checked {
             background-color: var(--s-primary);
-            border: 1px solid var(--s-primary-darkest);
+            border-color: var(--s-primary);
             transition: background-color 0.2s ease;
             &:hover {
-                background-color: var(--s-primary-darkest);
+                background-color: var(--s-primary-dark);
+                border-color: var(--s-primary-dark);
             }
             .checked-icon {
                 color: var(--s-white);
@@ -112,7 +114,10 @@ function handleCheck() {
         }
 
         .checked-icon {
+            width: 0.875rem;
+            height: 0.875rem;
             color: transparent;
+            pointer-events: none;
         }
     }
 

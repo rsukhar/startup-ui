@@ -2,6 +2,9 @@ import { defineConfig } from 'vitepress'
 import path from 'node:path'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { demoBlockPlugin } from 'vitepress-theme-demoblock'
+import { demoFullCodePlugin } from './demoFullCode'
+import mdContainer from 'markdown-it-container'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -123,13 +126,49 @@ export default defineConfig({
                     return html.replace(/#ffa198/gi, '#7EE787');
                 }
             }
-        ]
+        ],
+        config: (md) => {
+            // Inline live demos: ::: demo + ```vue block. Imports from 'startup-ui'
+            // are rewritten to a single barrel import (Vue itself is auto-mapped to the global).
+            md.use(demoBlockPlugin, {
+                scriptImports: ["import * as StartupUI from 'startup-ui'"],
+                scriptReplaces: [
+                    {
+                        searchValue: /import\s+(\{[^}]*\})\s+from\s+'startup-ui'/g,
+                        replaceValue: (_s: string, s1: string) => `const ${s1} = StartupUI`,
+                    },
+                    {
+                        // demoblock compiles a demo's <script setup> with compileScript, which marks
+                        // the setup return with __isScriptSetup. demoblock then compiles the template
+                        // separately (function mode) — that render reads bindings off _ctx, but the
+                        // marker makes Vue hide script-setup bindings from it (value becomes undefined).
+                        // Strip the marker so the setup returns a plain object → bindings stay reactive.
+                        searchValue: /Object\.defineProperty\(__returned__,\s*['"]__isScriptSetup['"],\s*\{[^}]*\}\)\s*;?/g,
+                        replaceValue: '',
+                    },
+                ],
+            })
+            // Code-only short/full panel (no live preview) for non-runnable snippets
+            // (e.g. Inertia useForm). Two ```vue fences: 1st = full, 2nd = short.
+            md.use(mdContainer, 'example', {
+                render(tokens: any[], idx: number) {
+                    if (tokens[idx].nesting === 1) {
+                        const content = tokens[idx + 1]?.type === 'fence' ? tokens[idx + 1].content : ''
+                        return `<Demo :preview="false" sourceCode="${md.utils.escapeHtml(content)}">`
+                    }
+                    return '</Demo>'
+                },
+            })
+            // Adds the "show full code" variant (full SFC) next to the authored code.
+            md.use(demoFullCodePlugin)
+        },
     },
     vite: {
         resolve: {
             alias: {
                 'tinymce': path.resolve(__dirname, '../node_modules/tinymce'),
                 '@tinymce/tinymce-vue': path.resolve(__dirname, '../node_modules/@tinymce/tinymce-vue'),
+                'startup-ui': path.resolve(__dirname, '../../packages/startup-ui/src'),
             }
         },
         ssr: {

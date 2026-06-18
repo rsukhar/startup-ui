@@ -18,26 +18,37 @@
 
 ## Базовый пример
 
-<div class="docs-container">
-    <SPagination v-bind="users" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <!-- Пример: inertia('User/Index', ['users' => Users::paginate()]) -->
+    <!-- inertia('User/Index', ['users' => Users::paginate()]) -->
     <SPagination v-bind="users" />
 </template>
-```
-```vue [Весь код]
-<template>
-    // inertia('User/Index', ['users' => Users::paginate()])
-    <SPagination v-bind="users" />
-</template>
-
 <script setup>
-import { SPagination } from 'startup-ui';
+import { ref } from 'vue'
+
+// Объект в том же виде, в каком его отдаёт пагинатор Laravel
+const users = ref({
+    current_page: 2,
+    from: 16,
+    to: 30,
+    per_page: 15,
+    total: 72,
+    links: [
+        { url: '?page=1', label: '&#8592;', active: false },
+        { url: '?page=1', label: '1', active: false },
+        { url: '?page=2', label: '2', active: true },
+        { url: '?page=3', label: '3', active: false },
+        { url: '?page=4', label: '4', active: false },
+        { url: '?page=5', label: '5', active: false },
+        { url: '?page=3', label: '&#8594;', active: false },
+    ],
+})
 </script>
+```
+```vue
+<!-- inertia('User/Index', ['users' => Users::paginate()]) -->
+<SPagination v-bind="users" />
 ```
 :::
 
@@ -47,24 +58,34 @@ Laravel-пагинатор на выходе формирует объект с 
 
 Чтобы также выводить выпадающий список в кол-вом результатов на странице, можно добавить атрибут <strong>per-page-options</strong>:
 
-<div class="docs-container">
-    <SPagination v-bind="users2" :per-page-options="[15, 25, 50]" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
-</template>
-
 <script setup>
-import { SPagination } from 'startup-ui';
+import { ref } from 'vue'
+
+const users = ref({
+    current_page: 2,
+    from: 16,
+    to: 30,
+    per_page: 15,
+    total: 72,
+    links: [
+        { url: '?page=1', label: '&#8592;', active: false },
+        { url: '?page=1', label: '1', active: false },
+        { url: '?page=2', label: '2', active: true },
+        { url: '?page=3', label: '3', active: false },
+        { url: '?page=4', label: '4', active: false },
+        { url: '?page=5', label: '5', active: false },
+        { url: '?page=3', label: '&#8594;', active: false },
+    ],
+})
 </script>
+```
+```vue
+<SPagination v-bind="users" :per-page-options="[15, 25, 50]" />
 ```
 :::
 
@@ -92,50 +113,6 @@ import { SPagination } from 'startup-ui';
 |----------|----------|
 | default | По умолчанию слоты отсутствуют, пагинация генерируется автоматически по пропсам. |
 
-<script setup>
-import {computed} from 'vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SPagination from '../../../../packages/startup-ui/src/components/SPagination.vue';
-
-const getQueryParams = () => {
-    if (typeof window === 'undefined') return {};
-    const result = {};
-    for (const [name, value] of (new URLSearchParams(window.location.search)).entries()){
-        result[name] = value;
-    }
-    return result;
-};
-
-const generatePaginator = (total, page, perpage) => {
-    perpage = Math.max(1, perpage ?? 15);
-    const lastPage = Math.ceil(total / perpage);
-    const links = [];
-    for (let curPage = 1; curPage <= lastPage; curPage++){
-        if (curPage === 1) links.push({ has_url: (page > 2), label: "&#8592;", active: false });
-        links.push({ "has_url": true, "label": curPage, "active": (page === curPage), url: "?page=" + curPage });
-        if (curPage === lastPage) links.push({ "has_url": (page < lastPage), "label": "&#8594;", "active": false });
-    }
-    return {
-        current_page: page,
-        first_page_url: "?",
-        from: (page - 1) * perpage + 1,
-        last_page: lastPage,
-        last_page_url: `?page=${lastPage}`,
-        links: links,
-        next_page_url: (page >= lastPage) ? null : "?page=" + (page + 1),
-        path: "?",
-        per_page: perpage,
-        prev_page_url: (page <= 1) ? null : "?page=" + (page - 1),
-        to: Math.min(page * perpage, total),
-        total: total
-    }
-};
-
-const users = computed(() => generatePaginator(72, parseInt(getQueryParams().page ?? 1)));
-const users2 = computed(() => generatePaginator(72, parseInt(getQueryParams().page ?? 1), parseInt(getQueryParams().perpage ?? 15)));
-</script>
-
 <style lang="scss">
 :root {
     .vp-doc ul {
@@ -146,7 +123,7 @@ const users2 = computed(() => generatePaginator(72, parseInt(getQueryParams().pa
     .vp-doc li + li {
         margin: 0;
     }
-    .docs-container .s-pagination {
+    .s-demo-preview .s-pagination {
         margin-bottom: 0;
     }
 }

@@ -12,16 +12,8 @@
 ## Базовый пример
 
 
-<div class="docs-container">
-    <STimeline :items="items">
-        <template #item="{ item }">
-            <strong>{{ item.last_visit_diff }} назад</strong> {{ item.username }} остановил переходы
-        </template>
-    </STimeline>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <STimeline :items="items">
         <template #item="{ item }">
@@ -29,34 +21,20 @@
         </template>
     </STimeline>
 </template>
-```
-```vue [Весь код]
-<template>
-    <STimeline :items="items">
-        <template #item="{ item }">
-            <strong>{{ item.last_visit_diff }} назад</strong> {{ item.username }} остановил переходы
-        </template>
-    </STimeline>
-</template>
-
 <script setup>
-import STimeline from 'startup-ui';
-
 const items = [
-    {
-        last_visit_diff: '2 д. 6 ч',
-        username: 'Иванов',
-    },
-    {
-        last_visit_diff: '4 д. 2 ч',
-        username: 'Петров',
-    },
-    {
-        last_visit_diff: '22 д. 1 ч',
-        username: 'Сидоров',
-    }
-];
+    { id: 1, last_visit_diff: '2 д. 6 ч', username: 'Иванов' },
+    { id: 2, last_visit_diff: '4 д. 2 ч', username: 'Петров' },
+    { id: 3, last_visit_diff: '22 д. 1 ч', username: 'Сидоров' }
+]
 </script>
+```
+```vue
+<STimeline :items="items">
+    <template #item="{ item }">
+        <strong>{{ item.last_visit_diff }} назад</strong> {{ item.username }} остановил переходы
+    </template>
+</STimeline>
 ```
 :::
 
@@ -74,25 +52,6 @@ const items = [
 |----------|----------|----------|
 | item | `{ item: Object, index: number }` | Слот для отображения содержимого рядом с маркером таймлайна для каждого элемента. |
 
-<script setup>
+<script setup lang="ts">
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import STimeline from '../../../../packages/startup-ui/src/components/STimeline.vue';
-
-const items = [
-    {
-        id: 1,
-        last_visit_diff: '2 д. 6 ч',
-        username: 'Иванов',
-    },
-    {
-        id: 2,
-        last_visit_diff: '4 д. 2 ч',
-        username: 'Петров',
-    },
-    {
-        id: 3,
-        last_visit_diff: '22 д. 1 ч',
-        username: 'Сидоров',
-    }
-];
 </script>

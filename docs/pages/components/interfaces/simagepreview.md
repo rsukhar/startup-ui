@@ -6,26 +6,22 @@
 
 Выводим картинку, которая увеличивается при клике.
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="preview-container">
-        <SImagePreview :src="animals" />
+        <SImagePreview src="/animals.webp" />
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp" />
-</template>
-```
-```vue [Весь код]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp" />
 </template>
 
 <script setup>
-import { SImagePreview } from 'startup-ui';
+import { SImagePreview } from 'startup-ui'
 </script>
+```
+```vue
+<div class="preview-container">
+    <SImagePreview src="/animals.webp" />
+</div>
 ```
 :::
 
@@ -33,63 +29,36 @@ import { SImagePreview } from 'startup-ui';
 
 Если первоначально до клика показывается другое изображение (напр.меньшего размера), то используем атрибут preview:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="preview-container">
-        <SImagePreview :preview="nature" :src="animals" />
+        <SImagePreview preview="/nature.jpg" src="/animals.webp" />
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SImagePreview preview="../../resources/img/nature.jpg" src="../../resources/img/animals.webp" />
-</template>
-```
-```vue [Весь код]
-<template>
-    <SImagePreview preview="../../resources/img/nature.jpg" src="../../resources/img/animals.webp" />
 </template>
 
 <script setup>
-import { SImagePreview } from 'startup-ui';
+import { SImagePreview } from 'startup-ui'
 </script>
+```
+```vue
+<div class="preview-container">
+    <SImagePreview preview="/nature.jpg" src="/animals.webp" />
+</div>
 ```
 :::
 
 Если нужно вставить кастомный контент, используем слот "preview":
 
-<div class="docs-container">
-    <div class="preview-container">
-        <SImagePreview :src="animals">
-            <template #preview>
-                <img :src="nature" />
-            </template>
-        </SImagePreview>
-    </div>
+:::demo
+```vue
+<div class="preview-container">
+    <SImagePreview src="/animals.webp">
+        <template #preview>
+            <img src="/nature.jpg" />
+        </template>
+    </SImagePreview>
 </div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp">
-        <template #preview>
-            <img src="../../resources/img/nature.jpg" />
-        </template>
-    </SImagePreview>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp">
-        <template #preview>
-            <img src="../../resources/img/nature.jpg" />
-        </template>
-    </SImagePreview>
-</template>
-
-<script setup>
-import { SImagePreview } from 'startup-ui';
-</script>
 ```
 :::
 
@@ -97,63 +66,36 @@ import { SImagePreview } from 'startup-ui';
 
 В icon-атрибуте указываем название иконки:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="preview-container">
-        <SImagePreview :src="animals" icon="magnifying-glass-plus" />
+        <SImagePreview src="/animals.webp" icon="magnifying-glass-plus" />
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus" />
-</template>
-```
-```vue [Весь код]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus" />
 </template>
 
 <script setup>
-import { SImagePreview } from 'startup-ui';
+import { SImagePreview } from 'startup-ui'
 </script>
+```
+```vue
+<div class="preview-container">
+    <SImagePreview src="/animals.webp" icon="magnifying-glass-plus" />
+</div>
 ```
 :::
 
 Если нужно вставить кастомный контент, используем слот "icon":
 
-<div class="docs-container">
-    <div class="preview-container">
-        <SImagePreview :src="animals" icon="magnifying-glass-plus">
-            <template #icon>
-                🔍
-            </template>
-        </SImagePreview>
-    </div>
+:::demo
+```vue
+<div class="preview-container">
+    <SImagePreview src="/animals.webp" icon="magnifying-glass-plus">
+        <template #icon>
+            🔍
+        </template>
+    </SImagePreview>
 </div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus">
-        <template #icon>
-            🔍
-        </template>
-    </SImagePreview>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SImagePreview src="../../resources/img/animals.webp" icon="magnifying-glass-plus">
-        <template #icon>
-            🔍
-        </template>
-    </SImagePreview>
-</template>
-
-<script setup>
-import { SImagePreview } from 'startup-ui';
-</script>
 ```
 :::
 
@@ -173,12 +115,6 @@ import { SImagePreview } from 'startup-ui';
 |----------|----------|
 | preview | Полностью заменяет стандартный элемент `<img>` миниатюры. |
 | icon | Заменяет иконку увеличения, появляющуюся при наведении. |
-
-<script setup>
-import SImagePreview from '../../../../packages/startup-ui/src/components/SImagePreview.vue';
-import animals from '../../../resources/img/animals.webp';
-import nature from '../../../resources/img/nature.jpg';
-</script>
 
 <style lang="scss">
 .preview-container {

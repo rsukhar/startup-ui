@@ -11,27 +11,18 @@
 
 ## Базовый пример
 
-<div class="docs-container">
-    <SSwitch v-model="checked">Включить</SSwitch>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SSwitch v-model="checked">Включить</SSwitch>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSwitch v-model="checked">Включить</SSwitch>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSwitch } from 'startup-ui';
-
-const checked = ref(false);
+import { ref } from 'vue'
+const checked = ref(false)
 </script>
+```
+```vue
+<SSwitch v-model="checked">Включить</SSwitch>
 ```
 :::
 
@@ -39,27 +30,18 @@ const checked = ref(false);
 
 ## Недоступное состояние
 
-<div class="docs-container">
-    <SSwitch v-model="checkedSecond" disabled>Не работает</SSwitch>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SSwitch v-model="checked" disabled>Не работает</SSwitch>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSwitch v-model="checked" disabled>Не работает</SSwitch>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSwitch } from 'startup-ui';
-
-const checked = ref(false);
+import { ref } from 'vue'
+const checked = ref(false)
 </script>
+```
+```vue
+<SSwitch v-model="checked" disabled>Не работает</SSwitch>
 ```
 :::
 
@@ -67,31 +49,22 @@ const checked = ref(false);
 
 Для включенного/отключенного состояния можно задать кастомные значения:
 
-<div class="docs-container">
-    <SSwitch v-model="checkedThird" true-value="yes" false-value="no">Значение: {{ checkedThird }}</SSwitch>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SSwitch v-model="value" true-value="yes" false-value="no">
         Значение: {{ value }}
     </SSwitch>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SSwitch v-model="value" true-value="yes" false-value="no">
-        Значение: {{ value }}
-    </SSwitch>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SSwitch } from 'startup-ui';
-
-const value = ref(false);
+import { ref } from 'vue'
+const value = ref('no')
 </script>
+```
+```vue
+<SSwitch v-model="value" true-value="yes" false-value="no">
+    Значение: {{ value }}
+</SSwitch>
 ```
 :::
 
@@ -111,13 +84,3 @@ const value = ref(false);
 | Название | Описание |
 |----------|----------|
 | default | Текст лейбла (описания) рядом с переключателем. |
-
-<script setup>
-import { ref } from 'vue';
-import SSwitch from '../../../../packages/startup-ui/src/components/SSwitch.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-
-const checked = ref(false);
-const checkedSecond = ref(false);
-const checkedThird = ref('no');
-</script>

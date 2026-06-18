@@ -1,6 +1,6 @@
 <script setup>
 import DefaultTheme from 'vitepress/theme'
-import CodeGroupToggle from './CodeGroupToggle.vue'
+import CopyToast from './CopyToast.vue'
 
 const { Layout } = DefaultTheme
 </script>
@@ -8,7 +8,7 @@ const { Layout } = DefaultTheme
 <template>
     <Layout>
         <template #layout-bottom>
-            <CodeGroupToggle />
+            <CopyToast />
         </template>
     </Layout>
 </template>

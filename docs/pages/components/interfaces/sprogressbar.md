@@ -12,27 +12,19 @@
 ## Базовый пример
 
 
-<div class="docs-container" style="display: block">
-    <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SProgressBar } from 'startup-ui';
+import { ref } from 'vue'
 
-const readyPercentage = ref(50);
+const readyPercentage = ref(50)
 </script>
+```
+```vue
+<SProgressBar :percentage="readyPercentage">Обновляем проект...</SProgressBar>
 ```
 :::
 
@@ -50,12 +42,8 @@ const readyPercentage = ref(50);
 |----------|----------|
 | default | Текстовая метка, отображаемая рядом с полосой прогресса (например, «Обновляем проект...»). |
 
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
 import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SProgressBar from '../../../../packages/startup-ui/src/components/SProgressbar.vue';
-
-const readyPercentage = ref(50);
 </script>
 
 <style lang="scss">

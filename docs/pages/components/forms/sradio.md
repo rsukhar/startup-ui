@@ -18,79 +18,52 @@
             <li>Взаимозаменяемость формата опций с другими выбиралками из вариантов. Это позволяет легко заменять SRadioGroup на <a href="/pages/components/forms/sselect.html">SSelect</a> или <a href="/pages/components/forms/scheckbox.html">SCheckboxGroup</a>, не трогая бэкенд код.</li>
         </ol>
     </SToggle>
-    <SToggle title="Что будет ценно улучшить">
-        <ol>
-            <li>Достилизовать кружочек по цвету под --s-primary.</li>
-        </ol>
-    </SToggle>
 </SToggleGroup>
 
 ## Группа радио-кнопок
 
-<div class="docs-container">
-    <SRadioGroup v-model="type">
-        <SRadio value="bug">Ошибка</SRadio>
-        <SRadio value="question">Вопрос</SRadio>
-        <SRadio value="idea">Идея</SRadio>
-    </SRadioGroup>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SRadioGroup v-model="type">
         <SRadio value="bug">Ошибка</SRadio>
         <SRadio value="question">Вопрос</SRadio>
         <SRadio value="idea">Идея</SRadio>
     </SRadioGroup>
+    <p>Модель будет принимать значение выбранного варианта: <code>{{ type }}</code></p>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SRadioGroup v-model="type">
-        <SRadio value="bug">Ошибка</SRadio>
-        <SRadio value="question">Вопрос</SRadio>
-        <SRadio value="idea">Идея</SRadio>
-    </SRadioGroup>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SRadio, SRadioGroup } from 'startup-ui';
-
-const type = ref(null);
+import { ref } from 'vue'
+const type = ref('bug')
 </script>
 ```
+```vue
+<SRadioGroup v-model="type">
+    <SRadio value="bug">Ошибка</SRadio>
+    <SRadio value="question">Вопрос</SRadio>
+    <SRadio value="idea">Идея</SRadio>
+</SRadioGroup>
+<p>Модель будет принимать значение выбранного варианта: <code>{{ type }}</code></p>
+```
 :::
-
-Модель будет принимать значение выбранного варианта: <code>{{ type }}</code>
 
 ## Динамический набор значений
 
 В предыдущем примере набор вариантов хардкодился в шаблоне, что удобно, когда набор значений относится к логическому уровню интерфейса. Но когда набор вариантов идет из базы данных или конфига, очень неудобно каждый раз формировать набор элементов через v-for, и вместо этого используем атрибут <strong>options</strong>.
 
-<div class="docs-container">
-    <SRadioGroup v-model="typeSecond" :options="options" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SRadioGroup v-model="type" :options="options" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SRadioGroup v-model="type" :options="options" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-const type = ref(null);
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(1)
 </script>
+```
+```vue
+<SRadioGroup v-model="type" :options="options" />
 ```
 :::
 
@@ -100,28 +73,19 @@ const type = ref(null);
 
 Чтобы заменить стиль с кружочками на группу кнопок, добавляем атрибут <strong>buttons</strong>:
 
-<div class="docs-container">
-    <SRadioGroup v-model="typeThird" :options="options" buttons />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SRadioGroup v-model="type" :options="options" buttons />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SRadioGroup v-model="type" :options="options" buttons />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-const type = ref(null);
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(1)
 </script>
+```
+```vue
+<SRadioGroup v-model="type" :options="options" buttons />
 ```
 :::
 
@@ -129,28 +93,19 @@ const type = ref(null);
 
 Чтобы выводить группу радио-кнопок вертикальным списком, добавляем атрибут <strong>vertical</strong>:
 
-<div class="docs-container">
-    <SRadioGroup v-model="typeFourth" :options="options" vertical/>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SRadioGroup v-model="type" :options="options" vertical />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SRadioGroup v-model="type" :options="options" vertical />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const userOptions = { 1: 'Иванов', 2: 'Петров', 3: 'Сидоров' };
-const type = ref(null);
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(1)
 </script>
+```
+```vue
+<SRadioGroup v-model="type" :options="options" vertical />
 ```
 :::
 
@@ -158,16 +113,8 @@ const type = ref(null);
 
 Добавляем disabled-атрибут значению, которое должно быть недоступно для переключения.
 
-<div class="docs-container">
-    <SRadioGroup v-model="typeFifth">
-        <SRadio value="bug" disabled>Ошибка</SRadio>
-        <SRadio value="question">Вопрос</SRadio>
-        <SRadio value="idea">Идея</SRadio>
-    </SRadioGroup>
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SRadioGroup v-model="type">
         <SRadio value="bug" disabled>Ошибка</SRadio>
@@ -175,22 +122,17 @@ const type = ref(null);
         <SRadio value="idea">Идея</SRadio>
     </SRadioGroup>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SRadioGroup v-model="type">
-        <SRadio value="bug" disabled>Ошибка</SRadio>
-        <SRadio value="question">Вопрос</SRadio>
-        <SRadio value="idea">Идея</SRadio>
-    </SRadioGroup>
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SRadioGroup, SRadio } from 'startup-ui';
-
-const type = ref(null);
+import { ref } from 'vue'
+const type = ref('question')
 </script>
+```
+```vue
+<SRadioGroup v-model="type">
+    <SRadio value="bug" disabled>Ошибка</SRadio>
+    <SRadio value="question">Вопрос</SRadio>
+    <SRadio value="idea">Идея</SRadio>
+</SRadioGroup>
 ```
 :::
 
@@ -198,28 +140,19 @@ const type = ref(null);
 
 У радио-кнопок иногда бывает «не выбранное значение», особенно в фильтрах при заданном наборе вариантов. Для этого удобно использовать синтаксис placeholder:
 
-<div class="docs-container">
-    <SRadioGroup v-model="typeSixth" placeholder="Все" :options="options" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SRadioGroup v-model="type" placeholder="Все" :options="types" />
+    <SRadioGroup v-model="type" placeholder="Все" :options="options" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SRadioGroup v-model="type" placeholder="Все" :options="types" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SRadioGroup } from 'startup-ui';
-
-const types = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-const type = ref(null);
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(null)
 </script>
+```
+```vue
+<SRadioGroup v-model="type" placeholder="Все" :options="options" />
 ```
 :::
 
@@ -262,23 +195,6 @@ const type = ref(null);
 | Название | Описание |
 |----------|----------|
 | default | Текст или HTML-содержимое лейбла радио-кнопки. |
-
-<script setup>
-import { ref } from 'vue';
-import SRadioGroup from '../../../../packages/startup-ui/src/components/SRadioGroup.vue';
-import SRadio from '../../../../packages/startup-ui/src/components/SRadio.vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-
-const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' };
-
-const type = ref('bug');
-const typeSecond = ref(null);
-const typeThird = ref(null);
-const typeFourth = ref(null);
-const typeFifth = ref(null);
-const typeSixth = ref('');
-</script>
 
 <style lang="scss">
 .s-radio {

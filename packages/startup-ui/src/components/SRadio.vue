@@ -49,7 +49,11 @@ const model = computed({
     gap: 0.5rem;
     cursor: pointer;
     font-family: var(--s-font-family);
-    
+
+    input[type="radio"] {
+        accent-color: var(--s-primary);
+    }
+
     &-text {
         white-space: nowrap;
     }

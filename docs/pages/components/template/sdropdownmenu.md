@@ -19,26 +19,25 @@
 
 ## Базовый пример
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="menu-container">
-        <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
+        <SDropdownMenu placeholder="Админка" :links="adminLinks" label-link="/admin" />
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDropdownMenu placeholder="Админка" :links="adminLinks" labelLink="/admin" />
-</template>
-
 <script setup>
-import { SDropdownMenu } from 'startup-ui';
+const adminLinks = [
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
+    { label: 'Пользователи', url: '#' },
+]
 </script>
+```
+```vue
+<div class="menu-container">
+    <SDropdownMenu placeholder="Админка" :links="adminLinks" label-link="/admin" />
+</div>
 ```
 :::
 
@@ -51,73 +50,64 @@ import { SDropdownMenu } from 'startup-ui';
 
 Когда нужно выводить фиксированный лейбл, то задаем его одноименным атрибутом `label`. При этом, если на нем должна быть ссылка, используем атрибут `labelLink`:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="menu-container">
         <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
-</template>
-
 <script setup>
-import { SDropdownMenu } from 'startup-ui';
+const adminLinks = [
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
+    { label: 'Пользователи', url: '#' },
+]
 </script>
+```
+```vue
+<div class="menu-container">
+    <SDropdownMenu label="Админка" label-link="/admin/" :links="adminLinks" />
+</div>
 ```
 :::
 
 Когда нужно задать кастомный лейбл, используем одноименный слот `label`, при этом ссылку с лейбла также задаем через атрибут `labelLink`:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="menu-container">
-        <SDropdownMenu :links="adminLinks" label-link="/users/admin/">
+        <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
             <template #label>
                 <span class="userblock">
                     <FontAwesomeIcon icon="circle-user" />
-                    <span>Admin</span>
+                    <span>{{ authUser.username }}</span>
                 </span>
             </template>
         </SDropdownMenu>
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
-        <template #label>
-            <span class="userblock">
-                <FontAwesomeIcon icon="circle-user" />
-                <span>{{ authUser.username }}</span>
-            </span>
-        </template>
-    </SDropdownMenu>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
-        <template #label>
-            <span class="userblock">
-                <FontAwesomeIcon icon="circle-user" />
-                <span>{{ authUser.username }}</span>
-            </span>
-        </template>
-    </SDropdownMenu>
-</template>
-
 <script setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { SDropdownMenu } from 'startup-ui';
+const adminLinks = [
+    { label: 'Заказы', url: '#' },
+    { label: 'Страницы', url: '#' },
+    { label: 'Пользователи', url: '#' },
+]
+const authUser = { username: 'admin' }
 </script>
+```
+```vue
+<div class="menu-container">
+    <SDropdownMenu :links="adminLinks" :label-link="`/users/${authUser.username}/`">
+        <template #label>
+            <span class="userblock">
+                <FontAwesomeIcon icon="circle-user" />
+                <span>{{ authUser.username }}</span>
+            </span>
+        </template>
+    </SDropdownMenu>
+</div>
 ```
 :::
 
@@ -125,70 +115,54 @@ import { SDropdownMenu } from 'startup-ui';
 
 При желании можно задать ссылки не через links-атрибут, а через слот:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="menu-container">
         <SDropdownMenu label="Помощь">
             <a href="/docs/">Документация</a>
             <a href=".." target="_blank">Телеграм-группа</a>
         </SDropdownMenu>
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDropdownMenu label="Помощь">
-        <a href="/docs/">Документация</a>
-        <a href=".." target="_blank">Телеграм-группа</a>
-    </SDropdownMenu>
-</template>
-```
-```vue [Весь код]
-<template>
-    <SDropdownMenu label="Помощь">
-        <a href="/docs/">Документация</a>
-        <a href=".." target="_blank">Телеграм-группа</a>
-    </SDropdownMenu>
 </template>
 
 <script setup>
-import { SDropdownMenu } from 'startup-ui';
+import { SDropdownMenu } from 'startup-ui'
 </script>
+```
+```vue
+<div class="menu-container">
+    <SDropdownMenu label="Помощь">
+        <a href="/docs/">Документация</a>
+        <a href=".." target="_blank">Телеграм-группа</a>
+    </SDropdownMenu>
+</div>
 ```
 :::
 
 Также можно использовать комбинированный вариант, когда часть ссылок задается атрибутом, а часть — через слот:
 
-<div class="docs-container">
+:::demo
+```vue
+<template>
     <div class="menu-container">
         <SDropdownMenu label="Помощь" :links="helpLinks">
             <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
         </SDropdownMenu>
     </div>
-</div>
-
-:::code-group
-```vue [Пример]
-<template>
-    <SDropdownMenu label="Помощь" :links="helpLinks">
-        <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
-    </SDropdownMenu>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDropdownMenu label="Помощь" :links="helpLinks">
-        <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
-    </SDropdownMenu>
-</template>
-
 <script setup>
-import { SDropdownMenu } from 'startup-ui';
-
 const helpLinks = [
-    { label: 'Чат', url: '#', active: true }
-];
+    { label: 'Чат', url: '#', active: true },
+]
 </script>
+```
+```vue
+<div class="menu-container">
+    <SDropdownMenu label="Помощь" :links="helpLinks">
+        <a href="mailto:support@pfpult.ru">Написать в техподдержку</a>
+    </SDropdownMenu>
+</div>
 ```
 :::
 
@@ -210,24 +184,7 @@ const helpLinks = [
 | default | Кастомное содержимое для выпадающего списка. Помещается после элементов массива `links` (если они есть). |
 | label | Кастомное содержимое для области лейбла выпадающего списка. Отрабатывает с высшим приоритетом при рендеринге лейбла (игнорируя свойства `label`, `placeholder` и текст активной ссылки). |
 
-<script setup>
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SDropdownMenu from '../../../../packages/startup-ui/src/components/SDropdownMenu.vue';
-
-const adminLinks = [
-    { label: 'Заказы', url: '#' },
-    { label: 'Страницы', url: '#' },
-    { label: 'Пользователи', url: '#' }
-];
-
-const helpLinks = [
-    { label: 'Чат', url: '#' }
-];
-</script>
-
-<style lang="scss" scoped>
+<style lang="scss">
 .menu-container {
     display: flex;
     max-width: 200px;

@@ -24,85 +24,66 @@
 
 ## Стандартный пример
 
-<div class="docs-container">
-    <SDatePicker v-model="value" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SDatePicker v-model="value" />
-</template>
-```
-```vue [Весь код]
-<template>
-    <SDatePicker v-model="value" />
+    <p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
+import { ref } from 'vue'
 
-const value = ref(false);
+const value = ref(null)
 </script>
+```
+```vue
+<SDatePicker v-model="value" />
+<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
 ```
 :::
 
-Выбирает значение в формате `YYYY-MM-DD`. Текущее значение: <code>{{ value ?? 'null' }}</code>
+Выбирает значение в формате `YYYY-MM-DD`.
 
 ## Минимальное и максимальное значения
 
-<div class="docs-container">
-    <SDatePicker v-model="valueSecond" :min="minDate" :max="maxDate" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SDatePicker v-model="value" :min="minDate" :max="maxDate" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDatePicker v-model="value" min="{{ minDate }}" max="{{ maxDate }}" />
-</template>
 
 <script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
+import { ref } from 'vue'
 
-const value = ref(false);
+const value = ref(null)
+const minDate = '2026-06-01'
+const maxDate = '2026-06-30'
 </script>
+```
+```vue
+<SDatePicker v-model="value" :min="minDate" :max="maxDate" />
 ```
 :::
 
 ## Кастомный формат значения
 
-<div class="docs-container">
-    <SDatePicker v-model="valueThird" value-format="YYYYMMDD" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SDatePicker v-model="value" value-format="YYYYMMDD" />
+    <p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDatePicker v-model="value" value-format="YYYYMMDD" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
+import { ref } from 'vue'
+const value = ref(null)
 </script>
 ```
+```vue
+<SDatePicker v-model="value" value-format="YYYYMMDD" />
+<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
+```
 :::
-
-Текущее значение: <code>{{ valueThird ?? 'null' }}</code>
 
 Независимо от этого атрибуты min/max всегда идут в своём стандартном формате `YYYY-MM-DD`.
 
@@ -110,62 +91,45 @@ const value = ref(false);
 
 Для выбора периода добавляем атрибут **range**:
 
-<div class="docs-container">
-    <SDatePicker range v-model="valueFourth" value-format="YYYYMMDD" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" />
+    <p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDatePicker range v-model="value" value-format="YYYYMMDD" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
+import { ref } from 'vue'
+const value = ref(null)
 </script>
+```
+```vue
+<SDatePicker range v-model="value" value-format="YYYYMMDD" />
+<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
 ```
 :::
 
-В модель подставляется массив из двух дат в формате, указанном в <strong>value-format</strong>. Текущее значение: <code>{{ valueFourth ?? 'null' }}</code>
+В модель подставляется массив из двух дат в формате, указанном в <strong>value-format</strong>.
 
 ## Выбор вариантов кнопками
 
 Очень часто в фильтрах по диапазону дат удобно использовать однокликовый выбор предзаданного диапазона. Набор таких диапазонов мы устанавливаем через атрибут <strong>buttons</strong>.
 
-<div class="docs-container">
-    <SDatePicker range v-model="valueFifth" value-format="YYYYMMDD" :buttons="buttons" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
-
+import { ref } from 'vue'
+const value = ref(null)
 const buttons = {
-  '2 недели': '20250901-20250914',
-  'Месяц': '20250815-20250914',
-};
+    '2 недели': '20250901-20250914',
+    'Месяц': '20250815-20250914',
+}
 </script>
+```
+```vue
+<SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
 ```
 :::
 
@@ -177,35 +141,20 @@ const buttons = {
 
 Чтобы выбирать время, добавляем атрибут <strong>with-time</strong>. При этом, выходное значение будет в формате <strong>2025-12-22 12:27</strong>:
 
-<div class="docs-container">
-    <SDatePicker with-time v-model="valueSixth" value-format="YYYYMMDD HH:mm" />
-</div>
-
-:::code-group
-```vue [Пример]
+:::demo
+```vue
 <template>
-    <SDatePicker with-time v-model="value" />
+    <SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />
 </template>
-```
-```vue [Весь код]
-<template>
-    <SDatePicker with-time v-model="value" />
-</template>
-
 <script setup>
-import { ref } from 'vue';
-import { SDatePicker } from 'startup-ui';
-
-const value = ref(false);
+import { ref } from 'vue'
+const value = ref(null)
 </script>
 ```
-:::
-
-Дополнительно в формате можно дописывать **HH:mm**, чтобы там было время:
-
 ```vue
 <SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />
 ```
+:::
 
 ## Интерфейс компонента
 
@@ -224,36 +173,6 @@ const value = ref(false);
 | with-time | `boolean` | `false` | Позволяет выбирать время (часы и минуты). Только для одиночного выбора. |
 | week-day-names | `string[]` | `['Пн', ..., 'Вс']` | Названия дней недели. |
 | month-names | `string[]` | `['Январь', ..., 'Декабрь']` | Названия месяцев. |
-
-<script setup>
-import { ref } from 'vue';
-import SToggleGroup from '../../../../packages/startup-ui/src/components/SToggleGroup.vue';
-import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
-import SDatePicker from '../../../../packages/startup-ui/src/components/SDatePicker.vue';
-
-function toDateString(date) {
-  return date.toISOString().split('T')[0];
-}
-
-let minDate = new Date();
-let maxDate = new Date(minDate);
-maxDate.setDate(minDate.getDate() + 5);
-
-maxDate = toDateString(maxDate);
-minDate = toDateString(minDate);
-
-const value = ref(null);
-const valueSecond = ref(null);
-const valueThird = ref(null);
-const valueFourth = ref(null);
-const valueFifth = ref(null);
-const valueSixth = ref(null);
-
-const buttons = {
-  '2 недели': '20250901-20250914',
-  'Месяц': '20250815-20250914',
-};
-</script>
 
 <style lang="scss" scoped>
 .s-datepicker {
