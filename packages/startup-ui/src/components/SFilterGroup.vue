@@ -5,7 +5,7 @@
 </template>
 <script setup lang="ts">
 import { provide, onBeforeMount, onMounted, onBeforeUnmount, useSlots, ref } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { getStartupUiRouter } from '../config';
 
 const props = withDefaults(defineProps<{
     /**
@@ -65,11 +65,21 @@ const setQueryParams = (params: Record<string, any>) => {
         .filter(([name, value]) => ! props.ignoreQueryNames.includes(name) && !props.ignoreQueryValues.includes(value))
         .map(([name, value]) => [name, String(value)])
     );
-    router.get(window.location.pathname, filteredParams, {
-        preserveScroll: true,
-        replace: true,
-        ...(hasDebouncedFilter.value && { preserveState: true }),
-    });
+
+    const router = getStartupUiRouter();
+    if (router) {
+        // A router was registered (e.g. Inertia via app.use(StartupUI, { router })) — do a full
+        // visit so the server re-queries with the new params
+        router.get(window.location.pathname, filteredParams, {
+            preserveScroll: true,
+            replace: true,
+            ...(hasDebouncedFilter.value && { preserveState: true }),
+        });
+    } else {
+        // No router registered — keep the URL in sync via the History API (no SPA refetch)
+        const queryString = new URLSearchParams(filteredParams).toString();
+        window.history.replaceState(window.history.state, '', window.location.pathname + (queryString ? `?${queryString}` : ''));
+    }
 }
 
 // Watch for query changes and synchronize

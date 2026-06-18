@@ -18,6 +18,12 @@ export {
 } from './locale';
 export type { StartupUiOptions, StartupUiMessages, StartupUiLocaleMessages, DeepPartial } from './locale';
 
+/**
+ * Optional router integration (used by SFilterGroup `bind-to-query`)
+ */
+export { setStartupUiRouter, getStartupUiRouter } from './config';
+export type { StartupUiRouter } from './config';
+
 // Default plugin export
 export default plugin;
 
