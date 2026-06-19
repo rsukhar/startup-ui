@@ -1,0 +1,47 @@
+# STimeline
+
+Вертикальная черта с точками-пунктами.
+
+<SToggle title="В чем отличие от аналогов?">
+    <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+    <ol>
+        <li>Упрощено до минимально необходимого функционала, что обеспечивает одинаковое написание кода и взаимозаменяемость компонентов дальше.</li>
+    </ol>
+</SToggle>
+
+## Базовый пример
+
+```vue
+<template>
+    <STimeline :items="items">
+        <template #item="{ item }">
+            <strong>{{ item.last_visit_diff }} назад</strong> {{ item.username }} остановил переходы
+        </template>
+    </STimeline>
+</template>
+<script setup>
+const items = [
+    { id: 1, last_visit_diff: '2 д. 6 ч', username: 'Иванов' },
+    { id: 2, last_visit_diff: '4 д. 2 ч', username: 'Петров' },
+    { id: 3, last_visit_diff: '22 д. 1 ч', username: 'Сидоров' }
+]
+</script>
+```
+
+## Интерфейс компонента
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| items | `Array` | `undefined` | Обязательный массив объектов данных для итерации по таймлайну. |
+
+### Слоты (Slots)
+
+| Название | Привязки | Описание |
+|----------|----------|----------|
+| item | `{ item: Object, index: number }` | Слот для отображения содержимого рядом с маркером таймлайна для каждого элемента. |
+
+<script setup lang="ts">
+import SToggle from '../../../../packages/startup-ui/src/components/SToggle.vue';
+</script>

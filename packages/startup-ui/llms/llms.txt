@@ -1,0 +1,50 @@
+# Startup UI
+
+> Vue 3 UI component library for IT startups (great with Laravel + InertiaJS). Every component is prefixed with `S` (SButton, SInput, …) and strictly typed — read prop/emit/slot types from the .d.ts. FontAwesome and InertiaJS are optional, injected once via app.use(StartupUI, { icon, router, link }). Component docs below are written in Russian; the default runtime locale is English (switchable via configureStartupUi).
+
+## Forms
+
+- [SCheckboxGroup, SCheckbox](./components/forms/scheckbox.md): Одиночная галочка или набор галочек.
+- [SDatePicker](./components/forms/sdatepicker.md): Поле выбора даты.
+- [SForm, SFormRow](./components/forms/sform.md): SForm и SFormRow позволяют быстро собирать функциональные формы.
+- [SHtmlEditor](./components/forms/shtmleditor.md): Визуальный HTML-редактор.
+- [SInput](./components/forms/sinput.md): Базовые поля ввода.
+- [SRadioGroup, SRadio](./components/forms/sradio.md): Радио-кнопки.
+- [SSelect](./components/forms/sselect.md): Выпадающий список с вариантами выбора.
+- [SSwitch](./components/forms/sswitch.md): Включатель-выключатель.
+- [SUpload](./components/forms/supload.md): Загрузка файла. Всегда вставляется внутри некой формы, не используется в отрыве от неё.
+
+## Data
+
+- [SFilterGroup, SFilter](./components/data/sfilter.md): Фильтры.
+- [SPagination](./components/data/spagination.md): Постраничная навигация.
+- [STable](./components/data/stable.md): Таблица.
+- [STree](./components/data/stree.md): Дерево элементов.
+
+## Interfaces
+
+- [SActionBar](./components/interfaces/sactionbar.md): Полоска действия (обычно, для выбранных элементов).
+- [SActionIcon](./components/interfaces/sactionicon.md): Иконка действия (чаще всего используется в таблицах).
+- [SAlert](./components/interfaces/salert.md): Оповещение о произошедшем событии.
+- [SButton](./components/interfaces/sbutton.md): Кнопка.
+- [SColumnSettings](./components/interfaces/scolumnsettings.md): Включение/выключение колонок в таблице.
+- [SConfirm](./components/interfaces/sconfirm.md): Диалоговое окно подтверждения действия.
+- [SCopyText](./components/interfaces/scopytext.md): Копируемый текст.
+- [SDashboard, SDashboardItem](./components/interfaces/sdashboard.md): Дешборд блоков (как правило, удобно использовать для отчетов).
+- [SDialog](./components/interfaces/sdialog.md): Диалоговое окно.
+- [SImagePreview](./components/interfaces/simagepreview.md): Картинка, которую можно посмотреть более детально в диалоговом окне.
+- [SNote](./components/interfaces/snote.md): Текстовая заметка.
+- [SProgressBar](./components/interfaces/sprogressbar.md): Полоска прогресса.
+- [SStat](./components/interfaces/sstat.md): Строка статистики, выровненная по заголовкам.
+- [SStatus](./components/interfaces/sstatus.md): Текстовый статус (как правило с иконкой).
+- [STag](./components/interfaces/stag.md): Тег (может также использоваться как отображение статуса).
+- [STimeline](./components/interfaces/stimeline.md): Вертикальная черта с точками-пунктами.
+- [SToggleGroup, SToggle](./components/interfaces/stoggle.md): Открывающийся-закрывающийся блок.
+- [STooltip](./components/interfaces/stooltip.md): Иконка вопроса со всплывающей подсказкой.
+
+## Layout & template
+
+- [SCanvas, SFooter](./components/template/scanvas.md): Общий шаблон страницы.
+- [SDropdownMenu](./components/template/sdropdownmenu.md): Выпадающий список из навигационных ссылок. Выводит текст активного элемента, а если его нет, то выводит текст плейсхолдера.
+- [SHorizontalMenu](./components/template/shorizontalmenu.md): Горизонтальное меню. Обычно размещается в subheader-блоке.
+- [SVerticalMenu](./components/template/sverticalmenu.md): Боковое меню.

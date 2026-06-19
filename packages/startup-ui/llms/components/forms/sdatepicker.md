@@ -15,7 +15,6 @@
 
 ## Стандартный пример
 
-:::demo
 ```vue
 <template>
     <SDatePicker v-model="value" />
@@ -28,17 +27,11 @@ import { ref } from 'vue'
 const value = ref(null)
 </script>
 ```
-```vue
-<SDatePicker v-model="value" />
-<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
-```
-:::
 
 Выбирает значение в формате `YYYY-MM-DD`.
 
 ## Минимальное и максимальное значения
 
-:::demo
 ```vue
 <template>
     <SDatePicker v-model="value" :min="minDate" :max="maxDate" />
@@ -52,14 +45,9 @@ const minDate = '2026-06-01'
 const maxDate = '2026-06-30'
 </script>
 ```
-```vue
-<SDatePicker v-model="value" :min="minDate" :max="maxDate" />
-```
-:::
 
 ## Кастомный формат значения
 
-:::demo
 ```vue
 <template>
     <SDatePicker v-model="value" value-format="YYYYMMDD" />
@@ -70,11 +58,6 @@ import { ref } from 'vue'
 const value = ref(null)
 </script>
 ```
-```vue
-<SDatePicker v-model="value" value-format="YYYYMMDD" />
-<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
-```
-:::
 
 Независимо от этого атрибуты min/max всегда идут в своём стандартном формате `YYYY-MM-DD`.
 
@@ -82,7 +65,6 @@ const value = ref(null)
 
 Для выбора периода добавляем атрибут `range`:
 
-:::demo
 ```vue
 <template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" />
@@ -93,11 +75,6 @@ import { ref } from 'vue'
 const value = ref(null)
 </script>
 ```
-```vue
-<SDatePicker range v-model="value" value-format="YYYYMMDD" />
-<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
-```
-:::
 
 В модель подставляется массив из двух дат в формате, указанном в `value-format`.
 
@@ -105,7 +82,6 @@ const value = ref(null)
 
 Очень часто в фильтрах по диапазону дат удобно использовать однокликовый выбор предзаданного диапазона. Набор таких диапазонов мы устанавливаем через атрибут `buttons`.
 
-:::demo
 ```vue
 <template>
     <SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
@@ -119,10 +95,6 @@ const buttons = {
 }
 </script>
 ```
-```vue
-<SDatePicker range v-model="value" value-format="YYYYMMDD" :buttons="buttons" />
-```
-:::
 
 Набор доступных кнопок задается в формате <code>{title: value.join('-')}</code>, например: <code>{"2 недели": "20250901-20250914", "Месяц": "20250815-20250914"}</code>
 
@@ -132,7 +104,6 @@ const buttons = {
 
 Чтобы выбирать время, добавляем атрибут `with-time`. При этом, выходное значение будет в формате <strong>2025-12-22 12:27</strong>:
 
-:::demo
 ```vue
 <template>
     <SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />
@@ -142,10 +113,6 @@ import { ref } from 'vue'
 const value = ref(null)
 </script>
 ```
-```vue
-<SDatePicker with-time v-model="value" value-format="YYYYMMDD HH:mm" />
-```
-:::
 
 Часы и минуты — это `SSelect` с фильтрацией, поэтому значение можно как выбрать мышью, так и набрать с клавиатуры. В локалях с 12-часовым форматом (например `en-US`) вместо часов 0–23 показываются часы 1–12 и переключатель AM/PM.
 
@@ -153,7 +120,6 @@ const value = ref(null)
 
 Атрибут `clearable` добавляет кнопку очистки (×), которая появляется, когда значение выбрано:
 
-:::demo
 ```vue
 <template>
     <SDatePicker clearable v-model="value" />
@@ -164,11 +130,6 @@ import { ref } from 'vue'
 const value = ref('2026-06-18')
 </script>
 ```
-```vue
-<SDatePicker clearable v-model="value" />
-<p>Текущее значение: <code>{{ value ?? 'null' }}</code></p>
-```
-:::
 
 ## Интерфейс компонента
 

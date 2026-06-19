@@ -1,0 +1,164 @@
+# SRadioGroup > SRadio
+
+Радио-кнопки.
+
+<SToggleGroup>
+    <SToggle title="В чем отличие от аналогов?">
+        <p>В отличие от популярных библиотек компонентов для Vue3:</p>
+        <ol>
+            <li>Сразу идет с кликабельным стандартизированным лейблом в качестве простого атрибута. Это унифицирует код и внешний вид компонентов, упрощается поддержка и взаимозаменяемость.</li>
+            <li>Сразу из коробки идет кнопочный стиль, который часто используется.</li>
+            <li>Поддерживает три формата передачи опций в группы радио-кнопок, что удобно в зависимости от кейса:
+            <ol>
+                <li><code>&lt;SRadio /&gt;</code> — там где опции являются частью дизайна, их можно и удобно хардкодить в шаблон;</li>
+                <li><code>{value1: title1, value2: title2}</code> — что удобно для быстрого получения из key-value конфигов, а также из моделей — <code>User::pluck('name', 'id')</code>;</li>
+                <li><code>[[value1, title1], [value2, title2]]</code> — что удобно для выгрузки там, где важен порядок. Это минимизирует код в контроллерах, помогая сохранять принцип «тонкого контроллера», которого мы придерживаемся.</li>
+            </ol>
+            </li>
+            <li>Взаимозаменяемость формата опций с другими выбиралками из вариантов. Это позволяет легко заменять SRadioGroup на <a href="/pages/components/forms/sselect.html">SSelect</a> или <a href="/pages/components/forms/scheckbox.html">SCheckboxGroup</a>, не трогая бэкенд код.</li>
+        </ol>
+    </SToggle>
+</SToggleGroup>
+
+## Группа радио-кнопок
+
+```vue
+<template>
+    <SRadioGroup v-model="type">
+        <SRadio value="bug">Ошибка</SRadio>
+        <SRadio value="question">Вопрос</SRadio>
+        <SRadio value="idea">Идея</SRadio>
+    </SRadioGroup>
+    <p>Модель будет принимать значение выбранного варианта: <code>{{ type }}</code></p>
+</template>
+<script setup>
+import { ref } from 'vue'
+const type = ref('bug')
+</script>
+```
+
+## Динамический набор значений
+
+В предыдущем примере набор вариантов хардкодился в шаблоне, что удобно, когда набор значений относится к логическому уровню интерфейса. Но когда набор вариантов идет из базы данных или конфига, очень неудобно каждый раз формировать набор элементов через v-for, и вместо этого используем атрибут `options`.
+
+```vue
+<template>
+    <SRadioGroup v-model="type" :options="options" />
+</template>
+<script setup>
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(1)
+</script>
+```
+
+Где options — это объект вариантов выбора в формате <code>{value1: title1, value2: title2}</code> или массив в формате <code>[[value1, title1], [value2, title2]]</code>
+
+## Кнопочный стиль
+
+Чтобы заменить стиль с кружочками на группу кнопок, добавляем атрибут `buttons`:
+
+```vue
+<template>
+    <SRadioGroup v-model="type" :options="options" buttons />
+</template>
+<script setup>
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(1)
+</script>
+```
+
+## Вертикальный список радио-кнопок
+
+Чтобы выводить группу радио-кнопок вертикальным списком, добавляем атрибут `vertical`:
+
+```vue
+<template>
+    <SRadioGroup v-model="type" :options="options" vertical />
+</template>
+<script setup>
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(1)
+</script>
+```
+
+## Недоступное значение
+
+Добавляем `disabled`-атрибут значению, которое должно быть недоступно для переключения.
+
+```vue
+<template>
+    <SRadioGroup v-model="type">
+        <SRadio value="bug" disabled>Ошибка</SRadio>
+        <SRadio value="question">Вопрос</SRadio>
+        <SRadio value="idea">Идея</SRadio>
+    </SRadioGroup>
+</template>
+<script setup>
+import { ref } from 'vue'
+const type = ref('question')
+</script>
+```
+
+## Нулевое значение (плейсхолдер)
+
+У радио-кнопок иногда бывает «не выбранное значение», особенно в фильтрах при заданном наборе вариантов. Для этого удобно использовать синтаксис `placeholder`:
+
+```vue
+<template>
+    <SRadioGroup v-model="type" placeholder="Все" :options="options" />
+</template>
+<script setup>
+import { ref } from 'vue'
+const options = { 1: 'Ошибка', 2: 'Вопрос', 3: 'Идея' }
+const type = ref(null)
+</script>
+```
+
+## Интерфейс компонента SRadioGroup
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| v-model | `any` | `undefined` | Выбранное значение. |
+| options | `Record \| Array` | `{}` | Список вариантов (объект `{value: title}` или массив `[[value, title]]`). |
+| buttons | `boolean` | `false` | Использовать стиль кнопок вместо кружочков. |
+| vertical | `boolean` | `false` | Расположение элементов в колонку. |
+| placeholder | `string` | `undefined` | Текст для «нулевого» варианта выбора (с пустым значением). |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Содержимое группы (обычно компоненты `SRadio`). |
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| change | `(value: any)` | Вызывается при изменении выбранного значения. |
+
+## Интерфейс компонента SRadio
+
+### Свойства (Props)
+
+| Название | Тип | По умолчанию | Описание |
+|----------|-----|--------------|----------|
+| value | `string \| number \| boolean` | - | **Обязательное.** Значение элемента. |
+| disabled | `boolean` | `false` | Отключает возможность выбора. |
+| labelClass | `string` | `undefined` | Кастомные CSS классы для лейбла. |
+
+### Слоты (Slots)
+
+| Название | Описание |
+|----------|----------|
+| default | Текст или HTML-содержимое лейбла радио-кнопки. |
+
+<style lang="scss">
+.s-radio {
+    color: var(--s-text);
+}
+</style>

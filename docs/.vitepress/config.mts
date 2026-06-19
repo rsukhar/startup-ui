@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 import { demoBlockPlugin } from 'vitepress-theme-demoblock'
 import { demoFullCodePlugin } from './demoFullCode'
 import mdContainer from 'markdown-it-container'
+// @ts-ignore — plain ESM helper shared with the npm-bundle generator (no .d.ts)
+import { discoverComponentPages, discoverGuidePages, buildLlmsTxt, buildLlmsFull, cleanMarkdown, SITE } from '../../scripts/llm-shared.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -99,7 +101,7 @@ export default defineConfig({
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
                         { text: 'Миграция на мажор', link: '/pages/welcome/extras/migration' },
                         { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' },
-                        { text: 'Документация для LLM', link: '/pages/welcome/extras/llms' }
+                        { text: 'Документация для ИИ-агентов', link: '/pages/welcome/extras/llms' }
                     ]
                 }
             ]
@@ -163,6 +165,22 @@ export default defineConfig({
             md.use(demoFullCodePlugin)
         },
     },
+    // Emit the agent-readable artifacts into the production build (dist): a clean `.md` next to
+    // every page (so "append .md to any docs URL" works in prod), plus a spec-shaped /llms.txt
+    // index and a /llms-full.txt concatenation. Same source + helpers as the npm-bundle generator.
+    async buildEnd(siteConfig) {
+        const docsRoot = siteConfig.srcDir
+        const outDir = siteConfig.outDir
+        const componentPages = discoverComponentPages(docsRoot)
+        const guidePages = discoverGuidePages(docsRoot)
+        for (const p of [...guidePages, ...componentPages]) {
+            const dest = path.join(outDir, `${p.route}.md`)
+            fs.mkdirSync(path.dirname(dest), { recursive: true })
+            fs.writeFileSync(dest, cleanMarkdown(p.src))
+        }
+        fs.writeFileSync(path.join(outDir, 'llms.txt'), buildLlmsTxt(componentPages, guidePages, (r: string) => `${SITE}${r}.md`))
+        fs.writeFileSync(path.join(outDir, 'llms-full.txt'), buildLlmsFull(componentPages, guidePages))
+    },
     vite: {
         resolve: {
             alias: {
@@ -191,20 +209,31 @@ export default defineConfig({
                 }
             },
             {
+                // Dev-server parity for the LLM artifacts that buildEnd writes in production:
+                // /llms.txt, /llms-full.txt, and a clean `.md` for any page URL (append `.md`).
                 name: 'llm-md-proxy',
                 configureServer(server) {
+                    const docsRoot = server.config.root;
                     server.middlewares.use((req, res, next) => {
-                        const url = req.url || '';
-                        if (url.endsWith('.md')) {
-                            // Путь к компонентам: docs/pages/components/...
-                            // Запрос обычно вида /pages/components/...
-                            const cleanPath = url.split('?')[0];
-                            const fullPath = path.join(server.config.root, cleanPath);
-
+                        // IMPORTANT: only handle query-less requests. Vite loads each page's compiled
+                        // `.md` module with a query string (e.g. `?t=…`); intercepting those would
+                        // break client-side navigation. Direct agent fetches have no query.
+                        const rawUrl = req.url || '';
+                        if (rawUrl.includes('?')) { next(); return; }
+                        const send = (body: string) => {
+                            res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
+                            res.end(body);
+                        };
+                        if (rawUrl === '/llms.txt') {
+                            return send(buildLlmsTxt(discoverComponentPages(docsRoot), discoverGuidePages(docsRoot), (r: string) => `${SITE}${r}.md`));
+                        }
+                        if (rawUrl === '/llms-full.txt') {
+                            return send(buildLlmsFull(discoverComponentPages(docsRoot), discoverGuidePages(docsRoot)));
+                        }
+                        if (rawUrl.endsWith('.md')) {
+                            const fullPath = path.join(docsRoot, rawUrl);
                             if (fs.existsSync(fullPath)) {
-                                res.setHeader('Content-Type', 'text/markdown; charset=utf-8');
-                                res.end(fs.readFileSync(fullPath));
-                                return;
+                                return send(cleanMarkdown(fs.readFileSync(fullPath, 'utf8')));
                             }
                         }
                         next();

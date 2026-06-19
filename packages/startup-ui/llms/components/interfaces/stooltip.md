@@ -12,8 +12,6 @@
 
 ## Базовый пример
 
-
-:::demo
 ```vue
 <template>
     <p>
@@ -25,18 +23,11 @@
 import { STooltip } from 'startup-ui'
 </script>
 ```
-```vue
-<p>
-    Показы <STooltip>Кол-во показов поискового сниппета. Данные из вебмастера за последний день, когда они есть для запроса</STooltip>
-</p>
-```
-:::
 
 ## Фиксированное положение
 
 По умолчанию положение подсказки выбирается исходя из того, где эта подсказка уместится на экране. Но если нужно указать положение явно, можно использовать атрибут `at`:
 
-:::demo
 ```vue
 <template>
     <div>Сверху <STooltip at="top">Подсказка сверху</STooltip></div>
@@ -49,19 +40,11 @@ import { STooltip } from 'startup-ui'
 import { STooltip } from 'startup-ui'
 </script>
 ```
-```vue
-<div>Сверху <STooltip at="top">Подсказка сверху</STooltip></div>
-<div>Справа <STooltip at="right">Подсказка справа</STooltip></div>
-<div>Снизу <STooltip at="bottom">Подсказка снизу</STooltip></div>
-<div>Слева <STooltip at="left">Подсказка слева</STooltip></div>
-```
-:::
 
 ## Кастомная иконка
 
 Если нужна другая иконка, то её можно заменить атрибутом icon:
 
-:::demo
 ```vue
 <template>
     <div>Подсказка с другой иконкой <STooltip icon="circle-info">Используем иконку circle-info</STooltip></div>
@@ -71,21 +54,15 @@ import { STooltip } from 'startup-ui'
 import { STooltip } from 'startup-ui'
 </script>
 ```
-```vue
-<div>Подсказка с другой иконкой <STooltip icon="circle-info">Используем иконку circle-info</STooltip></div>
-```
-:::
 
 Если нужна совсем нестандартная иконка/область наведения, то можно использовать слот icon:
 
-:::demo
 ```vue
 <STooltip>
     <template #icon>❓</template>
     Используем в качестве иконки эмодзи
 </STooltip>
 ```
-:::
 
 ## Интерфейс компонента
 

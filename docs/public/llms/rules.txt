@@ -9,8 +9,9 @@ Guidelines for using Startup UI library components in Vue 3 projects.
 ## Documentation & Examples (Advanced Usage)
 If TypeScript types are not enough to understand usage patterns, slots, or examples, refer to these resources:
 
-- **Component Specs**: https://startup-ui.suhar.ru/pages/components/{category}/{scomponentname}.md
-- **Full Index**: https://startup-ui.suhar.ru/llms/llms.txt
+- **Component Specs**: https://startup-ui.ru/pages/components/{category}/{scomponentname}.md
+- **Full Index**: https://startup-ui.ru/llms.txt
+- **Installed in the project?** Read offline, version-pinned docs from `node_modules/startup-ui/AGENTS.md` and `node_modules/startup-ui/llms/`.
 
 ## Categories
 - **Forms**: `sform`, `sinput`, `sselect`, `scheckbox`, `sradio`, `sswitch`, `sdatepicker`, `shtmleditor`, `supload`.

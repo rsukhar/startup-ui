@@ -16,7 +16,6 @@
 
 ### Основной цвет
 
-:::demo
 ```vue
 <template>
     <SButton>Основное действие</SButton>
@@ -30,18 +29,9 @@
 import { SButton } from 'startup-ui'
 </script>
 ```
-```vue
-<SButton>Основное действие</SButton>
-<SButton outlined>Дополнительное действие</SButton>
-<SButton transparent>Прозрачная кнопка</SButton>
-<SButton disabled>Недоступная кнопка</SButton>
-<SButton small>Маленькая кнопка</SButton>
-```
-:::
 
 ### Красная кнопка
 
-:::demo
 ```vue
 <template>
     <SButton color="red">Основное действие</SButton>
@@ -55,18 +45,9 @@ import { SButton } from 'startup-ui'
 import { SButton } from 'startup-ui'
 </script>
 ```
-```vue
-<SButton color="red">Основное действие</SButton>
-<SButton outlined color="red">Дополнительное действие</SButton>
-<SButton transparent color="red">Прозрачная кнопка</SButton>
-<SButton disabled color="red">Недоступная кнопка</SButton>
-<SButton small color="red">Маленькая кнопка</SButton>
-```
-:::
 
 ### Зеленая кнопка
 
-:::demo
 ```vue
 <template>
     <SButton color="green">Основное действие</SButton>
@@ -80,18 +61,9 @@ import { SButton } from 'startup-ui'
 import { SButton } from 'startup-ui'
 </script>
 ```
-```vue
-<SButton color="green">Основное действие</SButton>
-<SButton outlined color="green">Дополнительное действие</SButton>
-<SButton transparent color="green">Прозрачная кнопка</SButton>
-<SButton disabled color="green">Недоступная кнопка</SButton>
-<SButton small color="green">Маленькая кнопка</SButton>
-```
-:::
 
 ### Жёлтая кнопка
 
-:::demo
 ```vue
 <template>
     <SButton color="yellow">Основное действие</SButton>
@@ -105,18 +77,9 @@ import { SButton } from 'startup-ui'
 import { SButton } from 'startup-ui'
 </script>
 ```
-```vue
-<SButton color="yellow">Основное действие</SButton>
-<SButton outlined color="yellow">Дополнительное действие</SButton>
-<SButton transparent color="yellow">Прозрачная кнопка</SButton>
-<SButton disabled color="yellow">Недоступная кнопка</SButton>
-<SButton small color="yellow">Маленькая кнопка</SButton>
-```
-:::
 
 ### Кнопка на всю ширину формы
 
-:::demo
 ```vue
 <template>
     <SButton fullwidth>Основное действие</SButton>
@@ -129,13 +92,6 @@ import { SButton } from 'startup-ui'
 import { SButton } from 'startup-ui'
 </script>
 ```
-```vue
-<SButton fullwidth>Основное действие</SButton>
-<SButton fullwidth color="red">Основное действие</SButton>
-<SButton fullwidth color="green">Основное действие</SButton>
-<SButton fullwidth color="yellow">Основное действие</SButton>
-```
-:::
 
 ## Действия по кнопке
 
@@ -154,7 +110,6 @@ import { SButton } from 'startup-ui'
 
 ### Кастомное действие
 
-:::demo
 ```vue
 <template>
     <SButton @click="createUser">Создать пользователя</SButton>
@@ -166,16 +121,11 @@ function createUser() {
 }
 </script>
 ```
-```vue
-<SButton @click="createUser">Создать пользователя</SButton>
-```
-:::
 
 ### Переход по ссылке
 
 Если добавляем href, то кнопка по умолчанию становится семантически правильным анкором:
 
-:::demo
 ```vue
 <template>
     <SButton href="https://startup-ui.ru">Документация</SButton>
@@ -185,10 +135,6 @@ function createUser() {
 import { SButton } from 'startup-ui'
 </script>
 ```
-```vue
-<SButton href="https://startup-ui.ru">Документация</SButton>
-```
-:::
 
 ### Переход по внутренней ссылке InertiaJs
 

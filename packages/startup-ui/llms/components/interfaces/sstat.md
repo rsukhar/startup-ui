@@ -6,8 +6,6 @@
 
 ## Базовый пример
 
-
-:::demo
 ```vue
 <template>
     <SStat title="Кол-во платежей">112</SStat>
@@ -18,16 +16,9 @@
 import { SStat } from 'startup-ui'
 </script>
 ```
-```vue
-<SStat title="Кол-во платежей">112</SStat>
-<SStat title="Сумма платежей">777 000 ₽</SStat>
-```
-:::
 
 ## Кастомный заголовок
 
-
-:::demo
 ```vue
 <SStat>
     <template #title>
@@ -36,13 +27,11 @@ import { SStat } from 'startup-ui'
     777 000 ₽
 </SStat>
 ```
-:::
 
 ## Модификаторы
 
 С помощью логических (boolean) свойств можно изменить внешний вид строки:
 
-:::demo
 ```vue
 <template>
     <!-- large — крупный текст значения -->
@@ -59,17 +48,6 @@ import { SStat } from 'startup-ui'
 import { SStat } from 'startup-ui'
 </script>
 ```
-```vue
-<!-- large — крупный текст значения -->
-<SStat title="Выручка" large>777 000 ₽</SStat>
-
-<!-- nowrap запрещает перенос текста, обрезая его многоточием -->
-<SStat title="Описание" nowrap>Очень длинное описание, которое может не поместиться...</SStat>
-
-<!-- wide выравнивает заголовок и значение по краям (space-between) -->
-<SStat title="Элементы" wide>10</SStat>
-```
-:::
 
 ## Интерфейс компонента
 

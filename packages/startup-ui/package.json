@@ -16,7 +16,10 @@
         "./defaults.css": "./dist/defaults.css"
     },
     "files": [
-        "dist"
+        "dist",
+        "llms",
+        "AGENTS.md",
+        "CLAUDE.md"
     ],
     "sideEffects": [
         "**/*.css",
@@ -48,6 +51,8 @@
         "vue-tsc": "^3.3.2"
     },
     "scripts": {
+        "gen:llm": "node ../../scripts/gen-llm-docs.mjs",
+        "prebuild": "npm run gen:llm",
         "build": "vite build",
         "typecheck": "vue-tsc --noEmit",
         "dev": "vite"
