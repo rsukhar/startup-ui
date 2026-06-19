@@ -2,6 +2,27 @@
     "name": "startup-ui",
     "version": "0.12.0",
     "description": "Vue3 UI components for IT startups. Best served with Laravel + InertiaJS",
+    "author": "Ruslan Sukhar <ruslan@sukhar.info>",
+    "license": "MIT",
+    "homepage": "https://startup-ui.ru",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rsukhar/startup-ui.git"
+    },
+    "bugs": {
+        "url": "https://github.com/rsukhar/startup-ui/issues"
+    },
+    "keywords": [
+        "vue",
+        "vue3",
+        "ui",
+        "components",
+        "component-library",
+        "design-system",
+        "laravel",
+        "inertiajs",
+        "startup"
+    ],
     "type": "module",
     "main": "dist/startup-ui.cjs.js",
     "module": "dist/startup-ui.es.js",
@@ -19,7 +40,8 @@
         "dist",
         "llms",
         "AGENTS.md",
-        "CLAUDE.md"
+        "CLAUDE.md",
+        "CHANGELOG.md"
     ],
     "sideEffects": [
         "**/*.css",
@@ -54,10 +76,10 @@
         "gen:llm": "node ../../scripts/gen-llm-docs.mjs",
         "prebuild": "npm run gen:llm",
         "build": "vite build",
+        "prepublishOnly": "npm run build",
         "typecheck": "vue-tsc --noEmit",
         "dev": "vite"
     },
-    "license": "MIT",
     "dependencies": {
         "@vueuse/integrations": "^14.3.0",
         "axios": "^1.16.1",

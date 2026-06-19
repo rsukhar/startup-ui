@@ -14,6 +14,6 @@ cd docs
 npm run docs:build
 ```
 
-По FTP копируем docs/.vitepress/dist/* в ftp://priceclub.beget.tech/
+Заливаем содержимое `docs/.vitepress/dist/*` на хостинг, обслуживающий **startup-ui.ru** (по FTP/SFTP — реквизиты в настройках проекта).
 
-Коммитим и пушим изменения
+Коммитим и пушим изменения.

@@ -80,6 +80,34 @@ app.use(StartupUI, {
 - `bind-to-query` синхронизирует URL через History API (без серверного рефетча);
 - декларативный сабмит `SForm` (`action`/`method`) недоступен — используйте событие `@submit`.
 
+## 7. FontAwesome стала опциональной
+
+Собственная «обвязка» компонентов (шевроны, крестики, бургер, карет и т.п.) рисуется встроенными inline-SVG — библиотека больше **не зависит от FontAwesome жёстко** и не тащит её в бандл. FA нужна только там, где иконку передаёте вы через проп `icon`: `SActionIcon`, `SNote`, `SStatus`, и опционально `STooltip` / `SDatePicker` / `SMenu`.
+
+**Что сделать**, если используете такие иконки — подключить рендерер одним из способов:
+
+```js
+// А) глобально зарегистрировать FontAwesomeIcon
+app.component('FontAwesomeIcon', FontAwesomeIcon);
+
+// Б) прокинуть рендерер (или другой icon-set) при подключении плагина
+app.use(StartupUI, { icon: FontAwesomeIcon });
+```
+
+Если ничего не подключить — компоненты без `icon`-пропа работают как обычно, а там, где иконку передали, она просто не отрисуется. Подробнее — [«Иконки»](/pages/welcome/basics/icons).
+
+## 8. SMenu вместо SDropdownMenu и SHorizontalMenu
+
+Компоненты `SDropdownMenu` и `SHorizontalMenu` удалены — их заменяет единый `SMenu`: горизонтальное меню с выпадающими подменю.
+
+**Что сделать:** перейти на `SMenu` с пропом `items` (массив `{ label, url, icon, counter, active, children: [...] }`). Подробнее — [«SMenu»](/pages/components/template/smenu).
+
+## 9. SDatePicker: дни недели и месяцы — из локали
+
+Пропы `week-day-names` и `month-names` убраны: названия дней и месяцев берутся из активной локали (ключи `datePicker.weekDays` / `datePicker.months`).
+
+**Что сделать:** убрать эти пропы; для своих названий — переопределить ключи через `configureStartupUi` / `messages` (см. [«Локализация»](/pages/welcome/basics/localization)). Заодно у `SDatePicker` появились `clearable` и выбор времени (am/pm), а у `STooltip` дефолтная иконка-вопрос теперь встроенный SVG (FA для неё не нужна).
+
 ## Изменения API (обратносовместимые)
 
 Эти возможности добавлены без ломающих изменений, но полезны при обновлении:
