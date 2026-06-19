@@ -118,8 +118,12 @@ const users = ref({
     .vp-doc li + li {
         margin: 0;
     }
+    /* В демо .s-pagination внутри flex-превью сжимается по контенту, из-за чего
+       space-between не дотягивает опции (perPage + счётчик) до правого края.
+       В реальном приложении пагинация — блок на всю ширину, поэтому тянем её на 100% и тут. */
     .s-demo-preview .s-pagination {
         margin-bottom: 0;
+        width: 100%;
     }
 }
 </style>
