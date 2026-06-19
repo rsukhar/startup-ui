@@ -215,15 +215,4 @@ const value = ref('По центру')
 .s-input {
     color: var(--s-text);
 }
-/* Демо «Префикс / суффикс» (единственное с STooltip): раскладываем поля в столбец —
-   презентация демо, поэтому держим вне кода примера. */
-.s-demo:has(.s-tooltip) .s-demo-preview {
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-}
-.s-demo:has(.s-tooltip) .s-input {
-    width: 100%;
-    max-width: 360px;
-}
 </style>

@@ -103,22 +103,34 @@ const containerStyle = computed(() => {
     }
 
     td {
-        padding: 0.8rem;
+        padding: 0.5rem;
         border-bottom: 1px solid var(--s-border);
+        // Default alignment by column position: first — left, last — right, the rest — center
+        text-align: center;
         a {
             vertical-align: middle;
         }
         p:last-child {
             margin: 0;
         }
-        &.nowrap {
-            white-space: nowrap;
+        &:first-child {
+            text-align: left;
+        }
+        &:last-child {
+            text-align: right;
+        }
+        // Utility classes override the positional defaults (declared after them on purpose)
+        &.left {
+            text-align: left;
+        }
+        &.center {
+            text-align: center;
         }
         &.right {
             text-align: right;
         }
-        &.center {
-            text-align: center;
+        &.nowrap {
+            white-space: nowrap;
         }
     }
     thead {

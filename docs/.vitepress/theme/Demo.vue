@@ -75,9 +75,12 @@ async function copyCode() {
 
 .s-demo-preview {
     display: flex;
-    flex-wrap: wrap;
+    /* Column by default: components stack and take the full width (so things like SStat `wide`
+       and SPagination right-alignment work without per-page overrides). Small inline components
+       (SButton/SActionIcon/STag/SStatus) are switched back to a row in custom.css. */
+    flex-direction: column;
+    align-items: stretch;
     gap: 10px;
-    align-items: center;
     padding: 24px;
 }
 

@@ -586,7 +586,7 @@ onBeforeUnmount(() => {
         &-item {
             box-sizing: border-box;
             margin: 0;
-            padding: 0.5rem 0.75rem;
+            padding: 0.2rem 0.45rem;
             border-radius: var(--s-border-radius);
             white-space: nowrap;
             width: 100%;

@@ -249,12 +249,3 @@ const filter = ref({})
     margin-bottom: 0;
 }
 </style>
-
-<style lang="scss">
-/* Демо SFilter: «Текущее значение» (<p>) выводим под группой фильтров, а не справа.
-   Это презентация демо — код примеров не меняем; целимся только в превью с SFilterGroup. */
-.s-demo-preview:has(.s-filtergroup) {
-    flex-direction: column;
-    align-items: flex-start;
-}
-</style>

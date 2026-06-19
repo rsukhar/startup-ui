@@ -59,6 +59,18 @@ body {
     margin-bottom: 0;
 }
 
+/* Demo previews are column by default (see Demo.vue). Exception: small inline components
+   lay out in a row so multiple of them sit side by side. The `.vp-doc` prefix keeps these
+   ahead of Demo.vue's scoped default in specificity. */
+.vp-doc .s-demo-preview:has(> .s-button),
+.vp-doc .s-demo-preview:has(> .s-actionicon),
+.vp-doc .s-demo-preview:has(> .s-tag),
+.vp-doc .s-demo-preview:has(> .s-status) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 .vp-doc h1,
 .vp-doc h2,
 .vp-doc h3 {

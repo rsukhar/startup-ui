@@ -57,8 +57,32 @@ app.use(StartupUI, {
 
 Подробнее — на странице [«Локализация»](/pages/welcome/basics/localization).
 
+## Подключение с InertiaJS
+
+Startup UI не требует InertiaJS. Без него ссылки в меню и пагинации работают как обычные `<a>` (с перезагрузкой страницы), а формы отправляйте через событие `@submit`.
+
+Если же проект на Inertia, передайте при регистрации плагина две вещи из `@inertiajs/vue3` — роутер `router` и компонент ссылок `Link`. После этого компоненты с навигацией начнут работать «по-Inertia», без перезагрузки страницы:
+
+```js
+// app.js
+import StartupUI from 'startup-ui';
+import { router, Link } from '@inertiajs/vue3';
+
+app.use(StartupUI, {
+    locale: 'ru',
+    router,      // отправка SForm, пагинация SPagination, фильтры SFilterGroup (bind-to-query)
+    link: Link,  // ссылки в меню (SHorizontalMenu / SVerticalMenu / SDropdownMenu) и пагинации
+});
+```
+
+Что это включает:
+
+- **SForm** — отправку формы по `method`/`action` (Inertia-визит с подстановкой ошибок валидации);
+- **SPagination** и **SFilterGroup** (`bind-to-query`) — переключение страниц и фильтров без перезагрузки;
+- **меню и пагинацию** — SPA-ссылки вместо обычных `<a>`.
+
 <SNote icon="lightbulb" attention>
-Если используете <strong>InertiaJS</strong> (клиент <code>@inertiajs/core</code> 3.x), включите в <code>config/inertia.php</code> опцию <code>use_script_element_for_initial_page</code> — иначе начальная страница не прочитается и вы получите пустой экран без ошибок.
+На стороне бэкенда: для клиента <code>@inertiajs/core</code> 3.x включите в <code>config/inertia.php</code> опцию <code>use_script_element_for_initial_page</code> — иначе начальная страница не прочитается и вы получите пустой экран без ошибок.
 </SNote>
 
 ## Добавляем первый компонент
