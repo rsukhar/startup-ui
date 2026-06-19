@@ -17,6 +17,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
+import { SProgressBar } from 'startup-ui'
 
 const readyPercentage = ref(50)
 </script>

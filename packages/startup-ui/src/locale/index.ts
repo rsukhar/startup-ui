@@ -18,8 +18,8 @@ export interface StartupUiOptions {
      */
     router?: StartupUiRouter | null;
     /**
-     * Optional link component for SPA navigation links (SDropdownMenu / SHorizontalMenu /
-     * SVerticalMenu / SPagination). Pass Inertia's `Link`. When omitted, a plain `<a>` is used.
+     * Optional link component for SPA navigation links (SMenu / SVerticalMenu / SPagination).
+     * Pass Inertia's `Link`. When omitted, a plain `<a>` is used.
      */
     link?: StartupUiLink | null;
     /**

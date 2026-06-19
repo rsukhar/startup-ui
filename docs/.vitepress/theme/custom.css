@@ -58,17 +58,23 @@ body {
 .vp-doc .s-demo-preview p {
     margin-bottom: 0;
 }
+/* Components keep their own vertical spacing in a demo, but the last one shouldn't add trailing
+   space below itself (the preview already has padding). */
+.vp-doc .s-demo-preview > *:last-child {
+    margin-bottom: 0;
+}
 
-/* Demo previews are column by default (see Demo.vue). Exception: small inline components
-   lay out in a row so multiple of them sit side by side. The `.vp-doc` prefix keeps these
-   ahead of Demo.vue's scoped default in specificity. */
+/* Demo previews use plain block flow by default (see Demo.vue). Exception: small inline components
+   lay out in a row so multiple of them sit side by side. */
 .vp-doc .s-demo-preview:has(> .s-button),
 .vp-doc .s-demo-preview:has(> .s-actionicon),
 .vp-doc .s-demo-preview:has(> .s-tag),
 .vp-doc .s-demo-preview:has(> .s-status) {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    gap: 10px;
 }
 
 .vp-doc h1,

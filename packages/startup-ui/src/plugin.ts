@@ -96,10 +96,8 @@ import SCanvas from './components/SCanvas.vue';
 components.push(SCanvas);
 import SFooter from './components/SFooter.vue';
 components.push(SFooter);
-import SDropdownMenu from './components/SDropdownMenu.vue';
-components.push(SDropdownMenu);
-import SHorizontalMenu from './components/SHorizontalMenu.vue';
-components.push(SHorizontalMenu);
+import SMenu from './components/SMenu.vue';
+components.push(SMenu);
 import SVerticalMenu from './components/SVerticalMenu.vue';
 components.push(SVerticalMenu);
 

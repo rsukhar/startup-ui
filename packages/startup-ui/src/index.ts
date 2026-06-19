@@ -86,6 +86,5 @@ export { default as SStat } from './components/SStat.vue';
  */
 export { default as SCanvas } from './components/SCanvas.vue';
 export { default as SFooter } from './components/SFooter.vue';
-export { default as SDropdownMenu } from './components/SDropdownMenu.vue';
-export { default as SHorizontalMenu } from './components/SHorizontalMenu.vue';
+export { default as SMenu } from './components/SMenu.vue';
 export { default as SVerticalMenu } from './components/SVerticalMenu.vue';

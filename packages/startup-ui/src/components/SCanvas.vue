@@ -67,7 +67,7 @@ const isSidebarMenuOpened = ref(false);
         line-height: 60px;
         min-height: 60px;
         background-color: var(--s-bg-header);
-        color: var(--s-black);
+        color: var(--s-white);
         width: 100%;
         margin: 0 auto;
         padding: 0 2rem;

@@ -151,7 +151,7 @@ const statusOptions = { warning: 'Предупреждение', success: 'Уд�
 <template>
     <SFilterGroup v-model="filter">
         <SFilter name="q" :debounce="500" style="max-width: 350px">
-            <SInput type="search" placeholder="Поиск по никнейму" />
+            <SInput placeholder="Поиск по никнейму" clearable />
         </SFilter>
     </SFilterGroup>
     <p>Текущее значение: <code>{{ filter }}</code></p>
@@ -164,7 +164,7 @@ const filter = ref({})
 ```vue
 <SFilterGroup v-model="filter">
     <SFilter name="q" :debounce="500" style="max-width: 350px">
-        <SInput type="search" placeholder="Поиск по никнейму" />
+        <SInput placeholder="Поиск по никнейму" clearable />
     </SFilter>
 </SFilterGroup>
 <p>Текущее значение: <code>{{ filter }}</code></p>

@@ -61,7 +61,7 @@ import 'startup-ui/defaults.css';
 - **SForm** — декларативный сабмит (`action`/`method`) через `router.visit`;
 - **SPagination** — смена perPage (`router.get`) и ссылки страниц (`Link`);
 - **SFilterGroup** — `bind-to-query` (`router.get`);
-- **SDropdownMenu / SHorizontalMenu / SVerticalMenu** — ссылки пунктов меню (`Link`).
+- **SMenu / SVerticalMenu** — ссылки пунктов меню (`Link`).
 
 **Что сделать:** если используете Inertia, зарегистрируйте `router` и `Link` один раз при подключении плагина:
 

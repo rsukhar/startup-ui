@@ -36,8 +36,7 @@ import type SDashboardItem from './components/SDashboardItem.vue';
 import type SStat from './components/SStat.vue';
 import type SCanvas from './components/SCanvas.vue';
 import type SFooter from './components/SFooter.vue';
-import type SDropdownMenu from './components/SDropdownMenu.vue';
-import type SHorizontalMenu from './components/SHorizontalMenu.vue';
+import type SMenu from './components/SMenu.vue';
 import type SVerticalMenu from './components/SVerticalMenu.vue';
 
 declare module '@vue/runtime-core' {
@@ -116,10 +115,8 @@ declare module '@vue/runtime-core' {
         's-canvas': typeof SCanvas;
         SFooter: typeof SFooter;
         's-footer': typeof SFooter;
-        SDropdownMenu: typeof SDropdownMenu;
-        's-dropdown-menu': typeof SDropdownMenu;
-        SHorizontalMenu: typeof SHorizontalMenu;
-        's-horizontal-menu': typeof SHorizontalMenu;
+        SMenu: typeof SMenu;
+        's-menu': typeof SMenu;
         SVerticalMenu: typeof SVerticalMenu;
         's-vertical-menu': typeof SVerticalMenu;
     }

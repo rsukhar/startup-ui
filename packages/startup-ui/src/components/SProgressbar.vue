@@ -12,6 +12,9 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
+// Explicit name: the file is SProgressbar.vue (lowercase b), so the inferred name would be
+// `SProgressbar` and `<SProgressBar>` (the public name) would fail to resolve when registered globally.
+defineOptions({ name: 'SProgressBar' });
 const props = defineProps<{
     label?: string;
     percentage: number;

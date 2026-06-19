@@ -75,8 +75,7 @@ export default defineConfig({
                     text: 'Шаблон',
                     items: [
                         { text: 'SCanvas + SFooter', link: '/pages/components/template/scanvas' },
-                        { text: 'SDropdownMenu', link: '/pages/components/template/sdropdownmenu' },
-                        { text: 'SHorizontalMenu', link: '/pages/components/template/shorizontalmenu' },
+                        { text: 'SMenu', link: '/pages/components/template/smenu' },
                         { text: 'SVerticalMenu', link: '/pages/components/template/sverticalmenu' },
                     ]
                 }

@@ -62,9 +62,3 @@ import { SNote } from 'startup-ui'
 | Название | Описание |
 |----------|----------|
 | default | Основное содержимое заметки. Поддерживает текст или HTML (абзацы, списки и т.д.) |
-
-<style scoped lang="scss">
-.s-note {
-    margin-bottom: 0px;
-}
-</style>

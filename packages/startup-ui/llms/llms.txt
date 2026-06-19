@@ -45,6 +45,5 @@
 ## Layout & template
 
 - [SCanvas, SFooter](./components/template/scanvas.md): Общий шаблон страницы.
-- [SDropdownMenu](./components/template/sdropdownmenu.md): Выпадающий список из навигационных ссылок. Выводит текст активного элемента, а если его нет, то выводит текст плейсхолдера.
-- [SHorizontalMenu](./components/template/shorizontalmenu.md): Горизонтальное меню. Обычно размещается в subheader-блоке.
+- [SMenu](./components/template/smenu.md): Горизонтальное меню с выпадающими подменю. Подходит для шапки (`header`) и подшапки (`subheader`) — объединяет в одном компоненте плоскую навигацию и дропдауны.
 - [SVerticalMenu](./components/template/sverticalmenu.md): Боковое меню.

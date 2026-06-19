@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref, watch, useTemplateRef, nextTick } from "vue";
-import { useSortable } from "@vueuse/integrations/useSortable";
+import Sortable from "sortablejs";
 import { SIconColumns, SIconChevron, SIconBars, SIconUndo } from './icons';
 import { useEventListener, defaultDocument, defaultWindow } from "@vueuse/core";
 import SCheckbox from "./SCheckbox.vue";
@@ -151,9 +151,32 @@ watch(list, (newValue) => {
     }
 }, { deep: true });
 
-useSortable($list, list, {
-    handle: '.reorder-btn',
-    animation: 150,
+// The reorderable list lives behind `v-if` in a Teleport, so the <ul> is created fresh every time
+// the dropdown opens and destroyed on close. Attach SortableJS on open (once the element exists)
+// and tear it down on close.
+let sortable: Sortable | null = null;
+watch(isOpen, async (open) => {
+    if (open) {
+        await nextTick();
+        if ($list.value && !sortable) {
+            sortable = Sortable.create($list.value, {
+                handle: '.reorder-btn',
+                animation: 150,
+                // Pointer-based drag instead of native HTML5 DnD — reliable when the handle is an inline SVG.
+                forceFallback: true,
+                onUpdate: (e) => {
+                    if (e.oldIndex === undefined || e.newIndex === undefined || e.oldIndex === e.newIndex) return;
+                    const arr = [...list.value];
+                    const [moved] = arr.splice(e.oldIndex, 1);
+                    arr.splice(e.newIndex, 0, moved);
+                    list.value = arr;
+                },
+            });
+        }
+    } else {
+        sortable?.destroy();
+        sortable = null;
+    }
 });
 
 // Close on click outside the component
@@ -209,7 +232,8 @@ const resetValue = (columns: string[]) => {
                 display: flex;
                 gap: 10px;
                 align-items: center;
-                padding: 0 1.5em;
+                // Horizontal padding matches the icon↔text gap, so the edge-to-icon spacing is even.
+                padding: 0 10px;
                 line-height: 34px;
                 border: 1px solid var(--s-border);
                 border-radius: var(--s-border-radius);
@@ -217,6 +241,11 @@ const resetValue = (columns: string[]) => {
                 svg {
                     vertical-align: sub;
                     font-size: 16px;
+
+                    // The leading "columns" glyph is a bit larger than the trailing chevron.
+                    &:first-child {
+                        font-size: 20px;
+                    }
 
                     &:last-child {
                         margin-left: auto;

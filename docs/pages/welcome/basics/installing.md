@@ -71,7 +71,7 @@ import { router, Link } from '@inertiajs/vue3';
 app.use(StartupUI, {
     locale: 'ru',
     router,      // отправка SForm, пагинация SPagination, фильтры SFilterGroup (bind-to-query)
-    link: Link,  // ссылки в меню (SHorizontalMenu / SVerticalMenu / SDropdownMenu) и пагинации
+    link: Link,  // ссылки в меню (SMenu / SVerticalMenu) и пагинации
 });
 ```
 

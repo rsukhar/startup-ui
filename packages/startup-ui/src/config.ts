@@ -13,7 +13,7 @@ import type { Component } from 'vue';
  * Used by:
  *   - router.get   → SPagination (per-page change), SFilterGroup (`bind-to-query`)
  *   - router.visit → SForm (declarative `action`/`method` submit)
- *   - link         → SDropdownMenu / SHorizontalMenu / SVerticalMenu / SPagination (nav links)
+ *   - link         → SMenu / SVerticalMenu / SPagination (nav links)
  *   - icon         → SActionIcon / SNote / SStatus / STooltip (renderer for the consumer-supplied `icon` prop)
  *
  * When nothing is registered, those components degrade gracefully: links render as a plain `<a>`

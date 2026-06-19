@@ -74,13 +74,10 @@ async function copyCode() {
 }
 
 .s-demo-preview {
-    display: flex;
-    /* Column by default: components stack and take the full width (so things like SStat `wide`
-       and SPagination right-alignment work without per-page overrides). Small inline components
-       (SButton/SActionIcon/STag/SStatus) are switched back to a row in custom.css. */
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
+    /* Plain block flow by default: components stack and take the full width, and inline examples
+       (e.g. an inline SCopyText followed by text) keep flowing inline. Spacing between stacked
+       items comes from the components' own margins. Only the small inline components
+       (SButton/SActionIcon/STag/SStatus) opt into a row layout — see custom.css. */
     padding: 24px;
 }
 
