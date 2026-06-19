@@ -136,7 +136,7 @@ export function discoverGuidePages(docsRoot) {
         ['welcome/basics', 'about'],
         ['welcome/basics', 'installing'],
         ['welcome/basics', 'localization'],
-        ['welcome/extras', 'llms'],
+        ['welcome/extras', 'vibe-coding'],
     ];
     const pages = [];
     for (const [dir, name] of wanted) {

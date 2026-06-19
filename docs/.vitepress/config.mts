@@ -100,8 +100,7 @@ export default defineConfig({
                         { text: 'Вайб-кодинг', link: '/pages/welcome/extras/vibe-coding' },
                         { text: 'Гайдлайн разработки', link: '/pages/welcome/extras/guideline' },
                         { text: 'Миграция на мажор', link: '/pages/welcome/extras/migration' },
-                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' },
-                        { text: 'Документация для ИИ-агентов', link: '/pages/welcome/extras/llms' }
+                        { text: 'Обновление документации', link: '/pages/welcome/extras/docs-update' }
                     ]
                 }
             ]
