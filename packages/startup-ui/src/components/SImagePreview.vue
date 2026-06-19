@@ -5,7 +5,7 @@
         </slot>
         <div class="s-imagepreview-icon">
             <slot name="icon">
-                <FontAwesomeIcon icon="magnifying-glass-plus" />
+                <SIconZoomIn />
             </slot>
         </div>
         <Teleport to="body" v-if="isFullImgShown">
@@ -13,7 +13,7 @@
                 <img :src="src" />
             </div>
             <div class="s-imagepreview-closeicon" @click="handleCloseImage">
-                <FontAwesomeIcon icon="xmark" />
+                <SIconClose />
             </div>
             <div class="s-imagepreview-background" @click="handleCloseImage" />
         </Teleport>
@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { useTemplateRef, watch, nextTick, ref } from 'vue';
 import { useDraggable, useResizeObserver } from '@vueuse/core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { SIconZoomIn, SIconClose } from './icons';
 
 export interface SImagePreviewProps {
     src?: string;

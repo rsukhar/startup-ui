@@ -12,7 +12,7 @@
                 <div class="s-section-h">
                     <div v-if="$slots.sidebar" class="s-canvas-subheader-mobile" :class="{'opened' : isSidebarMenuOpened}">
                         <div class="s-canvas-subheader-mobile-burger" @click="isSidebarMenuOpened = ! isSidebarMenuOpened">
-                            <FontAwesomeIcon icon="bars" />
+                            <SIconBars />
                             {{ sidebarTitle }}
                         </div>
                     </div>
@@ -32,7 +32,7 @@
 </template>
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { SIconBars } from './icons';
 import { t } from '../locale';
 
 export interface SCanvasProps {

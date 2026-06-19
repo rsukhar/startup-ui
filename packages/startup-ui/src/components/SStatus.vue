@@ -1,16 +1,20 @@
 <template>
     <div class="s-status" :class="color">
-        <FontAwesomeIcon v-if="icon" :icon="icon" />
+        <component v-if="icon" :is="iconRenderer" :icon="icon" />
         <slot />
     </div>
 </template>
 <script setup lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { computed } from 'vue';
+import { getStartupUiIcon } from '../config';
 type Color = 'text-light' | 'gray' | 'primary' | 'primary-dark' | 'primary-darkest' | 'primary-light' | 'primary-lightest' | 'red' | 'red-dark' | 'red-light' | 'red-lightest' | 'yellow' | 'yellow-dark' | 'yellow-light' | 'yellow-lightest' | 'green' | 'green-dark' | 'green-light' | 'green-lightest';
 const props = defineProps<{
     color?: Color,
     icon?: string | string[],
 }>();
+
+// Renderer for the icon prop: an injected component, falling back to a global 'FontAwesomeIcon'.
+const iconRenderer = computed(() => getStartupUiIcon() ?? 'FontAwesomeIcon');
 </script>
 <style lang="scss">
 .s-status {

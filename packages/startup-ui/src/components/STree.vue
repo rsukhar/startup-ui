@@ -11,8 +11,8 @@
                     dropTargetBottom: sharedDropTarget?.id === node.id && sharedDropTarget?.position === 'bottom',
                 }" @click.stop="clickNode(node)" @dragstart="onDrag(node, $event)" :draggable="draggable"
                  @dragover.prevent="onDragOver(node, $event)" @drop="onDrop(node, $event)">
-                <FontAwesomeIcon class="s-tree-toggle" icon="caret-right" @click.stop="toggleNode(node)"
-                                 v-if="node.children && node.children.length" 
+                <SIconCaret class="s-tree-toggle" @click.stop="toggleNode(node)"
+                                 v-if="node.children && node.children.length"
                                  :style="{left: 20 * (level - 1) + 'px' }"/>
                 <SCheckbox v-if="checkboxes" :model-value="isSelected(node.id)"
                     @click.stop="() => {}"
@@ -45,7 +45,7 @@
 </template>
 <script setup lang="ts">
 import { ref, provide, inject, watch } from 'vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { SIconCaret } from './icons';
 import SCheckbox from './SCheckbox.vue';
 
 export interface STreeNode {
@@ -362,7 +362,7 @@ function isSelected(id: string | number): boolean {
         }
 
         &.expanded > .s-tree-toggle {
-            transform: rotate(90deg);
+            transform: rotate(0deg);
         }
 
         &.bordered {
@@ -396,6 +396,7 @@ function isSelected(id: string | number): boolean {
         line-height: 16px;
         text-align: center;
         color: var(--s-border-light);
+        transform: rotate(-90deg);
         transform-origin: center center;
         transition: transform 0.3s ease;
     }

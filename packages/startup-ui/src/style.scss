@@ -1,3 +1,13 @@
 // The library does NOT include default --s-* values in its CSS — it only uses var(--s-*).
 // The palette is set by the project (its own :root) or via the optional import 'startup-ui/defaults.css'.
 @use './styles/mixins.scss' as *;
+
+// Built-in inline icons (src/components/icons.ts). Sized like the FontAwesome inline svg
+// they replace: 1em, baseline-aligned. Color follows currentColor.
+.s-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}

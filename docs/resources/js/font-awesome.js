@@ -121,4 +121,10 @@ library.add(
     solid.faCircleExclamation,
     // Видеокамера
     solid.faVideo,
+    // Icons used only as example data in the docs demos
+    solid.faHouse,
+    solid.faFolder,
+    solid.faEnvelope,
+    solid.faCircleUser,
+    solid.faCloudArrowDown,
 );

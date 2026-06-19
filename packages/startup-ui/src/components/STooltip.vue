@@ -2,7 +2,8 @@
     <div class="s-tooltip">
         <div ref="$icon" @mouseenter="maybeShow" @touchstart="maybeShow">
             <slot name="icon">
-                <FontAwesomeIcon :icon="icon" class="s-tooltip-icon"/>
+                <component v-if="icon" :is="iconRenderer" :icon="icon" class="s-tooltip-icon" />
+                <SIconQuestion v-else class="s-tooltip-icon" />
             </slot>
             <div class="s-tooltip-hoverarea"></div>
         </div>
@@ -16,18 +17,23 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref, useTemplateRef, nextTick } from 'vue';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { ref, useTemplateRef, nextTick, computed } from 'vue';
+import { SIconQuestion } from './icons';
+import { getStartupUiIcon } from '../config';
 
 export interface STooltipProps {
     at?: 'top' | 'bottom' | 'right' | 'left' | null;
+    // Custom icon name passed to the icon renderer (FontAwesomeIcon by default, or one injected via
+    // app.use(StartupUI, { icon })). When omitted, a built-in question-mark icon is used (no FontAwesome dependency).
     icon?: string | string[];
 }
 
 const props = withDefaults(defineProps<STooltipProps>(), {
     at: null,
-    icon: 'circle-question',
 });
+
+// Renderer for a custom icon prop: an injected component, falling back to a global 'FontAwesomeIcon'.
+const iconRenderer = computed(() => getStartupUiIcon() ?? 'FontAwesomeIcon');
 
 const isShown = ref(false);
 const $tooltip = useTemplateRef<HTMLElement>('$tooltip');

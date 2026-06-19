@@ -3,7 +3,7 @@ import en from './messages/en';
 import ru from './messages/ru';
 import enUS from './messages/en-US';
 import { deepMerge } from '../utils/deepMerge';
-import { setStartupUiRouter, setStartupUiLink, type StartupUiRouter, type StartupUiLink } from '../config';
+import { setStartupUiRouter, setStartupUiLink, setStartupUiIcon, type StartupUiRouter, type StartupUiLink, type StartupUiIcon } from '../config';
 import type { StartupUiMessages, StartupUiLocaleMessages } from './types';
 
 export interface StartupUiOptions {
@@ -22,6 +22,12 @@ export interface StartupUiOptions {
      * SVerticalMenu / SPagination). Pass Inertia's `Link`. When omitted, a plain `<a>` is used.
      */
     link?: StartupUiLink | null;
+    /**
+     * Optional renderer for the `icon` prop of SActionIcon / SNote / SStatus / STooltip. Pass
+     * `FontAwesomeIcon` (or any custom icon-set wrapper accepting an `icon` prop). When omitted,
+     * a globally-registered `FontAwesomeIcon` is used.
+     */
+    icon?: StartupUiIcon | null;
 }
 
 const state = reactive({
@@ -40,6 +46,7 @@ export function configureStartupUi(options: StartupUiOptions = {}): void {
     }
     if (options.router !== undefined) setStartupUiRouter(options.router);
     if (options.link !== undefined) setStartupUiLink(options.link);
+    if (options.icon !== undefined) setStartupUiIcon(options.icon);
 }
 
 function resolve(key: string, locale: string): any {

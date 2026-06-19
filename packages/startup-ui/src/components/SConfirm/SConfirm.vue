@@ -4,7 +4,7 @@
             <div class="s-confirm-dialog" :style="style" ref="$dialog">
                 <div class="s-confirm-dialog-header" ref="$header">
                     <h2>{{ dialogData.title }}</h2>
-                    <FontAwesomeIcon icon="xmark" @click="isOpened=false"/>
+                    <SIconClose @click="isOpened=false"/>
                 </div>
                 <div class="s-confirm-dialog-body">
                     <p v-html="confirmationText" />
@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ref, useTemplateRef, nextTick } from 'vue';
 import { useDraggable } from '@vueuse/core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { SIconClose } from '../icons';
 import SButton from '../SButton.vue';
 import { t } from '../../locale';
 

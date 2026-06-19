@@ -5,16 +5,16 @@
                 <div @click="toggleDropdown" class="s-custom-dropdown-container-btn">
                     <slot v-if="$slots.label" name="label" />
                     <template v-else>
-                        <FontAwesomeIcon icon="table-columns" />
+                        <SIconColumns />
                         <span>{{ t('columnSettings.configure') }}</span>
-                        <FontAwesomeIcon  :icon="'fa-chevron-' + (isOpen ? 'up' : 'down')" />
+                        <SIconChevron class="s-columnsettings-chevron" />
                     </template>
                 </div>
                 <Teleport to="body">
                     <div v-if="isOpen" ref="portal" class="s-columnsettings-dropdown-portal" :style="portalStyle">
                         <ul class="s-columnsettings-dropdown-container-items" ref="$list">
                             <li v-for="item in list" :key="item.id" class="s-columnsettings-dropdown-container-item">
-                                <FontAwesomeIcon icon="bars" class="reorder-btn" />
+                                <SIconBars class="reorder-btn" />
                                 <div class="checkbox-wrapper">
                                     <SCheckbox v-model="item.isActive" :disabled="permanentColumns.includes(item.id)">
                                         {{ item.title }}
@@ -26,7 +26,7 @@
                         <div v-if="columnPresets.length" class="s-columnsettings-dropdown-container-footer">
                             <a v-for="preset in columnPresets" :key="preset.title" @click="resetValue(preset.columns)">
                                 <slot name="setpreset" :preset="preset">
-                                    <FontAwesomeIcon icon="rotate-left" />
+                                    <SIconUndo />
                                     {{ t('columnSettings.reset') }}
                                     {{ columnPresets.length > 1 ? t('columnSettings.resetTo', { title: preset.title }) : t('columnSettings.resetChanges') }}
                                 </slot>
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { ref, watch, useTemplateRef, nextTick } from "vue";
 import { useSortable } from "@vueuse/integrations/useSortable";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { SIconColumns, SIconChevron, SIconBars, SIconUndo } from './icons';
 import { useEventListener, defaultDocument, defaultWindow } from "@vueuse/core";
 import SCheckbox from "./SCheckbox.vue";
 import { t } from '../locale';
@@ -223,6 +223,10 @@ const resetValue = (columns: string[]) => {
                     }
                 }
 
+                .s-columnsettings-chevron {
+                    transition: transform 0.2s ease;
+                }
+
                 &:hover {
                     color: var(--s-primary);
                     border: 1px solid var(--s-primary);
@@ -313,6 +317,10 @@ const resetValue = (columns: string[]) => {
                 .s-custom-dropdown-container-btn {
                     color: var(--s-primary);
                     border: 1px solid var(--s-primary);
+                }
+
+                .s-columnsettings-chevron {
+                    transform: rotate(180deg);
                 }
             }
         }

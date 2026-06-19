@@ -19,11 +19,15 @@ export {
 export type { StartupUiOptions, StartupUiMessages, StartupUiLocaleMessages, DeepPartial } from './locale';
 
 /**
- * Optional router / link integration (Inertia or any router) — used by SForm, SPagination,
- * SFilterGroup and the menu components. See ./config.
+ * Optional router / link / icon integration (Inertia or any router, FontAwesome or any icon set) —
+ * used by SForm, SPagination, SFilterGroup, the menu components and the icon components. See ./config.
  */
-export { setStartupUiRouter, getStartupUiRouter, setStartupUiLink, getStartupUiLink } from './config';
-export type { StartupUiRouter, StartupUiLink } from './config';
+export {
+    setStartupUiRouter, getStartupUiRouter,
+    setStartupUiLink, getStartupUiLink,
+    setStartupUiIcon, getStartupUiIcon,
+} from './config';
+export type { StartupUiRouter, StartupUiLink, StartupUiIcon } from './config';
 
 // Default plugin export
 export default plugin;

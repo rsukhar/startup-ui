@@ -3,7 +3,7 @@
         <component :is="labelComponent" class="s-dropdownmenu-label" :href="labelLink ?? ''">
             <slot v-if="$slots.label" name="label" />
             <span v-else>{{ labelText }}</span>
-            <FontAwesomeIcon icon="caret-down" />
+            <SIconCaret />
         </component>
         <div class="s-dropdownmenu-list" ref="$list" :class="[direction]">
             <component :is="linkComponent" v-if="links" v-for="link in links" :key="link.label" :href="link.url ?? ''" :class="{ active: link.active }">
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref, useTemplateRef, computed, nextTick } from 'vue';
 import { getStartupUiLink } from '../config';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { SIconCaret } from './icons';
 import { t } from '../locale';
 
 export interface SDropdownMenuLink {

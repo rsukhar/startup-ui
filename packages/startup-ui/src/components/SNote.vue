@@ -1,6 +1,6 @@
 <template>
 <div class="s-note" :class="{gray, attention, success, error, has_icon: icon}">
-    <FontAwesomeIcon :icon="icon" v-if="icon" />
+    <component v-if="icon" :is="iconRenderer" :icon="icon" />
     <div class="s-note-title" v-if="title">
         {{ title }}
     </div>
@@ -11,7 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { computed } from 'vue';
+import { getStartupUiIcon } from '../config';
 
 export interface SNoteProps {
     icon?: string | string[];
@@ -23,6 +24,9 @@ export interface SNoteProps {
 }
 
 const props = defineProps<SNoteProps>();
+
+// Renderer for the icon prop: an injected component, falling back to a global 'FontAwesomeIcon'.
+const iconRenderer = computed(() => getStartupUiIcon() ?? 'FontAwesomeIcon');
 </script>
 
 <style lang="scss">

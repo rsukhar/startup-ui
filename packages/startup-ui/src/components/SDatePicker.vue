@@ -12,7 +12,7 @@
                     </svg>
                 </span>
                 <span class="s-datepicker-input-icon">
-                    <component v-if="icon" :is="'FontAwesomeIcon'" :icon="icon" />
+                    <component v-if="icon" :is="iconRenderer" :icon="icon" />
                     <svg v-else viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <rect x="2" y="3.3" width="12" height="10.7" rx="1.5" stroke="currentColor" stroke-width="1.3" />
                         <path d="M2 6.6 H14" stroke="currentColor" stroke-width="1.3" />
@@ -99,6 +99,7 @@ import { useEventListener } from "@vueuse/core";
 import SRadioGroup from "./SRadioGroup.vue";
 import SSelect from "./SSelect.vue";
 import { t, tRaw } from '../locale';
+import { getStartupUiIcon } from '../config';
 
 export interface SDatePickerProps {
     range?: boolean;
@@ -115,9 +116,9 @@ export interface SDatePickerProps {
     withTime?: boolean;
     // Show a clear (×) button when a value is selected
     clearable?: boolean;
-    // Optional FontAwesome icon for the calendar glyph (e.g. ['far','calendar']). Requires a
-    // globally-registered FontAwesomeIcon. When omitted, a built-in inline SVG is used so the
-    // component carries no FontAwesome dependency.
+    // Optional custom icon name for the calendar glyph (e.g. ['far','calendar']), passed to the icon
+    // renderer (FontAwesomeIcon by default, or one injected via app.use(StartupUI, { icon })). When
+    // omitted, a built-in inline SVG is used so the component carries no FontAwesome dependency.
     icon?: string | string[];
 }
 
@@ -125,6 +126,9 @@ const props = withDefaults(defineProps<SDatePickerProps>(), {
     range: false,
     withTime: false,
 });
+
+// Renderer for the optional custom icon prop: an injected component, falling back to a global 'FontAwesomeIcon'.
+const iconRenderer = computed(() => getStartupUiIcon() ?? 'FontAwesomeIcon');
 
 // Weekday and month names come from the active locale (not configurable per-instance;
 // override them globally via configureStartupUi/locale messages instead)

@@ -4,13 +4,13 @@
         <div class="s-copytext-text">
             <slot />
         </div>
-        <FontAwesomeIcon :icon="copied ? 'check' : 'copy'" v-if="isSupported" />
+        <component :is="copied ? SIconCheck : SIconCopy" v-if="isSupported" />
     </div>
     <div v-else class="s-copytext layout_input">
         <div class="s-copytext-text">
             <slot />
         </div>
-        <FontAwesomeIcon :icon="copied ? 'check' : 'copy'" v-if="isSupported"
+        <component :is="copied ? SIconCheck : SIconCopy" v-if="isSupported"
                          :class="{success: copied}" :title="t('copyText.copy')" @click="copy(copytext ?? innerText)" />
     </div>
 </template>
@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { computed, useSlots } from 'vue';
 import { useClipboard } from '@vueuse/core';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { SIconCopy, SIconCheck } from './icons';
 import { t } from '../locale';
 
 const props = withDefaults(defineProps<{

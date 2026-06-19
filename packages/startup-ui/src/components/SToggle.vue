@@ -2,7 +2,7 @@
     <div class="s-toggle" :class="[{ opened: isOpened }, color]">
         <div class="s-toggle-title" @click="handleClick">
             <slot name="title">{{ title }}</slot>
-            <FontAwesomeIcon :icon="isOpened ?  'chevron-up' : 'chevron-down'" />
+            <SIconChevron class="s-toggle-chevron" />
         </div>
 
         <div class="s-toggle-body">
@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { ref, inject, getCurrentInstance, watch, onMounted } from 'vue'
 import type { Ref } from 'vue'
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { SIconChevron } from './icons';
 
 export interface SToggleProps {
     title?: string;
@@ -81,6 +81,13 @@ if (openedItem) {
             margin-left: auto;
             font-size: 16px;
         }
+        .s-toggle-chevron {
+            transition: transform 0.2s ease;
+        }
+    }
+
+    &.opened &-title .s-toggle-chevron {
+        transform: rotate(180deg);
     }
 
     &-body {

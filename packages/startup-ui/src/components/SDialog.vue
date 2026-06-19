@@ -5,7 +5,7 @@
                 <div ref="$window" :style="[{ width: props.width }, style]" class="s-dialog-window">
                     <div class="s-dialog-window-header" ref="$header">
                         <h2>{{ title }}</h2>
-                        <FontAwesomeIcon icon="xmark" @click="handleHide" />
+                        <SIconClose @click="handleHide" />
                     </div>
                     <div class="s-dialog-window-body">
                         <slot />
@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { useTemplateRef, watch, nextTick, onBeforeMount } from 'vue';
 import { useDraggable, useResizeObserver } from '@vueuse/core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { SIconClose } from './icons';
 
 export interface SDialogProps {
     title?: string;

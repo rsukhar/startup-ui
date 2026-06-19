@@ -8,12 +8,12 @@
             <template v-if="link.url">
                 <div class="s-verticalmenu-toggler" v-if="link.children" @click="toggleItem(link.id)"
                      :class="{'is-opened' : openedItems.includes(link.id)}">
-                    <FontAwesomeIcon icon="fa-angle-right" />
+                    <SIconChevron />
                 </div>
                 <component :is="linkComponent" class="s-verticalmenu-label"
                       :class="{'not-published': link.isPublished !== undefined && !link.isPublished}" :href="link.url">
                     {{ link.label }}
-                    <FontAwesomeIcon icon="eye-slash" v-if="link.isPublished !== undefined && !link.isPublished" />
+                    <SIconEyeSlash v-if="link.isPublished !== undefined && !link.isPublished" />
                 </component>
             </template>
             <div class="s-verticalmenu-label"
@@ -21,10 +21,10 @@
                  @click="toggleItem(link.id)" v-else>
                 <div class="s-verticalmenu-toggler" v-if="link.children"
                      :class="{'is-opened' : openedItems.includes(link.id)}">
-                    <FontAwesomeIcon icon="fa-angle-right" />
+                    <SIconChevron />
                 </div>
                 {{ link.label }}
-                <FontAwesomeIcon icon="eye-slash" v-if="link.isPublished !== undefined && !link.isPublished" />
+                <SIconEyeSlash v-if="link.isPublished !== undefined && !link.isPublished" />
             </div>
             <div class="s-verticalmenu-children" v-if="link.children"
                  :class="{'is-opened' : openedItems.includes(link.id)}">
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { SIconChevron, SIconEyeSlash } from './icons';
 import { useStorage } from "@vueuse/core";
 import { getStartupUiLink } from '../config';
 
@@ -135,7 +135,7 @@ const toggleItem = function(id: string | number) {
         &.not-published {
             opacity: 0.5;
 
-            svg.fa-eye-slash {
+            & > svg {
                 font-size: 10px;
                 margin-left: 2px;
             }
@@ -154,14 +154,14 @@ const toggleItem = function(id: string | number) {
         cursor: pointer;
 
         & > svg {
-            transform: rotate(90deg);
+            transform: rotate(0deg);
             transition-property: transform;
             transition-duration: 0.3s;
             transition-timing-function: ease;
         }
 
         &:not(.is-opened) > svg {
-            transform: rotate(0deg);
+            transform: rotate(-90deg);
         }
 
         .s-verticalmenu-item:not(.type_section) > &:hover {

@@ -1,13 +1,13 @@
 <template>
     <component :is="componentType" class="s-actionicon" @click="handleClick" :class="{danger}">
-        <FontAwesomeIcon :icon="icon" />
+        <component :is="iconRenderer" :icon="icon" />
     </component>
 </template>
 <script setup lang="ts">
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { SConfirm } from './SConfirm'
 import { computed, useAttrs } from "vue";
 import type { Component } from "vue";
+import { getStartupUiIcon } from '../config';
 export interface SActionIconProps {
     icon: string | string[];
     danger?: boolean;
@@ -26,6 +26,10 @@ const emit = defineEmits<{
     (e: 'click'): void;
 }>();
 const attrs = useAttrs();
+
+// Renderer for the icon prop: an injected component (e.g. FontAwesomeIcon or a custom icon set),
+// falling back to a globally-registered 'FontAwesomeIcon'.
+const iconRenderer = computed(() => getStartupUiIcon() ?? 'FontAwesomeIcon');
 
 const componentType = computed(() => {
     // The element is set explicitly, use it
