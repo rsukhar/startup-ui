@@ -87,6 +87,17 @@ function deleteUser() {
 </script>
 ```
 
+Подписи и цвет кнопок диалога настраиваются через `confirm-options` (пробрасываются в `SConfirm`):
+
+```vue
+<SActionIcon
+    icon="trash"
+    confirm="Удалить запись?"
+    :confirm-options="{ acceptLabel: 'Удалить', variant: 'danger' }"
+    @click="remove"
+/>
+```
+
 ## Интерфейс компонента
 
 ### Свойства (Props)
@@ -97,6 +108,7 @@ function deleteUser() {
 | danger | boolean | false | Выделяет иконку красным цветом |
 | confirm | string | undefined | Текст диалога подтверждения перед выполнением `@click` |
 | confirmTitle | string | 'Необходимо подтверждение' | Заголовок диалога подтверждения |
+| confirmOptions | object | undefined | Опции, пробрасываемые в `SConfirm.open` (`acceptLabel`, `cancelLabel`, `variant`, …) |
 | is | string \| Component | undefined | HTML-элемент или Vue-компонент для рендеринга (например, InertiaJS `Link`) |
 | href | string | undefined | URL для перехода (делает иконку ссылкой) |
 | title | string | undefined | Текст подсказки при наведении |
