@@ -593,7 +593,7 @@ const buttonOptions = computed(() => {
 
     hr {
         width: 100%;
-        border-color: var(--s-grey);
+        border-color: var(--s-gray);
     }
 
     &-input {
@@ -776,7 +776,7 @@ const buttonOptions = computed(() => {
 
     hr {
         width: 100%;
-        border-color: var(--s-grey);
+        border-color: var(--s-gray);
         margin: 0;
     }
 
