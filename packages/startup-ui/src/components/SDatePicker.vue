@@ -680,8 +680,16 @@ const buttonOptions = computed(() => {
 
     &-main .s-datepicker-input.range {
         width: fit-content;
-        min-width: 180px;
-    }   
+        // Fixed minimum sized for the standard range string "DD.MM.YYYY — DD.MM.YYYY"
+        // (border-box: includes the 40px horizontal padding + 2px border), so the value fits and
+        // the field width doesn't jump as the value changes.
+        min-width: 240px;
+
+        // The input must fill the wider wrapper — on its own it's ~20ch and would clip the value.
+        input {
+            width: 100%;
+        }
+    }
 
     &-time {
         display: flex;
