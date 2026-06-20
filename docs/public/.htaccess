@@ -1,0 +1,17 @@
+# Apache static hosting — serve VitePress "clean URLs".
+# A request like /pages/components/forms/sform is served from sform.html.
+
+RewriteEngine On
+RewriteBase /
+
+# Existing files and directories are served as-is (assets, per-page .md, llms.txt, images, …).
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Extensionless URL → the matching .html file, if it exists.
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# VitePress generates 404.html for unknown pages.
+ErrorDocument 404 /404.html

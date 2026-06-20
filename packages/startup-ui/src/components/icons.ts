@@ -70,9 +70,24 @@ export const SIconCopy = make(() => [
 /** Checkmark. */
 export const SIconCheck = make(() => p('M3.5 8.5 6.5 11.5 12.5 4.5', { 'stroke-width': 1.8 }));
 
-/** Circle with a question mark (default tooltip trigger). */
-export const SIconQuestion = make(() => [
-    h('circle', { cx: 8, cy: 8, r: 6.5, stroke: 'currentColor', 'stroke-width': 1.3, fill: 'none' }),
-    p('M6 6.3 A2 2 0 0 1 9.6 7.5 C9.6 8.8 8 9 8 10.2', { 'stroke-width': 1.3 }),
-    h('circle', { cx: 8, cy: 12, r: 0.85, fill: 'currentColor' }),
-]);
+/**
+ * Solid circle with a question mark (default tooltip trigger). Original artwork — a filled disc
+ * with the "?" and its dot knocked out via a mask (so the mark stays the background colour on any
+ * surface). Each instance gets a unique mask id so multiple tooltips on a page don't clash.
+ */
+let questionMaskSeq = 0;
+export const SIconQuestion = make(() => {
+    const id = `s-icon-q-${questionMaskSeq++}`;
+    return [
+        h('mask', { id }, [
+            h('rect', { width: 16, height: 16, fill: 'white' }),
+            // "?" hook + stem, drawn as a rounded stroke (black = knocked out of the disc)
+            h('path', {
+                d: 'M5.7 6.2 A2.35 2.35 0 1 1 9.05 8.7 C8.2 9.25 8 9.7 8 10.5',
+                stroke: 'black', 'stroke-width': 1.7, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', fill: 'none',
+            }),
+            h('circle', { cx: 8, cy: 12.4, r: 1, fill: 'black' }),
+        ]),
+        h('circle', { cx: 8, cy: 8, r: 7.5, fill: 'currentColor', mask: `url(#${id})` }),
+    ];
+});

@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref, watch, useTemplateRef, nextTick } from "vue";
-import Sortable from "sortablejs";
+import { useSortable } from "@vueuse/integrations/useSortable";
 import { SIconColumns, SIconChevron, SIconBars, SIconUndo } from './icons';
 import { useEventListener, defaultDocument, defaultWindow } from "@vueuse/core";
 import SCheckbox from "./SCheckbox.vue";
@@ -151,31 +151,22 @@ watch(list, (newValue) => {
     }
 }, { deep: true });
 
-// The reorderable list lives behind `v-if` in a Teleport, so the <ul> is created fresh every time
-// the dropdown opens and destroyed on close. Attach SortableJS on open (once the element exists)
-// and tear it down on close.
-let sortable: Sortable | null = null;
+// useSortable keeps the `list` ref in sync with drag-reordering automatically.
+const { start: startSortable, stop: stopSortable } = useSortable($list, list, {
+    handle: '.reorder-btn',
+    animation: 150,
+    // Pointer-based drag instead of native HTML5 DnD — reliable when the handle is an inline SVG.
+    forceFallback: true,
+});
+
+// useSortable attaches once on mount, but the list lives behind `v-if` in a Teleport, so the <ul>
+// doesn't exist yet then. (Re)attach on open once it's in the DOM, and tear it down on close.
 watch(isOpen, async (open) => {
     if (open) {
         await nextTick();
-        if ($list.value && !sortable) {
-            sortable = Sortable.create($list.value, {
-                handle: '.reorder-btn',
-                animation: 150,
-                // Pointer-based drag instead of native HTML5 DnD — reliable when the handle is an inline SVG.
-                forceFallback: true,
-                onUpdate: (e) => {
-                    if (e.oldIndex === undefined || e.newIndex === undefined || e.oldIndex === e.newIndex) return;
-                    const arr = [...list.value];
-                    const [moved] = arr.splice(e.oldIndex, 1);
-                    arr.splice(e.newIndex, 0, moved);
-                    list.value = arr;
-                },
-            });
-        }
+        startSortable();
     } else {
-        sortable?.destroy();
-        sortable = null;
+        stopSortable();
     }
 });
 

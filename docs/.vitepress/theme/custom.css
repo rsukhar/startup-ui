@@ -58,6 +58,15 @@ body {
 .vp-doc .s-demo-preview p {
     margin-bottom: 0;
 }
+.vp-doc .s-demo-preview > .s-input + .s-input {
+    margin-top: var(--s-base-margin);
+}
+.vp-doc .s-demo-preview > .s-note {
+    margin-bottom: 0;
+}
+.vp-doc .s-demo-preview > .s-note + .s-note {
+    margin-top: var(--s-base-margin);
+}
 /* Components keep their own vertical spacing in a demo, but the last one shouldn't add trailing
    space below itself (the preview already has padding). */
 .vp-doc .s-demo-preview > *:last-child {
