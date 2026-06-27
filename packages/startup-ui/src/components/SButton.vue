@@ -54,21 +54,32 @@ const classes = computed(() => [
 
 <style lang="scss">
 .s-button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    // Spacing between an icon and the label. `gap` applies ONLY between children, so an
+    // icon-only button has no trailing space, while "icon + text" keeps an 8px gap. A margin
+    // on the icon can't tell the cases apart: the label is a bare text node, invisible to
+    // structural selectors like :only-child / :last-child.
+    gap: 8px;
     box-sizing: border-box;
     white-space: nowrap;
-    text-align: center;
     cursor: pointer;
     font-family: var(--s-font-family);
     font-size: 1rem;
     font-weight: normal;
     line-height: var(--s-field-height);
+    // Keep the control height when the button holds only an icon (no text line-box to set it).
+    // +2px accounts for the top/bottom 1px border (box-sizing: border-box).
+    min-height: calc(var(--s-field-height) + 2px);
     padding: 0 1.5em;
     border-radius: var(--s-border-radius);
     background-color: var(--s-primary);
     color: var(--s-white);
+    // No underline when the button is rendered as a link (href / :is="Link").
+    text-decoration: none;
     border: 1px var(--s-primary) solid;
-    /* display:inline-block already shrinks the button to its content; width can be set via style/class or the fullwidth prop */
+    /* inline-flex already shrinks the button to its content; width can be set via style/class or the fullwidth prop */
 
     &:hover {
         background-color: var(--s-primary-light);
@@ -123,16 +134,15 @@ const classes = computed(() => [
     &.small {
         font-size: 12px;
         line-height: 20px;
+        // Override the base min-height so small icon-only buttons match small text buttons.
+        // 20px line-height + 6px vertical padding + 2px border (box-sizing: border-box).
+        min-height: calc(20px + 6px + 2px);
         padding: 3px 10px;
     }
     &.loading {
         opacity: 0.5;
         cursor: wait;
         pointer-events: none;
-    }
-    &>svg:first-child {
-        display: inline-block;
-        margin-right: 8px;
     }
 }
 </style>

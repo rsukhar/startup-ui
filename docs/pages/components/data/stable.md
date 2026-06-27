@@ -327,6 +327,66 @@ const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user
 ```
 :::
 
+## Компактные ячейки
+
+По умолчанию у ячеек комфортные отступы. Для плотных таблиц с большим количеством данных можно уменьшить отступы атрибутом <strong>compact</strong>.
+
+:::demo
+```vue
+<template>
+    <STable :data="users" compact>
+        <template #header>
+            <td>Пользователь</td>
+            <td>Тариф</td>
+            <td>Баланс</td>
+            <td>Роль</td>
+            <td>Дата регистрации</td>
+            <td></td>
+        </template>
+        <template #row="{ row }">
+            <td>{{ row.username }}</td>
+            <td>{{ row.plan }}</td>
+            <td>{{ row.balance }}</td>
+            <td>{{ row.role }}</td>
+            <td>{{ row.created_at }}</td>
+            <td>
+                <SActionIcon title="Удалить" :confirm="`Вы действительно хотите удалить пользователя «${row.username}»?`"
+                    @click="deleteUser(row.username)" icon="trash" danger />
+            </td>
+        </template>
+        <template #footer>
+            <td>ИТОГО</td>
+            <td></td>
+            <td>{{ totalBalance }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </template>
+    </STable>
+</template>
+<script setup>
+import { ref, computed } from 'vue'
+
+const users = ref([
+    { username: 'Ivanov', role: 'customer', plan: 'Базовый', balance: 3000, created_at: '2025-11-04' },
+    { username: 'Stepanov', role: 'customer', plan: 'Базовый', balance: 4500, created_at: '2025-11-05' },
+    { username: 'Petrov', role: 'customer', plan: 'Базовый', balance: 1716, created_at: '2025-11-05' },
+])
+
+function deleteUser(username) {
+    users.value = users.value.filter(user => user.username !== username)
+}
+
+const totalBalance = computed(() => users.value.reduce((acc, user) => acc + user.balance, 0))
+</script>
+```
+```vue
+<STable :data="users" compact>
+    ...
+</STable>
+```
+:::
+
 ## Фиксированная шапка
 
 Чтобы зафиксировать шапку, устанавливаем высоту таблицы в атрибуте `height`.
@@ -716,6 +776,7 @@ function deleteUser(username) {
 | hoverable | boolean | `false` | Подсветка строки при наведении курсора. |
 | striped | boolean | `false` | Чередование цвета фона строк (выделение четных строк). |
 | bordered | boolean | `false` | Отрисовка границ (бордеров) у всех ячеек. |
+| compact | boolean | `false` | Уменьшенные отступы в ячейках для плотных таблиц. |
 | nodata | string | `'Ничего не найдено'` | Текст, выводимый, когда `data` пустое. |
 | fixedHeader | boolean | `false` | Фиксированная шапка (принудительно), если не задана `height`. |
 | height | string | `undefined` | Фиксированная высота таблицы (например, `300px` или `80vh`). Автоматически включает `fixedHeader`. |

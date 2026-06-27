@@ -1,5 +1,5 @@
 <template>
-    <div class="s-table" :class="{hoverable, striped, bordered, topscroll: topScroll, fixedheader: height}" :style="containerStyle">
+    <div class="s-table" :class="{hoverable, striped, bordered, compact, topscroll: topScroll, fixedheader: height}" :style="containerStyle">
         <table>
             <thead ref="theadRef" v-if="$slots.header || $slots.headers">
                 <tr v-if="$slots.header">
@@ -38,6 +38,10 @@ const props = defineProps<{
     hoverable?: boolean;
     striped?: boolean;
     bordered?: boolean;
+    /**
+     * Tighter cell padding for dense / data-heavy tables
+     */
+    compact?: boolean;
     nodata?: string;
     fixedHeader?: boolean;
     height?: string;
@@ -102,10 +106,12 @@ const containerStyle = computed(() => {
         }
     }
 
-    td {
-        padding: 0.5rem;
+    td,
+    th {
+        padding: 0.8rem;
         border-bottom: 1px solid var(--s-border);
-        // Default alignment by column position: first — left, last — right, the rest — center
+        // Default alignment by column position: first — left, last — right, the rest — center.
+        // Applies to both td and th so header cells follow the same per-column alignment.
         text-align: center;
         a {
             vertical-align: middle;
@@ -134,7 +140,8 @@ const containerStyle = computed(() => {
         }
     }
     thead {
-        td {
+        td,
+        th {
             font-size: 0.9em;
             font-weight: bold;
             & a {
@@ -160,7 +167,8 @@ const containerStyle = computed(() => {
         }
     }
     tfoot {
-        td {
+        td,
+        th {
             background-color: var(--s-bg);
             font-weight: bold;
             border-bottom: 0;
@@ -171,11 +179,18 @@ const containerStyle = computed(() => {
             border: 1px solid var(--s-border);
         }
     }
-    &:not(.bordered) td:first-child { 
-        padding-left: 0; 
+    &:not(.bordered) td:first-child,
+    &:not(.bordered) th:first-child {
+        padding-left: 0;
     }
-    &:not(.bordered) td:last-child { 
-        padding-right: 0; 
+    &:not(.bordered) td:last-child,
+    &:not(.bordered) th:last-child {
+        padding-right: 0;
+    }
+    // Denser cells for data-heavy tables; first/last-child side padding rules above still win
+    &.compact td,
+    &.compact th {
+        padding: 0.5rem;
     }
     &.striped {
         tbody tr:nth-of-type(even) {

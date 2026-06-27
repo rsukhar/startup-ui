@@ -3,6 +3,14 @@
 All notable changes to `startup-ui` are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## 1.0.4 — 2026-06-21
+
+### Changed
+
+- **`STable` default cell padding restored to the pre-1.0 value (`0.8rem`).** The tighter `0.5rem`
+  padding introduced during the 1.0 work is now opt-in via the new **`compact`** prop:
+  `<STable compact>`.
+
 ## 1.0.0 — 2026-06-19
 
 First stable release. This major version contains several breaking changes — see the full

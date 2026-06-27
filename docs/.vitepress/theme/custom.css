@@ -86,6 +86,26 @@ body {
     gap: 10px;
 }
 
+/* SButton with `href` renders as <a>. VitePress's `.vp-doc a` (brand color, underline, weight,
+   hover) has higher specificity than `.s-button` and would otherwise make the label unreadable
+   (brand-on-brand) and underlined. Re-assert the button's own look inside the docs. */
+.vp-doc a.s-button,
+.vp-doc a.s-button:hover {
+    color: var(--s-white);
+    font-weight: normal;
+    text-decoration: none;
+}
+.vp-doc a.s-button.outlined,
+.vp-doc a.s-button.transparent {
+    color: var(--s-primary);
+}
+.vp-doc a.s-button.outlined:hover {
+    color: var(--s-white);
+}
+.vp-doc a.s-button.transparent:hover {
+    color: var(--s-primary-darkest);
+}
+
 .vp-doc h1,
 .vp-doc h2,
 .vp-doc h3 {
