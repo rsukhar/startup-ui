@@ -33,6 +33,7 @@ export default defineConfig({
                         { text: 'SCheckboxGroup > SCheckbox', link: '/pages/components/forms/scheckbox' },
                         { text: 'SRadioGroup > SRadio', link: '/pages/components/forms/sradio' },
                         { text: 'SSwitch', link: '/pages/components/forms/sswitch' },
+                        { text: 'SSlider', link: '/pages/components/forms/sslider' },
                         { text: 'SDatePicker', link: '/pages/components/forms/sdatepicker' },
                         { text: 'SHtmlEditor', link: '/pages/components/forms/shtmleditor' },
                         { text: 'SUpload', link: '/pages/components/forms/supload' },

@@ -3,6 +3,13 @@
 All notable changes to `startup-ui` are documented here. This project follows
 [Semantic Versioning](https://semver.org/).
 
+## Unreleased
+
+### Added
+
+- **`SSlider`** — ползунок для выбора числового значения из диапазона: `v-model`, `min` / `max` /
+  `step`, суффикс `unit`, слот для кастомного отображения значения, `disabled`.
+
 ## 1.0.4 — 2026-06-21
 
 ### Changed

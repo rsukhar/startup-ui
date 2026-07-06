@@ -24,6 +24,8 @@ import SRadioGroup from './components/SRadioGroup.vue';
 components.push(SRadioGroup);
 import SSwitch from './components/SSwitch.vue';
 components.push(SSwitch);
+import SSlider from './components/SSlider.vue';
+components.push(SSlider);
 import SDatePicker from './components/SDatePicker.vue';
 components.push(SDatePicker);
 import SHtmlEditor from './components/SHtmlEditor.vue';

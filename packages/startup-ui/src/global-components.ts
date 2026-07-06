@@ -8,6 +8,7 @@ import type SCheckboxGroup from './components/SCheckboxGroup.vue';
 import type SRadio from './components/SRadio.vue';
 import type SRadioGroup from './components/SRadioGroup.vue';
 import type SSwitch from './components/SSwitch.vue';
+import type SSlider from './components/SSlider.vue';
 import type SDatePicker from './components/SDatePicker.vue';
 import type SHtmlEditor from './components/SHtmlEditor.vue';
 import type SUpload from './components/SUpload.vue';
@@ -59,6 +60,8 @@ declare module '@vue/runtime-core' {
         's-radio-group': typeof SRadioGroup;
         SSwitch: typeof SSwitch;
         's-switch': typeof SSwitch;
+        SSlider: typeof SSlider;
+        's-slider': typeof SSlider;
         SDatePicker: typeof SDatePicker;
         's-date-picker': typeof SDatePicker;
         SHtmlEditor: typeof SHtmlEditor;

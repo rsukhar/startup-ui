@@ -44,6 +44,7 @@ export { default as SCheckboxGroup } from './components/SCheckboxGroup.vue';
 export { default as SRadioGroup } from './components/SRadioGroup.vue';
 export { default as SRadio } from './components/SRadio.vue';
 export { default as SSwitch } from './components/SSwitch.vue';
+export { default as SSlider } from './components/SSlider.vue';
 export { default as SDatePicker } from './components/SDatePicker.vue';
 export { default as SHtmlEditor } from './components/SHtmlEditor.vue';
 export { default as SUpload } from './components/SUpload.vue';

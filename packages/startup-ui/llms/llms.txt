@@ -11,6 +11,7 @@
 - [SInput](./components/forms/sinput.md): Базовые поля ввода.
 - [SRadioGroup, SRadio](./components/forms/sradio.md): Радио-кнопки.
 - [SSelect](./components/forms/sselect.md): Выпадающий список с вариантами выбора.
+- [SSlider](./components/forms/sslider.md): Ползунок для выбора числового значения из диапазона. Рядом с ползунком отображается текущее значение.
 - [SSwitch](./components/forms/sswitch.md): Включатель-выключатель.
 - [SUpload](./components/forms/supload.md): Загрузка файла. Всегда вставляется внутри некой формы, не используется в отрыве от неё.
 
