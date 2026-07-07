@@ -62,6 +62,7 @@ export default defineConfig({
                         { text: 'SAlert', link: '/pages/components/interfaces/salert' },
                         { text: 'STag', link: '/pages/components/interfaces/stag' },
                         { text: 'SStatus', link: '/pages/components/interfaces/sstatus' },
+                        { text: 'SStepper', link: '/pages/components/interfaces/sstepper' },
                         { text: 'SActionBar', link: '/pages/components/interfaces/sactionbar' },
                         { text: 'SProgressBar', link: '/pages/components/interfaces/sprogressbar' },
                         { text: 'SCopyText', link: '/pages/components/interfaces/scopytext' },

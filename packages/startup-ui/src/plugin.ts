@@ -76,6 +76,8 @@ import STag from './components/STag.vue';
 components.push(STag);
 import SStatus from './components/SStatus.vue';
 components.push(SStatus);
+import SStepper from './components/SStepper.vue';
+components.push(SStepper);
 import SActionBar from './components/SActionBar.vue';
 components.push(SActionBar);
 import SProgressBar from './components/SProgressbar.vue';

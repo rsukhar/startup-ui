@@ -14,7 +14,7 @@ export interface SButtonProps {
     small?: boolean;
     disabled?: boolean;
     loading?: boolean;
-    color?: "red" | "green" | "yellow" | string;
+    color?: "red" | "green" | "yellow" | "gold" | string;
     is?: string | Component;
 }
 
@@ -121,6 +121,39 @@ const classes = computed(() => [
         --s-primary-dark: var(--s-yellow-dark);
         --s-primary-light: var(--s-yellow-light);
         --s-primary-lightest: var(--s-yellow-lightest);
+    }
+    // Gold is a gradient with dark text — a standalone money/CTA accent, not a remap of
+    // the --s-primary scale like the flat colors above. Border keeps the 1px geometry of
+    // other buttons; a darker gold stroke reads as part of the gradient.
+    &.color_gold {
+        background: linear-gradient(180deg, var(--s-gold), var(--s-gold-dark));
+        border-color: var(--s-gold-dark);
+        color: var(--s-black);
+        font-weight: 600;
+        &:hover {
+            background: linear-gradient(180deg, var(--s-gold), var(--s-gold-dark));
+            border-color: var(--s-gold-dark);
+            color: var(--s-black);
+            filter: brightness(1.05);
+        }
+        &.outlined {
+            background: transparent;
+            color: var(--s-gold-dark);
+            border-color: var(--s-gold-dark);
+            &:hover {
+                background: var(--s-gold-lightest);
+                color: var(--s-gold-dark);
+            }
+        }
+        &.transparent {
+            background: transparent;
+            border: 0;
+            color: var(--s-gold-dark);
+            &:hover {
+                background-color: var(--s-gold-lightest);
+                filter: none;
+            }
+        }
     }
     &.disabled,
     &[disabled="true"] {

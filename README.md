@@ -19,7 +19,7 @@ npm install
 
 ```
 cd docs
-npm run docs:dev
+npm run docs:dev -- --port 5555
 ```
 
 ## Публикация обновлений

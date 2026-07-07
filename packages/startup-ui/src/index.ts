@@ -74,6 +74,7 @@ export { default as SImagePreview } from './components/SImagePreview.vue';
 export { SAlert } from './components/SAlert';
 export { default as STag } from './components/STag.vue';
 export { default as SStatus } from './components/SStatus.vue';
+export { default as SStepper } from './components/SStepper.vue';
 export { default as SActionBar } from './components/SActionBar.vue';
 export { default as SProgressBar } from './components/SProgressbar.vue';
 export { default as SCopyText } from './components/SCopyText.vue';

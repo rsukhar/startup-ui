@@ -78,6 +78,24 @@ import { SButton } from 'startup-ui'
 </script>
 ```
 
+### Золотая кнопка
+
+Акцент для «денежных» и премиум-действий (платные операции, запуск, оплата): градиент золота с тёмным текстом. Использует токены `--s-gold`, `--s-gold-dark`, `--s-gold-lightest` из палитры.
+
+```vue
+<template>
+    <SButton color="gold">Запустить (≈ 210 ₽)</SButton>
+    <SButton outlined color="gold">Дополнительное действие</SButton>
+    <SButton transparent color="gold">Прозрачная кнопка</SButton>
+    <SButton disabled color="gold">Недоступная кнопка</SButton>
+    <SButton small color="gold">Маленькая кнопка</SButton>
+</template>
+
+<script setup>
+import { SButton } from 'startup-ui'
+</script>
+```
+
 ### Кнопка на всю ширину формы
 
 ```vue
@@ -156,7 +174,7 @@ import { SButton } from 'startup-ui'
 | small | boolean | false | Маленький размер кнопки |
 | disabled | boolean | false | Отключает кнопку (некликабельна, прозрачность 0.3) |
 | loading | boolean | false | Состояние загрузки (некликабельна, курсор ожидания) |
-| color | string | — | Цвет кнопки: `"red"`, `"green"`, `"yellow"` или кастомный |
+| color | string | — | Цвет кнопки: `"red"`, `"green"`, `"yellow"`, `"gold"` или кастомный |
 | is | string \| Component | — | HTML-элемент или Vue-компонент для рендеринга (например, InertiaJS `Link`) |
 | href | string | — | URL для перехода (делает кнопку ссылкой) |
 

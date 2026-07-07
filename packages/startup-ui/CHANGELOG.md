@@ -7,8 +7,23 @@ All notable changes to `startup-ui` are documented here. This project follows
 
 ### Added
 
-- **`SSlider`** — ползунок для выбора числового значения из диапазона: `v-model`, `min` / `max` /
-  `step`, суффикс `unit`, слот для кастомного отображения значения, `disabled`.
+- **`SButton color="gold"`** — money/premium CTA accent: gold gradient with dark text (works with
+  `outlined` and `transparent` too). Uses the new `--s-gold`, `--s-gold-dark`, `--s-gold-light`,
+  `--s-gold-lightest` palette tokens, added to `defaults.css`.
+- **`SStepper`** — step indicator for multi-step flows: completed steps get a check mark and are
+  clickable to navigate back; steps use the same `options` formats as `SSelect` / `SRadioGroup`.
+
+### Fixed
+
+- **`SRadioGroup` in `buttons` style now respects `--s-border-radius`** — corner radii of the first
+  and last segments (both horizontal and `vertical`) were hardcoded to `5px`.
+
+## 1.1.0 — 2026-07-06
+
+### Added
+
+- **`SSlider`** — a slider for picking a numeric value from a range: `v-model`, `min` / `max` /
+  `step`, a `unit` suffix, a slot for custom value display, `disabled`.
 
 ## 1.0.4 — 2026-06-21
 

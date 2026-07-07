@@ -28,6 +28,7 @@ import type SDialog from './components/SDialog.vue';
 import type SImagePreview from './components/SImagePreview.vue';
 import type STag from './components/STag.vue';
 import type SStatus from './components/SStatus.vue';
+import type SStepper from './components/SStepper.vue';
 import type SActionBar from './components/SActionBar.vue';
 import type SProgressBar from './components/SProgressbar.vue';
 import type SCopyText from './components/SCopyText.vue';
@@ -100,6 +101,8 @@ declare module '@vue/runtime-core' {
         's-tag': typeof STag;
         SStatus: typeof SStatus;
         's-status': typeof SStatus;
+        SStepper: typeof SStepper;
+        's-stepper': typeof SStepper;
         SActionBar: typeof SActionBar;
         's-action-bar': typeof SActionBar;
         SProgressBar: typeof SProgressBar;

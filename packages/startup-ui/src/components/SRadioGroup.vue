@@ -114,11 +114,11 @@ watch(model, newValue => {
                 }
 
                 &:last-of-type {
-                    border-radius: 0 5px 5px 0;
+                    border-radius: 0 var(--s-border-radius) var(--s-border-radius) 0;
                 }
 
                 &:first-of-type {
-                    border-radius: 5px 0 0 5px;
+                    border-radius: var(--s-border-radius) 0 0 var(--s-border-radius);
                 }
 
                 &.shift {
@@ -129,17 +129,17 @@ watch(model, newValue => {
 
             &.vertical {
                 flex-direction: column;
-                border-radius: 5px;
+                border-radius: var(--s-border-radius);
                 label {
                     width: 100%;
                     border-top: 1px solid var(--s-border);
                     &:first-of-type {
                         border-top: none;
-                        border-radius: 5px 5px 0 0;
+                        border-radius: var(--s-border-radius) var(--s-border-radius) 0 0;
                     }
 
                     &:last-of-type {
-                        border-radius: 0 0 5px 5px;
+                        border-radius: 0 0 var(--s-border-radius) var(--s-border-radius);
                     }
                 }
             }

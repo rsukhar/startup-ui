@@ -38,6 +38,7 @@
 - [SProgressBar](./components/interfaces/sprogressbar.md): Полоска прогресса.
 - [SStat](./components/interfaces/sstat.md): Строка статистики, выровненная по заголовкам.
 - [SStatus](./components/interfaces/sstatus.md): Текстовый статус (как правило с иконкой).
+- [SStepper](./components/interfaces/sstepper.md): Индикатор шагов многошагового сценария (мастер, воронка): пройденные шаги отмечаются галочкой и позволяют вернуться назад кликом, будущие шаги открываются самим сценарием.
 - [STag](./components/interfaces/stag.md): Тег (может также использоваться как отображение статуса).
 - [STimeline](./components/interfaces/stimeline.md): Вертикальная черта с точками-пунктами.
 - [SToggleGroup, SToggle](./components/interfaces/stoggle.md): Открывающийся-закрывающийся блок.

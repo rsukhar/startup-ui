@@ -4,7 +4,7 @@
 
 ```sh
 cd docs
-npm run docs:dev
+npm run docs:dev -- --port 5555
 ```
 
 ## Обновляем документацию
