@@ -4,8 +4,12 @@
             <SRadioGroup v-model="radioValue" :options="buttonOptions" buttons />
         </div>
         <div class="s-datepicker-main">
-            <div class="s-datepicker-input" :class="{'range': range, 'clearable': clearable}" ref="input">
-                <input readonly :value="displayValue" />
+            <div v-if="$slots.trigger" class="s-datepicker-trigger" ref="trigger">
+                <slot name="trigger" :is-open="isOpened" :value="externalValue" :display-value="displayValue"
+                    :open="() => (isOpened = true)" :close="() => (isOpened = false)" :toggle="() => (isOpened = !isOpened)" />
+            </div>
+            <div v-else class="s-datepicker-input" :class="{ range, clearable, compact, 'icon-start': iconPosition === 'start' }" ref="input">
+                <input readonly :value="displayValue" :placeholder="placeholder" :size="compact ? inputSize : undefined" />
                 <span v-if="clearable && hasValue" class="s-datepicker-input-clear" @click.stop="clear">
                     <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M4 4 12 12 M12 4 4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -49,7 +53,7 @@
                                             today: isToday(d.year, d.month, d.day),
                                             blocked: isBlocked(d.year, d.month, d.day),
                                             active: isActive(d.year, d.month, d.day),
-                                        }" @mousedown="onDateClick(d.year, d.month, d.day)" @mouseover="hover(d.year, d.month, d.day)"
+                                        }" @click="onDateClick(d.year, d.month, d.day)" @mouseover="hover(d.year, d.month, d.day)"
                                         @mouseout="blur()">
                                         {{ d.day }}
                                     </div>
@@ -59,7 +63,7 @@
                                             today: isToday(year, month, day),
                                             blocked: isBlocked(year, month, day),
                                             active: isActive(year, month, day),
-                                        }" @mousedown="onDateClick(year, month, day)" @mouseover="hover(year, month, day)"
+                                        }" @click="onDateClick(year, month, day)" @mouseover="hover(year, month, day)"
                                         @mouseout="blur()">
                                         {{ day }}
                                     </div>
@@ -69,7 +73,7 @@
                                             today: isToday(d.year, d.month, d.day),
                                             blocked: isBlocked(d.year, d.month, d.day),
                                             active: isActive(d.year, d.month, d.day),
-                                        }" @mousedown="onDateClick(d.year, d.month, d.day)" @mouseover="hover(d.year, d.month, d.day)"
+                                        }" @click="onDateClick(d.year, d.month, d.day)" @mouseover="hover(d.year, d.month, d.day)"
                                         @mouseout="blur()">
                                         {{ d.day }}
                                     </div>
@@ -120,12 +124,27 @@ export interface SDatePickerProps {
     // renderer (FontAwesomeIcon by default, or one injected via app.use(StartupUI, { icon })). When
     // omitted, a built-in inline SVG is used so the component carries no FontAwesome dependency.
     icon?: string | string[];
+    // Placeholder shown while the input is empty; also replaces the localized "not selected" fallback.
+    placeholder?: string;
+    // Side the calendar icon sits on: 'end' (default, trailing) or 'start' (leading).
+    iconPosition?: 'start' | 'end';
+    // Compact/inline layout: height follows the content (not --s-field-height), the field doesn't
+    // stretch, and the input shrinks to the format width. Handy for inline chips.
+    compact?: boolean;
 }
 
 const props = withDefaults(defineProps<SDatePickerProps>(), {
     range: false,
     withTime: false,
+    iconPosition: 'end',
 });
+
+// Emitted when the calendar opens/closes so a host can coordinate its own click-outside logic
+// (the calendar is teleported to <body> as .s-datepicker-calendar — see the docs).
+const emit = defineEmits<{
+    (e: 'open'): void;
+    (e: 'close'): void;
+}>();
 
 // Renderer for the optional custom icon prop: an injected component, falling back to a global 'FontAwesomeIcon'.
 const iconRenderer = computed(() => getStartupUiIcon() ?? 'FontAwesomeIcon');
@@ -149,8 +168,11 @@ const externalValue = defineModel<string | string[] | null>();
 dayjs.extend(customParseFormat)
 
 const $input = useTemplateRef<HTMLElement>('input');
+const $trigger = useTemplateRef<HTMLElement>('trigger');
 const $calendar = useTemplateRef<HTMLElement>('calendar');
 const calendarStyles = ref<Record<string, string>>({});
+// The element the calendar is positioned against: the custom #trigger if present, else the input.
+const $anchor = computed(() => $trigger.value ?? $input.value);
 
 const valueFormat = props.valueFormat ? props.valueFormat : (props.withTime ? `YYYY-MM-DD HH:mm` : 'YYYY-MM-DD');
 const inputFormat = props.inputFormat ? props.inputFormat : (props.withTime ? `DD.MM.YYYY HH:mm` : 'DD.MM.YYYY');
@@ -193,11 +215,23 @@ const numOfMonths = computed(() => props.numberOfMonths ?? (props.range ? 2 : 1)
 
 // Value shown in the input
 const displayValue = computed(() => {
+    let text = '';
     if (props.range && Array.isArray(value.value)) {
-        return value.value.filter(Boolean).map(item => dayjs(item, internalFormat).format(inputFormat)).join(' — ');
+        text = value.value.filter(Boolean).map(item => dayjs(item, internalFormat).format(inputFormat)).join(' — ');
+    } else if (value.value && !Array.isArray(value.value)) {
+        text = dayjs(value.value, internalFormat, true).format(inputFormat);
     }
-    return value.value && !Array.isArray(value.value) ? (dayjs(value.value, internalFormat, true).format(inputFormat)) : t('datePicker.notSelected');
+    if (text) return text;
+    // No value: an empty string lets the native placeholder show; otherwise the localized fallback.
+    return props.placeholder ? '' : t('datePicker.notSelected');
 })
+
+// Character width for the input in compact mode — derived from the format (constant, so it doesn't
+// jump as the value changes) and widened to fit the placeholder if that's longer.
+const inputSize = computed(() => {
+    const formatWidth = props.range ? inputFormat.length * 2 + 3 : inputFormat.length;
+    return Math.max(formatWidth, props.placeholder?.length ?? 0, 1);
+});
 
 // Whether there is a selected value (drives the clearable × button)
 const hasValue = computed(() => {
@@ -335,6 +369,9 @@ const dateToString = (year: number, month: number, day: number) => year + ((mont
 
 const isOpened = ref(false);
 
+// Let the host coordinate with the teleported calendar (e.g. its own click-outside handlers).
+watch(isOpened, (open) => { if (open) emit('open'); else emit('close'); });
+
 // Keyboard marker: the date the arrow keys move across (dayjs), Enter commits it
 const activeDate = ref<dayjs.Dayjs | null>(null);
 
@@ -438,8 +475,8 @@ function determineCalendarDirection(rect: DOMRect) {
 const openDirection = ref('drop-down');
 
 async function updateCalendarPosition() {
-    if (!$input.value) return;
-    const rect = $input.value.getBoundingClientRect();
+    if (!$anchor.value) return;
+    const rect = $anchor.value.getBoundingClientRect();
     await nextTick();
     openDirection.value = determineCalendarDirection(rect);
 
@@ -590,10 +627,19 @@ const buttonOptions = computed(() => {
     gap: 20px;
     width: fit-content;
     font-family: var(--s-font-family);
+    // Default (muted) colour of the field text and icon. Recolour a whole instance — e.g. a red
+    // "deadline flag" — by setting `color` on the SDatePicker; the icon and value inherit it.
+    color: var(--s-text-light);
 
     hr {
         width: 100%;
         border-color: var(--s-gray);
+    }
+
+    &-trigger {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
     }
 
     &-input {
@@ -601,8 +647,10 @@ const buttonOptions = computed(() => {
         // Total outer height (incl. border + padding) is bound to --s-field-height
         height: var(--s-field-height);
         align-items: center;
-        // No vertical padding: the fixed height + flex centering position the text
-        padding: 0 30px 0 10px;
+        // No vertical padding (the fixed height + flex centering position the text). Horizontal
+        // room for the trailing icon by default; mirrored via .icon-start.
+        padding-block: 0;
+        padding-inline: 10px 30px;
         border: 1px solid #ccc;
         border-radius: var(--s-border-radius);
         cursor: pointer;
@@ -616,13 +664,21 @@ const buttonOptions = computed(() => {
         input {
             border: none;
             outline: none;
-            color: var(--s-text-light);
+            // Inherit the instance colour (see .s-datepicker) so the value recolours with the icon
+            color: inherit;
+            background: transparent;
             cursor: pointer;
             min-width: fit-content;
+
+            &::placeholder {
+                color: var(--s-text-light);
+                opacity: 1;
+            }
         }
 
         &-icon {
-            color: var(--s-text-light);
+            // Follows the instance colour (default muted, overridable via `color`)
+            color: inherit;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -637,9 +693,27 @@ const buttonOptions = computed(() => {
             }
         }
 
+        // Icon on the leading edge instead of the trailing one
+        &.icon-start {
+            padding-inline: 30px 10px;
+
+            .s-datepicker-input-icon {
+                inset-inline-start: 10px;
+                inset-inline-end: auto;
+            }
+            // The × then sits alone at the trailing edge
+            .s-datepicker-input-clear {
+                inset-inline-end: 10px;
+            }
+        }
+
         // Reserve room for the clear (×) button so the layout stays stable
         &.clearable {
             padding-inline-end: 52px;
+        }
+        // With the icon leading, only the × occupies the trailing edge
+        &.icon-start.clearable {
+            padding-inline-end: 32px;
         }
 
         &-clear {
@@ -649,7 +723,7 @@ const buttonOptions = computed(() => {
             inset-inline-end: 32px;
             display: flex;
             align-items: center;
-            color: var(--s-text-light);
+            color: inherit;
             cursor: pointer;
 
             svg {
@@ -659,6 +733,16 @@ const buttonOptions = computed(() => {
 
             &:hover {
                 color: var(--s-primary);
+            }
+        }
+
+        // Compact/inline layout: height follows the content; the input shrinks to its `size`
+        &.compact {
+            height: auto;
+            padding-block: 3px;
+
+            input {
+                min-width: 0;
             }
         }
     }
@@ -689,6 +773,11 @@ const buttonOptions = computed(() => {
         input {
             width: 100%;
         }
+    }
+
+    // Compact instances shouldn't stretch to fill the row on mobile
+    &-main .s-datepicker-input.compact {
+        @include mobile() { flex-grow: 0; }
     }
 
     &-time {

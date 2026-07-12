@@ -170,6 +170,79 @@ const value = ref('2026-06-18')
 ```
 :::
 
+## Компактный инлайн-режим (чипы)
+
+Пропс `compact` убирает жёсткую высоту поля и ужимает его по содержимому — удобно для инлайн-«чипов». `icon-position="start"` ставит иконку слева, `placeholder` задаёт текст пустого поля. Цвет иконки и значения наследуется от `color` инстанса, поэтому «красный флажок дедлайна» получается одним `style="color: …"` — без CSS-оверрайдов:
+
+:::demo
+```vue
+<template>
+    <div style="display:flex; gap:16px; align-items:center">
+        <SDatePicker
+            v-model="deadline"
+            input-format="DD.MM"
+            icon="flag"
+            icon-position="start"
+            compact
+            clearable
+            placeholder="дедлайн"
+            style="color: var(--s-red)"
+        />
+        <SDatePicker
+            v-model="day"
+            :icon="['far', 'calendar']"
+            icon-position="start"
+            compact
+            input-format="DD.MM"
+            placeholder="дата"
+        />
+    </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const deadline = ref(null)
+const day = ref('2026-07-12')
+</script>
+```
+```vue
+<SDatePicker v-model="deadline" input-format="DD.MM" icon="flag" icon-position="start"
+    compact clearable placeholder="дедлайн" style="color: var(--s-red)" />
+```
+:::
+
+## Слот `#trigger` (headless)
+
+Слот `trigger` заменяет поле произвольным элементом: клик по нему открывает календарь у триггера, `v-model` работает как обычно. Полезно для иконок-действий, ссылок, ячеек таблиц. В слот прокидываются `displayValue`, `value`, `isOpen` и методы `open` / `close` / `toggle`.
+
+:::demo
+```vue
+<template>
+    <SDatePicker v-model="date">
+        <template #trigger="{ displayValue, isOpen }">
+            <SButton small :outlined="!isOpen">📅 {{ date ? displayValue : 'выбрать дату' }}</SButton>
+        </template>
+    </SDatePicker>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const date = ref(null)
+</script>
+```
+```vue
+<SDatePicker v-model="date">
+    <template #trigger="{ displayValue, isOpen }">
+        <SButton small :outlined="!isOpen">📅 {{ date ? displayValue : 'выбрать дату' }}</SButton>
+    </template>
+</SDatePicker>
+```
+:::
+
+<SNote icon="lightbulb" attention>
+Календарь телепортируется в <code>&lt;body&gt;</code> как <code>.s-datepicker-calendar</code>. Если у вас есть свои обработчики «клик снаружи» (например, закрытие карточки), они посчитают клик по календарю кликом снаружи. Ориентируйтесь на события <code>open</code> / <code>close</code> или на класс <code>.s-datepicker-calendar</code>, а не на попадание внутрь корня компонента.
+</SNote>
+
 ## Интерфейс компонента
 
 ### Свойства (Props)
@@ -188,10 +261,27 @@ const value = ref('2026-06-18')
 | clearable | `boolean` | `false` | Показывает кнопку очистки (×), когда значение выбрано. |
 | first-day | `number` | (из локали) | Первый день недели: `0` — воскресенье, `1` — понедельник. |
 | icon | `string \| string[]` | `undefined` | Необязательная FontAwesome-иконка календаря (например `['far', 'calendar']`). По умолчанию используется встроенная SVG-иконка — компонент не требует FontAwesome. |
+| placeholder | `string` | `undefined` | Текст пустого поля (приглушённый). Заменяет локализованное «Не выбрано». |
+| icon-position | `'start' \| 'end'` | `'end'` | Сторона иконки календаря: `end` — справа, `start` — слева. Цвет иконки наследуется от `color` инстанса. |
+| compact | `boolean` | `false` | Компактный инлайн-режим: высота по содержимому, поле не растягивается, ширина инпута — по формату. |
 
 Названия дней недели и месяцев, а также 12/24-часовой формат времени больше не задаются атрибутами per-instance — они берутся из активной локали и переопределяются глобально через параметры локализации (`configureStartupUi`). Подробнее — в разделе [Локализация](/pages/welcome/basics/localization).
 
 Иконки (календарь и стрелки переключения месяца) — встроенные SVG, поэтому FontAwesome для `SDatePicker` не обязателен. Дни соседних месяцев в сетке кликабельны. Поддерживается управление с клавиатуры: в фокусе стрелка вниз открывает календарь, стрелки двигают маркер по датам, Enter фиксирует выбор, Esc закрывает.
+
+### События (Events)
+
+| Название | Параметры | Описание |
+|----------|-----------|----------|
+| update:modelValue | `string \| string[] \| null` | Изменение значения (`v-model`). |
+| open | — | Календарь открылся. |
+| close | — | Календарь закрылся. |
+
+### Слоты (Slots)
+
+| Название | Пропсы слота | Описание |
+|----------|--------------|----------|
+| trigger | `{ isOpen, value, displayValue, open, close, toggle }` | Заменяет поле произвольным элементом (headless-режим). Клик открывает календарь у триггера. |
 
 <style lang="scss" scoped>
 .s-datepicker {

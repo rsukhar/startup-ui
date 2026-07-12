@@ -5,6 +5,8 @@ import * as regular from "@fortawesome/free-regular-svg-icons";
 library.add(
     // Календарь
     regular.faCalendar,
+    // Флажок (демо компактного SDatePicker)
+    solid.faFlag,
     // Крестик закрытия
     solid.faXmark,
     // Корзина
