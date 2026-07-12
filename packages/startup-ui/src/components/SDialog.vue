@@ -2,7 +2,12 @@
     <template>
         <Teleport to="body" v-if="model">
             <div ref="$root" class="s-dialog" @mousedown.capture="handleRootMousedown">
-                <div ref="$window" :style="[{ width: props.width }, style]" class="s-dialog-window" :class="{ 'fixed-footer': fixedFooter }">
+                <div
+                    ref="$window"
+                    :style="[{ width: props.width }, windowStyle]"
+                    class="s-dialog-window"
+                    :class="{ 'fixed-footer': fixedFooter, positioned: !!position && !hasDragged, dragged: hasDragged }"
+                >
                     <div class="s-dialog-window-header" ref="$header">
                         <slot name="header"><h2>{{ title }}</h2></slot>
                         <SIconClose @click="handleHide" />
@@ -31,9 +36,17 @@
 let topZIndex = 1000;
 </script>
 <script setup lang="ts">
-import { useTemplateRef, watch, nextTick, onBeforeMount } from 'vue';
-import { useDraggable, useResizeObserver } from '@vueuse/core';
+import { computed, ref, useTemplateRef, watch, nextTick, onBeforeMount } from 'vue';
+import type { CSSProperties } from 'vue';
+import { useDraggable } from '@vueuse/core';
 import { SIconClose } from './icons';
+
+export interface SDialogPosition {
+    top?: string;
+    left?: string;
+    right?: string;
+    bottom?: string;
+}
 
 export interface SDialogProps {
     title?: string;
@@ -44,6 +57,12 @@ export interface SDialogProps {
      * scrolls. Without it, the footer scrolls together with the body content.
      */
     fixedFooter?: boolean;
+    /**
+     * Place the window at a fixed viewport position (CSS values) instead of centering it, e.g.
+     * `{ top: '5vh', right: '2rem' }` — handy for non-modal windows docked to a corner. The window
+     * stays draggable from there.
+     */
+    position?: SDialogPosition;
 }
 
 const props = defineProps<SDialogProps>();
@@ -54,37 +73,38 @@ const emit = defineEmits<{
 }>();
 
 const model = defineModel<boolean>();
-// Element whose position will be calculated during ondrag
+// The draggable window element
 const $window = useTemplateRef<HTMLElement>('$window');
 // Element on which the dragstart event will be triggered
 const $header = useTemplateRef<HTMLElement>('$header');
 // Teleport root (.s-dialog) — the element whose z-index we bump to restack windows
 const $root = useTemplateRef<HTMLElement>('$root');
 
-const { x, y, style } = useDraggable($window, { handle: $header });
+// The window is centered (or `position`-anchored) purely in CSS. useDraggable only takes over once
+// the user actually drags it: `hasDragged` then switches the window to the draggable's inline
+// left/top. No JS re-centering, so a dragged window survives viewport/content resizes.
+const hasDragged = ref(false);
 
-useResizeObserver($window, () => { calcaulateDialogPosition() });
+const { style } = useDraggable($window, {
+    handle: $header,
+    onMove: () => { hasDragged.value = true; },
+});
 
-const calcaulateDialogPosition = () => {
-    const rect = $window.value?.getBoundingClientRect()
-    if (!rect) return
-    x.value = document.documentElement.clientWidth / 2 - rect.width / 2;
-    y.value = document.documentElement.clientHeight / 2 - rect.height / 2;
-}
+// Inline position for the window: useDraggable's live left/top once dragged, otherwise the
+// `position` prop's anchor (empty = CSS handles centering).
+const windowStyle = computed(() =>
+    hasDragged.value ? style.value : ((props.position ?? {}) as CSSProperties),
+);
 
 const handleNewModelState = function(newValue?: boolean){
     if (!newValue) {
-        window.removeEventListener('resize', calcaulateDialogPosition);
+        // Reset so the next open is centered again instead of reusing the dragged position.
+        hasDragged.value = false;
         return;
     }
-    window.addEventListener('resize', calcaulateDialogPosition);
-    calcaulateDialogPosition();
-    nextTick(() => {
-        calcaulateDialogPosition();
-        // A freshly opened modal must sit above any non-modal dialogs raised earlier — otherwise a
-        // raised non-modal (higher z-index) would cover the modal and its backdrop.
-        if (!props.notModal) bringToFront();
-    });
+    // A freshly opened modal must sit above any non-modal dialogs raised earlier — otherwise a
+    // raised non-modal (higher z-index) would cover the modal and its backdrop.
+    if (!props.notModal) nextTick(bringToFront);
 };
 
 onBeforeMount(() => handleNewModelState(model.value));
@@ -136,12 +156,25 @@ function handleRootMousedown() {
         flex-direction: column;
         gap: var(--s-base-padding);
         position: fixed;
+        // Centered in the viewport by default — no JS. Overridden by the `position` prop (anchored
+        // to an edge) or once the user drags the window (inline left/top from useDraggable).
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         background-color: var(--s-white);
         z-index: 1001;
         border: 1px solid var(--s-border);
         border-radius: var(--s-border-radius);
         max-width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+        // A `position` prop or an in-progress drag places the window via inline styles instead.
+        &.positioned,
+        &.dragged {
+            top: auto;
+            left: auto;
+            transform: none;
+        }
 
         &-header {
             display: flex;
