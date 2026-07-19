@@ -82,6 +82,44 @@ const budget = ref(10000)
 
 Если значение показывать не нужно, отключите его свойством `:show-value="false"`.
 
+## Редактируемое значение
+
+Свойство `editable` заменяет число полем ввода — значение можно ввести вручную (текст центрируется). При потере фокуса (или по Enter) введённое значение приводится к ближайшему допустимому: привязывается к шагу и обрезается по границам `min` / `max`. Попробуйте ввести, например, `999` или `-5`:
+
+:::demo
+```vue
+<template>
+    <SSlider v-model="volume" :min="0" :max="100" :step="5" unit="%" editable />
+</template>
+<script setup>
+import { ref } from 'vue'
+const volume = ref(40)
+</script>
+```
+```vue
+<SSlider v-model="volume" :min="0" :max="100" :step="5" unit="%" editable />
+```
+:::
+
+## Положение значения
+
+Свойством `value-position` значение можно вывести слева от ползунка (по умолчанию — справа):
+
+:::demo
+```vue
+<template>
+    <SSlider v-model="value" value-position="left" editable unit="%" />
+</template>
+<script setup>
+import { ref } from 'vue'
+const value = ref(60)
+</script>
+```
+```vue
+<SSlider v-model="value" value-position="left" editable unit="%" />
+```
+:::
+
 ## Недоступное состояние
 
 :::demo
@@ -111,6 +149,8 @@ const value = ref(30)
 | step | `number` | `1` | Шаг изменения значения. |
 | unit | `string` | `''` | Суффикс к отображаемому значению (например, `%`). |
 | show-value | `boolean` | `true` | Показывать ли текущее значение рядом с ползунком. |
+| editable | `boolean` | `false` | Показывать значение редактируемым полем ввода (текст центрируется). При потере фокуса значение привязывается к шагу и обрезается по `min` / `max`. |
+| value-position | `'left' \| 'right'` | `'right'` | Сторона ползунка, где выводится значение. |
 | disabled | `boolean` | `false` | Отключает возможность изменения. |
 
 ### Слоты (Slots)
