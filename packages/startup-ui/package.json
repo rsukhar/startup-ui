@@ -1,6 +1,6 @@
 {
     "name": "startup-ui",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "Vue3 UI components for IT startups. Best served with Laravel + InertiaJS",
     "author": "Ruslan Sukhar <ruslan@sukhar.info>",
     "license": "MIT",

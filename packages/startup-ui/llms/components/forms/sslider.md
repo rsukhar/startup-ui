@@ -28,17 +28,19 @@ const limit = ref(20)
 </script>
 ```
 
-## Единица измерения
+## Префикс и суффикс
 
-Свойство `unit` добавляет суффикс к отображаемому значению:
+Свойства `prefix` и `suffix` добавляют текст до и после значения:
 
 ```vue
 <template>
-    <SSlider v-model="percent" :min="1" :max="50" unit="%" />
+    <SSlider v-model="percent" :min="1" :max="50" suffix="%" />
+    <SSlider v-model="price" :min="0" :max="1000" :step="50" prefix="$" />
 </template>
 <script setup>
 import { ref } from 'vue'
 const percent = ref(10)
+const price = ref(300)
 </script>
 ```
 
@@ -62,11 +64,11 @@ const budget = ref(10000)
 
 ## Редактируемое значение
 
-Свойство `editable` заменяет число полем ввода — значение можно ввести вручную (текст центрируется). При потере фокуса (или по Enter) введённое значение приводится к ближайшему допустимому: привязывается к шагу и обрезается по границам `min` / `max`. Попробуйте ввести, например, `999` или `-5`:
+Свойство `editable` заменяет число полем ввода (`SInput`, значение центрируется) — его можно ввести вручную; `prefix` / `suffix` при этом показываются внутри поля. При потере фокуса (или по Enter) введённое значение приводится к ближайшему допустимому: привязывается к шагу и обрезается по границам `min` / `max`. Попробуйте ввести, например, `999` или `-5`:
 
 ```vue
 <template>
-    <SSlider v-model="volume" :min="0" :max="100" :step="5" unit="%" editable />
+    <SSlider v-model="volume" :min="0" :max="100" :step="5" suffix="%" editable />
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -80,7 +82,7 @@ const volume = ref(40)
 
 ```vue
 <template>
-    <SSlider v-model="value" value-position="left" editable unit="%" />
+    <SSlider v-model="value" value-position="left" editable suffix="%" />
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -110,7 +112,8 @@ const value = ref(30)
 | min | `number` | `0` | Минимальное значение. |
 | max | `number` | `100` | Максимальное значение. |
 | step | `number` | `1` | Шаг изменения значения. |
-| unit | `string` | `''` | Суффикс к отображаемому значению (например, `%`). |
+| prefix | `string` | `''` | Текст перед значением (например, `$`). В режиме `editable` пробрасывается в `SInput`. |
+| suffix | `string` | `''` | Текст после значения (например, `%`). В режиме `editable` пробрасывается в `SInput`. |
 | show-value | `boolean` | `true` | Показывать ли текущее значение рядом с ползунком. |
 | editable | `boolean` | `false` | Показывать значение редактируемым полем ввода (текст центрируется). При потере фокуса значение привязывается к шагу и обрезается по `min` / `max`. |
 | value-position | `'left' \| 'right'` | `'right'` | Сторона ползунка, где выводится значение. |

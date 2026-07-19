@@ -1,35 +1,36 @@
 <template>
     <div class="s-slider" :class="{ disabled, 'value-left': showValue && valuePosition === 'left' }">
         <input type="range" v-model.number="model" :min="min" :max="max" :step="step" :disabled="disabled" />
-        <span v-if="showValue" class="s-slider-value">
-            <template v-if="editable">
-                <input
-                    class="s-slider-value-field"
-                    type="text"
-                    inputmode="decimal"
-                    v-model="inputText"
-                    :disabled="disabled"
-                    @blur="commitInput"
-                    @keydown.enter.prevent="commitInput"
-                />
-                <span v-if="unit" class="s-slider-value-unit">{{ unit }}</span>
-            </template>
-            <slot v-else :value="model">{{ model }}{{ unit }}</slot>
+        <SInput
+            v-if="showValue && editable"
+            class="s-slider-value-input"
+            v-model="inputText"
+            :prefix="prefix"
+            :suffix="suffix"
+            :disabled="disabled"
+            @focusout="commitInput"
+            @keydown.enter.prevent="commitInput"
+        />
+        <span v-else-if="showValue" class="s-slider-value">
+            <slot :value="model">{{ prefix }}{{ model }}{{ suffix }}</slot>
         </span>
     </div>
 </template>
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import SInput from "./SInput.vue";
 
 export interface SSliderProps {
     min?: number;
     max?: number;
     step?: number;
     disabled?: boolean;
-    /** Suffix appended to the displayed value, e.g. '%' */
-    unit?: string;
+    /** Text shown before the value, e.g. '$' */
+    prefix?: string;
+    /** Text shown after the value, e.g. '%' */
+    suffix?: string;
     showValue?: boolean;
-    /** Render the value as an editable input instead of static text */
+    /** Render the value as an editable input (an SInput) instead of static text */
     editable?: boolean;
     /** Which side of the slider the value sits on */
     valuePosition?: 'left' | 'right';
@@ -39,7 +40,8 @@ const props = withDefaults(defineProps<SSliderProps>(), {
     min: 0,
     max: 100,
     step: 1,
-    unit: '',
+    prefix: '',
+    suffix: '',
     showValue: true,
     editable: false,
     valuePosition: 'right',
@@ -90,44 +92,33 @@ function commitInput() {
     &-value {
         flex: 0 0 auto;
         min-width: 48px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 4px;
+        text-align: right;
         font-weight: 700;
         font-variant-numeric: tabular-nums;
         color: var(--s-primary);
     }
 
-    // Editable value: a compact, centered input
-    &-value-field {
-        width: 48px;
-        box-sizing: border-box;
-        text-align: center;
-        font: inherit;
-        font-weight: 700;
-        font-variant-numeric: tabular-nums;
-        color: var(--s-primary);
-        border: 1px solid var(--s-border);
-        border-radius: var(--s-border-radius);
-        padding: 2px 4px;
-        background: var(--s-white);
-        outline: none;
+    // Editable value reuses SInput (so it inherits prefix/suffix), kept compact and centered
+    &-value-input {
+        flex: 0 0 auto;
 
-        &:focus {
-            border-color: var(--s-primary);
-        }
-
-        &:disabled {
-            cursor: not-allowed;
+        .s-input-field {
+            width: 3.5em;
+            text-align: center;
+            color: var(--s-primary);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
         }
     }
 
     // Value on the left of the slider
     &.value-left {
-        .s-slider-value {
+        .s-slider-value,
+        .s-slider-value-input {
             order: -1;
-            justify-content: flex-start;
+        }
+        .s-slider-value {
+            text-align: left;
         }
     }
 
